@@ -1,32 +1,25 @@
 <?php
 
 /**
- * Description of blogpost
+ * Description of newsletter
  *
  * @author Faizan Ayubi
  */
-class BlogPost extends Shared\Model {
-    /**
-     * @column
-     * @readwrite
-     * @type integer
-     */
-    protected $_user_id;
-
+class Newsletter extends Shared\Model {
     /**
      * @column
      * @readwrite
      * @type text
      * @length 128
      */
-    protected $_title;
+    protected $_subject;
     
     /**
      * @column
      * @readwrite
      * @type text
      */
-    protected $_content;
+    protected $_message;
     
     /**
      * @column
@@ -34,14 +27,21 @@ class BlogPost extends Shared\Model {
      * @type text
      * @length 32
      */
-    protected $_category;
+    protected $_user_group;
     
     /**
      * @column
      * @readwrite
      * @type integer
      */
-    protected $_validity;
+    protected $_sent_count;
+    
+    /**
+     * @column
+     * @readwrite
+     * @type date
+     */
+    protected $_scheduled;
     
     /**
      * @column

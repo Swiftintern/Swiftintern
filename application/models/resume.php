@@ -1,25 +1,32 @@
 <?php
 
 /**
- * Description of balances
+ * Description of resume
  *
  * @author Faizan Ayubi
  */
-class Balance extends Shared\Model {
+class Resume extends Shared\Model {
     /**
      * @column
      * @readwrite
      * @type integer
      */
-    protected $_user_id;
+    protected $_student_id;
 
     /**
      * @column
      * @readwrite
      * @type text
-     * @length 32
+     * @length 45
      */
-    protected $_amount;
+    protected $_type;
+    
+    /**
+     * @column
+     * @readwrite
+     * @type text
+     */
+    protected $_resume;
     
     /**
      * @column

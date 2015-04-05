@@ -1,17 +1,17 @@
 <?php
 
 /**
- * Description of balances
+ * Description of option
  *
  * @author Faizan Ayubi
  */
-class Balance extends Shared\Model {
+class Option extends Shared\Model {
     /**
      * @column
      * @readwrite
      * @type integer
      */
-    protected $_user_id;
+    protected $_ques_id;
 
     /**
      * @column
@@ -19,12 +19,12 @@ class Balance extends Shared\Model {
      * @type text
      * @length 32
      */
-    protected $_amount;
+    protected $_ques_option;
     
     /**
      * @column
      * @readwrite
-     * @type datetime
+     * @type integer
      */
-    protected $_updated;
+    protected $_is_answer;
 }

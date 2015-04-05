@@ -1,30 +1,30 @@
 <?php
 
 /**
- * Description of balances
+ * Description of social
  *
  * @author Faizan Ayubi
  */
-class Balance extends Shared\Model {
+class Social extends Shared\Model {
     /**
      * @column
      * @readwrite
      * @type integer
      */
     protected $_user_id;
-
-    /**
-     * @column
-     * @readwrite
-     * @type text
-     * @length 32
-     */
-    protected $_amount;
     
     /**
      * @column
      * @readwrite
-     * @type datetime
+     * @type text
+     * @length 64
      */
-    protected $_updated;
+    protected $_social_platform;
+    
+    /**
+     * @column
+     * @readwrite
+     * @type text
+     */
+    protected $_link;
 }

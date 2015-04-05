@@ -1,52 +1,45 @@
 <?php
 
 /**
- * Description of experience
+ * Description of work
  *
  * @author Faizan Ayubi
  */
-class Experience extends Shared\Model {
+class Work extends Shared\Model {
     /**
      * @column
      * @readwrite
      * @type integer
      */
-    protected $_organization_id;
+    protected $_student_id;
 
     /**
      * @column
      * @readwrite
      * @type integer
      */
-    protected $_user_id;
+    protected $_organization_id;
     
     /**
      * @column
      * @readwrite
      * @type text
-     * @length 256
+     * @length 64
      */
-    protected $_title;
+    protected $_duration;
+    
+    /**
+     * @column
+     * @readwrite
+     * @type text
+     * @length 64
+     */
+    protected $_designation;
     
     /**
      * @column
      * @readwrite
      * @type text
      */
-    protected $_details;
-    
-    /**
-     * @column
-     * @readwrite
-     * @type text
-     * @length 32
-     */
-    protected $_type;
-    
-    /**
-     * @column
-     * @readwrite
-     * @type integer
-     */
-    protected $_validity;
+    protected $_responsibility;
 }

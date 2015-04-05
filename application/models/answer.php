@@ -5,7 +5,7 @@
  *
  * @author Faizan Ayubi
  */
-class Answer {
+class Answer extends Shared\Model {
     /**
      * @column
      * @readwrite

@@ -65,6 +65,20 @@ class User extends Shared\Model {
      * @column
      * @readwrite
      * @type text
+     */
+    protected $_access_token;
+    
+    /**
+     * @column
+     * @readwrite
+     * @type integer
+     */
+    protected $_login_number;
+    
+    /**
+     * @column
+     * @readwrite
+     * @type text
      * @length 100
      * 
      * @validate required, alpha, min(3), max(32)
@@ -75,16 +89,30 @@ class User extends Shared\Model {
     /**
      * @column
      * @readwrite
-     * @type datetime
+     * @type integer
      */
-    protected $_updated;
+    protected $_validity;
     
     /**
-    * @column
-    * @readwrite
-    * @type boolean
-    */
-    protected $_validity = true;
+     * @column
+     * @readwrite
+     * @type text
+     */
+    protected $_last_ip;
+    
+    /**
+     * @column
+     * @readwrite
+     * @type datetime
+     */
+    protected $_last_login;
+    
+    /**
+     * @column
+     * @readwrite
+     * @type datetime
+     */
+    protected $_updated;   
 
     public function isFriend($id) {
         $friend = Friend::first(array(

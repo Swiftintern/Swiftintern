@@ -1,16 +1,30 @@
 <?php
 
 /**
- * Description of certificate
+ * Description of image
  *
  * @author Faizan Ayubi
  */
-class Certificate extends Shared\Model {
+class Image extends Shared\Model {
+    /**
+     * @column
+     * @readwrite
+     * @type integer
+     */
+    protected $_photo_id;
+
+    /**
+     * @column
+     * @readwrite
+     * @type integer
+     */
+    protected $_user_id;
+    
     /**
      * @column
      * @readwrite
      * @type text
-     * @length 32
+     * @length 45
      */
     protected $_property;
     
@@ -20,19 +34,4 @@ class Certificate extends Shared\Model {
      * @type integer
      */
     protected $_property_id;
-    
-    /**
-     * @column
-     * @readwrite
-     * @type text
-     * @length 255
-     */
-    protected $_uniqid;
-    
-    /**
-     * @column
-     * @readwrite
-     * @type integer
-     */
-    protected $_validity;
 }

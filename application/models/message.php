@@ -6,31 +6,42 @@
  * @author Faizan Ayubi
  */
 class Message extends Shared\Model {
+    
+    /**
+     * @column
+     * @readwrite
+     * @type integer
+     */
+    protected $_from_user_id;
+    
+    /**
+     * @column
+     * @readwrite
+     * @type integer
+     */
+    protected $_to_user_id;
 
     /**
      * @column
      * @readwrite
      * @type text
      * @length 256
-     *
-     * @validate required
-     * @label body
      */
-    protected $_body;
+    protected $_subject;
 
     /**
      * @column
      * @readwrite
-     * @type integer
+     * @type text
      */
     protected $_message;
-
+    
     /**
      * @column
      * @readwrite
      * @type integer
      */
-    protected $_user;
+    protected $_validity;
 
     /**
      * fetches a list of replies to a message. It also returns the user_name of the user who replied, 

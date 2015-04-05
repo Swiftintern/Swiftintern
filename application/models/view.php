@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Description of certificate
+ * Description of view
  *
  * @author Faizan Ayubi
  */
-class Certificate extends Shared\Model {
+class View extends Shared\Model {
     /**
      * @column
      * @readwrite
@@ -24,15 +24,15 @@ class Certificate extends Shared\Model {
     /**
      * @column
      * @readwrite
-     * @type text
-     * @length 255
+     * @type date
      */
-    protected $_uniqid;
+    protected $_date;
+    
     
     /**
      * @column
      * @readwrite
      * @type integer
      */
-    protected $_validity;
+    protected $_viewed;
 }

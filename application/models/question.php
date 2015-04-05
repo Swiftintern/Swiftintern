@@ -1,30 +1,30 @@
 <?php
 
 /**
- * Description of balances
+ * Description of question
  *
  * @author Faizan Ayubi
  */
-class Balance extends Shared\Model {
+class Question extends Shared\Model {
     /**
      * @column
      * @readwrite
      * @type integer
      */
-    protected $_user_id;
-
-    /**
-     * @column
-     * @readwrite
-     * @type text
-     * @length 32
-     */
-    protected $_amount;
+    protected $_test_id;
     
     /**
      * @column
      * @readwrite
-     * @type datetime
+     * @type text
      */
-    protected $_updated;
+    protected $_question;
+    
+    /**
+     * @column
+     * @readwrite
+     * @type text
+     * @length 45
+     */
+    protected $_type;
 }

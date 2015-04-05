@@ -1,40 +1,45 @@
 <?php
 
 /**
- * Description of blogpost
+ * Description of sponsored
  *
  * @author Faizan Ayubi
  */
-class BlogPost extends Shared\Model {
+class Sponsored extends Shared\Model {
+    /**
+     * @column
+     * @readwrite
+     * @type integer
+     */
+    protected $_opportunity_id;
+    
     /**
      * @column
      * @readwrite
      * @type integer
      */
     protected $_user_id;
-
-    /**
-     * @column
-     * @readwrite
-     * @type text
-     * @length 128
-     */
-    protected $_title;
     
     /**
      * @column
      * @readwrite
-     * @type text
+     * @type datetime
      */
-    protected $_content;
+    protected $_start;
     
     /**
      * @column
      * @readwrite
-     * @type text
-     * @length 32
+     * @type datetime
      */
-    protected $_category;
+    protected $_end;
+    
+    /**
+     * @column
+     * @readwrite
+     * @type integer
+     */
+    protected $_is_active;
     
     /**
      * @column

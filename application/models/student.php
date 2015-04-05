@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Description of blogpost
+ * Description of student
  *
  * @author Faizan Ayubi
  */
-class BlogPost extends Shared\Model {
+class Student extends Shared\Model {
     /**
      * @column
      * @readwrite
@@ -17,31 +17,22 @@ class BlogPost extends Shared\Model {
      * @column
      * @readwrite
      * @type text
-     * @length 128
      */
-    protected $_title;
+    protected $_about;
     
     /**
      * @column
      * @readwrite
      * @type text
      */
-    protected $_content;
+    protected $_city;
     
     /**
      * @column
      * @readwrite
      * @type text
-     * @length 32
      */
-    protected $_category;
-    
-    /**
-     * @column
-     * @readwrite
-     * @type integer
-     */
-    protected $_validity;
+    protected $_skills;
     
     /**
      * @column

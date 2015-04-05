@@ -5,7 +5,7 @@
  *
  * @author Faizan Ayubi
  */
-class CRM {
+class CRM extends Shared\Model {
     
     /**
      * @column

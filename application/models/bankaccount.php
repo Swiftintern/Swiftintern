@@ -5,7 +5,7 @@
  *
  * @author Faizan Ayubi
  */
-class BankAccount {
+class BankAccount extends Shared\Model {
     /**
      * @column
      * @readwrite

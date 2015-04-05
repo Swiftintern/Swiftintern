@@ -1,52 +1,45 @@
 <?php
 
 /**
- * Description of blogpost
+ * Description of participant
  *
  * @author Faizan Ayubi
  */
-class BlogPost extends Shared\Model {
+class Participant extends Shared\Model {
+    /**
+     * @column
+     * @readwrite
+     * @type integer
+     */
+    protected $_test_id;
+
     /**
      * @column
      * @readwrite
      * @type integer
      */
     protected $_user_id;
-
-    /**
-     * @column
-     * @readwrite
-     * @type text
-     * @length 128
-     */
-    protected $_title;
     
     /**
      * @column
      * @readwrite
      * @type text
+     * @length 45
      */
-    protected $_content;
+    protected $_score;
     
     /**
      * @column
      * @readwrite
      * @type text
-     * @length 32
+     * @length 45
      */
-    protected $_category;
+    protected $_time_taken;
     
     /**
      * @column
      * @readwrite
      * @type integer
      */
-    protected $_validity;
-    
-    /**
-     * @column
-     * @readwrite
-     * @type datetime
-     */
-    protected $_updated;
+    protected $_attempted;
 }

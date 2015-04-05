@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Description of blogpost
+ * Description of order
  *
  * @author Faizan Ayubi
  */
-class BlogPost extends Shared\Model {
+class Order extends Shared\Model {
     /**
      * @column
      * @readwrite
@@ -16,17 +16,23 @@ class BlogPost extends Shared\Model {
     /**
      * @column
      * @readwrite
-     * @type text
-     * @length 128
+     * @type integer
      */
-    protected $_title;
+    protected $_transaction_id;
     
     /**
      * @column
      * @readwrite
      * @type text
      */
-    protected $_content;
+    protected $_property;
+    
+    /**
+     * @column
+     * @readwrite
+     * @type text
+     */
+    protected $_property_id;
     
     /**
      * @column
@@ -34,14 +40,7 @@ class BlogPost extends Shared\Model {
      * @type text
      * @length 32
      */
-    protected $_category;
-    
-    /**
-     * @column
-     * @readwrite
-     * @type integer
-     */
-    protected $_validity;
+    protected $_status;
     
     /**
      * @column

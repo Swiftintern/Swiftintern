@@ -5,7 +5,7 @@
  *
  * @author Faizan Ayubi
  */
-class Application {
+class Application extends Shared\Model {
     /**
      * @column
      * @readwrite

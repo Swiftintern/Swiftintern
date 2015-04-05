@@ -1,32 +1,38 @@
 <?php
 
 /**
- * Description of blogpost
+ * Description of qualification
  *
  * @author Faizan Ayubi
  */
-class BlogPost extends Shared\Model {
+class Qualification extends Shared\Model {
     /**
      * @column
      * @readwrite
      * @type integer
      */
-    protected $_user_id;
+    protected $_student_id;
 
     /**
      * @column
      * @readwrite
-     * @type text
-     * @length 128
+     * @type integer
      */
-    protected $_title;
+    protected $_organization_id;
     
     /**
      * @column
      * @readwrite
      * @type text
      */
-    protected $_content;
+    protected $_degree;
+    
+    /**
+     * @column
+     * @readwrite
+     * @type text
+     */
+    protected $_major;
     
     /**
      * @column
@@ -34,19 +40,13 @@ class BlogPost extends Shared\Model {
      * @type text
      * @length 32
      */
-    protected $_category;
+    protected $_gpa;
     
     /**
      * @column
      * @readwrite
-     * @type integer
+     * @type text
+     * @length 32
      */
-    protected $_validity;
-    
-    /**
-     * @column
-     * @readwrite
-     * @type datetime
-     */
-    protected $_updated;
+    protected $_passing_year;
 }

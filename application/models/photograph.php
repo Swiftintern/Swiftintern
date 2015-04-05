@@ -1,31 +1,32 @@
 <?php
 
 /**
- * Description of follower
+ * Description of photograph
  *
  * @author Faizan Ayubi
  */
-class Follower extends Shared\Model {
-    /**
-     * @column
-     * @readwrite
-     * @type integer
-     */
-    protected $_user_id;
-
+class Photograph extends Shared\Model {
     /**
      * @column
      * @readwrite
      * @type text
-     * @length 32
+     * @length 255
+     */
+    protected $_filename;
+    
+    /**
+     * @column
+     * @readwrite
+     * @type text
+     * @length 64
      */
     protected $_type;
     
     /**
      * @column
      * @readwrite
-     * @type integer
+     * @type text
+     * @length 64
      */
-    protected $_following_id;
-    
+    protected $_size;
 }
