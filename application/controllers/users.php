@@ -46,7 +46,7 @@ class Users extends Controller {
 
         $this->getLayoutView()->set("seo", $seo);
 
-        if (RequestMethods::post("login")) {
+        if (RequestMethods::post("action") == "login") {
             $email = RequestMethods::post("email");
             $password = RequestMethods::post("password");
 
@@ -66,9 +66,8 @@ class Users extends Controller {
             if (!$error) {
                 $user = User::first(array(
                     "email = ?" => $email,
-                    "password = ?" => $password,
-                    "live = ?" => true,
-                    "deleted = ?" => false
+                    "password = ?" => sha1($password),
+                    "validity = ?" => true
                 ));
 
                 if (!empty($user)) {

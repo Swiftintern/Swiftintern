@@ -260,7 +260,7 @@ namespace Framework {
          */
         public function getTable() {
             if (empty($this->_table)) {
-                $this->_table = strtolower(StringMethods::singular(get_class($this)));
+                $this->_table = strtolower(StringMethods::plural(get_class($this)));
             } return $this->_table;
         }
 
