@@ -55,13 +55,6 @@ class Student extends Controller {
         $session = Registry::get("session");
         $user = $this->user;
 
-        if (empty($user)) {
-            $user = new StdClass();
-            $user->first = "Mr.";
-            $user->last = "Smith";
-            $user->file = "";
-        }
-
         $this->getActionView()->set("user", $user);
     }
 
