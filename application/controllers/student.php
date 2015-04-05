@@ -16,6 +16,14 @@ class Student extends Controller {
      * third thing it does is to create a new user row in the database
      */
     public function register() {
+        $seo = Framework\Registry::get("seo");
+
+        $seo->setTitle("Get Internship | Student Register");
+        $seo->setKeywords("get internship, student register");
+        $seo->setDescription("Register with us to get internship from top companies in india and various startups in Delhi, Mumbai, Bangalore, Chennai, hyderabad etc");
+
+        $this->getLayoutView()->set("seo", $seo);
+
         include APP_PATH .'/public/datalist.php';
         $view = $this->getActionView();
         
