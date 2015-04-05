@@ -1,0 +1,56 @@
+<nav class="navbar" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- Be sure to leave the brand out there if you want it shown -->
+            <a class="navbar-brand" href="home"><i class="fa fa-graduation-cap fa-lg"></i> SwiftIntern</a>
+        </div>
+
+        <!-- post or upload cv -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="resume-for-internship" class="whitetext"><i class="fa fa-file-text-o fa-lg"></i> Create Resume</a></li>
+                <li><a href="tests" class="whitetext hidden-sm"><i class="fa fa-clock-o fa-lg"></i> Online Test</a></li>
+                <li><a href="placement-papers" class="whitetext"><i class="fa fa-files-o fa-lg"></i> Placement Papers</a></li>
+            </ul>
+            <!-- the menu -->
+            <div class="navbar-right">
+	            <ul class="nav navbar-nav">
+	            {if isset($session->user)}
+	            	{if ($session->user->type == 'student')}
+						<li class="dropdown">
+	                        <a href="#" class="dropdown-toggle whitetext" data-toggle="dropdown"><i class="fa fa-user fa-lg"></i> {$session->user->name} <b class="caret"></b></a>
+	                        <ul class="dropdown-menu">
+	                            <li><a href="student/applications">Applied</a></li>
+	                            <li><a href="student/recommends">Recommended</a></li>
+	                            <li><a href="student">My Profile</a></li>
+	                            <li class="divider"></li>
+	                            <li><a href="student/resumes">Resume</a></li>
+	                            <li><a href="logout">Logout</a></li>
+	                        </ul>
+	                    </li>
+	                {/if}
+	                {else}
+	                	<li class="dropdown">
+		                    <a href="#" class="dropdown-toggle whitetext" data-toggle="dropdown"><i class="fa fa-check-square fa-lg"></i> Sign Up <b class="caret"></b></a>
+		                    <ul class="dropdown-menu">
+		                        <li><a href="student/register"><i class="fa fa-user fa-lg"></i> Student</a></li>
+		                        <li><a href="employer/register" class="whitetext"><i class="fa fa-briefcase fa-lg"></i> Employer</a></li>
+		                        <li><a href="educator/register" class="whitetext"><i class="fa fa-bank fa-lg"></i> Educator</a></li>
+		                        <li class="divider"></li>
+		                        <li><a href="affiliate/register" class="whitetext"><i class="fa fa-bullhorn fa-lg"></i> Affiliate</a></li>
+		                    </ul>
+	                    </li>
+	                    <li><a href="#" class="whitetext" data-toggle="modal" data-target="#authorization"><i class="fa fa-sign-in fa-lg"></i> Sign In</a></li>
+	                {/else}
+	            {/if}
+	            </ul>
+            </div>
+        </div>
+    </div>
+</nav>

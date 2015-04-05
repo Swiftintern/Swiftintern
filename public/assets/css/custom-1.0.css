@@ -1,0 +1,67 @@
+html, body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:#878787;}
+.whitetext{color:white;}
+.small_image{max-height:60px;float:left;}
+.medium_image{max-height:160px;max-width:350px;float:left;}
+.huge{font-size:40px;}
+.intro-header{background-color:gray;background:no-repeat center center;background-attachment:scroll;-webkit-background-size:cover;-moz-background-size:cover;background-size:cover;-o-background-size:cover;margin-bottom:50px}
+.intro-header .site-heading,.intro-header .post-heading,.intro-header .page-heading{padding:100px 0 50px;color:black}
+.blog{font-family:Lora,'Times New Roman',serif;font-size:20px;color:#404040}
+.post-preview > a{color:#404040;}
+.post-preview > a:hover,
+.post-preview > a:focus{text-decoration:none;color:#0085a1;}
+.post-preview > a > .post-title{font-size:30px;margin-top:30px;margin-bottom:10px;}
+.post-preview > a > .post-subtitle{margin:0;font-weight:300;margin-bottom:10px;}
+.post-preview > .post-meta{color:#808080;font-size:18px;font-style:italic;margin-top:0;}
+.post-preview > .post-meta > a{text-decoration:none;color:#404040;}
+.post-preview > .post-meta > a:hover,
+.post-preview > .post-meta > a:focus{color:#0085a1;text-decoration:underline;}
+@media only screen and (min-width:768px){.post-preview > a > .post-title{font-size:36px;}
+}
+select:focus, option:focus, textarea:focus, input[type="text"]:focus, input[type="password"]:focus,
+input[type="datetime"]:focus, input[type="datetime-local"]:focus,
+input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus,
+input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus,
+input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus,
+input[type="color"]:focus, .uneditable-input:focus{border-color:#CCCCCC !important;box-shadow:0 1px 1px rgba(0, 0, 0, 0.075) inset !important;}
+table td{padding:20px 10px !important;}
+table a{font-weight:bold;}
+table .job-location{text-align:right;}
+i{font-size:10px;}
+.sub-heading{margin-bottom:25px;}
+.yellowish{color:#EEA236;}
+.btn{border:none;border-radius:3px;}
+.form-control{border-radius:3px;}
+.navbar{background-color:#3276B1;}
+.navbar .navbar-left{margin-left:200px;}
+.navbar .navbar-brand{color:#f6f6f6;}
+.contents{padding:80px 0 40px;}
+#featured{}
+#featured .featured{background-color:rgba(238,162,54,0.1);}
+#featured .featured:nth-child(2n+1) > td{background-color:transparent;}
+#featured .featured:after{border-right:2px solid #EEA236;content:" ";display:block;height:101px;position:absolute;right:15px;}
+.clients{background-color:#F5F5F5;height:100px;padding:20px;text-align:center;}
+footer{background-color:#3276B1;padding:15px 0 5px;color:#f6f6f6;}
+@media only screen and (min-width:320px) and (max-width:680px){.navbar{height:auto;text-align:center;}
+.navbar .navbar-left{margin-left:0;}
+.navbar-toggle{background-color:#FFFFFF;color:#EEA265;}
+.navbar-toggle .icon-bar{background-color:#EEA265;color:#EEA265;}
+.navbar-collapse{text-align:center;float:none;}
+.contents{padding:90px 0 0;}
+footer{text-align:center;}
+footer .pull-left, footer .pull-right{float:none !important;display:block;}
+}
+@media only screen and (min-width:680px) and (max-width:1024px){.navbar{height:auto;text-align:center;}
+.navbar-toggle{background-color:#FFFFFF;color:#EEA265;}
+.navbar-toggle .icon-bar{background-color:#EEA265;color:#EEA265;}
+.navbar-collapse{text-align:center;float:none;}
+.navbar-collapse .navbar-right{display:inline-block;margin-left:10px;}
+.navbar-collapse .navbar-left{display:inline-block;margin-right:10px;margin-left:0;}
+}
+.bs-glyphicons{margin:0 -10px 20px;overflow:hidden}
+.bs-glyphicons-list{padding-left:0;list-style:none}
+.bs-glyphicons li{float:left;width:25%;height:115px;padding:10px;font-size:10px;line-height:1.4;text-align:center;background-color:#f9f9f9;border:1px solid #fff}
+.bs-glyphicons .glyphicon{margin-top:5px;margin-bottom:10px;font-size:24px}
+.bs-glyphicons .glyphicon-class{display:block;text-align:center;word-wrap:break-word}.bs-glyphicons li:hover{color:#fff;background-color:#563d7c}
+@media (min-width:768px){.bs-glyphicons{margin-right:0;margin-left:0}
+.bs-glyphicons li{width:12.5%;font-size:12px}
+}

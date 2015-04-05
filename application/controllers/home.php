@@ -1,0 +1,89 @@
+<?php
+
+/**
+ * Description of home
+ *
+ * @author Faizan Ayubi
+ */
+use Framework\Controller as Controller;
+
+class Home extends Controller {
+
+    public function index() {
+        $this->getLayoutView()->set("seo", Framework\Registry::get("seo"));
+    }
+
+    public function about() {
+    	$seo = Framework\Registry::get("seo");
+
+    	$seo->setTitle("About Us");
+		$seo->setKeywords("about us, how swiftintern works, swiftintern");
+		$seo->setDescription("SwiftIntern is the india's largest student-focused internship portal, bringing students, employers and higher education institutions together in one centralized location.");
+		$seo->setPhoto("http://assets.swiftintern.com/img/newsletter/header.png");
+
+    	$this->getLayoutView()->set("seo", $seo);
+    }
+
+    public function contact() {
+    	$seo = Framework\Registry::get("seo");
+
+    	$seo->setTitle("Contact Us");
+		$seo->setKeywords("contact, report problem, swiftintern");
+		$seo->setDescription("We would love to hear from you. contact us to know more.");
+
+    	$this->getLayoutView()->set("seo", $seo);
+    }
+
+    public function privacy() {
+    	$seo = Framework\Registry::get("seo");
+
+    	$seo->setTitle("Privacy Policy");
+		$seo->setKeywords("privacy policy");
+		$seo->setDescription("We collect information from you when you register on our site, place an order, subscribe to our newsletter, respond to a survey or fill out a form. ");
+
+    	$this->getLayoutView()->set("seo", $seo);
+    }
+
+    public function blog() {
+    	$seo = Framework\Registry::get("seo");
+
+    	$seo->setTitle("Intern Blog");
+		$seo->setKeywords("blog, Intern Blog, internship tips, internship advice, internship discussions");
+		$seo->setDescription("Internship blogs post tips, advice to students to achieve the most from their internship and how to avail maximum benefits during an intern period.");
+
+    	$this->getLayoutView()->set("seo", $seo);
+    }
+
+    public function post() {
+    	$seo = Framework\Registry::get("seo");
+
+    	$seo->setTitle($post->title);
+		$seo->setKeywords($post->category);
+		$seo->setDescription(substr(strip_tags($post->content), 0, 150));
+		$seo->setPhoto($photo->image_path_thumb());
+
+    	$this->getLayoutView()->set("seo", $seo);
+    }
+
+    public function termsofservice() {
+    	$seo = Framework\Registry::get("seo");
+
+    	$seo->setTitle("Terms of Service");
+		$seo->setKeywords("terms of use, refund policy, swiftintern");
+		$seo->setDescription("Following is the agrrement of use on swiftintern including refund policy.");
+
+    	$this->getLayoutView()->set("seo", $seo);
+    }
+
+
+    public function placementPapers() {
+    	$seo = Framework\Registry::get("seo");
+
+    	$seo->setTitle("Companies Placement Papers, Experiences");
+		$seo->setKeywords("placement papers");
+		$seo->setDescription("Browse through thousands of placement papers and experiences shared by thousands of student across india");
+
+    	$this->getLayoutView()->set("seo", $seo);
+    }
+
+}

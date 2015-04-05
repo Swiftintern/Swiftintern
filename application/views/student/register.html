@@ -1,0 +1,175 @@
+<section class="container">
+	<div class="row">
+		<h1 class="page-header text-center">Get Experience | Add Value to your CV</h1>
+		<ol class="breadcrumb">
+			<li><a href="home">Home</a></li>
+			<li class="active">Student SignUp</li>
+		</ol>
+		<div class="col-md-6">
+
+			<div class="media">
+				<div class="media-left">
+					<i class="fa fa-graduation-cap fa-4x"></i>
+				</div>
+				<div class="media-body">
+					<h4 class="media-heading">Internships, Training and Competitions</h4>
+					<p>An internship isn't just any temporary job. It can be a bridge to your life's work or an experiment in a career that interests you. Well this is the place to start.</p>
+				</div>
+			</div>
+			<br>
+			<div class="media">
+				<div class="media-left">
+					<i class="fa fa-comments fa-5x"></i>
+				</div>
+				<div class="media-body">
+					<h4 class="media-heading">Experiences</h4>
+					<p>Share youe Interview experience, Internship Experience and also broswse through thousands of students experiences through our App.</p>
+				</div>
+			</div>						
+			<br>
+			<div class="media">
+				<div class="media-left">
+					<i class="fa fa-certificate fa-5x"></i>
+				</div>
+				<div class="media-body">
+					<h4 class="media-heading">Certification</h4>
+					<p>The skill certification challenge is all about awarding the people, the recognition they deserve!, we send you certificate at your address.</p>
+				</div>
+			</div>
+			<br>
+			<div class="media">
+				<div class="media-left">
+					<i class="fa fa-users fa-4x"></i>
+				</div>
+				<div class="media-body">
+					<h4 class="media-heading">Friends Internship Status</h4>
+					<p>Get notified of their internship status such as when they applied, application status etc. through social media such as facebook, linkedin, google+</p>
+				</div>
+			</div>
+			<br>
+			<div class="media">
+				<div class="media-left">
+					<i class="fa fa-file-text-o fa-5x"></i>
+				</div>
+				<div class="media-body">
+					<h4 class="media-heading">Resume and CV</h4>
+					<p>With our Resume Creator you can create awesome resumes of all type technical, non-technical, cover letter CVs etc. These Resume will behelpful in applying for jobs and internship.</p>
+				</div>
+			</div>
+			<br>
+		</div>
+		<form id="student_register" class="col-md-6">
+			<legend>Student Details<span class="pull-right"><button class="btn btn-danger googlelogin"><i class="fa fa-google-plus fa-lg"></i>  | SignUp with Google</button></span></legend>
+			<div class="row">
+	  			<div class="col-xs-12 col-md-6">
+			    	<div class="form-group">
+				    <label for=""><i class="fa fa-user"></i> Full Name *</label>
+				    <input type="text" name="name" class="form-control" required="">
+				  	</div>
+		    	</div>
+		    	<div class="col-xs-12 col-md-6">
+			    	<div class="form-group">
+				    <label for=""><i class="fa fa-envelope"></i> E-mail *</label>
+				    <input type="email" name="email" class="form-control" required="">
+				  	</div>
+		    	</div>
+	    	</div>
+			<div class="row">
+	  			<div class="col-xs-12 col-md-6">
+			    	<div class="form-group">
+				    <label for=""><i class="fa fa-key"></i> Password *</label>
+				    <input type="password" name="password" class="form-control" required="">
+				  	</div>
+		    	</div>
+		    	<div class="col-xs-12 col-md-6">
+			    	<div class="form-group">
+				    <label for=""><i class="fa fa-mobile"></i> Mobile (Optional)</label>
+				    <input type="tel" name="phone" class="form-control">
+				  	</div>
+		    	</div>
+	    	</div>
+	  		<div class="row">
+	  			<div class="col-xs-12 col-md-6">
+			    	<div class="form-group">
+				    <label for=""><i class="fa fa-map-marker"></i> Current City (Optional)</label>
+				    <input type="text" list="location" name="city" class="form-control" placeholder="eg. Delhi" autocomplete="off">
+				    <datalist id="location">
+				    {foreach $location in $alllocations}
+				    	<option value="{echo $location}">
+				    {/foreach}
+				    </datalist>
+				  	</div>
+		    	</div>
+		    	<div class="col-xs-12 col-md-6">
+			    	<div class="form-group">
+				    <label for=""><i class="fa fa-wrench"></i> Skills (Optional)</label>
+				    <input type="text" name="skills" class="form-control" placeholder="eg. Photoshop, Autocad">
+				    <small class="help-block">Separated by comma.</small>
+				  	</div>
+		    	</div>
+	    	</div>
+			<legend>Current Academic Details</legend>
+	    	<div class="row">
+	    		<div class="col-xs-12 col-md-6">
+			    	<div class="form-group">
+				    <label for=""><i class="fa fa-bank"></i> College/University/School</label>
+				    <input type="text" list="college" name="college" class="form-control" required="" placeholder="start typing full name..." autocomplete="off">
+				    <datalist id="college">
+				    <?php
+				    	$colleges = Organization::find_name_by_property('type', 'institute');
+				    	foreach ($colleges as $college) {
+				    		echo '<option value="'.$college->name.'">';
+				    	}
+				    ?>
+				    </datalist>
+				  	</div>
+		    	</div>
+		    	<div class="col-xs-12 col-md-6">
+		    		<div class="form-group">
+			    	<label for=""><i class="fa fa-graduation-cap"></i> Qualification/Degree</label>
+			    	<input type="text" list="degree" name="degree" class="form-control" required="" placeholder="eg. B.Tech, Intermediate, 10th" autocomplete="off">
+				    <datalist id="degree">
+				    <?php
+				    	foreach ($alldegrees as $degree) {
+				    		echo '<option value="'.$degree.'">';
+				    	}
+				    ?>
+				    </datalist>
+			    	</div>
+		    	</div>
+	    	</div>
+	    	<br>
+			<div class="row">
+		    	<div class="col-xs-12 col-md-6">
+			    	<div class="form-group">
+				    <label for=""><i class="fa fa-bookmark"></i> Major</label>
+				    <input type="text" list="major" name="major" class="form-control" required="" placeholder="eg. Economics, Civil Engineering etc" autocomplete="off">
+				    <datalist id="major">
+				    <?php
+				    	foreach ($allmajors as $major) {
+				    		echo '<option value="'.$major.'">';
+				    	}
+				    ?>
+				    </datalist>
+				  	</div>
+		    	</div>
+		    	<div class="col-xs-12 col-md-6">
+			    	<div class="form-group">
+				    <label for=""><i class="fa fa-calendar"></i> Year of PassOut</label>
+				    <select name="passing_year" class="form-control" required="">
+					<?php
+						$year = strftime("%Y");
+						for($i=$year; $i <= $year+4; $i++){
+							echo '<option value="'.$i.'">'.$i.'</option>';
+						}
+					?>
+					</select>
+				  	</div>
+		    	</div>
+	    	</div>
+	    	<br>
+	    	<input type="hidden" name="action" value="student_register">
+	    	<button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Register</button>
+		</form>
+	</div>
+</section>

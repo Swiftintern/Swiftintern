@@ -1,0 +1,114 @@
+<section class="container">
+    <div class="row">
+        <div class="bs-glyphicons">
+            <ul class="bs-glyphicons-list" id="new_category">
+                <li><i class="fa fa-at fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Web Development</span></li>
+
+                <li><i class="fa fa-tablet fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Android App Development</span></li>
+
+                <li><i class="fa fa-code fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Software Engineering</span></li>
+
+                <li><i class="fa fa-image fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Graphic Designing</span></li>
+
+                <li><i class="fa fa-newspaper-o fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Content Writer</span></li>
+
+                <li><i class="fa fa-book fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Research</span></li>
+
+                <li><i class="fa fa-legal fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Legal</span></li>
+
+                <li><i class="fa fa-bullhorn fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Marketing & Sales</span></li>
+
+                <li><i class="fa fa-globe fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Ambassador</span></li>
+
+                <li><i class="fa fa-bar-chart fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Buisness Development</span></li>
+
+                <li><i class="fa fa-facebook fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Social Media SEO</span></li>
+
+                <li><i class="fa fa-users fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Training</span></li>
+
+                <li><i class="fa fa-money fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Finance and Operations</span></li>
+
+                <li><i class="fa fa-male fa-5x" aria-hidden="true"></i><span class="glyphicon-class">HR Client Relations</span></li>
+
+                <li><i class="fa fa-automobile fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Mechanical Engineering</span></li>
+
+                <li><i class="fa fa-rocket fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Electrical Electronics</span></li>
+            </ul>
+        </div>
+    </div>
+</section>
+<section id="featured">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-9">
+                <h2 class="sub-heading">
+                internship
+                </h2>
+                <table class="table table-striped">
+                    <tbody id="opportunity">
+                    
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    <a rel="next" id="loadmorebtn" onclick="loadmoreOpportunity(++page, '10');" class="btn btn-primary">Load More</a>
+                </div>
+                <br>
+            </div>
+            <aside class="col-xs-12 col-md-3">
+                <a href="employer/register" class="btn btn-warning btn-lg btn-block"><i class="fa fa-user-plus"></i> Hire Interns?</a><br>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-bullhorn"></i> Featured
+                        <div class="btn-group pull-right">
+                            <button onclick="loadSponsored(--page, '1');" class="btn btn-default btn-xs"><i class="fa fa-chevron-left"></i></button>
+                            <button onclick="loadSponsored(++page, '1');" class="btn btn-default btn-xs"><i class="fa fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    <div class="panel-body" id="sponsored"></div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-search"></i> Advanced Search
+                    </div>
+                    <form id="advancedsearch" class="panel-body">
+                        <div class="form-group">
+                            <label>Search Term</label>
+                            <input type="search" name="keyword" list="keyword_list" class="form-control" placeholder="What are you looking for?" value="" autocomplete="off">
+                            <datalist id="keyword_list">
+                            
+                            </datalist>
+                            <small class="help-block"></small>
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <select data-placeholder="Select Place" id="intern_location" class="form-control chosen" multiple>
+                            
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Paid <input type="checkbox" name="payment" value="1"></label>
+                        </div>
+                        <input type="submit" class="btn btn-primary btn-block" value="Search">
+                    </form>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-facebook-square"></i> Follow us on Facebook
+                    </div>
+                    <div class="panel-body">
+                        <div class="fb-like-box" data-href="https://www.facebook.com/swiftintern" data-width="230" data-colorscheme="light" data-show-faces="true" data-header="true" data-stream="false" data-show-border="true"></div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+var page = 1;
+$(document).ready(function() {
+    loadSponsored('1', '1');
+    if(window.location.href.search("search") != '-1'){
+        goTo('#featured');
+    }
+});
+</script>
