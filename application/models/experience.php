@@ -49,11 +49,4 @@ class Experience {
      * @type integer
      */
     protected $_validity;
-    
-    /**
-     * @column
-     * @readwrite
-     * @type datetime
-     */
-    protected $_updated;
 }
