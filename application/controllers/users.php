@@ -38,7 +38,7 @@ class Users extends Controller {
     }
 
     public function login() {
-        var_dump(Opportunity::all());
+        //var_dump(Opportunity::first());
         $seo = Registry::get("seo");
 
         $seo->setTitle("Login");
@@ -46,6 +46,7 @@ class Users extends Controller {
         $seo->setDescription("Login to your account on swiftintern, students login to apply for internship and employer login to hire interns.");
 
         $this->getLayoutView()->set("seo", $seo);
+        $this->getActionView()->set("opportunity", Opportunity::first());
 
         if (RequestMethods::post("action") == "login") {
             $email = RequestMethods::post("email");
@@ -277,7 +278,7 @@ class Users extends Controller {
 
     
     public function view() {
-        $this->actionView->set("users", Opportunity::all());
+        $this->actionView->set("users", Opportunity::first());
     }
 
     /**

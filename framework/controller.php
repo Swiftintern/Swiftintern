@@ -82,8 +82,8 @@ namespace Framework {
             switch ($router->getExtension()) {
                 case "json":
                     $this->willRenderActionView = 0;
-                    echo $this->willRenderActionView;
-                    die();
+                    $this->willRenderLayoutView = 0;
+                    
                     break;
 
                 default:
@@ -140,6 +140,8 @@ namespace Framework {
             try {
                 if ($doAction) {
                     $view = $this->actionView;
+                    echo "<pre>", print_r($view->data), "</pre>";
+                    echo json_encode($view->data);
                     $results = $view->render();
 
                     $this
