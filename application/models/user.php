@@ -65,6 +65,8 @@ class User extends Shared\Model {
      * @column
      * @readwrite
      * @type text
+     * 
+     * @label access_token
      */
     protected $_access_token;
     

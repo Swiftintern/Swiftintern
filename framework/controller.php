@@ -76,6 +76,19 @@ namespace Framework {
         public function __construct($options = array()) {
             parent::__construct($options);
             Events::fire("framework.controller.construct.before", array($this->name));
+            
+            $router = Registry::get("router");
+            
+            switch ($router->getExtension()) {
+                case "json":
+                    $this->willRenderActionView = 0;
+                    echo $this->willRenderActionView;
+                    die();
+                    break;
+
+                default:
+                    break;
+            }
 
             if ($this->willRenderLayoutView) {
                 $defaultPath = $this->defaultPath;

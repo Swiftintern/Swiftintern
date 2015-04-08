@@ -24,7 +24,7 @@ class View extends Shared\Model {
     /**
      * @column
      * @readwrite
-     * @type date
+     * @type datetime
      */
     protected $_date;
     

@@ -38,6 +38,7 @@ class Users extends Controller {
     }
 
     public function login() {
+        var_dump(Opportunity::all());
         $seo = Registry::get("seo");
 
         $seo->setTitle("Login");
@@ -274,11 +275,9 @@ class Users extends Controller {
                 ->set("errors", $errors);
     }
 
-    /**
-     * @before _secure, _admin
-     */
+    
     public function view() {
-        $this->actionView->set("users", User::all());
+        $this->actionView->set("users", Opportunity::all());
     }
 
     /**
