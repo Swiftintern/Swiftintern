@@ -38,7 +38,6 @@ class Users extends Controller {
     }
 
     public function login() {
-        //var_dump(Opportunity::first());
         $seo = Registry::get("seo");
 
         $seo->setTitle("Login");

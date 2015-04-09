@@ -142,10 +142,10 @@ namespace Framework {
 
                     if ($this->defaultExtension == "json") {
                         foreach ($view->data as $keys => $values) {
-                            $array = (array) $values;
-                            echo str_replace(array("", "*", "\u0000"), "", json_encode($array, JSON_PRETTY_PRINT));
-                            break;
+                            echo $keys;
+                            $array[] = (array) $values;
                         }
+                        echo str_replace(array("", "*", "\u0000"), "", json_encode($array, JSON_PRETTY_PRINT));
                     }
 
                     $results = $view->render();
