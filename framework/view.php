@@ -29,11 +29,6 @@ namespace Framework {
          * @read
          */
         protected $_template;
-        
-        /**
-         * @read
-         */
-        protected $_type;
 
         public function __construct($options = array()) {
             parent::__construct($options);

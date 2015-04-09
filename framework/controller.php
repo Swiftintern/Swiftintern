@@ -76,14 +76,13 @@ namespace Framework {
         public function __construct($options = array()) {
             parent::__construct($options);
             Events::fire("framework.controller.construct.before", array($this->name));
-            
+
             $router = Registry::get("router");
-            
+
             switch ($router->getExtension()) {
                 case "json":
-                    $this->willRenderActionView = 0;
-                    $this->willRenderLayoutView = 0;
-                    
+                    $this->defaultContentType = "application/json";
+                    $this->defaultExtension = $router->getExtension();
                     break;
 
                 default:
@@ -116,7 +115,7 @@ namespace Framework {
 
             Events::fire("framework.controller.construct.after", array($this->name));
         }
-        
+
         protected function getName() {
             if (empty($this->_name)) {
                 $this->_name = get_class($this);
@@ -140,8 +139,15 @@ namespace Framework {
             try {
                 if ($doAction) {
                     $view = $this->actionView;
-                    echo "<pre>", print_r($view->data), "</pre>";
-                    echo json_encode($view->data);
+
+                    if ($this->defaultExtension == "json") {
+                        foreach ($view->data as $keys => $values) {
+                            $array = (array) $values;
+                            echo str_replace(array("", "*", "\u0000"), "", json_encode($array, JSON_PRETTY_PRINT));
+                            break;
+                        }
+                    }
+
                     $results = $view->render();
 
                     $this
