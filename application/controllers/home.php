@@ -5,11 +5,34 @@
  *
  * @author Faizan Ayubi
  */
-use Framework\Controller as Controller;
+use Shared\Controller as Controller;
+use Framework\Registry as Registry;
+use Framework\RequestMethods as RequestMethods;
 
 class Home extends Controller {
 
     public function index() {
+        $view = $this->getActionView();
+        $query = RequestMethods::post("query", "");
+        $order = RequestMethods::post("order", "created");
+        $direction = RequestMethods::post("direction", "desc");
+        $page = RequestMethods::post("page", 1);
+        $limit = RequestMethods::post("limit", 10);
+        
+        $where = array(
+            "validity = ?" => true
+        );
+
+        $fields = array(
+            "id", "title", "organization_id", "details", "eligibility", "category", "duration", "location", "last_date"
+        );
+
+        $count = Opportunity::count($where);
+        $opportunities = Opportunity::first($where, $fields, $order, $direction, $limit, $page);
+        
+        $view->set("foods", array("apple", "mango", "banana"));
+        $view->set("opportunities", $opportunities);
+        
         $this->getLayoutView()->set("seo", Framework\Registry::get("seo"));
     }
 

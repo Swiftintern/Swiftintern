@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of view
+ * Class to instantiate view of controller/action
  *
  * @author Faizan Ayubi
  */
@@ -32,7 +32,7 @@ namespace Framework {
 
         public function __construct($options = array()) {
             parent::__construct($options);
-            
+
             Events::fire("framework.view.construct.before", array($this->file));
 
             $this->_template = new Template(array(
@@ -72,6 +72,7 @@ namespace Framework {
             }
 
             $data = $this->data;
+
             if (!$data) {
                 $data = array();
             }

@@ -46,6 +46,12 @@
                 </h2>
                 <table class="table table-striped">
                     <tbody id="opportunity">
+                        {foreach $food in $foods}
+                            <tr>
+                                <td>{echo $food}</td>
+                                <td></td>
+                            </tr>
+                        {/foreach}
                         <tr>
                             <td>
                                 <div class="media">
