@@ -46,29 +46,25 @@
                 </h2>
                 <table class="table table-striped">
                     <tbody id="opportunity">
-                        {foreach $food in $foods}
-                            <tr>
-                                <td>{echo $food}</td>
-                                <td></td>
-                            </tr>
-                        {/foreach}
+                        {foreach $opportunity in $opportunities}
                         <tr>
                             <td>
                                 <div class="media">
-                                    <a class="pull-left hidden-xs" href="Startup+Communication+Intern/348">
-                                        <img src="http://assets.swiftintern.com/uploads/images/sml_7921790.jpg" class="media-object small_image" alt="Startup Communication Intern">
+                                    <a class="pull-left hidden-xs" href="{echo urlencode($opportunity->title)}/{echo $opportunity->id}">
+                                        <img src="http://assets.swiftintern.com/uploads/images/sml_7921790.jpg" class="media-object small_image" alt="{echo $opportunity->title}">
                                     </a>
                                     <div class="media-body">
-                                        <h4 class="media-heading"><a href="Startup+Communication+Intern/348">Startup Communication Intern</a></h4>
-                                        BBA, MBA, PGDM, BA, MA, B.Com, M.Com, B.Tech, M.Tech, BE, ME
+                                        <h4 class="media-heading"><a href="{echo urlencode($opportunity->title)}/{echo $opportunity->id}">{echo $opportunity->title}</a></h4>
+                                        {echo $opportunity->eligibility}
                                     </div>
                                 </div>
                             </td>
                             <td class="job-location">
-                                <p><i class="fa fa-calendar fa-fw"></i>June 30 2015</p>
-                                <p><i class="fa fa-map-marker"></i>Work From Home</p>
+                                <p><i class="fa fa-calendar fa-fw"></i>{echo $opportunity->last_date}</p>
+                                <p><i class="fa fa-map-marker"></i>{echo $opportunity->location}</p>
                             </td>
                         </tr>
+                        {/foreach}
                     </tbody>
                 </table>
                 <div class="text-center">

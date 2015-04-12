@@ -6,27 +6,28 @@
  * @author Faizan Ayubi
  */
 class Organization extends Shared\Model {
+
     /**
      * @column
      * @readwrite
      * @type integer
      */
     protected $_photo_id;
-    
+
     /**
      * @column
      * @readwrite
      * @type text
      */
     protected $_name;
-    
+
     /**
      * @column
      * @readwrite
      * @type text
      */
     protected $_address;
-    
+
     /**
      * @column
      * @readwrite
@@ -34,7 +35,7 @@ class Organization extends Shared\Model {
      * @length 25
      */
     protected $_phone;
-    
+
     /**
      * @column
      * @readwrite
@@ -42,7 +43,7 @@ class Organization extends Shared\Model {
      * @length 45
      */
     protected $_country;
-    
+
     /**
      * @column
      * @readwrite
@@ -50,7 +51,7 @@ class Organization extends Shared\Model {
      * @length 45
      */
     protected $_website;
-    
+
     /**
      * @column
      * @readwrite
@@ -58,7 +59,7 @@ class Organization extends Shared\Model {
      * @length 45
      */
     protected $_sector;
-    
+
     /**
      * @column
      * @readwrite
@@ -66,7 +67,7 @@ class Organization extends Shared\Model {
      * @length 45
      */
     protected $_number_employee;
-    
+
     /**
      * @column
      * @readwrite
@@ -74,32 +75,44 @@ class Organization extends Shared\Model {
      * @length 45
      */
     protected $_type;
-    
+
     /**
      * @column
      * @readwrite
      * @type text
      */
     protected $_about;
-    
+
     /**
      * @column
      * @readwrite
      * @type text
      */
     protected $_fbpage;
-    
+
     /**
      * @column
      * @readwrite
      * @type integer
      */
     protected $_validity;
-    
+
     /**
      * @column
      * @readwrite
      * @type datetime
      */
     protected $_updated;
+    
+    public function getName() {
+        return self::first(array("id = ?" => $id), array("id", "name"));
+    }
+
+    public static function fetchName($id) {
+        $organization = new Organization(array(
+            "id" => $id
+        ));
+        return $organization->getName();
+    }
+
 }

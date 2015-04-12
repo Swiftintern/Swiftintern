@@ -1,0 +1,42 @@
+<nav class="navbar" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- Be sure to leave the brand out there if you want it shown -->
+            <a class="navbar-brand" href="home"><i class="fa fa-graduation-cap fa-lg"></i> SwiftIntern</a>
+        </div>
+
+        <!-- post or upload cv -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href=""></a></li>
+                <li><a href="student" class="whitetext"><i class="fa fa-male fa-lg"></i> Profile</a></li>
+                <li><a href="student/messages" class="whitetext"><i class="fa fa-envelope fa-lg"></i> Messages</a></li>
+                <li><a href="student/applications" class="whitetext"><i class="fa fa-check-square fa-lg"></i> Applications</a></li>
+                <li><a href="student/recommends" class="whitetext"><i class="fa fa-tags fa-lg"></i> Recommended</a></li>
+                <li><a href="student/resumes" class="whitetext"><i class="fa fa-file-text-o fa-lg"></i> Resume</a></li>
+            </ul>
+            <!-- the menu -->
+            <div class="navbar-right">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle whitetext" data-toggle="dropdown"><i class="fa fa-user fa-lg"></i> {echo $user->name;} <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="student/applications">Applied</a></li>
+                            <li><a href="student/recommends">Recommended</a></li>
+                            <li><a href="student">My Profile</a></li>
+                            <li class="divider"></li>
+                            <li><a href="student/resumes">Resume</a></li>
+                            <li><a href="logout">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

@@ -11,32 +11,6 @@ use Framework\RequestMethods as RequestMethods;
 
 class Users extends Controller {
 
-    /**
-     * Does three important things, first is retrieving the posted form data, second is checking each form field’s value
-     * third thing it does is to create a new user row in the database
-     */
-    public function register() {
-        $view = $this->getActionView();
-        $view->set("errors", array());
-
-        if (RequestMethods::post("register")) {
-            $user = new User(array(
-                "first" => RequestMethods::post("first"),
-                "last" => RequestMethods::post("last"),
-                "email" => RequestMethods::post("email"),
-                "password" => RequestMethods::post("password")
-            ));
-
-            if ($user->validate()) {
-                $user->save();
-                $this->_upload("photo", $user->id);
-                $view->set("success", true);
-            }
-
-            $view->set("errors", $user->getErrors());
-        }
-    }
-
     public function login() {
         $seo = Registry::get("seo");
 
@@ -45,7 +19,13 @@ class Users extends Controller {
         $seo->setDescription("Login to your account on swiftintern, students login to apply for internship and employer login to hire interns.");
 
         $this->getLayoutView()->set("seo", $seo);
-        $this->getActionView()->set("opportunity", Opportunity::first());
+        
+        $session = Registry::get("session");
+        $user = $this->user;
+
+        if (!empty($user)) {
+            self::redirect($user->type."s/profile");
+        }
 
         if (RequestMethods::post("action") == "login") {
             $email = RequestMethods::post("email");
@@ -73,26 +53,22 @@ class Users extends Controller {
 
                 if (!empty($user)) {
                     $this->user = $user;
-                    self::redirect("/users/profile.html");
+                    switch ($user->type) {
+                        case "student":
+                            $student = Student::first(array(
+                                "user_id = ?" => $user->id
+                            ));
+                            if (!empty($student)) {
+                                $session->set("student", $student);
+                            }
+                            break;
+                    }
+                    self::redirect($user->type."s/profile");
                 } else {
                     $view->set("password_error", "Email address and/or password are incorrect");
                 }
             }
         }
-    }
-
-    public function profile() {
-        $session = Registry::get("session");
-        $user = $this->user;
-
-        if (empty($user)) {
-            $user = new StdClass();
-            $user->first = "Mr.";
-            $user->last = "Smith";
-            $user->file = "";
-        }
-
-        $this->getActionView()->set("user", $user);
     }
 
     public function search() {
@@ -132,85 +108,9 @@ class Users extends Controller {
                 ->set("users", $users);
     }
 
-    /**
-     * @before _secure
-     */
-    public function settings() {
-        $view = $this->getActionView();
-        $user = $this->getUser();
-
-        if (RequestMethods::post("update")) {
-            $user = new User(array(
-                "first" => RequestMethods::post("first", $user->first),
-                "last" => RequestMethods::post("last", $user->last),
-                "email" => RequestMethods::post("email", $user->email),
-                "password" => RequestMethods::post("password", $user->password)
-            ));
-
-            if ($user->validate()) {
-                $user->save();
-                $this->user = $user;
-                $this->_upload("photo", $this->user->id);
-                $view->set("success", true);
-            }
-
-            $view->set("errors", $user->getErrors());
-        }
-    }
-
     public function logout() {
         $this->setUser(false);
         self::redirect("/users/login.html");
-    }
-
-    /**
-     * @before _secure
-     */
-    public function friend($id) {
-        $user = $this->getUser();
-
-        $friend = new Friend(array(
-            "user" => $user->id,
-            "friend" => $id
-        ));
-
-        $friend->save();
-
-        header("Location: /search.html");
-        exit();
-    }
-
-    /**
-     * @before _secure
-     */
-    public function unfriend($id) {
-        $user = $this->getUser();
-
-        $friend = Friend::first(array(
-                    "user" => $user->id,
-                    "friend" => $id
-        ));
-
-        if ($friend) {
-            $friend = new Friend(array(
-                "id" => $friend->id
-            ));
-            $friend->delete();
-        }
-
-        header("Location: /search.html");
-        exit();
-    }
-
-    /**
-     * @protected
-     */
-    public function _secure() {
-        $user = $this->getUser();
-        if (!$user) {
-            header("Location: /login.html");
-            exit();
-        }
     }
 
     /**
@@ -242,79 +142,6 @@ class Users extends Controller {
                 }
             }
         }
-    }
-
-    /**
-     * @before _secure, _admin
-     */
-    public function edit($id) {
-        $errors = array();
-
-        $user = User::first(array(
-                    "id = ?" => $id
-        ));
-
-        if (RequestMethods::post("save")) {
-            $user->first = RequestMethods::post("first");
-            $user->last = RequestMethods::post("last");
-            $user->email = RequestMethods::post("email");
-            $user->password = RequestMethods::post("password");
-            $user->live = (boolean) RequestMethods::post("live");
-            $user->admin = (boolean) RequestMethods::post("admin");
-
-            if ($user->validate()) {
-                $user->save();
-                $this->actionView->set("success", true);
-            }
-
-            $errors = $user->errors;
-        }
-
-        $this->actionView
-                ->set("user", $user)
-                ->set("errors", $errors);
-    }
-
-    
-    public function view() {
-        $this->actionView->set("users", Opportunity::first());
-    }
-
-    /**
-     * @before _secure, _admin
-     */
-    public function delete($id) {
-        $user = User::first(array(
-                    "id = ?" => $id
-        ));
-
-        if ($user) {
-            $user->live = false;
-            $user->save();
-        }
-
-        self::redirect("/users/view.html");
-    }
-
-    /**
-     * @before _secure, _admin
-     */
-    public function undelete($id) {
-        $user = User::first(array(
-                    "id = ?" => $id
-        ));
-
-        if ($user) {
-            $user->live = true;
-            $user->save();
-        }
-
-        self::redirect("/users/view.html");
-    }
-
-    public static function redirect($url) {
-        header("Location: {$url}");
-        exit();
     }
 
 }

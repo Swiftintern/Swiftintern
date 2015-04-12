@@ -6,15 +6,6 @@
  * @author Faizan Ayubi
  */
 class User extends Shared\Model {
-
-    /**
-     * @column
-     * @readwrite
-     * @primary
-     * @type autonumber
-     */
-    protected $_id;
-
     /**
      * @column
      * @readwrite

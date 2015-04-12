@@ -1,0 +1,90 @@
+<section class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-9">
+            <ol class="breadcrumb">
+                <li><a href="home"><i class="fa fa-home fa-fw"></i> Home</a></li>
+                <li class="active"><i class="fa fa-male fa-fw"></i> Profile</li>
+            </ol>
+            <div class="panel panel-default table-responsive">
+                <div class="panel-heading">
+                    <i class="fa fa-book fa-fw"></i> Education
+                    <div class="pull-right">
+                        <button type="button" name="addmore" value="qualification" class="btn btn-info btn-xs"><i class="fa fa-plus-square fa-fw"></i> Add More</button>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Qualification</th>
+                            <th>Major/Branch</th>
+                            <th>Institution/School</th>
+                            <th>Percentage or GPA</th>
+                            <th>Year of Passing</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="qualification">
+                    {if (count($qualifications) == '0')}
+                        <p class="text-center">Please add all your Qualification and current education to be able to select in any internship. college training also counts.</p>
+                    {/if}
+                    {else}
+                        {foreach $qualification in $qualifications}
+                            {$organization  = Organization::fetchName($qualification->organization_id)}
+                            <tr>
+                                <td>{echo $qualification->degree}</td>
+                                <td>{echo $qualification->major}</td>
+                                <td><a href="organization/{echo urlencode($organization->name)}/{echo $organization->id}" target="_blank">{echo $organization->name}</a></td>
+                                <td>{echo $qualification->gpa}</td>
+                                <td>{echo $qualification->passing_year}</td>
+                                <td>
+                                    <button type="button" name="delete" value="qualification" id="{echo $qualification->id}" class="btn btn-danger btn-xs"><i class="fa fa-trash fa-fw"></i> Delete</button>
+                                </td>
+                        </tr>
+                        {/foreach}
+                    {/else}
+                    </tbody>
+                </table>
+            </div>
+
+            
+
+            
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-lock fa-fw"></i> Security Details
+                    <div class="pull-right">
+                        <div class="btn-group">
+                            <button type="button" name="message" value="1" class="btn btn-danger btn-xs"><i class="fa fa-exclamation-circle"></i> Report</button>
+                        </div>
+                    </div>
+                </div>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>Last IP</td>
+                            <td>{echo $user->last_ip}</td>
+                        </tr>
+                        <tr>
+                            <td>Last Login</td>
+                            <td>{echo $user->last_login}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="col-xs-12 col-md-3">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bullhorn"></i> Sponsored
+                    <div class="btn-group pull-right">
+                        <button onclick="loadSponsored(--page, '1');" class="btn btn-default btn-xs"><i class="fa fa-chevron-left"></i></button>
+                        <button onclick="loadSponsored(++page, '1');" class="btn btn-default btn-xs"><i class="fa fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                <div class="panel-body" id="sponsored"></div>
+            </div>
+        </div>
+    </div>
+</section>

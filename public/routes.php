@@ -87,6 +87,11 @@ $routes = array(
         "pattern" => "files/undelete/:id",
         "controller" => "files",
         "action" => "undelete"
+    ),
+    array(
+        "pattern" => ":title/:id",
+        "controller" => "opportunities",
+        "action" => "view"
     )
 );
 

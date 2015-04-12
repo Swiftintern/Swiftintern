@@ -47,7 +47,7 @@ namespace Shared {
         public function setUser($user) {
             $session = Registry::get("session");
             if ($user) {
-                $session->set("user", $user->id);
+                $session->set("user", $user);
             } else {
                 $session->erase("user");
             }
@@ -68,7 +68,7 @@ namespace Shared {
                 $controller = Registry::get("controller");
                 $user = $session->get("user");
                 if ($user) {
-                    $controller->user = \User::first(array("id = ?" => $user));
+                    $controller->user = $user;
                 }
             });
 
@@ -77,7 +77,7 @@ namespace Shared {
                 $session = Registry::get("session");
                 $controller = Registry::get("controller");
                 if ($controller->user) {
-                    $session->set("user", $controller->user->id);
+                    $session->set("user", $controller->user);
                 }
             });
 

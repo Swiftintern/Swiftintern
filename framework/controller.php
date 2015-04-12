@@ -89,6 +89,12 @@ namespace Framework {
                     break;
             }
 
+            $this->setLayout();
+
+            Events::fire("framework.controller.construct.after", array($this->name));
+        }
+
+        protected function setLayout() {
             if ($this->willRenderLayoutView) {
                 $defaultPath = $this->defaultPath;
                 $defaultLayout = $this->defaultLayout;
@@ -112,8 +118,6 @@ namespace Framework {
 
                 $this->actionView = $view;
             }
-
-            Events::fire("framework.controller.construct.after", array($this->name));
         }
 
         protected function getName() {

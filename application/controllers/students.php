@@ -9,8 +9,8 @@ use Shared\Controller as Controller;
 use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
-class Student extends Controller {
-
+class Students extends Users {
+    
     /**
      * Does three important things, first is retrieving the posted form data, second is checking each form field’s value
      * third thing it does is to create a new user row in the database
@@ -24,13 +24,13 @@ class Student extends Controller {
 
         $this->getLayoutView()->set("seo", $seo);
 
-        include APP_PATH .'/public/datalist.php';
+        include APP_PATH . '/public/datalist.php';
         $view = $this->getActionView();
-        
+
         $view->set("alldegrees", $alldegrees);
         $view->set("allmajors", $allmajors);
         $view->set("alllocations", $alllocations);
-        
+
         $view->set("errors", array());
 
         if (RequestMethods::post("register")) {
@@ -51,13 +51,47 @@ class Student extends Controller {
         }
     }
 
+    /**
+     * @before _secure
+     */
     public function profile() {
+        $this->defaultLayout = "layouts/student";
+        $this->setLayout();
+        $seo = Registry::get("seo");
+
+        $seo->setTitle("Profile");
+        $seo->setKeywords("user profile");
+        $seo->setDescription("Your Profile Page");
+
+        $this->getLayoutView()->set("seo", $seo);
+        $view = $this->getActionView();
+        
         $session = Registry::get("session");
         $user = $this->user;
+        $student = $session->get("student");
 
-        $this->getActionView()->set("user", $user);
+        $qualifications = Qualification::all(
+            array(
+                "student_id = ?" => $student->id
+            ),
+            array("id", "degree", "major", "organization_id", "gpa", "passing_year")
+        );
+        
+        $works = Work::all(
+            array(
+                "student_id = ?" => $student->id
+            ),
+            array("id", "designation", "responsibility", "organization_id", "duration")
+        );
+
+        $view->set("student", $student);
+        $view->set("qualifications", $qualifications);
+        $view->set("works", $works);
     }
 
+    /**
+     * @before _secure
+     */
     public function settings() {
         $view = $this->getActionView();
         $user = $this->getUser();
@@ -81,37 +115,7 @@ class Student extends Controller {
         }
     }
 
-    /**
-     * The method checks whether a file has been uploaded. If it has, the method attempts to move the file to a permanent location.
-     * @param type $name
-     * @param type $user
-     */
-    protected function _upload($name, $user) {
-        if (isset($_FILES[$name])) {
-            $file = $_FILES[$name];
-            $path = APP_PATH . "/public/uploads/";
-            $time = time();
-            $extension = pathinfo($file["name"], PATHINFO_EXTENSION);
-            $filename = "{$user}-{$time}.{$extension}";
-            if (move_uploaded_file($file["tmp_name"], $path . $filename)) {
-                $meta = getimagesize($path . $filename);
-                if ($meta) {
-                    $width = $meta[0];
-                    $height = $meta[1];
-                    $file = new File(array(
-                        "name" => $filename,
-                        "mime" => $file["type"],
-                        "size" => $file["size"],
-                        "width" => $width,
-                        "height" => $height,
-                        "user" => $user
-                    ));
-                    $file->save();
-                }
-            }
-        }
-    }
-
+    
     public function edit($id) {
         $errors = array();
 
@@ -139,4 +143,5 @@ class Student extends Controller {
                 ->set("user", $user)
                 ->set("errors", $errors);
     }
+
 }

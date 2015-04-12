@@ -24,13 +24,12 @@ class Home extends Controller {
         );
 
         $fields = array(
-            "id", "title", "organization_id", "details", "eligibility", "category", "duration", "location", "last_date"
+            "id", "title", "eligibility", "location", "last_date"
         );
 
         $count = Opportunity::count($where);
-        $opportunities = Opportunity::first($where, $fields, $order, $direction, $limit, $page);
-        
-        $view->set("foods", array("apple", "mango", "banana"));
+        $opportunities = Opportunity::all($where, $fields, $order, $direction, $limit, $page);
+
         $view->set("opportunities", $opportunities);
         
         $this->getLayoutView()->set("seo", Framework\Registry::get("seo"));
