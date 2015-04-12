@@ -9,6 +9,11 @@ $routes = array(
         "action" => "register"
     ),
     array(
+        "pattern" => "placement-papers",
+        "controller" => "placementpaper",
+        "action" => "companies"
+    ),
+    array(
         "pattern" => "login",
         "controller" => "users",
         "action" => "login"
