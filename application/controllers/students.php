@@ -125,7 +125,92 @@ class Students extends Users {
         $view->set("inboxs", $inboxs);
         $view->set("outboxs", $outboxs);
     }
+    
+    /**
+     * @before _secure
+     */
+    public function applications() {
+        $this->defaultLayout = "layouts/student";
+        $this->setLayout();
+        $seo = Registry::get("seo");
 
+        $seo->setTitle("Applications");
+        $seo->setKeywords("student opportunity applications");
+        $seo->setDescription("Your Application and its status");
+
+        $this->getLayoutView()->set("seo", $seo);
+        $view = $this->getActionView();
+        
+        $session = Registry::get("session");
+        $student = $session->get("student");
+
+        $applications = Application::all(
+            array(
+                "student_id = ?" => $student->id
+            ),
+            array("id", "opportunity_id", "status", "created", "updated")
+        );
+
+        $view->set("applications", $applications);
+    }
+    
+    /**
+     * @before _secure
+     */
+    public function recommended() {
+        $this->defaultLayout = "layouts/student";
+        $this->setLayout();
+        $seo = Registry::get("seo");
+
+        $seo->setTitle("Matching Opportunity with your profile");
+        $seo->setKeywords("opportunity matching with you profile");
+        $seo->setDescription("opportunity matching with you profile");
+
+        $this->getLayoutView()->set("seo", $seo);
+        $view = $this->getActionView();
+        
+        $session = Registry::get("session");
+        $student = $session->get("student");
+
+        $opportunities = Opportunity::all(
+            array(
+                "eligibility = ?" => $student->skills
+            ),
+            array("id", "title", "organization_id", "eligibility", "last_date", "location")
+        );
+
+        $view->set("opportunities", $opportunities);
+        $view->set("student", $student);
+    }
+    
+    /**
+     * @before _secure
+     */
+    public function resumes() {
+        $this->defaultLayout = "layouts/student";
+        $this->setLayout();
+        $seo = Registry::get("seo");
+
+        $seo->setTitle("Resumes");
+        $seo->setKeywords("Resume of Student");
+        $seo->setDescription("resume of student");
+
+        $this->getLayoutView()->set("seo", $seo);
+        $view = $this->getActionView();
+        
+        $session = Registry::get("session");
+        $student = $session->get("student");
+
+        $resumes = Resume::all(
+            array(
+                "student_id = ?" => $student->id
+            ),
+            array("id", "type")
+        );
+
+        $view->set("resumes", $resumes);
+        $view->set("student", $student);
+    }
     
     public function edit($id) {
         $errors = array();
