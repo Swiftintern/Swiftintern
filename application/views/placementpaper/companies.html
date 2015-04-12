@@ -4,13 +4,14 @@
         <article class="col-md-9 col-xs-12">
             <div class="row" id="search_results">
             {foreach $org in $orgs}
-                {script $organization = Organization::first(array("id = ?" => $org->organization_id), array("id", "name"))}
                 <div class="col-sm-4 col-md-3">
                     <div class="thumbnail">
-                        <img src="'.$orgs[$i]['image'].'" alt="'.$orgs[$i]['name'].'">
+                        <img src="" alt="{echo $org['name']}">
                         <div class="caption">
-                            <p><small>'.substr($orgs[$i]['name'], 0, 18).'</small></p>
-                            <p><a href="organization/'.url($orgs[$i]['name']).'/'.$orgs[$i]['id'].'#experience" class="btn btn-primary btn-sm" role="button">Papers</a> <a href="organization/'.url($orgs[$i]['name']).'/'.$orgs[$i]['id'].'" class="btn btn-info btn-sm">Profile</a></p>
+                            <p><small>{echo substr($org['name'], 0, 18)}</small></p>
+                            <p>
+                                <a href="organization/{echo urlencode($org['name'])}/{echo $org['id']}#experience" class="btn btn-primary btn-sm" role="button">Papers</a> 
+                                <a href="organization/{echo urlencode($org['name'])}/{echo $org['id']}" class="btn btn-info btn-sm">Profile</a></p>
                         </div>
                     </div>
                 </div>
@@ -46,7 +47,7 @@
                     <i class="fa fa-mobile"></i> Placement Updates App
                 </div>
                 <div class="panel-body text-center">
-                    <a href="https://play.google.com/store/apps/details?id=com.swiftintern.placement" target="_blank"><img src="<?php echo $cdn;?>img/others/google_play.png" title="Placement Updates"></a>
+                    <a href="https://play.google.com/store/apps/details?id=com.swiftintern.placement" target="_blank"><img src="{echo CDN}images/others/google_play.png" title="Placement Updates"></a>
                 </div>
             </div>
 

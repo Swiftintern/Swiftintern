@@ -14,6 +14,11 @@ $routes = array(
         "action" => "companies"
     ),
     array(
+        "pattern" => "experience",
+        "controller" => "placementpaper",
+        "action" => "experience"
+    ),
+    array(
         "pattern" => "login",
         "controller" => "users",
         "action" => "login"

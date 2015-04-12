@@ -89,8 +89,8 @@ class Files extends Controller {
     public function thumbnails($id) {
         $path = APP_PATH . "/public/uploads";
 
-        $file = File::first(array(
-                    "id = ?" => $id
+        $photo = Photograph::first(array(
+            "id = ?" => $id
         ));
 
         if ($file) {
@@ -113,10 +113,10 @@ class Files extends Controller {
                     $imagine
                             ->open("{$path}/{$name}")
                             ->thumbnail($size, $mode)
-                            ->save("{$path}/{$thumbnail}");
+                            ->save("{$path}/thumbnails/{$thumbnail}");
                 }
 
-                header("Location: /uploads/{$thumbnail}");
+                header("Location: /uploads/thumbnails/{$thumbnail}");
                 exit();
             }
 

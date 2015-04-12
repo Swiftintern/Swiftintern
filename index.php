@@ -7,6 +7,7 @@ define("DEBUG", TRUE);
 
 define("APP_PATH", str_replace(DIRECTORY_SEPARATOR, "/", dirname(__FILE__)));
 define("CDN", "http://localhost/swiftintern/public/assets/");
+define("LOGO", "1431");
 
 try {
 
