@@ -29,7 +29,7 @@
                     {/if}
                     {else}
                         {foreach $qualification in $qualifications}
-                            {$organization  = Organization::fetchName($qualification->organization_id)}
+                            {script $organization  = Organization::first(array("id = ?" => $qualification->organization_id), array("id", "name"))}
                             <tr>
                                 <td>{echo $qualification->degree}</td>
                                 <td>{echo $qualification->major}</td>
@@ -46,8 +46,44 @@
                 </table>
             </div>
 
-            
-
+            <div class="panel panel-default table-responsive">
+                <div class="panel-heading">
+                    <i class="fa fa-briefcase fa-fw"></i> Work Experience
+                    <div class="pull-right">
+                        <button type="button" name="addmore" value="work" class="btn btn-info btn-xs"><i class="fa fa-plus-square fa-fw"></i> Add More</button>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Organization</th>
+                            <th>Designation</th>
+                            <th>Responsibility</th>
+                            <th>Duration</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {if (count($works) == '0')}
+                        <p class="text-center">You have not added any work Experience till now Please add any Experience to be able to select in any internship. small work as working fest counts.</p>
+                    {/if}
+                    {else}
+                        {foreach $work in $works}
+                            {script $organization  = Organization::first(array("id = ?" => $work->organization_id), array("id", "name"))}
+                            <tr>
+                                <td><a href="organization/{echo urlencode($organization->name)}/{echo $organization->id}" target="_blank">{echo $organization->name}</a></td>
+                                <td>{echo $work->designation}</td>
+                                <td>{echo $work->responsibility}</td>
+                                <td>{echo $work->duration}</td>
+                                <td>
+                                    <button type="button" name="delete" value="work" id="{echo $work->id}" class="btn btn-danger btn-xs"><i class="fa fa-trash fa-fw"></i> Delete</button>
+                                </td>
+                            </tr>
+                        {/foreach}
+                    {/else}
+                    </tbody>
+                </table>
+            </div>
             
             <div class="panel panel-default">
                 <div class="panel-heading">

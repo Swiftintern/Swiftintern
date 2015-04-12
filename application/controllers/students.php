@@ -92,27 +92,38 @@ class Students extends Users {
     /**
      * @before _secure
      */
-    public function settings() {
+    public function messages() {
+        $this->defaultLayout = "layouts/student";
+        $this->setLayout();
+        $seo = Registry::get("seo");
+
+        $seo->setTitle("Messages");
+        $seo->setKeywords("user messages");
+        $seo->setDescription("Your Inbox/Outbox");
+
+        $this->getLayoutView()->set("seo", $seo);
         $view = $this->getActionView();
-        $user = $this->getUser();
+        
+        $user = $this->user;
 
-        if (RequestMethods::post("update")) {
-            $user = new User(array(
-                "first" => RequestMethods::post("first", $user->first),
-                "last" => RequestMethods::post("last", $user->last),
-                "email" => RequestMethods::post("email", $user->email),
-                "password" => RequestMethods::post("password", $user->password)
-            ));
+        $inboxs = Message::all(
+            array(
+                "to_user_id = ?" => $user->id,
+                "validity = ?" => true
+            ),
+            array("id", "from_user_id", "message", "created")
+        );
+        
+        $outboxs = Message::all(
+            array(
+                "from_user_id = ?" => $user->id,
+                "validity = ?" => true
+            ),
+            array("id", "to_user_id", "message", "created")
+        );
 
-            if ($user->validate()) {
-                $user->save();
-                $this->user = $user;
-                $this->_upload("photo", $this->user->id);
-                $view->set("success", true);
-            }
-
-            $view->set("errors", $user->getErrors());
-        }
+        $view->set("inboxs", $inboxs);
+        $view->set("outboxs", $outboxs);
     }
 
     

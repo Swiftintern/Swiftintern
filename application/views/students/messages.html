@@ -1,0 +1,81 @@
+<section class="container">
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/students/profile">Profile</a></li>
+            <li class="active">Messages</li>
+        </ol>
+        <div class="col-lg-12">
+            <ul class="nav nav-tabs nav-justified" role="tablist" id="myTab">
+                <li class="active"><a href="#inbox" role="tab" data-toggle="tab">Inbox</a></li>
+                <li><a href="#outbox" role="tab" data-toggle="tab">Outbox</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="inbox">
+                    <div class="panel panel-default">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>From</th>
+                                    <th>Message</th>
+                                    <th>Received at</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="to_user_id">
+                            {foreach $inbox in $inboxs}
+                                {script $sender  = User::first(array("id = ?" => $inbox->from_user_id), array("name"))}
+                                <tr>
+                                    <td>{echo $sender->name}</td>
+                                    <td>{echo $inbox->message}</td>
+                                    <td><small>{echo $inbox->created}</small></td>
+                                    <td>
+                                        <button name="message" value="{echo $sender->id}" class="btn btn-warning btn-xs"><i class="fa fa-envelope fa-fw"></i> Message</button> 
+                                        <button name="delete" value="{echo $inbox->id}" class="btn btn-danger btn-xs"><i class="fa fa-trash fa-fw"></i> Delete</button> 
+                                    </td>
+                                </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center"><button id="loadmorebtn_to_user_id" onclick="loadmoreMessages(++inbox, 'to_user_id', '{echo $user->id}')" class="btn btn-primary">Load More</button></div>
+                    <hr>
+                </div>
+
+                <div class="tab-pane" id="outbox">
+                    <div class="panel panel-default">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>To</th>
+                                    <th>Message</th>
+                                    <th>Sent at</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="from_user_id">
+                            {foreach $outbox in $outboxs}
+                                {script $receipient = User::first(array("id = ?" => $outbox->to_user_id), array("name"))}
+                                <tr>
+                                    <td>{echo $receipient->name}</td>
+                                    <td>{echo $outbox->message}</td>
+                                    <td><small>{echo $outbox->created}</small></td>
+                                    <td>
+                                        <button name="message" value="{echo $receipient->id}" class="btn btn-warning btn-xs"><i class="fa fa-envelope fa-fw"></i> Message</button> 
+                                        <button name="delete" value="{echo $outbox->id}" class="btn btn-danger btn-xs"><i class="fa fa-trash fa-fw"></i> Delete</button> 
+                                    </td>
+                                </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center"><button id="loadmorebtn_from_user_id" onclick="loadmoreMessages(++outbox, 'from_user_id', '{echo $user->id}')" class="btn btn-primary">Load More</button></div>
+                    <hr>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>

@@ -103,16 +103,5 @@ class Organization extends Shared\Model {
      * @type datetime
      */
     protected $_updated;
-    
-    public function getName() {
-        return self::first(array("id = ?" => $id), array("id", "name"));
-    }
-
-    public static function fetchName($id) {
-        $organization = new Organization(array(
-            "id" => $id
-        ));
-        return $organization->getName();
-    }
 
 }
