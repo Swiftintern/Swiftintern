@@ -8,6 +8,10 @@ Internship platform made on SwiftMVC framework with features of students, employ
 ### Plugins Used: ###
 - Logger(Logs events in application)
 - SEO (setting up meta tags for website)
+ 
+### Under Development ###
+- JavaScript MVC
+- API
 
 ### Database Schema ###
 Old database schema
