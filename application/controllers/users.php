@@ -61,14 +61,45 @@ class Users extends Controller {
                             if (!empty($student)) {
                                 $session->set("student", $student);
                             }
+                            self::redirect("/students/profile");
+                            break;
+                        case "employer":
+                            $member = Member::all(
+                                array(
+                                    "user_id = ?" => $user->id,
+                                    "validity = ?" => true
+                                ),
+                                array("id", "organization_id", "designation", "authority")
+                            );
+                            $employer = $member[0];
+                            if (!empty($employer)) {
+                                $organization = Organization::first(
+                                    array("id = ?" => $employer->organization_id),
+                                    array("id", "name", "photo_id")
+                                );
+                                $session->set("employer", $employer);
+                                $session->set("organization", $organization);
+                                self::redirect("/employer");
+                            } else {
+                                self::redirect("/users/blocked");
+                            }
                             break;
                     }
-                    self::redirect($user->type."s/profile");
                 } else {
                     $view->set("password_error", "Email address and/or password are incorrect");
                 }
             }
         }
+    }
+    
+    public function blocked() {
+        $this->setUser(false);
+        $this->seo(array(
+            "title" => "Blocked",
+            "keywords" => "",
+            "description" => "",
+            "view" => $this->getLayoutView()
+        ));
     }
 
     public function logout() {

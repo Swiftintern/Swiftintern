@@ -5,18 +5,18 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{echo strip_tags($seo->getDescription())}" />
-    <meta name="keywords" content="{echo strip_tags($seo->keywords())}">
-    <meta name="author" content="{echo $seo->author()}" />
+    <meta name="keywords" content="{echo strip_tags($seo->getKeywords())}">
+    <meta name="author" content="{echo $seo->getAuthor()}" />
     <meta name="msvalidate.01" content="B1BCAA5861C00450565B6B8C742070DF" />
     <meta name="copyright" content="SWIFTDEAL ONLINE LLP 2014">
     <meta name="email" content="info[at]swiftintern[dot]com">
     <meta http-equiv="Content-Language" content="en">
     <meta name="Rating" content="General">
     <meta name="Distribution" content="Global">
-    <meta name="Robots" content="{echo $seo->robots()}">
+    <meta name="Robots" content="{echo $seo->getRobots()}">
     <meta name="Revisit-after" content="1 Day">
-    <link rel="author" href="{echo $seo->author()}" />
-    <link rel="publisher" href="{echo $seo->author()}">
+    <link rel="author" href="{echo $seo->getAuthor()}" />
+    <link rel="publisher" href="{echo $seo->getAuthor()}">
     <link rel="shortcut icon" href="{echo CDN}images/favicon.ico" type="image/x-icon">
     <link rel="icon" type="image/x-icon" href="{echo CDN}images/favicon.ico" />
     
@@ -54,19 +54,19 @@
     <link rel="apple-touch-icon-precomposed" href="#" />
     
     <!-- facebook -->
-    <meta property="og:title" content="{echo $seo->title()}"/>
+    <meta property="og:title" content="{echo $seo->getTitle()}"/>
     <meta property="og:type" content="article"/>
-    <meta property="og:image" content="{echo $seo->photo()}"/>
+    <meta property="og:image" content="{echo $seo->getPhoto()}"/>
     <meta property="og:url" content=""/>
-    <meta property="og:description" content="{echo strip_tags($seo->description())}"/>
+    <meta property="og:description" content="{echo strip_tags($seo->getDescription())}"/>
     <meta property="fb:app_id" content="561287280655510"/>
     
     <!-- twitter -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:url" content="">
-    <meta name="twitter:title" content="{echo $seo->title()}">
-    <meta name="twitter:description" content="{echo strip_tags($seo->description())}">
-    <meta name="twitter:image" content="{echo $seo->photo()}">
+    <meta name="twitter:title" content="{echo $seo->getTitle()}">
+    <meta name="twitter:description" content="{echo strip_tags($seo->getDescription())}">
+    <meta name="twitter:image" content="{echo $seo->getPhoto()}">
 <!-- 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 #################################################################################################################
