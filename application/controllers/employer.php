@@ -10,6 +10,11 @@ use Framework\RequestMethods as RequestMethods;
 
 class Employer extends Users {
 
+    /**
+     * @readwrite
+     */
+    protected $_employer;
+
     public function register() {
         $this->seo(array(
             "title" => "Hire Interns | Register Company",
@@ -53,6 +58,29 @@ class Employer extends Users {
         ));
 
         $view = $this->getActionView();
+        
+        $opportunities = Opportunity::all(array("organization_id = ?" => $this->employer->organization->id), array("id"));
+        $messages = Message::count(array("to_user_id = ?" => $this->user->id));
+        $applicants = "0";
+        foreach ($opportunities as $opportunity) {
+            $applicants += Application::count(array("opportunity_id = ?" => $opportunity->id));
+        }
+        
+        $view->set("opportunities", count($opportunities));
+        $view->set("applicants", $applicants);
+        $view->set("messages", $messages);
+    }
+
+    public function faq() {
+        $this->changeLayout();
+        $this->seo(array(
+            "title" => "Frequently asked Questions",
+            "keywords" => "faq",
+            "description" => "Frequently asked Questions",
+            "view" => $this->getLayoutView()
+        ));
+
+        $view = $this->getActionView();
     }
 
     public function about() {
@@ -69,6 +97,21 @@ class Employer extends Users {
     public function changeLayout() {
         $this->defaultLayout = "layouts/employer";
         $this->setLayout();
+
+        $session = Registry::get("session");
+        $employer = $session->get("employer");
+        $member = $session->get("member");
+        
+        $this->_employer = $employer;
+
+        $this->getActionView()->set("employer", $employer);
+        $this->getLayoutView()->set("employer", $employer);
+        $this->getActionView()->set("member", $member);
+        $this->getLayoutView()->set("member", $member);
+    }
+
+    public function switchOrganization($organization_id) {
+        $session = Registry::get("session");
     }
 
 }

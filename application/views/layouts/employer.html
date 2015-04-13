@@ -45,7 +45,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="employer">
-                        <i class="fa fa-briefcase fa-fw"></i>{echo $organization->name}
+                        <i class="fa fa-briefcase fa-fw"></i>{echo $employer->organization->name}
                     </a>
                 </div>
                 <!-- /.navbar-header -->
@@ -74,7 +74,7 @@
                             <ul class="nav nav-second-level">
                                 <li><a href="employer/edit/profile">Edit</a></li>
                                 <li><a href="employer/members">Members</a></li>
-                                <li><a href="organization/{echo urlencode($organization->name)}/{echo $organization->id}" target="_blank">View Company</a></li>
+                                <li><a href="organization/{echo urlencode($employer->organization->name)}/{echo $employer->organization->id}" target="_blank">View Company</a></li>
                                 <li><a href="employer/edit/company">Edit Company</a></li>
                             </ul>
                         </li>
@@ -132,7 +132,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
         <script src="{echo CDN}plugins/bootbox/bootbox.min.js"></script>
         <script src="{echo CDN}plugins/metisMenu/jquery.metisMenu.js"></script>
-        <script src="{echo CDN}js/employer-1.2.js"></script>
+        <script src="{echo CDN}js/employer-3.0.js"></script>
 
         <!-- Plugin Scripts  -->
         <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>

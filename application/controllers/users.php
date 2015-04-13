@@ -71,14 +71,25 @@ class Users extends Controller {
                                 ),
                                 array("id", "organization_id", "designation", "authority")
                             );
-                            $employer = $member[0];
-                            if (!empty($employer)) {
+                            
+                            $membersof = array();
+                            foreach($member as $mem){
                                 $organization = Organization::first(
-                                    array("id = ?" => $employer->organization_id),
+                                    array("id = ?" => $mem->organization_id),
                                     array("id", "name", "photo_id")
                                 );
+                                $membersof[] = array(
+                                    "id" => $mem->id,
+                                    "organization" => $organization,
+                                    "designation" => $mem->designation,
+                                    "authority" => $mem->authority
+                                );
+                            }
+                            
+                            $employer = \Framework\ArrayMethods::toObject($membersof[0]);
+                            if (!empty($employer)) {
+                                $session->set("member", \Framework\ArrayMethods::toObject($membersof));
                                 $session->set("employer", $employer);
-                                $session->set("organization", $organization);
                                 self::redirect("/employer");
                             } else {
                                 self::redirect("/users/blocked");
