@@ -71,43 +71,6 @@ class Users extends Controller {
         }
     }
 
-    public function search() {
-        $view = $this->getActionView();
-
-        $query = RequestMethods::post("query");
-        $order = RequestMethods::post("order", "modified");
-        $direction = RequestMethods::post("direction", "desc");
-        $page = RequestMethods::post("page", 1);
-        $limit = RequestMethods::post("limit", 10);
-
-        $count = 0;
-        $users = false;
-
-        if (RequestMethods::post("search")) {
-            $where = array(
-                "SOUNDEX(first) = SOUNDEX(?)" => $query,
-                "live = ?" => true,
-                "deleted = ?" => false
-            );
-
-            $fields = array(
-                "id", "first", "last"
-            );
-
-            $count = User::count($where);
-            $users = User::all($where, $fields, $order, $direction, $limit, $page);
-        }
-
-        $view
-                ->set("query", $query)
-                ->set("order", $order)
-                ->set("direction", $direction)
-                ->set("page", $page)
-                ->set("limit", $limit)
-                ->set("count", $count)
-                ->set("users", $users);
-    }
-
     public function logout() {
         $this->setUser(false);
         self::redirect("/users/login.html");

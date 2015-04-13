@@ -1,0 +1,94 @@
+<?php require_once $dir_public.'requires/header.php';?>
+<!-- the middle contents -->
+<section class="container">
+	<div class="row">
+		<nav><ol class="breadcrumb">
+			<li><a href="home">Home</a></li>
+			<li><a href="test">Test</a></li>
+			<li class="active"><?php echo $test->title;?></li>
+		</ol></nav>
+		<article>
+			<div class="row">
+			<div class="col-md-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">Test Details</h3>
+					</div>
+					<div class="panel-body">
+						<p><?php echo $test->title;?></p>
+						<p>Category : <?php echo $test->subject;?></p>
+						<p>Created On : <?php echo only_date($test->created);?></p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">Student Details</h3>
+					</div>
+					<div class="panel-body">
+						<p><?php echo $user->name;?></p>
+						<p>Skills : <?php echo $student->skills;?></p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">Test Result</h3>
+					</div>
+					<div class="panel-body">
+						<p>Marks : <?php echo $participant->score;?>%</p>
+						<p>Question Attemted : <?php echo $participant->attempted;?></p>
+						<p>Give On : <?php echo only_date($participant->created);?></p>
+					</div>
+				</div>
+			</div>
+			</div>
+			<hr>
+			<div class="row">
+			<?php if($test->type == 'certification') {?>
+				<p>
+					We will print a beautiful certificate and post it to your home. you can get this certificate at <b>Rs. 350</b> <span class="huge">(30% Discount)</span>
+					<a href="order/certificate/<?php echo $certi_id;?>" target="_blank" class="btn btn-success btn-lg pull-right">Get Certificate</a>
+				</p>
+			<?php } ?>
+			</div>
+			<hr>
+		</article>
+		<article style="height: 600px;background: url('assets/img/certi.jpg') no-repeat center;">
+			<table style="width: 100%; text-align: center; font-family: Sacramento, cursive;">
+				<tr><td></td></tr>
+				<tr>
+					<td><h1><b>Certificate of Completion</b><h1></td>
+				</tr>
+				<tr>
+					<td><h2>This is to certify that</h2></td>
+				</tr>
+				<tr>
+					<td><h2><b><?php echo $user->name;?></b> has given <?php echo $test->title;?></h2></td>
+				</tr>
+				<tr>
+					<td><img src="assets/img/headerlogo.png"></td>
+				</tr>
+				<tr>
+					<td style="font-family: arial;">
+					<p>Certificate Id : <?php echo $certificate->uniqid;?><br>Verify at : www.swiftintern.com/test , Date : <?php echo only_date($participant->created);?></p>
+					</td>
+				</tr>
+			</table>
+		</article>
+	</div>
+</section>
+<style type="text/css">
+	@font-face {
+		font-family: myFirstFont;
+		src: url('assets/fonts/roundband.woff');
+	}
+	
+	@font-face {
+		font-family: Sacramento;
+		src: url('assets/fonts/Sacramento.ttf');
+	}
+</style>
+<?php require_once $dir_public.'requires/footer.php';?>

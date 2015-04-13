@@ -19,13 +19,13 @@ namespace Shared {
          */
         protected $_user;
 
-        /**
-         * @protected
-         */
-        public function _admin() {
-            if (!$this->user->admin) {
-                throw new Router\Exception\Controller("Not a valid admin user account");
+        public function seo($params = array()) {
+            $seo = Registry::get("seo");
+            foreach ($params as $key => $value) {
+                $property = "set".ucfirst($key);
+                $seo->$property($value);
             }
+            $params["view"]->set("seo", $seo);
         }
 
         /**

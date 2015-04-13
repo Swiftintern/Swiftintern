@@ -30,7 +30,7 @@ namespace Framework {
         /**
          * @read
          */
-        protected $_types = array("autonumber", "text", "integer", "decimal", "boolean", "datetime", "date");
+        protected $_types = array("autonumber", "text", "integer", "decimal", "boolean", "datetime", "date", "time");
 
         /**
          * @read

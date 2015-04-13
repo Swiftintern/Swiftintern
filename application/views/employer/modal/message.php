@@ -1,0 +1,22 @@
+<div class="modal fade" id="message_modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 class="modal-title">Compose Message</h3>
+			</div>
+			<form role="form" id="messageform">
+			<div class="modal-body">
+				<div class="form-group">
+					<label>Message</label>
+					<textarea class="form-control" name="message" rows="4" required="" placeholder="Include all relevent details.."></textarea>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button id="message_btn" type="submit" class="btn btn-primary">Send Message</button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>

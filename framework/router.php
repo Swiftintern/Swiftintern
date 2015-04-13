@@ -205,16 +205,14 @@ namespace Framework {
         }
 
         public function classExists($class) {
-            $paths = explode(PATH_SEPARATOR, get_include_path());
+            $path = "C:/wamp/www/swiftintern/application/controllers";
             $flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE;
             $file = strtolower(str_replace("\\", DIRECTORY_SEPARATOR, trim($class, "\\"))) . ".php";
 
-            foreach ($paths as $path) {
-                $combined = $path . DIRECTORY_SEPARATOR . $file;
+            $combined = $path . DIRECTORY_SEPARATOR . $file;
 
-                if (file_exists($combined)) {
-                    return 1;
-                }
+            if (file_exists($combined)) {
+                return 1;
             }
         }
 

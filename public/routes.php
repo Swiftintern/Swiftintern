@@ -4,9 +4,14 @@
 
 $routes = array(
     array(
-        "pattern" => "register",
-        "controller" => "users",
+        "pattern" => "student/register",
+        "controller" => "students",
         "action" => "register"
+    ),
+    array(
+        "pattern" => "resume-for-internship",
+        "controller" => "resumes",
+        "action" => "about"
     ),
     array(
         "pattern" => "placement-papers",
@@ -14,7 +19,7 @@ $routes = array(
         "action" => "companies"
     ),
     array(
-        "pattern" => "experience",
+        "pattern" => "experience/:title/:id",
         "controller" => "placementpaper",
         "action" => "experience"
     ),

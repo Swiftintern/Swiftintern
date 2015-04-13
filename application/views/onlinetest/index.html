@@ -1,0 +1,56 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-9" id="internships">
+            <h2 class="sub-heading">
+                All Test
+            </h2>
+            <div class="row" id="search_results">
+            {foreach $exam in $exams}
+                <div class="col-sm-4 col-md-3">
+                    <div class="thumbnail">
+                        <a href="test/{echo urlencode($exam->title)}/{echo $exam->id}"><img src="" alt="{echo $exam->title}" width="100"></a>
+                        <div class="caption">
+                            <p><b>{echo substr($exam->title, 0, 21)}</b></p>
+                            <p>
+                                <a href="test-details/{echo urlencode($exam->title)}/{echo $exam->id}" class="btn btn-primary">Details</a> 
+                                <a href="test/{echo urlencode($exam->title)}/{echo $exam->id}" class="btn btn-success" id="taketest">Start Test</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {/foreach}
+            </div>
+            <div class="text-center">
+                <button id="loadmorebtn" onclick="loadmoreTest(++page, '10');" class="btn btn-primary">Load More</button><hr>
+            </div>
+        </div>
+        <aside class="col-xs-12 col-md-3">
+            <a href="employer/register" class="btn btn-warning btn-lg btn-block"><i class="fa fa-briefcase fa-lg"></i> Register Company</a><br>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Search Test</h3>
+                </div>
+                <div class="panel-body">
+                    <form id="test_search">
+                        <div class="form-group">
+                            <label>Test</label>
+                            <input type="search" id="test_keywords" name="keywords" class="form-control" placeholder="Search...">
+                        </div>
+                        <br>
+                        <input type="submit" class="btn btn-primary input-lg btn-block" value="Search">
+                    </form>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Follow us on Facebook</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="fb-like-box" data-href="https://www.facebook.com/pages/SwiftInterncom/268084876704495" data-width="230" data-colorscheme="light" data-show-faces="true" data-header="true" data-stream="false" data-show-border="true"></div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>

@@ -5,7 +5,6 @@
  *
  * @author Faizan Ayubi
  */
-use Shared\Controller as Controller;
 use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
@@ -16,14 +15,13 @@ class Students extends Users {
      * third thing it does is to create a new user row in the database
      */
     public function register() {
-        $seo = Framework\Registry::get("seo");
-
-        $seo->setTitle("Get Internship | Student Register");
-        $seo->setKeywords("get internship, student register");
-        $seo->setDescription("Register with us to get internship from top companies in india and various startups in Delhi, Mumbai, Bangalore, Chennai, hyderabad etc");
-
-        $this->getLayoutView()->set("seo", $seo);
-
+        $this->seo(array(
+            "title"         => "Get Internship | Student Register",
+            "keywords"      => "get internship, student register",
+            "description"   => "Register with us to get internship from top companies in india and various startups in Delhi, Mumbai, Bangalore, Chennai, hyderabad etc",
+            "view"          => $this->getLayoutView()
+        ));
+        
         include APP_PATH . '/public/datalist.php';
         $view = $this->getActionView();
 
@@ -55,15 +53,15 @@ class Students extends Users {
      * @before _secure
      */
     public function profile() {
-        $this->defaultLayout = "layouts/student";
-        $this->setLayout();
-        $seo = Registry::get("seo");
+        $this->changeLayout();
+        
+        $this->seo(array(
+            "title"         => "Profile",
+            "keywords"      => "user profile",
+            "description"   => "Your Profile Page",
+            "view"          => $this->getLayoutView()
+        ));
 
-        $seo->setTitle("Profile");
-        $seo->setKeywords("user profile");
-        $seo->setDescription("Your Profile Page");
-
-        $this->getLayoutView()->set("seo", $seo);
         $view = $this->getActionView();
         
         $session = Registry::get("session");
@@ -93,8 +91,7 @@ class Students extends Users {
      * @before _secure
      */
     public function messages() {
-        $this->defaultLayout = "layouts/student";
-        $this->setLayout();
+        $this->changeLayout();
         $seo = Registry::get("seo");
 
         $seo->setTitle("Messages");
@@ -212,32 +209,9 @@ class Students extends Users {
         $view->set("student", $student);
     }
     
-    public function edit($id) {
-        $errors = array();
-
-        $user = User::first(array(
-                    "id = ?" => $id
-        ));
-
-        if (RequestMethods::post("save")) {
-            $user->first = RequestMethods::post("first");
-            $user->last = RequestMethods::post("last");
-            $user->email = RequestMethods::post("email");
-            $user->password = RequestMethods::post("password");
-            $user->live = (boolean) RequestMethods::post("live");
-            $user->admin = (boolean) RequestMethods::post("admin");
-
-            if ($user->validate()) {
-                $user->save();
-                $this->actionView->set("success", true);
-            }
-
-            $errors = $user->errors;
-        }
-
-        $this->actionView
-                ->set("user", $user)
-                ->set("errors", $errors);
+    public function changeLayout() {
+        $this->defaultLayout = "layouts/student";
+        $this->setLayout();
     }
 
 }
