@@ -30,6 +30,7 @@ class Home extends Controller {
         $count = Opportunity::count($where);
         $opportunities = Opportunity::all($where, $fields, $order, $direction, $limit, $page);
 
+        $view->set("limit", $limit);
         $view->set("opportunities", $opportunities);
         
         $this->getLayoutView()->set("seo", Framework\Registry::get("seo"));

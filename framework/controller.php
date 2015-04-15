@@ -81,7 +81,7 @@ namespace Framework {
 
             switch ($router->getExtension()) {
                 case "json":
-                    //$this->defaultContentType = "application/json";
+                    $this->defaultContentType = "application/json";
                     $this->defaultExtension = $router->getExtension();
                     break;
 
@@ -148,12 +148,19 @@ namespace Framework {
                         $obj = array();
                         $data = $view->data;
                         foreach ($data as $keys => $values) {
-                            if(gettype($values) == "object"){
-                                $obj = $values->getJsonData();
-                            }  else {
-                                foreach ($values as $key => $value){
-                                    $obj[] = $value->getJsonData();
-                                }
+                            switch (gettype($values)){
+                                case 'object':
+                                    $obj[$keys] = $values->getJsonData();
+                                    break;
+                                case 'array':
+                                    foreach ($values as $key => $value){
+                                        $obj[$keys][] = $value->getJsonData();
+                                    }
+                                    break;
+                                default :
+                                    $obj[$keys] = $values;
+                                    break;
+                                    
                             }
                         }
                         
