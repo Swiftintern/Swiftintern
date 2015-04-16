@@ -1,36 +1,23 @@
 (function (window) {
-    var Model = (function(){
-       
-        function Mapster(opts) {
-           
-       }
-       
-       Model.prototype = {
-           _create: function(opts){
-               
-           },
-           
-           _read: function(opts){
-               
-           },
-           
-           _update: function(opts){
-               
-           },
-           
-           _delete: function(opts){
-               
-           }
-       };
-       
-       return Model;
+    var Model = (function () {
+
+        function Model(opts) {
+            var url = opts.url;
+        }
+
+        Model.prototype = {
+            getURL: function () {
+                return url;
+            }
+        };
+
+        return Model;
     });
-    
-    Model.create = function(opts){
+
+    Model.create = function (opts) {
         return new Model(opts);
     };
-    
-    window.Model = Model;
-    
-}(window));
 
+    window.Model = Model;
+
+}(window));
