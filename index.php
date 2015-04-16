@@ -14,7 +14,6 @@ try {
     // imagine library's class autoloader
     spl_autoload_register(function($class) {
         $path = lcfirst(str_replace("\\", DIRECTORY_SEPARATOR, $class));
-        var_dump($path);
         $file = APP_PATH . "/application/libraries/{$path}.php";
 
         if (file_exists($file)) {
