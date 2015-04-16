@@ -97,5 +97,16 @@ class Home extends Controller {
 
         $this->getLayoutView()->set("seo", $seo);
     }
+    
+    public function hemant() {
+        $seo = Framework\Registry::get("seo");
 
+        $seo->setTitle("Terms of Service");
+        $seo->setKeywords("terms of use, refund policy, swiftintern");
+        $seo->setDescription("Following is the agrrement of use on swiftintern including refund policy.");
+
+        $this->getLayoutView()->set("seo", $seo);
+        
+        $this->getLayoutView()->set("name", 'hemant');
+    }
 }

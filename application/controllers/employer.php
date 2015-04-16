@@ -58,17 +58,47 @@ class Employer extends Users {
         ));
 
         $view = $this->getActionView();
-        
-        $opportunities = Opportunity::all(array("organization_id = ?" => $this->employer->organization->id), array("id"));
+
+        $opportunities = Opportunity::all(
+                        array("organization_id = ?" => $this->employer->organization->id), array("id")
+        );
+
         $messages = Message::count(array("to_user_id = ?" => $this->user->id));
         $applicants = "0";
         foreach ($opportunities as $opportunity) {
             $applicants += Application::count(array("opportunity_id = ?" => $opportunity->id));
         }
-        
+
         $view->set("opportunities", count($opportunities));
         $view->set("applicants", $applicants);
         $view->set("messages", $messages);
+    }
+
+    public function edit() {
+        $this->changeLayout();
+        $this->seo(array(
+            "title" => "Edit Profile",
+            "keywords" => "edit",
+            "description" => "Edit your profile",
+            "view" => $this->getLayoutView()
+        ));
+
+        $view = $this->getActionView();
+        $user = $this->getUser();
+        if (RequestMethods::post("save")) {
+            echo 'here';
+            $user = new User(array(
+                "name" => RequestMethods::post("name"),
+                "phone" => RequestMethods::post("phone")
+            ));
+
+            if ($user->validate()) {
+                $user->save();
+                $view->set("success", true);
+            }
+
+            $view->set("errors", $user->getErrors());
+        }
     }
 
     public function faq() {
@@ -101,7 +131,7 @@ class Employer extends Users {
         $session = Registry::get("session");
         $employer = $session->get("employer");
         $member = $session->get("member");
-        
+
         $this->_employer = $employer;
 
         $this->getActionView()->set("employer", $employer);
