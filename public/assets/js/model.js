@@ -14,7 +14,7 @@
                     data: opts.data,
                 }).done(function (data) {
                     if (opts.callback) {
-                        opts.callback.call(self);
+                        opts.callback.call(self, data);
                     }
                 }).fail(function () {
                     console.log("error");
