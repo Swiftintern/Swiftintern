@@ -18,7 +18,7 @@ class Home extends Controller {
         $direction = RequestMethods::post("direction", "desc");
         $page = RequestMethods::post("page", 1);
         $limit = RequestMethods::post("limit", 10);
-        
+
         $where = array(
             "validity = ?" => true
         );
@@ -32,7 +32,7 @@ class Home extends Controller {
 
         $view->set("limit", $limit);
         $view->set("opportunities", $opportunities);
-        
+
         $this->getLayoutView()->set("seo", Framework\Registry::get("seo"));
     }
 
