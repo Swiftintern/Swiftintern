@@ -69,7 +69,7 @@ class Users extends Controller {
                                     "user_id = ?" => $user->id,
                                     "validity = ?" => true
                                 ),
-                                array("id", "organization_id", "designation", "authority")
+                                array("id", "organization_id", "designation", "authority", "created")
                             );
                             
                             $membersof = array();
@@ -82,7 +82,9 @@ class Users extends Controller {
                                     "id" => $mem->id,
                                     "organization" => $organization,
                                     "designation" => $mem->designation,
-                                    "authority" => $mem->authority
+                                    "created" => \Framework\StringMethods::datetime_to_text($mem->created),
+                                    "authority" => $mem->authority,
+                                    
                                 );
                             }
                             

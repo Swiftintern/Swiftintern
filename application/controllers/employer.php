@@ -74,6 +74,47 @@ class Employer extends Users {
         $view->set("messages", $messages);
     }
 
+    public function members() {
+        $this->changeLayout();
+        $this->seo(array(
+            "title" => "Members",
+            "keywords" => "dashboard",
+            "description" => "Contains all realtime stats",
+            "view" => $this->getLayoutView()
+        ));
+
+        $view = $this->getActionView();
+        $session = Registry::get("session");
+        $company = $session->get("employer")->organization;
+        $employees = Member::all(
+                        array(
+                            "organization_id = ?" => $company->id,
+                            "validity = ?" => true), 
+                        array("user_id", "designation", "authority", "created")
+                    );
+        $allmembers = array();
+        foreach($employees as $emp) {
+            $user = User::first(
+                    array("id = ?" => $emp->user_id),
+                    array("name")
+                );
+            
+            $allmembers[] = [
+                "id" => $emp->id,
+                "user_id" => $emp->user_id,
+                "name" => $user->name,
+                "designation" => $emp->designation,
+                "authority" => $emp->authority,
+                "created" => \Framework\StringMethods::datetime_to_text($emp->created)
+            ];
+        }
+         
+        $view->set("company", $company);
+        $view->set("user", $this->getUser());
+        $view->set("allmembers", \Framework\ArrayMethods::toObject($allmembers));
+        $view->set("memberOf", $session->get("member"));
+    }
+
     public function edit() {
         $this->changeLayout();
         $this->seo(array(
@@ -99,6 +140,21 @@ class Employer extends Users {
 
             $view->set("errors", $user->getErrors());
         }
+    }
+
+    public function integration() {
+        $this->changeLayout();
+        $this->seo(array(
+            "title" => "Website Integration",
+            "keywords" => "dashboard",
+            "description" => "Contains all realtime stats",
+            "view" => $this->getLayoutView()
+        ));
+
+        $view = $this->getActionView();
+        $session = Registry::get("session");
+        $company = $session->get("employer")->organization;
+        $view->set("company", $company);
     }
 
     public function faq() {
