@@ -75,8 +75,7 @@ class Users extends Controller {
                             $membersof = array();
                             foreach($member as $mem){
                                 $organization = Organization::first(
-                                    array("id = ?" => $mem->organization_id),
-                                    array("id", "name", "photo_id")
+                                    array("id = ?" => $mem->organization_id)
                                 );
                                 $membersof[] = array(
                                     "id" => $mem->id,

@@ -189,7 +189,7 @@ class Employer extends Users {
         $range = "{$startdate} - {$enddate}";
         $view->set("range", $range);
     }
-    
+
     public function opportunity_analytics() {
         $this->changeLayout();
         $this->seo(array(
@@ -198,29 +198,29 @@ class Employer extends Users {
             "description" => "Contains all realtime stats",
             "view" => $this->getLayoutView()
         ));
-        
+
         $session = Registry::get("session");
         $view = $this->getActionView();
         $company = $session->get("employer")->organization;
-        
+
         $opportunity = Opportunity::all(array("organization_id = ?" => $company->id), array("id", "title", "created"));
         $opportunities = array();
-        foreach($opportunity as $opp) {
+        foreach ($opportunity as $opp) {
             $find = Opportunity::first(array("id = ?" => $opp->id), array("id", "title", "created"));
             $opportunities[] = [
-              "id" => $find->id,
-              "title" => $find->title,
-              "created" => $find->created
+                "id" => $find->id,
+                "title" => $find->title,
+                "created" => $find->created
             ];
         }
         $view->set("opportunities", \Framework\ArrayMethods::toObject($opportunities));
-        
+
         $startdate = strftime("%Y-%m-%d", strtotime('-1 week'));
         $enddate = strftime("%Y-%m-%d", time());
         $range = "{$startdate} - {$enddate}";
         $view->set("range", $range);
     }
-    
+
     public function edit() {
         $this->changeLayout();
         $this->seo(array(
@@ -246,6 +246,22 @@ class Employer extends Users {
 
             $view->set("errors", $user->getErrors());
         }
+    }
+
+    public function edit_company() {
+        $this->changeLayout();
+        $session = Registry::get("session");
+        $company = $session->get("employer")->organization;
+        
+        $this->seo(array(
+            "title" => "Edit ".$company->name,
+            "keywords" => "Analytics",
+            "description" => "Contains all realtime stats",
+            "view" => $this->getLayoutView()
+        ));
+
+        $view = $this->getActionView();
+        $view->set("company", $company);
     }
 
     public function integration() {
