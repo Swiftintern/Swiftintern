@@ -88,16 +88,14 @@ class Employer extends Users {
         $company = $session->get("employer")->organization;
         $employees = Member::all(
                         array(
-                            "organization_id = ?" => $company->id,
-                            "validity = ?" => true), 
-                        array("user_id", "designation", "authority", "created")
-                    );
+                    "organization_id = ?" => $company->id,
+                    "validity = ?" => true), array("user_id", "designation", "authority", "created")
+        );
         $allmembers = array();
-        foreach($employees as $emp) {
+        foreach ($employees as $emp) {
             $user = User::first(
-                    array("id = ?" => $emp->user_id),
-                    array("name")
-                );
+                            array("id = ?" => $emp->user_id), array("name")
+            );
             
             $allmembers[] = [
                 "id" => $emp->id,
@@ -108,11 +106,74 @@ class Employer extends Users {
                 "created" => \Framework\StringMethods::datetime_to_text($emp->created)
             ];
         }
-         
+
         $view->set("company", $company);
         $view->set("user", $this->getUser());
         $view->set("allmembers", \Framework\ArrayMethods::toObject($allmembers));
         $view->set("memberOf", $session->get("member"));
+    }
+
+    public function messages() {
+        $this->changeLayout();
+        $this->seo(array(
+            "title" => "Messages",
+            "keywords" => "dashboard",
+            "description" => "Contains all realtime stats",
+            "view" => $this->getLayoutView()
+        ));
+
+        $view = $this->getActionView();
+        $user = $this->getUser();
+        $session = Registry::get("session");
+        
+        $inboxs = Message::all(
+                        array(
+                        "to_user_id = ?" => $user->id,
+                        "validity = ?" => true
+                        ), array("id", "from_user_id", "message", "created"),
+                        "id", "desc", 5, 1
+        );
+        $outboxs = Message::all(
+                        array(
+                        "from_user_id = ?" => $user->id,
+                        "validity = ?" => true
+                        ), array("id", "to_user_id", "message", "created"),
+                        "id", "desc", 5, 1
+        );
+        
+        $allinbox = array();
+        foreach ($inboxs as $in) {
+            $user = User::first(
+                            array("id = ?" => $in->from_user_id), array("name")
+            );
+
+            $allinbox[] = [
+                "id" => $in->id,
+                "from" => $user->name,
+                "sender_id" => $in->from_user_id,
+                "message" => $in->message,
+                "received" => \Framework\StringMethods::datetime_to_text($in->created)
+            ];
+        }
+        
+        $alloutbox = array();
+        foreach ($outboxs as $out) {
+            $user = User::first(
+                            array("id = ?" => $out->to_user_id), array("name")
+            );
+
+            $alloutbox[] = [
+                "id" => $out->id,
+                "to" => $user->name,
+                "receiver_id" => $out->to_user_id,
+                "message" => $out->message,
+                "sent" => \Framework\StringMethods::datetime_to_text($out->created)
+            ];
+        }
+
+        $view->set("user", $user);
+        $view->set("alloutbox", \Framework\ArrayMethods::toObject($alloutbox));
+        $view->set("allinbox", \Framework\ArrayMethods::toObject($allinbox));
     }
 
     public function edit() {
