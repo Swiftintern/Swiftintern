@@ -96,7 +96,7 @@ class Employer extends Users {
             $user = User::first(
                             array("id = ?" => $emp->user_id), array("name")
             );
-            
+
             $allmembers[] = [
                 "id" => $emp->id,
                 "user_id" => $emp->user_id,
@@ -125,22 +125,20 @@ class Employer extends Users {
         $view = $this->getActionView();
         $user = $this->getUser();
         $session = Registry::get("session");
-        
+
         $inboxs = Message::all(
                         array(
-                        "to_user_id = ?" => $user->id,
-                        "validity = ?" => true
-                        ), array("id", "from_user_id", "message", "created"),
-                        "id", "desc", 5, 1
+                    "to_user_id = ?" => $user->id,
+                    "validity = ?" => true
+                        ), array("id", "from_user_id", "message", "created"), "id", "desc", 5, 1
         );
         $outboxs = Message::all(
                         array(
-                        "from_user_id = ?" => $user->id,
-                        "validity = ?" => true
-                        ), array("id", "to_user_id", "message", "created"),
-                        "id", "desc", 5, 1
+                    "from_user_id = ?" => $user->id,
+                    "validity = ?" => true
+                        ), array("id", "to_user_id", "message", "created"), "id", "desc", 5, 1
         );
-        
+
         $allinbox = array();
         foreach ($inboxs as $in) {
             $user = User::first(
@@ -155,7 +153,7 @@ class Employer extends Users {
                 "received" => \Framework\StringMethods::datetime_to_text($in->created)
             ];
         }
-        
+
         $alloutbox = array();
         foreach ($outboxs as $out) {
             $user = User::first(
@@ -176,6 +174,53 @@ class Employer extends Users {
         $view->set("allinbox", \Framework\ArrayMethods::toObject($allinbox));
     }
 
+    public function profile_analytics() {
+        $this->changeLayout();
+        $this->seo(array(
+            "title" => "Profile Analytics",
+            "keywords" => "Analytics",
+            "description" => "Contains all realtime stats",
+            "view" => $this->getLayoutView()
+        ));
+
+        $view = $this->getActionView();
+        $startdate = strftime("%Y-%m-%d", strtotime('-1 week'));
+        $enddate = strftime("%Y-%m-%d", time());
+        $range = "{$startdate} - {$enddate}";
+        $view->set("range", $range);
+    }
+    
+    public function opportunity_analytics() {
+        $this->changeLayout();
+        $this->seo(array(
+            "title" => "Opportuntiy Analytics",
+            "keywords" => "Analytics",
+            "description" => "Contains all realtime stats",
+            "view" => $this->getLayoutView()
+        ));
+        
+        $session = Registry::get("session");
+        $view = $this->getActionView();
+        $company = $session->get("employer")->organization;
+        
+        $opportunity = Opportunity::all(array("organization_id = ?" => $company->id), array("id", "title", "created"));
+        $opportunities = array();
+        foreach($opportunity as $opp) {
+            $find = Opportunity::first(array("id = ?" => $opp->id), array("id", "title", "created"));
+            $opportunities[] = [
+              "id" => $find->id,
+              "title" => $find->title,
+              "created" => $find->created
+            ];
+        }
+        $view->set("opportunities", \Framework\ArrayMethods::toObject($opportunities));
+        
+        $startdate = strftime("%Y-%m-%d", strtotime('-1 week'));
+        $enddate = strftime("%Y-%m-%d", time());
+        $range = "{$startdate} - {$enddate}";
+        $view->set("range", $range);
+    }
+    
     public function edit() {
         $this->changeLayout();
         $this->seo(array(
