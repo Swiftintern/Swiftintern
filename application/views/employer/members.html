@@ -72,7 +72,7 @@
                                     {else}
                                         <tr>
                                             <td>Invited</td>
-                                            <td><small>{echo datetime_to_text($mem->created)}<small></td>
+                                            <td><small>{echo $mem->created}<small></td>
                                             <td>{echo $mem->designation}</td>
                                             <td>{echo ucfirst($mem->authority)}</td>
                                             <td><button name="member" value="{echo $mem->id}" class="btn btn-danger btn-xs"><i class="fa fa-trash fa-fw"></i> Delete</button></td>
