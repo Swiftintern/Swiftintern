@@ -208,7 +208,7 @@ class Students extends Users {
         $view->set("resumes", $resumes);
         $view->set("student", $student);
     }
-    
+
     public function changeLayout() {
         $this->defaultLayout = "layouts/student";
         $this->setLayout();

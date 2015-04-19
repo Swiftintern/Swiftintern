@@ -3,6 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html">
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{echo strip_tags($seo->getDescription())}" />
     <meta name="keywords" content="{echo strip_tags($seo->getKeywords())}">
@@ -205,12 +206,8 @@
     <script type="text/javascript" src="{echo CDN}plugins/chosen/chosen.jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{echo CDN}plugins/bootbox/bootbox.min.js"></script>
-    <script type="text/javascript">
-        $(".chosen").chosen({
-            no_results_text: "Oops, nothing found!",
-            width: "95%"
-        });
-    </script>
+    <script type="text/javascript" src="{echo CDN}js/model.js"></script>
+    <script type="text/javascript" src="{echo CDN}js/student-3.0.js"></script>
 
 </body>
 </html>

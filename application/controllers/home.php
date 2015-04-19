@@ -13,24 +13,28 @@ class Home extends Controller {
 
     public function index() {
         $view = $this->getActionView();
-        $query = RequestMethods::post("query", "");
-        $order = RequestMethods::post("order", "created");
-        $direction = RequestMethods::post("direction", "desc");
-        $page = RequestMethods::post("page", 1);
-        $limit = RequestMethods::post("limit", 10);
+        
+        $query = RequestMethods::get("query", "");
+        $location = RequestMethods::get("location", "");
+        $order = RequestMethods::get("order", "created");
+        $direction = RequestMethods::get("direction", "desc");
+        $page = RequestMethods::get("page", 1);
+        $limit = RequestMethods::get("limit", 10);
 
         $where = array(
+            "title LIKE ?" => "%{$query}%",
+            "category LIKE ?" => "%{$query}%",
+            "location LIKE ?" => "%{$location}%",        
             "validity = ?" => true
         );
 
-        $fields = array(
-            "id", "title", "eligibility", "location", "last_date"
-        );
+        $fields = array("id", "title", "eligibility", "location", "last_date");
 
         $count = Opportunity::count($where);
         $opportunities = Opportunity::all($where, $fields, $order, $direction, $limit, $page);
 
         $view->set("limit", $limit);
+        $view->set("count", count($opportunities));
         $view->set("opportunities", $opportunities);
 
         $this->getLayoutView()->set("seo", Framework\Registry::get("seo"));
@@ -96,6 +100,26 @@ class Home extends Controller {
         $seo->setDescription("Following is the agrrement of use on swiftintern including refund policy.");
 
         $this->getLayoutView()->set("seo", $seo);
+    }
+    
+    public function organizations() {
+        $name = RequestMethods::get("name", "");
+        $type = RequestMethods::get("type", "");
+        $order = RequestMethods::get("order", "created");
+        $direction = RequestMethods::get("direction", "desc");
+        $page = RequestMethods::get("page", 1);
+        $limit = RequestMethods::get("limit", 10);
+        
+        $organizations = Organization::all(
+            array(
+                "name LIKE ?" => "%{$name}%",
+                "type = ?" => $type
+            ),
+            array("name"),
+            $order, $direction, $limit, $page
+        );
+        
+        $this->getActionView()->set("organizations", $organizations);
     }
 
 }

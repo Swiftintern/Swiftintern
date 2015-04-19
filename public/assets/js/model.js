@@ -12,10 +12,10 @@
             },
             read: function (opts) {
                 var self = this,
-                    link = this._clean(opts.api) + this._clean(opts.action) + this._clean(opts.ext);
+                        link = this._clean(this.api) + this._clean(opts.action) + this._clean(this.ext);
                 $.ajax({
                     url: link,
-                    type: 'POST',
+                    type: 'GET',
                     data: opts.data,
                 }).done(function (data) {
                     if (opts.callback) {
@@ -24,7 +24,7 @@
                 }).fail(function () {
                     console.log("error");
                 }).always(function () {
-                    console.log("complete");
+                    //console.log("complete");
                 });
 
             },
@@ -33,7 +33,7 @@
             },
             delete: function (opts) {
                 var self = this,
-                    link = this._clean(opts.api) + this._clean(opts.action) + this._clean(opts.ext);
+                        link = this._clean(opts.api) + this._clean(opts.action) + this._clean(opts.ext);
                 $.ajax({
                     url: link,
                     type: 'POST',
@@ -48,7 +48,7 @@
                     console.log("complete");
                 });
             },
-            _clean: function(entity) {
+            _clean: function (entity) {
                 return entity || "";
             }
         };
@@ -61,3 +61,30 @@
 
     window.Model = Model;
 }(window));
+
+$(document).on("click", "button[name=delete]", function (e) {
+    e.preventDefault();
+
+    var button = this,
+            id = this.data('id'),
+            name = this.data('name'),
+            callback = this.data('callback'),
+            request = Model.initialize();
+
+    request.delete({
+        action: name + '/delete/' + id,
+        callback: function (data) {
+            var opts = {
+                data: data,
+                element: button
+            }
+
+            $.each(data, function (i, item) {
+                opts.i = item;
+            });
+
+            callback.call(data);
+        }
+    });
+
+});

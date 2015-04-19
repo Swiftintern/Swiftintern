@@ -164,6 +164,7 @@ namespace Framework {
                             }
                         }
                         
+                        //echo "<pre>", print_r($obj), "</pre>";
                         echo json_encode($obj, JSON_PRETTY_PRINT);
                     }
 

@@ -2,35 +2,19 @@
     <div class="row">
         <div class="bs-glyphicons">
             <ul class="bs-glyphicons-list" id="new_category">
-                <li><i class="fa fa-at fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Web Development</span></li>
+                <li><i class="fa fa-at fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Web</span></li>
 
-                <li><i class="fa fa-tablet fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Android App Development</span></li>
-
-                <li><i class="fa fa-code fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Software Engineering</span></li>
-
-                <li><i class="fa fa-image fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Graphic Designing</span></li>
+                <li><i class="fa fa-tablet fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Android</span></li>
 
                 <li><i class="fa fa-newspaper-o fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Content Writer</span></li>
 
-                <li><i class="fa fa-book fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Research</span></li>
-
-                <li><i class="fa fa-legal fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Legal</span></li>
-
-                <li><i class="fa fa-bullhorn fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Marketing & Sales</span></li>
+                <li><i class="fa fa-bullhorn fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Marketing</span></li>
 
                 <li><i class="fa fa-globe fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Ambassador</span></li>
-
-                <li><i class="fa fa-bar-chart fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Buisness Development</span></li>
 
                 <li><i class="fa fa-facebook fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Social Media SEO</span></li>
 
                 <li><i class="fa fa-users fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Training</span></li>
-
-                <li><i class="fa fa-money fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Finance and Operations</span></li>
-
-                <li><i class="fa fa-male fa-5x" aria-hidden="true"></i><span class="glyphicon-class">HR Client Relations</span></li>
-
-                <li><i class="fa fa-automobile fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Mechanical Engineering</span></li>
 
                 <li><i class="fa fa-rocket fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Electrical Electronics</span></li>
             </ul>
@@ -41,11 +25,9 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-md-9">
-                <h2 class="sub-heading">
-                    internship
-                </h2>
+
                 <table class="table table-striped">
-                    <tbody id="opportunity">
+                    <tbody id="results">
                         {foreach $opportunity in $opportunities}
                         <tr>
                             <td>
@@ -67,51 +49,38 @@
                         {/foreach}
                     </tbody>
                 </table>
+                
                 <div class="text-center">
-                    <a rel="next" id="loadmorebtn" onclick="loadmoreOpportunity(++page, '10');" class="btn btn-primary">Load More</a>
+                    <button id="load_opportunities" onclick="window.opts.page = ++page;" class="btn btn-primary">Load More</button>
                 </div>
                 <br>
             </div>
             <aside class="col-xs-12 col-md-3">
-                <a href="employer/register" class="btn btn-warning btn-lg btn-block"><i class="fa fa-user-plus"></i> Hire Interns?</a><br>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-bullhorn"></i> Featured
-                        <div class="btn-group pull-right">
-                            <button onclick="loadSponsored(--page, '1');" class="btn btn-default btn-xs"><i class="fa fa-chevron-left"></i></button>
-                            <button onclick="loadSponsored(++page, '1');" class="btn btn-default btn-xs"><i class="fa fa-chevron-right"></i></button>
-                        </div>
-                    </div>
-                    <div class="panel-body" id="sponsored"></div>
-                </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <i class="fa fa-search"></i> Advanced Search
                     </div>
-                    <form id="advancedsearch" class="panel-body">
+                    <form id="search_opportunities" class="panel-body">
                         <div class="form-group">
                             <label>Search Term</label>
-                            <input type="search" name="keyword" list="keyword_list" class="form-control" placeholder="What are you looking for?" value="" autocomplete="off">
+                            <input type="search" name="query" list="keyword_list" class="form-control" placeholder="What are you looking for?" value="" autocomplete="off">
                             <datalist id="keyword_list">
-
+                                <option value="Aerospace Engineering">Aerospace Engineering</option><option value="Agriculture & Food Engineering">Agriculture & Food Engineering</option><option value="Android App Development">Android App Development</option><option value="Animation & Editing">Animation & Editing</option><option value="Architecture & Planning">Architecture & Planning</option><option value="Auditing and Accounts">Auditing and Accounts</option><option value="Accounting">Accounting</option><option value="Automobile Engineering">Automobile Engineering</option><option value="Bioinformatics">Bioinformatics</option><option value="Biotechnology Engineering">Biotechnology Engineering</option><option value="Business Development">Business Development</option><option value="Social Media Marketing">Social Media Marketing</option><option value="Business Development (Sales)">Business Development (Sales)</option><option value="Social Media Content">Social Media Content</option><option value="Business\/Data Analytics">Business\/Data Analytics</option><option value="Business\/Market Research">Business\/Market Research</option><option value="Chemical Engineering">Chemical Engineering</option><option value="Chemistry">Chemistry</option><option value="Civics">Civics</option><option value="Civil Engineering">Civil Engineering</option><option value="Client Servicing">Client Servicing</option><option value="Communication">Communication</option><option value="Computer Science & Engineering">Computer Science & Engineering</option><option value="Computer Vision\/Image Processing">Computer Vision\/Image Processing</option><option value="Consultancy">Consultancy</option><option value="Content Development">Content Development</option><option value="Content Writing & Social Media Marketing">Content Writing & Social Media Marketing</option><option value="Corporate Relations, Market Research & Analysis">Corporate Relations, Market Research & Analysis</option><option value="Creative Art (Painting, Clay Molding etc.)">Creative Art (Painting, Clay Molding etc.)</option><option value="Customer Acquisition & Quality Assurance">Customer Acquisition & Quality Assurance</option><option value="Dairy Technology">Dairy Technology</option><option value="Database Management, Social Media Analyst, SEO, Design">Database Management, Social Media Analyst, SEO, Design</option><option value="Design">Design</option><option value="Digital Marketing">Digital Marketing</option><option value="Earth Sciences">Earth Sciences</option><option value="Economics">Economics</option><option value="Editorial and Content Writing">Editorial and Content Writing</option><option value="Electrical and Electronics Engineering">Electrical and Electronics Engineering</option><option value="Electronics and Communication Engineering">Electronics and Communication Engineering</option><option value="Energy Science and Engineering">Energy Science and Engineering</option><option value="Engineering Design">Engineering Design</option><option value="Engineering Management">Engineering Management</option><option value="Engineering Physics">Engineering Physics</option><option value="English">English</option><option value="Environment Studies">Environment Studies</option><option value="Environmental Sciences">Environmental Sciences</option><option value="Event Management">Event Management</option><option value="Executive Assistant Intern">Executive Assistant Intern</option><option value="Facility Management">Facility Management</option><option value="Fashion Designing">Fashion Designing</option><option value="Finance">Finance</option><option value="Game Designer/Developer">Game Designer/Developer</option><option value="General Management">General Management</option><option value="Geologist">Geologist</option><option value="Graphic Design">Graphic Design</option><option value="HR">HR</option><option value="Illustrator">Illustrator</option><option value="Industrial & Production Engineering">Industrial & Production Engineering</option><option value="Industrial Design">Industrial Design</option><option value="Information Technology">Information Technology</option><option value="Instrumentation and Control Engineering">Instrumentation and Control Engineering</option><option value="Interior Design">Interior Design</option><option value="International Business">International Business</option><option value="Journalism">Journalism</option><option value="Manufacturing">Manufacturing</option><option value="Marketing">Marketing</option><option value="Marketing, SEO & Design">Marketing, SEO & Design</option><option value="Mass Communication and Journalism">Mass Communication and Journalism</option><option value="Mathematics">Mathematics</option><option value="Mathematics and Computing">Mathematics and Computing</option><option value="Mechanical Engineering">Mechanical Engineering</option><option value="Media & Communication">Media & Communication</option><option value="Media And Public Relations">Media And Public Relations</option><option value="Metallurgical & Materials Engineering">Metallurgical & Materials Engineering</option><option value="Mining Engineering">Mining Engineering</option><option value="Naval Architecture & Ocean Engineering">Naval Architecture & Ocean Engineering</option><option value="Online Marketing">Online Marketing</option><option value="Operations">Operations</option><option value="Packaging Technology">Packaging Technology</option><option value="Petroleum Engineering">Petroleum Engineering</option><option value="Photography">Photography</option><option value="Physics">Physics</option><option value="Polymer Science & Technology">Polymer Science & Technology</option><option value="Product Development">Product Development</option><option value="Programming">Programming</option><option value="Research & Analysis (Meta-Analysis, Statistics, Data Science)">Research & Analysis (Meta-Analysis, Statistics, Data Science)</option><option value="Research (Economics\/Statistics\/Commerce)">Research (Economics\/Statistics\/Commerce)</option><option value="Research">Research</option><option value="Research Analyst">Research Analyst</option><option value="Sales & Marketing">Sales & Marketing</option><option value="Search Engine Optimization (SEO)">Search Engine Optimization (SEO)</option><option value="Social Media Marketing & Content Writing">Social Media Marketing & Content Writing</option><option value="Social Work">Social Work</option><option value="Software Development">Software Development</option><option value="Software Engineering">Software Engineering</option><option value="Sourcing & Merchandising">Sourcing & Merchandising</option><option value="Summer Research Internship Programme">Summer Research Internship Programme</option><option value="Summer Research Programme">Summer Research Programme</option><option value="Supply Chain Management">Supply Chain Management</option><option value="System Modelling ">System Modelling </option><option value="Systems Science">Systems Science</option><option value="Textile Technology">Textile Technology</option><option value="Travel & Tourism">Travel & Tourism</option><option value="UX\/UI Design">UX\/UI Design</option><option value="Web Design">Web Design</option><option value="Website Development">Website Development</option><option value="Wireless Engineering">Wireless Engineering</option>
                             </datalist>
                             <small class="help-block"></small>
                         </div>
                         <div class="form-group">
                             <label>Location</label>
-                            <select data-placeholder="Select Place" id="intern_location" class="form-control chosen" multiple>
-
+                            <select data-placeholder="Select Place" name="location" class="form-control chosen">
+                                <option value="delhi">Delhi</option><option value="hyderabad">Hyderabad</option><option value="mumbai">Mumbai</option><option value="chennai">Chennai</option><option value="kolkata">Kolkata</option><option value="bangalore">Bangalore</option><option value="pune">Pune</option><option value="gurgaon">Gurgaon</option><option value="noida">Noida</option><option value="indore">Indore</option><option value="roorkee">Roorkee</option><option value="gandhinagar">Gandhinagar</option><option value="dhanbad">Dhanbad</option><option value="chandigarh">Chandigarh</option><option value="jamshedpur">Jamshedpur</option><option value="vellore">Vellore</option><option value="allahabad">Allahabad</option><option value="bhubaneshwar">Bhubaneshwar</option><option value="durgapur">Durgapur</option><option value="pondicherry">Pondicherry</option><option value="trivandrum">Trivandrum</option><option value="trichy">Trichy</option><option value="nagpur">Nagpur</option><option value="coimbatore">Coimbatore</option><option value="rourkela">Rourkela</option><option value="ahmedabad">Ahmedabad</option><option value="guwahati">Guwahati</option>
                             </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Paid <input type="checkbox" name="payment" value="1"></label>
                         </div>
                         <input type="submit" class="btn btn-primary btn-block" value="Search">
                     </form>
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <i class="fa fa-facebook-square"></i> Follow us on Facebook
+                        <i class="fa fa-twitter"></i> Follow us on Twitter
                     </div>
                     <div class="panel-body">
                         <div class="fb-like-box" data-href="https://www.facebook.com/swiftintern" data-width="230" data-colorscheme="light" data-show-faces="true" data-header="true" data-stream="false" data-show-border="true"></div>
@@ -121,3 +90,6 @@
         </div>
     </div>
 </section>
+<script type="text/javascript">
+    var page = 1;
+</script>

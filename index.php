@@ -25,6 +25,9 @@ try {
     // 2. load the Core class that includes an autoloader
     require("framework/core.php");
     Framework\Core::initialize();
+    
+    $datetime = new DateTime();
+    date_default_timezone_set('Asia/Kolkata');
 
     // plugins
     $path = APP_PATH . "/application/plugins";

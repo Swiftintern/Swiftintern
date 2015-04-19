@@ -1,3 +1,6 @@
+{include layouts/modal/studentprofile.html}
+{include layouts/modal/qualification.html}
+{include layouts/modal/work.html}
 <section class="container">
     <div class="row">
         <div class="col-xs-12 col-md-9">
@@ -9,7 +12,7 @@
                 <div class="panel-heading">
                     <i class="fa fa-book fa-fw"></i> Education
                     <div class="pull-right">
-                        <button type="button" name="addmore" value="qualification" class="btn btn-info btn-xs"><i class="fa fa-plus-square fa-fw"></i> Add More</button>
+                        <button type="button" data-toggle="modal" data-target="#modal_qualification" class="btn btn-info btn-xs"><i class="fa fa-plus-square fa-fw"></i> Add More</button>
                     </div>
                 </div>
                 <table class="table">
@@ -50,7 +53,7 @@
                 <div class="panel-heading">
                     <i class="fa fa-briefcase fa-fw"></i> Work Experience
                     <div class="pull-right">
-                        <button type="button" name="addmore" value="work" class="btn btn-info btn-xs"><i class="fa fa-plus-square fa-fw"></i> Add More</button>
+                        <button type="button" data-toggle="modal" data-target="#modal_work" class="btn btn-info btn-xs"><i class="fa fa-plus-square fa-fw"></i> Add More</button>
                     </div>
                 </div>
                 <table class="table">
