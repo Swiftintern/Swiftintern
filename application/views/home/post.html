@@ -1,45 +1,15 @@
-<?php require_once $dir_public.'requires/header.php';?>
-<?php require_once $dir_employer.'modal/message.php';?>
-<?php require_once $dir_public.'modal/signin.php';?>
 <section class="container">
-	<div class="row">
-		<nav><ol class="breadcrumb">
-			<li><a href="home">Home</a></li>
-			<li><a href="blog">Blog</a></li>
-			<li class="active"><?php echo $post->title;?></li>
-		</ol></nav>
-		<h1 class="page-header"><?php echo $post->title;?></h1>
-		<div class="col-md-3">
-			<div class="thumbnail">
-				<div class="text-center">
-				<?php
-					if($image){
-						echo '<img src="'.$photo->image_path().'" class="img-responsive hidden-xs">';
-					}
-				?>
-				</div>
-				<div class="caption">
-					<p><i class="fa fa-calendar fa-fw"></i> Posted On : <?php echo only_date($post->created);?></p>
-					<p><i class="fa fa-align-justify"></i> Category : <?php echo $post->category;?></p>
-					<p><i class="fa fa-user"></i> By : <?php echo $author->name;?></p>
-					<?php if($session->is_logged_in()){
-						if ($session->user_id == $admin_id || $session->user_id == $author->id) {
-							echo '<p>
-									<button name="edit" value="blog" id="'.$post->id.'" class="btn btn-primary"><i class="fa fa-edit fa-fw"></i> Edit Post</button> 
-									<button name="save" value="blog" id="'.$post->id.'" class="btn btn-success hide"><i class="fa fa-check-circle"></i> Save</button> 
-									<button name="delete" value="blog" id="'.$post->id.'" class="btn btn-danger"><i class="fa fa-trash fa-fw"></i> Delete</button>
-								</p>';
-						}else { echo '<p><button name="follow" value="user" id="'.$author->id.'" class="btn btn-success"><i class="fa fa-user fa-fw"></i> Follow</button> <button name="message" value="'.$admin_id.'" class="btn btn-danger"><i class="fa fa-exclamation-circle fa-fw"></i> Report</button></p>';}
-					}else { echo '<p><button name="follow" value="user" id="'.$author->id.'" class="btn btn-success"><i class="fa fa-user fa-fw"></i> Follow</button> <button name="message" value="'.$admin_id.'" class="btn btn-danger"><i class="fa fa-exclamation-circle fa-fw"></i> Report</button></p>';}?>
-				</div>
-			</div>
-		</div>
-		<article class="col-md-9 panel panel-default">
-			<div class="panel-body blog" id="blog">
-				<?php echo $post->content;?>
-			</div>
-		</article>
-	</div>
-	<div class="fb-comments" data-href="<?php echo $url;?>" data-numposts="5" data-colorscheme="light"></div>
+    <div class="row">
+        <h1 class="page-header text-center">{echo $post->title}</h1>
+        <nav><ol class="breadcrumb">
+                <li><a href="home">Home</a></li>
+                <li><a href="blog">Blog</a></li>
+                <li class="active">{echo $post->title}</li>
+            </ol></nav>
+        <article class="col-md-9 panel panel-default col-md-offset-1">
+            <div class="panel-body blog" id="blog">
+                {echo $post->content}
+            </div>
+        </article>
+    </div>
 </section>
-<?php require_once $dir_public.'requires/footer.php';?>

@@ -102,15 +102,20 @@ class Home extends Controller {
         $view->set("posts", $posts);
     }
 
-    public function post() {
+    public function post($title, $id) {
         $seo = Framework\Registry::get("seo");
-
+        
+        $post = BlogPost::first(
+            array("id = ?" => $id),
+            array("id", "title", "content", "category", "created")
+        );
+        
         $seo->setTitle($post->title);
         $seo->setKeywords($post->category);
         $seo->setDescription(substr(strip_tags($post->content), 0, 150));
-        $seo->setPhoto($photo->image_path_thumb());
 
         $this->getLayoutView()->set("seo", $seo);
+        $this->getActionView()->set("post", $post);
     }
 
     public function termsofservice() {
