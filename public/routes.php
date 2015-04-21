@@ -135,8 +135,8 @@ $routes = array(
     ),
     array(
         "pattern" => ":title/:id",
-        "controller" => "opportunities",
-        "action" => "view"
+        "controller" => "home",
+        "action" => "opportunity"
     )
 );
 

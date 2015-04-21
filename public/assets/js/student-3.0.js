@@ -49,7 +49,7 @@ function loadCompanies() {
 
 function loadSponsored(opts) {
     request.read({
-        action: "opportunities/sponsored",
+        action: "home/sponsored",
         data: opts,
         callback: function (data) {
             $.each(data.sponsoreds, function (i, item) {

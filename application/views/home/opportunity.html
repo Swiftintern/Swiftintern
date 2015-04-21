@@ -1,0 +1,60 @@
+<section class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-9 col-md-offset-1">
+            <nav><ol class="breadcrumb">
+                    <li><a href="home"><i class="fa fa-home fa-fw"></i>Home</a></li>
+                    <li><a href="search"><i class="fa fa-tag fa-fw"></i><span itemprop="employmentType">{echo ucfirst($opportunity->type)}</span></a></li>
+                    <li class="active">{echo $opportunity->title}</li>
+                </ol></nav>
+            <article itemscope itemtype="http://schema.org/JobPosting">
+                {if($opportunity->last_date < $enddate)}
+                <div class="alert alert-warning alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    The <strong>Last Date</strong> to apply is over.
+                </div>
+                {/if}
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="media">
+                            <span class="pull-left hidden-xs">
+                                <img src="" class="media-object medium_image" align="right" alt="{echo $opportunity->title}">
+                                <meta itemprop="image" content="">
+                            </span>
+                            <div class="media-body">
+                                <h1 class="media-heading" itemprop="title">{echo $opportunity->title}</h1>
+                                <span id="opportunity_id" class="hide">{echo $opportunity->id}</span>
+                                <p><i class="fa fa-clock-o fa-fw"></i>Last Date : {echo $opportunity->last_date}</p>
+                                <p><i class="fa fa-map-marker fa-fw"></i>Location : <span itemprop="jobLocation">{echo $opportunity->location}</span></p>
+                                <p><i class="fa fa-money fa-fw"></i>Stipend : <span itemprop="baseSalary">{echo $opportunity->payment}</span></p>
+                                <p><i class="fa fa-calendar fa-fw"></i>Duration : {echo $opportunity->duration}</p>
+                                <meta itemprop="industry" content="{echo $opportunity->category}">
+                            </div>
+                        </div>
+                        <hr>
+                        <span><i class="fa fa-institution fa-fw"></i>Company : <a href="organization/{echo $organization->name}/{echo $organization->id}" itemprop="hiringOrganization">{echo $organization->name}</a></span>
+                        <button name="apply" value="{echo $opportunity->application_type}" id="{echo $opportunity->type_id}" class="btn btn-primary pull-right"><i class="fa fa-check-circle"></i> Apply</button>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Eligibility
+                    </div>
+                    <div class="panel-body">
+                        <p itemprop="educationRequirements">{echo $opportunity->eligibility}</p>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Description
+                    </div>
+                    <div class="panel-body">
+                        <p itemprop="responsibilities">{echo $opportunity->details}</p>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
