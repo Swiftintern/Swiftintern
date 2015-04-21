@@ -1,0 +1,55 @@
+<section class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-9">
+            <h2 class="page-header text-center">
+                All Organizations
+            </h2>
+            <div class="row" id="search_results">
+                {foreach $organization in $organizations}
+                <div class="col-sm-4 col-md-3">
+                    <div class="thumbnail">
+                        <img src="" alt="{echo $organization->name}">
+                        <div class="caption">
+                            <p><small>{echo substr($organization->name, 0, 20)}</small></p>
+                            <p>
+                                <a href="organization/'.url($organization->name).'/'.$organization->id.'" class="btn btn-primary btn-sm" role="button">Profile</a> 
+                                <button name="follow" value="organization" id="'.$organization->id.'" class="btn btn-success brn-sm">Follow</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {/foreach}
+            </div>
+            <div class="text-center">
+                <button id="loadmorebtn" onclick="loadmoreComps(++page, '12');" class="btn btn-primary">Load More</button><hr>
+            </div>
+        </div>
+        <aside class="col-xs-12 col-md-3">
+            <a href="employer/register" class="btn btn-warning btn-lg btn-block"><i class="fa fa-briefcase fa-lg"></i> Register Company</a><br>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Search Company</h3>
+                </div>
+                <div class="panel-body">
+                    <form id="orgsearch">
+                        <div class="form-group">
+                            <label>Company</label>
+                            <input type="search" name="orgkeyword" id="orgkeyword" class="form-control" placeholder="Enter Name">
+                            <small class="help-block"></small>
+                        </div>
+                        <br>
+                        <input type="submit" class="btn btn-primary input-lg btn-block" value="Search">
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Follow us on Facebook</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="fb-like-box" data-href="https://www.facebook.com/pages/SwiftInterncom/268084876704495" data-width="230" data-colorscheme="light" data-show-faces="true" data-header="true" data-stream="false" data-show-border="true"></div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</section>
