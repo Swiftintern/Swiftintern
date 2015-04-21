@@ -1,12 +1,16 @@
-<div class="modal fade" id="modal_work">
-    <div class="modal-dialog">
-        <form class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3 class="modal-title">Experience Details <small>(small work even working in college fest counts)</small></h3>
-            </div>
-            <div class="modal-body">
-                <div id="more_work">
+<section class="container">
+    <div class="row">
+        <h1 class="page-header text-center">Work Experience</h1>
+
+        <div class="col-lg-9 col-lg-offset-1">
+            <ol class="breadcrumb">
+                <li><a href="home"><i class="fa fa-home fa-fw"></i> Home</a></li>
+                <li><a href="students/profile"><i class="fa fa-user fa-fw"></i> Profile</a></li>
+                <li class="active"><i class="fa fa-male fa-fw"></i> Add Work Experience</li>
+            </ol>
+            <form class="panel panel-default">
+                <div class="panel-body">
+
                     <div class="row">
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group">
@@ -37,16 +41,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <input type="hidden" name="action" value="update_work">
-                <button type="button" name="more" value="more_work" class="btn btn-info pull-left"><i class="fa fa-plus-circle fa-fw"></i> Add More Work</button>
-                <button type="submit" class="btn btn-success pull-right">Save <i class="fa fa-check-circle fa-fw"></i></button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </form>
+
+            </form>
+        </div>
     </div>
-</div>
+</section>
 <script type="text/javascript">
     $(document).ready(function () {
         loadCompanies();

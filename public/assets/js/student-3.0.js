@@ -9,9 +9,6 @@ $(".chosen").chosen({
 });
 
 $(document).ready(function () {
-    
-    
-    
     setInterval(loadSponsored({
         limit: 3
     }), 5000);
@@ -34,7 +31,7 @@ function loadColleges() {
 
 function loadCompanies() {
     request.read({
-        action: "home/organizations",
+        action: "organizations/index",
         data: {
             limit: 5000,
             type: 'company'
@@ -52,9 +49,11 @@ function loadSponsored(opts) {
         action: "home/sponsored",
         data: opts,
         callback: function (data) {
-            $.each(data.sponsoreds, function (i, item) {
-                $('#sponsored').html('<div class="media"><a class="media-left" href="' + encodeURI(item._title) + '/' + item._id + '"><img src="http://assets.swiftintern.com/uploads/images/sml_7921790.jpg" width=60 alt="' + item.title + '"></a><div class="media-body"><p class="media-heading"><a href="' + encodeURI(item._title) + '/' + item._id + '" target="_blank">' + item._title + '</a></p></div></div>');
-            });
+            if(data.sponsoreds){
+                $.each(data.sponsoreds, function (i, item) {
+                    $('#sponsored').html('<div class="media"><a class="media-left" href="' + encodeURI(item._title) + '/' + item._id + '"><img src="http://assets.swiftintern.com/uploads/images/sml_7921790.jpg" width=60 alt="' + item.title + '"></a><div class="media-body"><p class="media-heading"><a href="' + encodeURI(item._title) + '/' + item._id + '" target="_blank">' + item._title + '</a></p></div></div>');
+                });
+            }
         }
     });
 }

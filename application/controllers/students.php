@@ -5,10 +5,11 @@
  *
  * @author Faizan Ayubi
  */
+use Shared\Controller as Controller;
 use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
-class Students extends Users {
+class Students extends Controller {
     
     /**
      * Does three important things, first is retrieving the posted form data, second is checking each form field’s value
@@ -54,6 +55,7 @@ class Students extends Users {
      */
     public function profile() {
         $this->changeLayout();
+        $profile = 0;
         
         $this->seo(array(
             "title"         => "Profile",
@@ -81,10 +83,17 @@ class Students extends Users {
             ),
             array("id", "designation", "responsibility", "organization_id", "duration")
         );
-
+        
+        if(count($qualifications)) ++$profile;
+        if(count($works)) ++$profile;
+        if(!empty($student->about)) ++$profile;
+        if(!empty($student->skills)) ++$profile;
+        
+        
         $view->set("student", $student);
         $view->set("qualifications", $qualifications);
         $view->set("works", $works);
+        $view->set("profile", $profile*100/4);
     }
 
     /**
@@ -154,6 +163,65 @@ class Students extends Users {
     /**
      * @before _secure
      */
+    public function settings() {
+        $this->defaultLayout = "layouts/student";
+        $this->setLayout();
+        $seo = Registry::get("seo");
+
+        $seo->setTitle("Applications");
+        $seo->setKeywords("student opportunity applications");
+        $seo->setDescription("Your Application and its status");
+
+        $this->getLayoutView()->set("seo", $seo);
+        $view = $this->getActionView();
+        
+        $session = Registry::get("session");
+        $student = $session->get("student");
+
+        $view->set("student", $student);
+    }
+    
+    /**
+     * @before _secure
+     */
+    public function qualification() {
+        $this->defaultLayout = "layouts/student";
+        $this->setLayout();
+        $seo = Registry::get("seo");
+
+        $seo->setTitle("Add Education Details");
+        $seo->setKeywords("");
+        $seo->setDescription("Use this form to add education details");
+
+        $this->getLayoutView()->set("seo", $seo);
+        $view = $this->getActionView();
+        
+        $session = Registry::get("session");
+        $student = $session->get("student");
+    }
+    
+    /**
+     * @before _secure
+     */
+    public function work() {
+        $this->defaultLayout = "layouts/student";
+        $this->setLayout();
+        $seo = Registry::get("seo");
+
+        $seo->setTitle("Applications");
+        $seo->setKeywords("student opportunity applications");
+        $seo->setDescription("Your Application and its status");
+
+        $this->getLayoutView()->set("seo", $seo);
+        $view = $this->getActionView();
+        
+        $session = Registry::get("session");
+        $student = $session->get("student");
+    }
+    
+    /**
+     * @before _secure
+     */
     public function recommended() {
         $this->defaultLayout = "layouts/student";
         $this->setLayout();
@@ -171,7 +239,8 @@ class Students extends Users {
 
         $opportunities = Opportunity::all(
             array(
-                "eligibility = ?" => $student->skills
+                "title LIKE ?" => "%{$student->skills}%",
+                "eligibility LIKE ?" => "%{$student->skills}%"
             ),
             array("id", "title", "organization_id", "eligibility", "last_date", "location")
         );

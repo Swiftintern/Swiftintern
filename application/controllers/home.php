@@ -13,7 +13,7 @@ class Home extends Controller {
 
     public function index() {
         $view = $this->getActionView();
-        
+
         $query = RequestMethods::get("query", "");
         $location = RequestMethods::get("location", "");
         $order = RequestMethods::get("order", "created");
@@ -24,7 +24,7 @@ class Home extends Controller {
         $where = array(
             "title LIKE ?" => "%{$query}%",
             "category LIKE ?" => "%{$query}%",
-            "location LIKE ?" => "%{$location}%",        
+            "location LIKE ?" => "%{$location}%",
             "validity = ?" => true
         );
 
@@ -80,13 +80,13 @@ class Home extends Controller {
 
         $this->getLayoutView()->set("seo", $seo);
         $view = $this->getActionView();
-        
+
         $query = RequestMethods::get("query", "");
         $order = RequestMethods::get("order", "created");
         $direction = RequestMethods::get("direction", "desc");
         $page = RequestMethods::get("page", 1);
         $limit = RequestMethods::get("limit", 10);
-        
+
         $where = array(
             "title LIKE ?" => "%{$query}%",
             "category LIKE ?" => "%{$query}%",
@@ -104,12 +104,11 @@ class Home extends Controller {
 
     public function post($title, $id) {
         $seo = Framework\Registry::get("seo");
-        
+
         $post = BlogPost::first(
-            array("id = ?" => $id),
-            array("id", "title", "content", "category", "created")
+                        array("id = ?" => $id), array("id", "title", "content", "category", "created")
         );
-        
+
         $seo->setTitle($post->title);
         $seo->setKeywords($post->category);
         $seo->setDescription(substr(strip_tags($post->content), 0, 150));
@@ -127,17 +126,17 @@ class Home extends Controller {
 
         $this->getLayoutView()->set("seo", $seo);
     }
-    
+
     public function sponsored() {
         global $datetime;
         $this->seo(array(
-            "title"         => "Get Internship | Student Register",
-            "keywords"      => "get internship, student register",
-            "description"   => "Register with us to get internship from top companies in india and various startups in Delhi, Mumbai, Bangalore, Chennai, hyderabad etc",
-            "view"          => $this->getLayoutView()
+            "title" => "Get Internship | Student Register",
+            "keywords" => "get internship, student register",
+            "description" => "Register with us to get internship from top companies in india and various startups in Delhi, Mumbai, Bangalore, Chennai, hyderabad etc",
+            "view" => $this->getLayoutView()
         ));
         $sponsoreds = array();
-        
+
         $order = RequestMethods::get("order", "id");
         $direction = RequestMethods::get("direction", "desc");
         $page = RequestMethods::get("page", 1);
@@ -155,36 +154,171 @@ class Home extends Controller {
         $sponsored = Sponsored::all($where, $fields, $order, $direction, $limit, $page);
         foreach ($sponsored as $sd) {
             $sponsoreds = Opportunity::all(
-                array(
-                    "id = ?" => $sd->opportunity_id
-                ),
-                array("id", "title", "location", "last_date", "eligibility")
+                            array(
+                        "id = ?" => $sd->opportunity_id
+                            ), array("id", "title", "location", "last_date", "eligibility")
             );
         }
-        $this->actionView->set("sponsoreds", $sponsoreds);
+        $this->getActionView()->set("sponsoreds", $sponsoreds);
     }
-    
+
     public function opportunity($title, $id) {
         global $datetime;
         $view = $this->getActionView();
         $opportunity = Opportunity::first(
-            array("id = ?" => $id)
+                        array("id = ?" => $id)
         );
-        
+
         $organization = Organization::first(
-            array("id = ?" => $opportunity->organization_id),
-            array("id", "name")
+                        array("id = ?" => $opportunity->organization_id), array("id", "name")
         );
-        
+
         $this->seo(array(
-            "title"         => $opportunity->title,
-            "keywords"      => $opportunity->category.', '.$opportunity->location,
-            "description"   => substr(strip_tags($opportunity->details), 0, 150),
-            "view"          => $this->getLayoutView()
+            "title" => $opportunity->title,
+            "keywords" => $opportunity->category . ', ' . $opportunity->location,
+            "description" => substr(strip_tags($opportunity->details), 0, 150),
+            "view" => $this->getLayoutView()
         ));
-        
+
         $view->set("enddate", $datetime->format("Y-m-d"));
         $view->set("opportunity", $opportunity);
         $view->set("organization", $organization);
     }
+
+    public function login() {
+        $seo = Registry::get("seo");
+
+        $seo->setTitle("Login");
+        $seo->setKeywords("login, signin, students account login, employer account login");
+        $seo->setDescription("Login to your account on swiftintern, students login to apply for internship and employer login to hire interns.");
+
+        $this->getLayoutView()->set("seo", $seo);
+
+        $session = Registry::get("session");
+        $user = $this->user;
+
+        if (!empty($user)) {
+            self::redirect($user->type . "s/profile");
+        }
+
+        if (RequestMethods::post("action") == "login") {
+            $email = RequestMethods::post("email");
+            $password = RequestMethods::post("password");
+
+            $view = $this->getActionView();
+            $error = false;
+
+            if (empty($email)) {
+                $view->set("email_error", "Email not provided");
+                $error = true;
+            }
+
+            if (empty($password)) {
+                $view->set("password_error", "Password not provided");
+                $error = true;
+            }
+
+            if (!$error) {
+                $user = User::first(array(
+                            "email = ?" => $email,
+                            "password = ?" => sha1($password),
+                            "validity = ?" => true
+                ));
+
+                if (!empty($user)) {
+                    $this->user = $user;
+                    switch ($user->type) {
+                        case "student":
+                            $student = Student::first(array(
+                                        "user_id = ?" => $user->id
+                            ));
+                            if (!empty($student)) {
+                                $session->set("student", $student);
+                            }
+                            self::redirect("/students/profile");
+                            break;
+                        case "employer":
+                            $member = Member::all(
+                                            array(
+                                        "user_id = ?" => $user->id,
+                                        "validity = ?" => true
+                                            ), array("id", "organization_id", "designation", "authority")
+                            );
+
+                            $membersof = array();
+                            foreach ($member as $mem) {
+                                $organization = Organization::first(
+                                                array("id = ?" => $mem->organization_id), array("id", "name", "photo_id")
+                                );
+                                $membersof[] = array(
+                                    "id" => $mem->id,
+                                    "organization" => $organization,
+                                    "designation" => $mem->designation,
+                                    "authority" => $mem->authority
+                                );
+                            }
+
+                            $employer = \Framework\ArrayMethods::toObject($membersof[0]);
+                            if (!empty($employer)) {
+                                $session->set("member", \Framework\ArrayMethods::toObject($membersof));
+                                $session->set("employer", $employer);
+                                self::redirect("/employer");
+                            } else {
+                                self::redirect("/users/blocked");
+                            }
+                            break;
+                    }
+                } else {
+                    $view->set("password_error", "Email address and/or password are incorrect");
+                }
+            }
+        }
+    }
+
+    public function blocked() {
+        $this->setUser(false);
+        $this->seo(array(
+            "title" => "Blocked",
+            "keywords" => "",
+            "description" => "",
+            "view" => $this->getLayoutView()
+        ));
+    }
+
+    public function logout() {
+        $this->setUser(false);
+        self::redirect("/users/login.html");
+    }
+
+    /**
+     * The method checks whether a file has been uploaded. If it has, the method attempts to move the file to a permanent location.
+     * @param type $name
+     * @param type $user
+     */
+    protected function _upload($name, $user) {
+        if (isset($_FILES[$name])) {
+            $file = $_FILES[$name];
+            $path = APP_PATH . "/public/uploads/";
+            $time = time();
+            $extension = pathinfo($file["name"], PATHINFO_EXTENSION);
+            $filename = "{$user}-{$time}.{$extension}";
+            if (move_uploaded_file($file["tmp_name"], $path . $filename)) {
+                $meta = getimagesize($path . $filename);
+                if ($meta) {
+                    $width = $meta[0];
+                    $height = $meta[1];
+                    $file = new File(array(
+                        "name" => $filename,
+                        "mime" => $file["type"],
+                        "size" => $file["size"],
+                        "width" => $width,
+                        "height" => $height,
+                        "user" => $user
+                    ));
+                    $file->save();
+                }
+            }
+        }
+    }
+
 }

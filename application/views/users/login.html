@@ -4,84 +4,36 @@
             <li><a href="home">Home</a></li>
             <li class="active">Signin</li>
         </ol>
-        <div class="col-md-6">
-            <div class="media">
-                <div class="media-left">
-                    <i class="fa fa-check fa-5x"></i>
-                </div>
-                <div class="media-body">
-                    <h4 class="media-heading">Get Access</h4>
-                    <p>Browse, Post and Apply to thousands of Opportunity on Swiftintern </p>
-                </div>
-            </div>
-            <br>
-            <div class="media">
-                <div class="media-left">
-                    <i class="fa fa-clock-o fa-5x"></i>
-                </div>
-                <div class="media-body">
-                    <h4 class="media-heading">Test Platform</h4>
-                    <p>Create or Give Skills test at any time you want and Get Certified.</p>
-                </div>
-            </div>
-            <br>
-            <div class="media">
-                <div class="media-left">
-                    <i class="fa fa-institution fa-5x"></i>
-                </div>
-                <div class="media-body">
-                    <h4 class="media-heading">Organizations</h4>
-                    <p>Follow, contact, create and Get Updates of various Organizations. </p>
-                </div>
-            </div>
-            <br>
+        <div class="col-md-6 col-lg-offset-3">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <p><a href="student/register" class="btn btn-info"><i class="fa fa-user fa-lg"></i>  | Student Register</a>
-                    <a href="employer/register" class="btn btn-info"><i class="fa fa-briefcase fa-lg"></i>  | Employer Register</a>
-                    <a href="educator/register" class="btn btn-info"><i class="fa fa-institution fa-lg"></i>  | Educator Register</a>
+                    <p>
+                        <button class="btn btn-danger googlelogin"><i class="fa fa-google-plus fa-lg"></i>  | Signin with Google</button> 
+                        <b>--OR--</b> 
+                        Login below with your email address:
+                    </p>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6">
             <div class="panel panel-default">
-            <form role="form" id="loginform" method="post" class="panel-body">
-            <legend>Signin with E-mail</legend>
-                <div class="form-group">
-                    <label>E-mail</label>
-                    <input type="email" class="form-control" placeholder="E-mail" name="email">
-                    {if isset($email_error)}
+                <form role="form" id="loginform" method="post" class="panel-body">
+                    <div class="form-group">
+                        <label>E-mail</label>
+                        <input type="email" class="form-control" placeholder="E-mail" name="email">
+                        {if isset($email_error)}
                         {echo $email_error}
-                    {/if}
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-control" placeholder="Password" name="password">
-                    {if isset($password_error)}
+                        {/if}
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" placeholder="Password" name="password">
+                        {if isset($password_error)}
                         {echo $password_error}
-                    {/if}
-                </div>
-                <input type="hidden" name="action" value="login">
-                <button type="button" name="mail" value="forgetpassword" class="btn btn-warning btn-xs">Forgot Password?</button>
-                <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-check-circle"></i> Login</button>
-            </form>
-            <form role="form" id="changepassForm" class="panel-body hide">
-            <legend>Enter New Password...</legend>
-                <div class="form-group">
-                    <label>New Password</label>
-                    <input type="password" class="form-control" placeholder="New Password" id="password" name="password">
-                </div>
-                <div class="form-group">
-                    <label>Repeat Password</label>
-                    <input type="password" class="form-control" placeholder="Repeat Password" id="rpassword" name="rpassword">
-                </div>
-                <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-key"></i> Change Password</button>
-            </form>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <p><button class="btn btn-danger googlelogin"><i class="fa fa-google-plus fa-lg"></i>  | Signin with Google</button></p>
-                </div>
+                        {/if}
+                    </div>
+                    <input type="hidden" name="action" value="login"><hr>
+                    <button type="button" name="mail" value="forgetpassword" class="btn btn-warning btn-xs">Forgot Password?</button>
+                    <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-check-circle"></i> Login</button>
+                </form>
             </div>
         </div>
     </div>

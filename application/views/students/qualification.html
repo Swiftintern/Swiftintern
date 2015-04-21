@@ -1,19 +1,23 @@
-<div class="modal fade" id="modal_qualification">
-    <div class="modal-dialog">
-        <form class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3 class="modal-title">Education Details</h3>
-            </div>
-            <div class="modal-body">
-                <div id="more_edu">
+<section class="container">
+    <div class="row">
+        <h1 class="page-header text-center">Education Details</h1>
+
+        <div class="col-lg-9 col-lg-offset-1">
+            <ol class="breadcrumb">
+                <li><a href="home"><i class="fa fa-home fa-fw"></i> Home</a></li>
+                <li><a href="students/profile"><i class="fa fa-user fa-fw"></i> Profile</a></li>
+                <li class="active"><i class="fa fa-male fa-fw"></i> Add Education Details</li>
+            </ol>
+            <form class="panel panel-default">
+                <div class="panel-body">
+
                     <div class="row">
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group">
                                 <label for=""><i class="fa fa-bank"></i> College/University/School</label>
                                 <input type="text" list="colleges" name="name[]" class="form-control" required="" placeholder="start typing full name..." autocomplete="off">
                                 <datalist id="colleges">
-                                    
+
                                 </datalist>
                             </div>
                         </div>
@@ -48,17 +52,13 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
-            </div>
-            <div class="modal-footer">
-                <input type="hidden" name="action" value="update_qualification">
-                <button type="button" name="more" value="more_edu" class="btn btn-info pull-left"><i class="fa fa-plus-circle fa-fw"></i> Add More Education</button>
-                <button type="submit" class="btn btn-success pull-right">Save <i class="fa fa-check-circle fa-fw"></i></button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </form>
+
+            </form>
+        </div>
     </div>
-</div>
+</section>
 <script type="text/javascript">
     $(document).ready(function () {
         loadColleges();
