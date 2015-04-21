@@ -1,0 +1,26 @@
+<div class="modal fade bs-example-modal-lg" id="share_experience">
+    <div class="modal-dialog modal-lg">
+        <form class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title">Thanks for sharing your experience.</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" class="form-control" name="title" placeholder="eg. {echo $organization->name} Interview Paper DU, 2014" required="">
+                </div>
+                <div class="form-group">
+                    <label>Experience</label>
+                    <p>Include all details which may be useful to other students.</p>
+                    <textarea class="form-control editor" id="details_experience" rows="7"></textarea>
+                </div>
+                <input type="hidden" name="organization_id" value="{echo $organization->id}">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>

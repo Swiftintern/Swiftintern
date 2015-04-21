@@ -24,6 +24,11 @@ $routes = array(
         "action" => "experience"
     ),
     array(
+        "pattern" => "organization/:name/:id",
+        "controller" => "organizations",
+        "action" => "organization"
+    ),
+    array(
         "pattern" => "login",
         "controller" => "users",
         "action" => "login"

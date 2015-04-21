@@ -101,32 +101,4 @@ class Home extends Controller {
 
         $this->getLayoutView()->set("seo", $seo);
     }
-    
-    public function organizations() {
-        $this->seo(array(
-            "title"         => "Companies | Organizations | NGO | Colleges",
-            "keywords"      => "company, organization, ngo, internship",
-            "description"   => "Comapnies which have used swiftintern to hire interns.",
-            "view"          => $this->getLayoutView()
-        ));
-        
-        $name = RequestMethods::get("name", "");
-        $type = RequestMethods::get("type", "");
-        $order = RequestMethods::get("order", "created");
-        $direction = RequestMethods::get("direction", "desc");
-        $page = RequestMethods::get("page", 1);
-        $limit = RequestMethods::get("limit", 10);
-        
-        $organizations = Organization::all(
-            array(
-                "name LIKE ?" => "%{$name}%",
-                "type LIKE ?" => "%{$type}%",
-            ),
-            array("name"),
-            $order, $direction, $limit, $page
-        );
-        
-        $this->getActionView()->set("organizations", $organizations);
-    }
-
 }

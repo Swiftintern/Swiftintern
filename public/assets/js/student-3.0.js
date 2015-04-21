@@ -19,7 +19,7 @@ $(document).ready(function () {
 
 function loadColleges() {
     request.read({
-        action: "home/organizations",
+        action: "organizations/index",
         data: {
             limit: 5000,
             type: 'institute'
