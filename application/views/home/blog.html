@@ -1,0 +1,35 @@
+<header class="intro-header" style="background-image: url('assets/img/others/blog.jpg');">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="site-heading">
+                    <h1 class="huge">Intern Blog</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<section class="container">
+    <div class="row col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <article id="search_results" class="">
+            {foreach $post in $posts}
+            <div class="post-preview">
+                <a href="blog/{echo urlencode($post->title)}/{echo $post->id}">
+                <h2 class="post-title">{echo $post->title}</h2>
+                <h3 class="post-subtitle">{echo substr(strip_tags($post->content), 0, 150)}</h3>
+                </a>
+                <p class="post-meta">Posted on {echo $post->created}</p>
+            </div><hr>
+            {/foreach}
+        </article>
+        <div class="text-center">
+            <button id="loadmorebtn" onclick="loadmoreBlogPost(++page, '10');" class="btn btn-primary">Load More</button><hr>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    var page = 1;
+    $(document).ready(function () {
+        $('.navbar').css('margin-bottom', '-20px');
+    });
+</script>

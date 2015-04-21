@@ -79,6 +79,27 @@ class Home extends Controller {
         $seo->setDescription("Internship blogs post tips, advice to students to achieve the most from their internship and how to avail maximum benefits during an intern period.");
 
         $this->getLayoutView()->set("seo", $seo);
+        $view = $this->getActionView();
+        
+        $query = RequestMethods::get("query", "");
+        $order = RequestMethods::get("order", "created");
+        $direction = RequestMethods::get("direction", "desc");
+        $page = RequestMethods::get("page", 1);
+        $limit = RequestMethods::get("limit", 10);
+        
+        $where = array(
+            "title LIKE ?" => "%{$query}%",
+            "category LIKE ?" => "%{$query}%",
+            "validity = ?" => true
+        );
+
+        $fields = array("id", "title", "content", "category", "created");
+
+        $count = BlogPost::count($where);
+        $posts = BlogPost::all($where, $fields, $order, $direction, $limit, $page);
+
+        $view->set("count", $count);
+        $view->set("posts", $posts);
     }
 
     public function post() {

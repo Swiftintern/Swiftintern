@@ -9,6 +9,26 @@ $routes = array(
         "action" => "register"
     ),
     array(
+        "pattern" => "blog",
+        "controller" => "home",
+        "action" => "blog"
+    ),
+    array(
+        "pattern" => "contact",
+        "controller" => "home",
+        "action" => "contact"
+    ),
+    array(
+        "pattern" => "privacy",
+        "controller" => "home",
+        "action" => "privacy"
+    ),
+    array(
+        "pattern" => "termsofservice",
+        "controller" => "home",
+        "action" => "termsofservice"
+    ),
+    array(
         "pattern" => "resume-for-internship",
         "controller" => "resumes",
         "action" => "about"
