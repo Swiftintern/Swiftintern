@@ -103,6 +103,13 @@ class Home extends Controller {
     }
     
     public function organizations() {
+        $this->seo(array(
+            "title"         => "Companies | Organizations | NGO | Colleges",
+            "keywords"      => "company, organization, ngo, internship",
+            "description"   => "Comapnies which have used swiftintern to hire interns.",
+            "view"          => $this->getLayoutView()
+        ));
+        
         $name = RequestMethods::get("name", "");
         $type = RequestMethods::get("type", "");
         $order = RequestMethods::get("order", "created");
@@ -113,7 +120,7 @@ class Home extends Controller {
         $organizations = Organization::all(
             array(
                 "name LIKE ?" => "%{$name}%",
-                "type = ?" => $type
+                "type LIKE ?" => "%{$type}%",
             ),
             array("name"),
             $order, $direction, $limit, $page
