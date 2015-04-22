@@ -163,15 +163,47 @@ class Home extends Controller {
     }
 
     public function opportunity($title, $id) {
+        $view = $this->getActionView();
+        $opportunity = Opportunity::first(array("id = ?" => $id));
+
+        self::redirect('/' . $opportunity->type . '/' . urlencode($title) . '/' . $id);
+
+        $this->seo(array(
+            "title" => $opportunity->title,
+            "keywords" => $opportunity->category . ', ' . $opportunity->location,
+            "description" => substr(strip_tags($opportunity->details), 0, 150),
+            "view" => $this->getLayoutView()
+        ));
+
+        $view->set("opportunity", $opportunity);
+    }
+
+    public function internship($title, $id) {
         global $datetime;
         $view = $this->getActionView();
-        $opportunity = Opportunity::first(
-                        array("id = ?" => $id)
-        );
+        $session = Registry::get("session");
+        
+        $user = $this->user;
+        $student = $session->get("student");
+        $opportunity = Opportunity::first(array("id = ?" => $id));
+        $organization = Organization::first(array("id = ?" => $opportunity->organization_id), array("id", "name"));
+        
+        $view->set("errors", array());
+        if (RequestMethods::post("action") == "application") {
+            $application = new Application(array(
+                "student_id" => RequestMethods::post("student_id", $student->id),
+                "opportunity_id" => RequestMethods::post("opportunity_id"),
+                "resume_id" => RequestMethods::post("resume_id", ""),
+                "status" => RequestMethods::post("status", "applied")
+            ));
 
-        $organization = Organization::first(
-                        array("id = ?" => $opportunity->organization_id), array("id", "name")
-        );
+            if ($application->validate()) {
+                $application->save();
+                $view->set("success", true);
+            }
+
+            $view->set("errors", $user->getErrors());
+        }
 
         $this->seo(array(
             "title" => $opportunity->title,
@@ -198,7 +230,7 @@ class Home extends Controller {
         $user = $this->user;
 
         if (!empty($user)) {
-            self::redirect($user->type . "s/profile");
+            self::redirect(Framework\StringMethods::plural($user->type));
         }
 
         if (RequestMethods::post("action") == "login") {
@@ -220,9 +252,9 @@ class Home extends Controller {
 
             if (!$error) {
                 $user = User::first(array(
-                    "email = ?" => $email,
-                    "password = ?" => sha1($password),
-                    "validity = ?" => true
+                            "email = ?" => $email,
+                            "password = ?" => sha1($password),
+                            "validity = ?" => true
                 ));
 
                 if (!empty($user)) {

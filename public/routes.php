@@ -94,6 +94,11 @@ $routes = array(
         "action" => "undelete"
     ),
     array(
+        "pattern" => "internship/:title/:id",
+        "controller" => "home",
+        "action" => "internship"
+    ),
+    array(
         "pattern" => ":title/:id",
         "controller" => "home",
         "action" => "opportunity"

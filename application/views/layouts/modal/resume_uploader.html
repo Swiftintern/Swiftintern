@@ -1,0 +1,25 @@
+<div class="modal fade" id="resume_uploader">
+    <div class="modal-dialog">
+        <form class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title text-center">Thanks for Applying!!!</h3>
+            </div>
+            <div class="modal-body" id="apply_resume_body">
+                <p class="text-center">
+                    <a href="resume/success" class="btn btn-success"><i class="fa fa-file-text-o fa-fw"></i> Create new Resume</a>
+                </p>
+                <div class="form-group text-center">
+                    <label>OR Upload a new Resume(pdf only)</label>
+                    <input type="file" id="fileInput" name="file" class="form-control">
+                    <div id="output"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="action" value="create_application_with_resume">
+                <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i> Upload</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </form>
+    </div>
+</div>
