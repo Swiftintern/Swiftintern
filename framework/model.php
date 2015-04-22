@@ -156,10 +156,10 @@ namespace Framework {
 
         /**
          * Simple, static wrapper method for the protected _all() method
-         * @param type $where
+         * @param type $where where fields in array format
          * @param type $fields
          * @param type $order
-         * @param type $direction
+         * @param type $direction asc(for ascending) or desc(for descending)
          * @param type $limit
          * @param type $page
          * @return type

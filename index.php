@@ -44,11 +44,11 @@ try {
         "type" => "ini"
     ));
     Framework\Registry::set("configuration", $configuration->initialize());
-
+    
     // 4. load and initialize the Database class – does not connect
     $database = new Framework\Database();
     Framework\Registry::set("database", $database->initialize());
-
+    
     // 5. load and initialize the Cache class – does not connect
     $cache = new Framework\Cache();
     Framework\Registry::set("cache", $cache->initialize());

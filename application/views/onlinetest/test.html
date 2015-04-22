@@ -1,32 +1,28 @@
-<?php require_once $dir_public.'requires/header.php';?>
 <!-- the middle contents -->
 <section class="container">
 	<div class="row">
-		<h3 class="page-header"><?php echo $test->title;?></h3>
+		<h3 class="page-header">{echo $test->title}</h3>
 		<small class="pull-right"><span id="countdown">30</span> minutes</small>
 		<article class="col-md-12">
 			<form id="testform" class="col-md-offset-2">
-			<?php
-				$i=1;
-				foreach ($questions as $question) {
-					$question = Question::find_by_id('id', $question->id);
-					echo '<p>&nbsp;Q'.$i.'.&nbsp;'.$question->question.'</p>';
-					echo '<ul class="nav col-md-offset-1">';
-					$options = Option::find_by_property('ques_id', $question->id);
-					foreach ($options as $option) {
-						$option = Option::find_by_id('id', $option->id);
-						echo '<li>
-								<div class="radio">
-									<label><input type="radio" name="question_'.$question->id.'" value="'.$option->id.'">'.$option->ques_option.'</label>
-								</div>
-							</li>';
-					}
-					echo '</ul>';
-					$i++;
-				}
-			?>
-			<input type="hidden" name="test_id" value="<?php echo $test->id;?>">
-			<input type="hidden" name="participant_id" value="<?php echo $participant->id;?>">
+                            {script $i=1}
+                            {foreach $question in $questions}
+                                    <p>&nbsp;Q{echo $i}&nbsp;{echo $question->question}</p>
+                                    {script $options = Option::all(array('ques_id = ?' => $question->id))}
+                                    <ul class="nav col-md-offset-1">
+                                    {foreach $option in $options}
+                                            {script $option = Option::first(array('id = ?' => $option->id))}
+                                            <li>
+                                                <div class="radio">
+                                                        <label><input type="radio" name="question_{echo $question->id}" value="{$option->id}">{echo $option->ques_option}</label>
+                                                </div>
+                                            </li>
+                                    {/foreach}
+                                    </ul>
+                                    {script $i++}
+                            {/foreach}
+			<input type="hidden" name="test_id" value="{echo $test->id}">
+			<input type="hidden" name="participant_id" value="{echo $participant->id}">
 			<input type="hidden" name="action" value="test_result">
 			<p class="text-center"><button type="submit" class="btn btn-primary btn-lg">Submit</button></p>
 			</form>
@@ -71,4 +67,3 @@ $(document).ready(function() {
 	});
 });
 </script>
-<?php require_once $dir_public.'requires/footer.php';?>

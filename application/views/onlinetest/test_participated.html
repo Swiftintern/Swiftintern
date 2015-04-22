@@ -1,25 +1,24 @@
-<?php require_once $dir_public.'requires/header.php';?>
 <section class="container">
 	<div class="row">
 		<nav><ol class="breadcrumb">
 			<li><a href="home">Home</a></li>
 			<li><a href="test">Test</a></li>
-			<li class="active"><?php echo $test->title;?></li>
+			<li class="active">{echo $test->title}</li>
 		</ol></nav>
 		<article class="content-inner-detail" id="search_results">
 			<div class="panel panel-success">
 				<div class="panel-heading">
-					<h3 class="panel-title"><?php echo $test->title;?></h3>
+					<h3 class="panel-title">{echo $test->title}</h3>
 				</div>
 				<div class="panel-body">
 					<div class="media">
 						<a class="pull-left hidden-xs" href="#">
-							<img class="media-object" src="<?php echo $photo->image_path();?>" alt="<?php echo $test->title;?>" width="300px">
+                                                    <img class="media-object" src="{echo CDN}uploads/{echo $photo->filename}" alt="{echo $test->title}" width="300px">
 						</a>
 						<div class="media-body">
-							<h3 class="media-heading"><?php echo $test->title;?></h3>
+							<h3 class="media-heading">{echo $test->title}</h3>
 							<p class="text-warning">You have already taken this exam in the last 15 day(s), so you cannot take it again yet.<br>Please wait or take a different exam.</p>
-							<p class="text-center"><a href="<?php echo 'test/';?>" class="btn btn-primary">See All Test</a></p>
+							<p class="text-center"><a href="{echo 'tests/'}" class="btn btn-primary">See All Test</a></p>
 						</div>
 					</div>
 				</div>
@@ -27,4 +26,3 @@
 		</article>
 	</div>
 </section>
-<?php require_once $dir_public.'requires/footer.php';?>
