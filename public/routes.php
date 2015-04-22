@@ -119,6 +119,11 @@ $routes = array(
         "action" => "test"
     ),
     array(
+        "pattern" => "test-participated/:title/:id",
+        "controller" => "onlinetest",
+        "action" => "test_participated"
+    ),
+    array(
         "pattern" => "tests",
         "controller" => "onlinetest",
         "action" => "index"  

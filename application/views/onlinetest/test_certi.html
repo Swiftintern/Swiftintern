@@ -49,13 +49,13 @@
 			{if ($test->type == 'certification')}
 				<p>
 					We will print a beautiful certificate and post it to your home. you can get this certificate at <b>Rs. 350</b> <span class="huge">(30% Discount)</span>
-					<a href="order/certificate/{echo $certi_id}" target="_blank" class="btn btn-success btn-lg pull-right">Get Certificate</a>
+                                        <a href="order/certificate/{echo $certificate->uniqid}" target="_blank" class="btn btn-success btn-lg pull-right">Get Certificate</a>
 				</p>
 			{/if}
 			</div>
 			<hr>
 		</article>
-		<article style="height: 600px;background: url('assets/images/certi.jpg') no-repeat center;">
+		<article style="height: 600px;background: url({echo CDN}images/certi.jpg) no-repeat center;">
 			<table style="width: 100%; text-align: center; font-family: Sacramento, cursive;">
 				<tr><td></td></tr>
 				<tr>
@@ -68,7 +68,7 @@
 					<td><h2><b>{echo $user->name}</b> has given {echo $test->title}</h2></td>
 				</tr>
 				<tr>
-					<td><img src="assets/img/headerlogo.png" alt="logo"></td>
+					<td><img src="{echo CDN}images/headerlogo.png" alt="logo"></td>
 				</tr>
 				<tr>
 					<td style="font-family: arial;">
