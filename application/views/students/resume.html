@@ -1,7 +1,60 @@
+{include layouts/modal/studentprofile.html}
 <section class="container">
     <div class="row">
 
-        <div class="col-xs-12 col-md-9 col-md-offset-1">
+        <div class="col-xs-12 col-md-3">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-user"></i> Profile Status
+                </div>
+                <div class="panel-body">
+                    <p><b>Your profile is {echo $profile}% complete</b></p>
+                    <p>
+                        {if(empty($student->about))}
+                        <a href="students/settings">Add your Objective</a>
+                        {/if}
+                    </p>
+                    <p>
+                        {if(!count($works))}
+                        <a href="students/work">Add Work Experience</a>
+                        {/if}
+                    </p>
+                    <p>
+                        {if(!count($qualifications))}
+                        <a href="students/qualification">Add Education details</a>
+                        {/if}
+                    </p>
+                    <p>
+                        {if(empty($student->skills))}
+                        <a href="students/settings">Add your Skills</a>
+                        {/if}
+                    </p>
+                    <label>Uploaded Resume</label>
+                    <p>
+                        {foreach $resume in $resumes}
+                        Resume {echo $resume->id}, 
+                        {/foreach}
+                        <a href="#">New Resume</a>
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bullhorn"></i> Sponsored
+                    <div class="btn-group pull-right">
+                        <button onclick="loadSponsored(--page, '1');" class="btn btn-default btn-xs"><i class="fa fa-chevron-left"></i></button>
+                        <button onclick="loadSponsored(++page, '1');" class="btn btn-default btn-xs"><i class="fa fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                <div class="panel-body" id="sponsored"></div>
+            </div>
+
+        </div>
+
+        <div class="col-xs-12 col-md-9">
 
             <div class="panel panel-success">
                 <div class="panel-body">
@@ -10,6 +63,9 @@
 
                 <div class="panel-heading">
                     Objective
+                    <div class="pull-right">
+                        <button type="button" name="addmore" value="qualification" class="btn btn-info btn-xs"><i class="fa fa-edit fa-fw"></i> Add/Edit</button>
+                    </div>
                 </div>
                 <div class="panel-body">
                     Completing this is very important to making a good impression with employers. 
@@ -17,6 +73,9 @@
 
                 <div class="panel-heading">
                     Education Details
+                    <div class="pull-right">
+                        <a href="students/qualification" class="btn btn-info btn-xs"><i class="fa fa-plus-square fa-fw"></i> Add More</a>
+                    </div>
                 </div>
                 <table class="table">
                     {if (count($qualifications) == '0')}
@@ -30,6 +89,7 @@
                             <th>Institution/School</th>
                             <th>Percentage or GPA</th>
                             <th>Year of Passing</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="qualification">
@@ -42,6 +102,9 @@
                             <td><a href="organization/{echo urlencode($organization->name)}/{echo $organization->id}" target="_blank">{echo $organization->name}</a></td>
                             <td>{echo $qualification->gpa}</td>
                             <td>{echo $qualification->passing_year}</td>
+                            <td>
+                                <button type="button" name="delete" value="qualification" id="{echo $qualification->id}" class="btn btn-danger btn-xs"><i class="fa fa-trash fa-fw"></i> Delete</button>
+                            </td>
                         </tr>
                         {/foreach}
                         {/else}
@@ -50,10 +113,13 @@
 
                 <div class="panel-heading">
                     Experience
+                    <div class="pull-right">
+                        <a href="students/work" class="btn btn-info btn-xs"><i class="fa fa-plus-square fa-fw"></i> Add More</a>
+                    </div>
                 </div>
                 <table class="table">
                     {if (count($works) == '0')}
-                    <p class="text-center">Nnot added any work Experience till now.</p>
+                    <p class="text-center">You have not added any work Experience till now Please add any Experience to be able to select in any internship. small work as working fest counts.</p>
                     {/if}
                     {else}
                     <thead>
@@ -62,6 +128,7 @@
                             <th>Designation</th>
                             <th>Responsibility</th>
                             <th>Duration</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -73,6 +140,9 @@
                             <td>{echo $work->designation}</td>
                             <td>{echo $work->responsibility}</td>
                             <td>{echo $work->duration}</td>
+                            <td>
+                                <button type="button" name="delete" value="work" id="{echo $work->id}" class="btn btn-danger btn-xs"><i class="fa fa-trash fa-fw"></i> Delete</button>
+                            </td>
                         </tr>
                         {/foreach}
                         {/else}
@@ -81,22 +151,23 @@
 
                 <div class="panel-heading">
                     Skills
+                    <div class="pull-right">
+                        <button type="button" name="addmore" value="qualification" class="btn btn-info btn-xs"><i class="fa fa-edit fa-fw"></i> Add/Edit</button>
+                    </div>
                 </div>
                 <div class="panel-body">
-                    {if(!empty($student->skills))}
                     Skills matter as it will help employer to chose if you are better for an internship
-                    {/if}
-                    {else}
-                    <p>{echo $student->skills}</p>
-                    {/else}
                 </div>
 
                 <div class="panel-heading">
                     Links
+                    <div class="pull-right">
+                        <button type="button" name="addmore" value="qualification" class="btn btn-info btn-xs"><i class="fa fa-plus-square fa-fw"></i> Add More</button>
+                    </div>
                 </div>
                 <table class="table">
                     {if (count($socials) == '0')}
-                    <p class="text-center">No Profile or work sample added.</p>
+                    <p class="text-center">Show us your stuff. Add links to your website, blog or work samples.</p>
                     {/if}
                     {else}
                     <thead>

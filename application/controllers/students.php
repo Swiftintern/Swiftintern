@@ -53,9 +53,20 @@ class Students extends Controller {
     /**
      * @before _secure
      */
-    public function profile() {
-        $this->changeLayout();
+    public function profile($id) {
         $profile = 0;
+        $view = $this->getActionView();
+       
+        $user = User::first(
+            array(
+                "id = ?" => $id
+            ),
+            array("id", "name", "email", "type")
+        );
+        
+        $student = Student::first(
+            array("user_id = ?" => $user->id)
+        );
         
         $this->seo(array(
             "title"         => "Profile",
@@ -63,12 +74,6 @@ class Students extends Controller {
             "description"   => "Your Profile Page",
             "view"          => $this->getLayoutView()
         ));
-
-        $view = $this->getActionView();
-        
-        $session = Registry::get("session");
-        $user = $this->user;
-        $student = $session->get("student");
 
         $qualifications = Qualification::all(
             array(
@@ -84,6 +89,20 @@ class Students extends Controller {
             array("id", "designation", "responsibility", "organization_id", "duration")
         );
         
+        $socials = Social::all(
+            array(
+                "user_id = ?" => $user->id
+            ),
+            array("id", "social_platform", "link")
+        );
+        
+        $resumes = Resume::all(
+            array(
+                "student_id = ?" => $student->id
+            ),
+            array("id", "type")
+        );
+        
         if(count($qualifications)) ++$profile;
         if(count($works)) ++$profile;
         if(!empty($student->about)) ++$profile;
@@ -91,9 +110,12 @@ class Students extends Controller {
         
         
         $view->set("student", $student);
+        $view->set("user", $user);
         $view->set("qualifications", $qualifications);
         $view->set("works", $works);
         $view->set("profile", $profile*100/4);
+        $view->set("resumes", $resumes);
+        $view->set("socials", $socials);
     }
 
     /**
@@ -269,30 +291,63 @@ class Students extends Controller {
     /**
      * @before _secure
      */
-    public function resumes() {
-        $this->defaultLayout = "layouts/student";
-        $this->setLayout();
-        $seo = Registry::get("seo");
+    public function resume() {
+        $this->changeLayout();
+        $profile = 0;
+        
+        $this->seo(array(
+            "title"         => "Profile",
+            "keywords"      => "user profile",
+            "description"   => "Your Profile Page",
+            "view"          => $this->getLayoutView()
+        ));
 
-        $seo->setTitle("Resumes");
-        $seo->setKeywords("Resume of Student");
-        $seo->setDescription("resume of student");
-
-        $this->getLayoutView()->set("seo", $seo);
         $view = $this->getActionView();
         
         $session = Registry::get("session");
+        $user = $this->user;
         $student = $session->get("student");
 
+        $qualifications = Qualification::all(
+            array(
+                "student_id = ?" => $student->id
+            ),
+            array("id", "degree", "major", "organization_id", "gpa", "passing_year")
+        );
+        
+        $works = Work::all(
+            array(
+                "student_id = ?" => $student->id
+            ),
+            array("id", "designation", "responsibility", "organization_id", "duration")
+        );
+        
+        $socials = Social::all(
+            array(
+                "user_id = ?" => $user->id
+            ),
+            array("id", "social_platform", "link")
+        );
+        
         $resumes = Resume::all(
             array(
                 "student_id = ?" => $student->id
             ),
             array("id", "type")
         );
-
-        $view->set("resumes", $resumes);
+        
+        if(count($qualifications)) ++$profile;
+        if(count($works)) ++$profile;
+        if(!empty($student->about)) ++$profile;
+        if(!empty($student->skills)) ++$profile;
+        
+        
         $view->set("student", $student);
+        $view->set("qualifications", $qualifications);
+        $view->set("works", $works);
+        $view->set("profile", $profile*100/4);
+        $view->set("resumes", $resumes);
+        $view->set("socials", $socials);
     }
 
     public function changeLayout() {

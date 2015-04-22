@@ -15,11 +15,11 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
                 <li><a href=""></a></li>
-                <li><a href="student" class="whitetext"><i class="fa fa-male fa-lg"></i> Profile</a></li>
-                <li><a href="student/messages" class="whitetext"><i class="fa fa-envelope fa-lg"></i> Messages</a></li>
-                <li><a href="student/applications" class="whitetext"><i class="fa fa-check-square fa-lg"></i> Applications</a></li>
-                <!--<li><a href="student/recommends" class="whitetext"><i class="fa fa-tags fa-lg"></i> Recommended</a></li>-->
-                <li><a href="student/resumes" class="whitetext"><i class="fa fa-file-text-o fa-lg"></i> Resume</a></li>
+                <li><a href="students/resumes" class="whitetext"><i class="fa fa-file-text-o fa-lg"></i> Resume</a></li>
+                <li><a href="students/applications" class="whitetext"><i class="fa fa-check-square fa-lg"></i> Applications</a></li>
+                <li><a href="students/messages" class="whitetext"><i class="fa fa-envelope fa-lg"></i> Messages</a></li>
+                <!--<li><a href="students/profile" class="whitetext"><i class="fa fa-male fa-lg"></i> Profile</a></li>-->
+                <!--<li><a href="students/recommends" class="whitetext"><i class="fa fa-tags fa-lg"></i> Recommended</a></li>-->
             </ul>
             <!-- the menu -->
             <div class="navbar-right">
@@ -27,11 +27,8 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle whitetext" data-toggle="dropdown"><i class="fa fa-user fa-lg"></i> {echo $user->name;} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="students/applications">Applied</a></li>
-                            <li><a href="students/recommends">Recommended</a></li>
-                            <li><a href="students/resumes">Resume</a></li>
-                            <li class="divider"></li>
                             <li><a href="students/settings">Settings</a></li>
+                            <li class="divider"></li>
                             <li><a href="logout">Logout</a></li>
                         </ul>
                     </li>
