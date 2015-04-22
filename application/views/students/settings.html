@@ -8,7 +8,10 @@
                 <li><a href="students/profile"><i class="fa fa-user fa-fw"></i> Profile</a></li>
                 <li class="active"><i class="fa fa-gear fa-fw"></i> Settings</li>
             </ol>
-            <form class="panel panel-default" id="basics">
+            {if isset($success)}
+            <p>Your account has been updated!</p>
+            {/if}
+            <form class="panel panel-default" method="post" action="students/settings">
                 <div class="panel-body"><br>
                     <legend>Basic Details</legend>
                     <div class="row">
@@ -16,12 +19,14 @@
                             <div class="form-group">
                                 <label for=""><i class="fa fa-user"></i> Full Name</label>
                                 <input type="text" name="name" class="form-control" required="" value="{echo $user->name}">
+                                {echo Shared\Markup::errors($errors, "name")}
                             </div>
                         </div>
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group">
                                 <label for=""><i class="fa fa-envelope"></i> E-mail</label>
                                 <input type="email" name="email" class="form-control" required="" value="{echo $user->email}">
+                                {echo Shared\Markup::errors($errors, "email")}
                             </div>
                         </div>
                     </div>
@@ -30,6 +35,7 @@
                             <div class="form-group">
                                 <label for=""><i class="fa fa-mobile"></i> Mobile</label>
                                 <input type="tel" name="phone" class="form-control" required="" value="{echo $user->phone}">
+                                {echo Shared\Markup::errors($errors, "phone")}
                             </div>
                         </div>
                         <div class="col-xs-12 col-md-6">
@@ -49,12 +55,12 @@
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group">
                                 <label for=""><i class="fa fa-map-marker"></i> Address/City</label>
-                                <input type="text" name="city" class="form-control" required="" placeholder="{echo $student->city}">
+                                <input type="text" name="city" class="form-control" required="" value="{echo $student->city}">
                             </div>
                         </div>
                     </div>
                     <div class="row col-md-12">
-                        <input type="hidden" name="action" value="create_resume_basics">
+                        <input type="hidden" name="action" value="settings">
                         <button type="submit" class="btn btn-success pull-right">Next <i class="fa fa-arrow-circle-o-right fa-fw"></i></button>
                     </div>
                 </div>

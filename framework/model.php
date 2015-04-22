@@ -401,7 +401,6 @@ namespace Framework {
          */
         public function validate() {
             $this->_errors = array();
-
             foreach ($this->columns as $column) {
                 if ($column["validate"]) {
                     $pattern = "#[a-z]+\(([a-zA-Z0-9, ]+)\)#";

@@ -36,7 +36,7 @@ class User extends Shared\Model {
      * @length 100
      * @index
      * 
-     * @validate required, alpha, min(8), max(32)
+     * @validate text, min(8), max(32)
      * @label password
      */
     protected $_password;
@@ -47,7 +47,7 @@ class User extends Shared\Model {
      * @type text
      * @length 100
      * 
-     * @validate alpha, min(8), max(15)
+     * @validate numeric, min(8), max(15)
      * @label name
      */
     protected $_phone;
@@ -75,7 +75,7 @@ class User extends Shared\Model {
      * @length 100
      * 
      * @validate required, alpha, min(3), max(32)
-     * @label name
+     * @label type
      */
     protected $_type;
     

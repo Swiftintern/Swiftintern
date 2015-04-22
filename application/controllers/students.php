@@ -166,19 +166,36 @@ class Students extends Controller {
     public function settings() {
         $this->defaultLayout = "layouts/student";
         $this->setLayout();
+        $errors = array();
         $seo = Registry::get("seo");
 
-        $seo->setTitle("Applications");
+        $seo->setTitle("Settings");
         $seo->setKeywords("student opportunity applications");
-        $seo->setDescription("Your Application and its status");
+        $seo->setDescription("Update your profile");
 
         $this->getLayoutView()->set("seo", $seo);
         $view = $this->getActionView();
         
         $session = Registry::get("session");
         $student = $session->get("student");
+        $user = $this->getUser();
+        
+        if (RequestMethods::post("action") == "settings") {
+            $user = new User(array(
+                "name" => RequestMethods::post("name", $user->name),
+                "email" => RequestMethods::post("email", $user->email),
+                "phone" => RequestMethods::post("phone", $user->phone)
+            ));
+            
+            if ($user->validate()) {
+                $user->save();
+                $this->user = $user;
+                $view->set("success", true);
+            }
+        }
 
         $view->set("student", $student);
+        $view->set("errors", $user->errors);
     }
     
     /**

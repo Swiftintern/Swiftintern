@@ -220,9 +220,9 @@ class Home extends Controller {
 
             if (!$error) {
                 $user = User::first(array(
-                            "email = ?" => $email,
-                            "password = ?" => sha1($password),
-                            "validity = ?" => true
+                    "email = ?" => $email,
+                    "password = ?" => sha1($password),
+                    "validity = ?" => true
                 ));
 
                 if (!empty($user)) {
