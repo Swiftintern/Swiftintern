@@ -15,18 +15,18 @@ class OnlineTest extends Controller {
         $seo = Framework\Registry::get("seo");
 
         $seo->setTitle("Online Test with Certificate");
-	$seo->setKeywords("online test, practice test, online exams, skills verification");
-	$seo->setDescription("Appear to Online Exam and verify your skills for getting internship.");
+        $seo->setKeywords("online test, practice test, online exams, skills verification");
+        $seo->setDescription("Appear to Online Exam and verify your skills for getting internship.");
 
         $this->getLayoutView()->set("seo", $seo);
         $view = $this->getActionView();
-        
+
         $query = RequestMethods::post("query", "");
         $order = RequestMethods::post("order", "created");
         $direction = RequestMethods::post("direction", "desc");
         $page = RequestMethods::post("page", 1);
         $limit = RequestMethods::post("limit", 10);
-        
+
         $where = array(
             "is_active = ?" => true,
             "validity = ?" => true
@@ -40,6 +40,138 @@ class OnlineTest extends Controller {
         $exams = Test::all($where, $fields, $order, $direction, $limit, $page);
 
         $view->set("exams", $exams);
+    }
+
+    public function test_details($title, $id) {
+        $seo = Framework\Registry::get("seo");
+        $view = $this->getActionView();
+        $test = Test::first(array(
+                    "id = ?" => $id
+        ));
+
+        $image = Image::first(array(
+                    "property = ?" => "test",
+                    "property_id = ?" => $id
+        ));
+        if ($image) {
+            $photo = Photograph::first(array(
+                        'id = ?' => $image->photo_id
+            ));
+        } else {
+            $organization = Organization::first(array('id = ?' => $test->organization_id));
+            $photo = Photograph::first(array('id = ?' => $organization->photo_id));
+        }
+        $seo->setTitle($test->title . " Details");
+        $seo->setKeywords($test->title . ", online test, practice test, online exams, skills verification");
+        $seo->setDescription($test->syllabus);
+
+        $view->set("test", $test);
+        $view->set("photo", $photo);
+        $this->getLayoutView()->set("seo", $seo);
+    }
+
+    public function test_certi($certi_id) {
+        if (empty($certi_id)) {
+            self::redirect("/tests");
+        }
+        $certificate = Certificate::first(array(
+                    "uniqid = ?" => $certi_id));
+
+        if (!$certificate) {
+            self::redirect("/tests");
+        }
+        $seo = Framework\Registry::get("seo");
+        $view = $this->getActionView();
+
+        $participant = Participant::first(array('id = ?' => $certificate->property_id));
+        $test = Test::first(array('id = ?' => $participant->test_id));
+        $user = User::first(array('id = ?' => $participant->user_id));
+        $student = Student::first(array('user_id = ?' => $participant->user_id));
+
+        $seo->setTitle($user->name . '\'s certificate of ' . $test->title);
+        $seo->setKeywords($user->name . '\'s certificate of ' . $test->title);
+        $seo->setDescription($user->name . '\'s certificate of ' . $test->title);
+        $this->getLayoutView()->set("seo", $seo);
+        
+        $view->set("participant", $participant);
+        $view->set("test", $test);
+        $view->set("user", $user);
+        $view->set("student", $student);
+    }
+
+    /**
+     * @before _secure
+     */
+    public function test($title, $test_id) {
+        $seo = Framework\Registry::get("seo");
+        $user = $this->getUser();
+        $view = $this->getActionView();
+
+        $test = Test::first(array(
+                    "id = ?" => $test_id
+        ));
+        $seo->setTitle($test->title);
+        $seo->setKeywords($test->title);
+        $seo->setDescription(strip_tags($test->syllabus));
+        $this->getLayoutView()->set("seo", $seo);
+        
+        $image = Image::first(array(
+                    "property = ?" => "test",
+                    "property_id = ?" => $test->id
+        ));
+        if ($image) {
+            $photo = Photograph::first(array("id = ?" => $image->photo_id));
+        } else {
+            $organization = Organization::first(array("id = ?" => $test->organization_id));
+            $photo = Photograph::first(array("id = ?" => $organization->photo_id));
+        }
+        $questions = Question::all(array("test_id = ?" => $test->id));
+
+        $participated = Participant::first(array(
+                    "test_id = ?" => $test->id,
+                    "user_id = ?" => $user->id
+        ));
+        $time = strftime("%Y-%m-%d %H:%M:%S", time());
+        if ($participated) {
+            $date1 = date_create($participated->created);
+            $date2 = date_create($time);
+            $diff = date_diff($date1, $date2);
+
+            if ($diff->format("%a") < '15') {
+                $this->_willRenderActionView = false;
+                $this->test_participated($test, $photo);
+            } else {
+                $participant = new Participant(array(
+                    "test_id" => $test->id,
+                    "user_id" => $user->id,
+                    "created" => $time
+                ));
+                $participant->save();
+            }
+        } else {
+            $participant = new Participant(array(
+                "test_id" => $test->id,
+                "user_id" => $user->id,
+                "created" => $time
+            ));
+
+            $participant->save();
+        }
+        
+        $view->set("participant", $participant);
+        $view->set("test", $test);
+        $view->set("questions", $questions);
+    }
+
+    public function test_participated($test) {
+        $seo = Framework\Registry::get("seo");
+        $view = $this->getActionView();
+
+        $seo->setTitle($test->title);
+        $seo->setKeywords($test->title);
+        $seo->setDescription(strip_tags($test->syllabus));
+        $this->getLayoutView()->set("seo", $seo);
+        $view->set("test", $test);
     }
 
 }
