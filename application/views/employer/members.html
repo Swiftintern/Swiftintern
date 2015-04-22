@@ -1,121 +1,64 @@
 <div id="page-wrapper">
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Members</h1>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
+    <div class="row col-lg-12">
 
-            <ul class="nav nav-tabs nav-justified" role="tablist" id="myTab">
-                <li class="active"><a href="#all_members" role="tab" data-toggle="tab">Members of {echo $company->name}</a></li>
-                <li><a href="#members_of" role="tab" data-toggle="tab">{echo $user->name} Managing</a></li>
-            </ul>
-
-            <div class="tab-content">
-                <div class="tab-pane active" id="all_members">
-                    <form class="form-inline" role="form" id="invite_member">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <label class="sr-only">Email address</label>
-                                <div class="input-group-addon">@</div>
-                                <input type="email" name="email" class="form-control" placeholder="Enter email">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <label class="sr-only">Authority</label>
-                                <select name="authority" class="form-control">
-                                    <option value="editor">Editor</option>
-                                    <option value="analyst">Analyst</option>
-                                    <option value="selected">Selected</option>
-                                    <option value="rejected">Rejected</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <input type="hidden" name="organization_id" value="{echo $company->id}">
-                        <button type="submit" class="btn btn-primary">Invite</button>
-                    </form>
-                    <hr>
-                    <div class="panel panel-default">
-                        <div class="panel-body" id="result_status">
-                            <p>Note : you can invite other members with different authority to manage your profile/organization.</p>
-                        </div>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Joined</th>
-                                    <th>Designation</th>
-                                    <th>Authority</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="results">
-                                {foreach $mem in $allmembers}
-                                    {if true}
-                                    <tr>
-                                        <td>{echo $mem->name}</td>
-                                        <td><small>{echo $mem->created}<small></td>
-                                        <td>{echo $mem->designation}</td>
-                                        <td>{echo ucfirst($mem->authority)}</td>
-
-                                        {if $mem->authority != 'admin'}
-                                            <td><button name="" value="" class="btn btn-danger btn-xs"><i class="fa fa-trash fa-fw"></i> Delete</button></td>
-                                        {/if}
-                                        {else}
-                                            <td><button name="message" value="{echo $mem->user_id}" class="btn btn-warning btn-xs"><i class="fa fa-envelope fa-fw"></i> Message</button></td>
-                                        {/else}
-                                    <tr>
-                                    {/if}
-                                    {else}
-                                        <tr>
-                                            <td>Invited</td>
-                                            <td><small>{echo $mem->created}<small></td>
-                                            <td>{echo $mem->designation}</td>
-                                            <td>{echo ucfirst($mem->authority)}</td>
-                                            <td><button name="member" value="{echo $mem->id}" class="btn btn-danger btn-xs"><i class="fa fa-trash fa-fw"></i> Delete</button></td>
-                                        </tr>
-                                    {/else}
-                                    </tr>
-                                {/foreach}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="tab-pane" id="members_of">
-                    <div class="panel panel-default">
-                        <div class="panel-body" id="result_status">
-                            <p>Note : you can leave any profile/organization.</p>
-                        </div>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Organization</th>
-                                    <th>Joined</th>
-                                    <th>Designation</th>
-                                    <th>Authority</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="results">
-                                {foreach $member in $memberOf}
-                                    <tr>
-                                        <td>{echo $member->organization->name}</td>
-                                        <td><small>{echo $member->created}<small></td>
-                                        </td>
-                                        <td>{echo $member->designation}</td>
-                                        <td>{echo ucfirst($member->authority)}</td>
-                                        <td><button name="delete" value="member" id="{echo $member->id}" class="btn btn-danger btn-xs"><i class="fa fa-sign-out"></i> Leave</button></td>
-                                    </tr>
-                                {/foreach}
-                            </tbody>
-                        </table>
-                    </div>
+        <h1 class="page-header text-center">Team Members</h1>
+        {if(isset($success))}
+        <p>Sent Request Successfully</p>
+        {/if}
+        <form class="form-inline" role="form" method="POST" action="employer/member">
+            <div class="form-group">
+                <div class="input-group">
+                    <label class="sr-only">Email address</label>
+                    <div class="input-group-addon">@</div>
+                    <input type="email" name="email" class="form-control" placeholder="Enter email">
                 </div>
             </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <label class="sr-only">Authority</label>
+                    <select name="authority" class="form-control">
+                        <option value="editor">Editor</option>
+                    </select>
+                </div>
+            </div>
+
+            <input type="hidden" name="action" value="member">
+            <button type="submit" class="btn btn-primary">Invite</button>
+        </form>
+        <hr>
+        <div class="panel panel-default">
+            <div class="panel-body" id="result_status">
+                <p>Note : you can invite other members with different authority to manage your profile/organization.</p>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Joined</th>
+                        <th>Designation</th>
+                        <th>Authority</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="results">
+                    {foreach $mem in $allmembers}
+                    <tr>
+                        <td>{echo $mem->name}</td>
+                        <td>{echo $mem->created}</td>
+                        <td>{echo $mem->designation}</td>
+                        <td>{echo ucfirst($mem->authority)}</td>
+
+                        {if $mem->authority != 'admin'}
+                            <td><button name="" value="" class="btn btn-danger btn-xs"><i class="fa fa-trash fa-fw"></i> Delete</button></td>
+                        {/if}
+                        {else}
+                            <td><button name="message" value="{echo $mem->user_id}" class="btn btn-warning btn-xs"><i class="fa fa-envelope fa-fw"></i> Message</button></td>
+                        {/else}
+                    <tr>
+
+                        {/foreach}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

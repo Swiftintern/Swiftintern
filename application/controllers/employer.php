@@ -94,9 +94,7 @@ class Employer extends Controller {
         );
         $allmembers = array();
         foreach ($employees as $emp) {
-            $user = User::first(
-                            array("id = ?" => $emp->user_id), array("name")
-            );
+            $user = User::first(array("id = ?" => $emp->user_id), array("name"));
 
             $allmembers[] = [
                 "id" => $emp->id,
@@ -106,6 +104,43 @@ class Employer extends Controller {
                 "authority" => $emp->authority,
                 "created" => \Framework\StringMethods::datetime_to_text($emp->created)
             ];
+        }
+        
+        if (RequestMethods::post("action") == "member") {
+            $name = explode("@", RequestMethods::post("email"));
+            $exists = User::first(array("email"=> RequestMethods::post("email")));
+            if(!$exists){
+                $user = new User(array(
+                    "name" => $name[0],
+                    "email" => RequestMethods::post("email"),
+                    "password" => sha1($name[0]),
+                    "access_token" => rand(100000, 9999999),
+                    "type" => "employer",
+                    "validity" => true
+                ));
+
+                if ($user->validate()) {
+                    $user->save();
+                    $member = new Member(array(
+                        "user_id" => $user->id,
+                        "organization_id" => $company->id,
+                        "designation" => "Team Member",
+                        "authority" => RequestMethods::post("authority"),
+                        "validity" => true
+                    ));
+                    
+                    $view->set("success", true);
+                }
+
+                $view->set("errors", $user->getErrors());
+                
+                
+            }  else {
+                $member = Member::first(array(
+                    "user_id" => $exists->id,
+                    "organization_id" => $company->id
+                ));
+            }
         }
 
         $view->set("company", $company);
@@ -222,7 +257,7 @@ class Employer extends Controller {
         $view->set("range", $range);
     }
 
-    public function edit() {
+    public function settings() {
         $this->changeLayout();
         $this->seo(array(
             "title" => "Edit Profile",
@@ -233,7 +268,9 @@ class Employer extends Controller {
 
         $view = $this->getActionView();
         $user = $this->getUser();
-        if (RequestMethods::post("save")) {
+        $view->set("errors", array());
+        
+        if (RequestMethods::post("action") == "profile") {
             echo 'here';
             $user = new User(array(
                 "name" => RequestMethods::post("name"),

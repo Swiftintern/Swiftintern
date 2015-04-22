@@ -1,6 +1,9 @@
 <?php
-
 define("DEBUG", TRUE);
+
+if(DEBUG){
+    //echo "Website is Under Testing and Updation, please try later. sorry for inconvinience";
+}
 
 // 1. define the default path for includes
 //define("APP_PATH", dirname(dirname(__FILE__)));
