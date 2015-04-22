@@ -16,6 +16,7 @@
 					<div class="panel-body">
 						<p>{echo $test->title}</p>
 						<p>Category : {echo $test->subject}</p>
+						<p>Created On : {echo Framework\StringMethods::only_date($test->created)}</p>
 					</div>
 				</div>
 			</div>
@@ -38,6 +39,7 @@
 					<div class="panel-body">
 						<p>Marks : {echo $participant->score}%</p>
 						<p>Question Attempted : {echo $participant->attempted}</p>
+						<p>Give On : {echo Framework\StringMethods::only_date($participant->created)}</p>
 					</div>
 				</div>
 			</div>
@@ -70,6 +72,7 @@
 				</tr>
 				<tr>
 					<td style="font-family: arial;">
+					<p>Certificate Id : {echo $certificate->uniqid}<br>Verify at : www.swiftintern.com/test , Date : {echo Framework\StringMethods::only_date($participant->created)}</p>
 					</td>
 				</tr>
 			</table>
