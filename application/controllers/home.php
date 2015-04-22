@@ -126,15 +126,7 @@ class Home extends Controller {
 
         $this->getLayoutView()->set("seo", $seo);
     }
-    
-    public function hemant() {
-        $seo = Framework\Registry::get("seo");
 
-        $seo->setTitle("Terms of Service");
-        $seo->setKeywords("terms of use, refund policy, swiftintern");
-        $seo->setDescription("Following is the agrrement of use on swiftintern including refund policy.");
-
-<<<<<<< HEAD
     public function sponsored() {
         global $datetime;
         $this->seo(array(
@@ -190,9 +182,9 @@ class Home extends Controller {
         global $datetime;
         $view = $this->getActionView();
         $session = Registry::get("session");
-        
         $user = $this->user;
         $student = $session->get("student");
+        
         $opportunity = Opportunity::first(array("id = ?" => $id));
         $organization = Organization::first(array("id = ?" => $opportunity->organization_id), array("id", "name"));
         
@@ -362,10 +354,3 @@ class Home extends Controller {
     }
 
 }
-=======
-        $this->getLayoutView()->set("seo", $seo);
-        
-        $this->getLayoutView()->set("name", 'hemant');
-    }
-}
->>>>>>> origin/secondary

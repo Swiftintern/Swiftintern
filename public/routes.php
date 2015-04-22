@@ -100,53 +100,8 @@ $routes = array(
     ),
     array(
         "pattern" => ":title/:id",
-<<<<<<< HEAD
         "controller" => "home",
         "action" => "opportunity"
-=======
-        "controller" => "opportunities",
-        "action" => "view"
-    ),
-    array(
-        "pattern" => "test-details/:title/:id",
-        "controller" => "onlinetest",
-        "action" => "test_details"
-    ),
-    array(
-        "pattern" => "test/:title/:id",
-        "controller" => "onlinetest",
-        "action" => "test"
-    ),
-    array(
-        "pattern" => "test-participated/:title/:id",
-        "controller" => "onlinetest",
-        "action" => "test_participated"
-    ),
-    array(
-        "pattern" => "tests",
-        "controller" => "onlinetest",
-        "action" => "index"  
-    ),
-    array(
-        "pattern" => "test",
-        "controller" => "onlinetest",
-        "action" => "index"  
-    ),
-    array(
-        "pattern" => "result/:participant_id",
-        "controller" => "onlinetest",
-        "action" => "test_result"  
-    ),
-    array(
-        "pattern" => "online-certification-exams",
-        "controller" => "onlinetest",
-        "action" => "certification"  
-    ),
-    array(
-        "pattern" => "certificate/:certi_id",
-        "controller" => "onlinetest",
-        "action" => "test_certi"
->>>>>>> origin/secondary
     )
 );
 
