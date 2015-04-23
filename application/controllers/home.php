@@ -40,6 +40,29 @@ class Home extends Controller {
         $this->getLayoutView()->set("seo", Framework\Registry::get("seo"));
     }
 
+    public function linkedin() {
+        $li = Framework\Registry::get("linkedin");
+
+        $url = $li->getLoginUrl(array(
+            LinkedIn::SCOPE_FULL_PROFILE,
+            LinkedIn::SCOPE_EMAIL_ADDRESS,
+            LinkedIn::SCOPE_CONTACT_INFO
+        ));
+
+        if (isset($_REQUEST['code'])) {
+            $token = $li->getAccessToken($_REQUEST['code']);
+            $token_expires = $li->getAccessTokenExpiration();
+        }
+
+        if ($li->hasAccessToken()) {
+            $info = $li->get('/people/~:(first-name,last-name,positions,email-address,public-profile-url,location,picture-url,educations,skills,phone-numbers)');
+            echo "<pre>", print_r($info), "</pre>";
+        } else {
+            header("Location: {$url}");
+            exit();
+        }
+    }
+
     public function about() {
         $seo = Framework\Registry::get("seo");
 
@@ -184,10 +207,10 @@ class Home extends Controller {
         $session = Registry::get("session");
         $user = $this->user;
         $student = $session->get("student");
-        
+
         $opportunity = Opportunity::first(array("id = ?" => $id));
         $organization = Organization::first(array("id = ?" => $opportunity->organization_id), array("id", "name"));
-        
+
         $view->set("errors", array());
         if (RequestMethods::post("action") == "application") {
             $application = new Application(array(
@@ -219,12 +242,21 @@ class Home extends Controller {
 
     public function login() {
         $seo = Registry::get("seo");
+        $li = Framework\Registry::get("linkedin");
+        $li->changeCallbackURL("http://swiftintern.com/login");
+
+        $url = $li->getLoginUrl(array(
+            LinkedIn::SCOPE_FULL_PROFILE,
+            LinkedIn::SCOPE_EMAIL_ADDRESS,
+            LinkedIn::SCOPE_CONTACT_INFO
+        ));
 
         $seo->setTitle("Login");
         $seo->setKeywords("login, signin, students account login, employer account login");
         $seo->setDescription("Login to your account on swiftintern, students login to apply for internship and employer login to hire interns.");
 
         $this->getLayoutView()->set("seo", $seo);
+        $this->getActionView()->set("url", $url);
 
         $session = Registry::get("session");
         $user = $this->user;
@@ -319,7 +351,7 @@ class Home extends Controller {
 
     public function logout() {
         $this->setUser(false);
-        self::redirect("/users/login.html");
+        self::redirect("/home");
     }
 
     /**

@@ -1,5 +1,5 @@
 <?php
-
+/*
 // initialize logger
 include("logger.php");
 
@@ -105,4 +105,4 @@ Framework\Events::add("framework.view.construct.after", function($file, $templat
 
 Framework\Events::add("framework.view.render.before", function($file) use ($logger) {
     $logger->log("framework.view.render.before: " . $file);
-});
+});*/
