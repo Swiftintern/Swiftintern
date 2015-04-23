@@ -27,15 +27,23 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle whitetext" data-toggle="dropdown"><i class="fa fa-user fa-lg"></i> {$user->name} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="/student/applications">Applied</a></li>
-                            <li><a href="/student/recommends">Recommended</a></li>
-                            <li><a href="/student">My Profile</a></li>
-                            <li class="divider"></li>
                             <li><a href="/student/resumes">Resume</a></li>
+                            <li><a href="/student/settings">Settings</a></li>
+                            <li class="divider"></li>
                             <li><a href="/logout">Logout</a></li>
                         </ul>
                     </li>
                     {/if}
+                    {else}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle whitetext" data-toggle="dropdown"><i class="fa fa-user fa-lg"></i> {$user->name} <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{$user->type}">Profile</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/logout">Logout</a></li>
+                        </ul>
+                    </li>
+                    {/else}
                     {/if}
                     {else}
                     <li class="dropdown">
