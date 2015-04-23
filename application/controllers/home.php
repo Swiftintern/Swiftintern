@@ -254,9 +254,10 @@ class Home extends Controller {
         $seo->setTitle("Login");
         $seo->setKeywords("login, signin, students account login, employer account login");
         $seo->setDescription("Login to your account on swiftintern, students login to apply for internship and employer login to hire interns.");
-
+        
         $this->getLayoutView()->set("seo", $seo);
-        $this->getActionView()->set("url", $url);
+        $view = $this->getActionView();
+        $view->set("url", $url);
 
         $session = Registry::get("session");
         $user = $this->user;
@@ -264,33 +265,24 @@ class Home extends Controller {
         if (!empty($user)) {
             self::redirect(Framework\StringMethods::plural($user->type));
         }
+        
+        if (isset($_REQUEST['code'])) {
+            $token = $li->getAccessToken($_REQUEST['code']);
+            $token_expires = $li->getAccessTokenExpiration();
+        }
+        
+        if ($li->hasAccessToken()) {
+            $info = $li->get('/people/~:(email-address,picture-url)');
 
-        if (RequestMethods::post("action") == "login") {
-            $email = RequestMethods::post("email");
-            $password = RequestMethods::post("password");
-
-            $view = $this->getActionView();
-            $error = false;
-
-            if (empty($email)) {
-                $view->set("email_error", "Email not provided");
-                $error = true;
-            }
-
-            if (empty($password)) {
-                $view->set("password_error", "Password not provided");
-                $error = true;
-            }
-
-            if (!$error) {
+            if ($info) {
                 $user = User::first(array(
-                            "email = ?" => $email,
-                            "password = ?" => sha1($password),
-                            "validity = ?" => true
+                    "email = ?" => $info["emailAddress"],
+                    "validity = ?" => true
                 ));
 
                 if (!empty($user)) {
                     $this->user = $user;
+                    $session->set("pictureUrl", $info["pictureUrl"]);
                     switch ($user->type) {
                         case "student":
                             $student = Student::first(array(
@@ -299,7 +291,7 @@ class Home extends Controller {
                             if (!empty($student)) {
                                 $session->set("student", $student);
                             }
-                            self::redirect("/students/profile");
+                            self::redirect("/students");
                             break;
                         case "employer":
                             $member = Member::all(
