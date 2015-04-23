@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of files
+ * Handles all files and photos
  *
  * @author Faizan Ayubi
  */
@@ -11,6 +11,10 @@ use Fonts\Types as Types;
 
 class Files extends Controller {
 
+    /**
+     * Function for downloading fonts
+     * @param type $name
+     */
     public function fonts($name) {
         $path = "/fonts";
 
@@ -87,9 +91,10 @@ class Files extends Controller {
     }
 
     public function thumbnails($id) {
-        $path = APP_PATH . "/public/uploads";
+        $path = APP_PATH . "/public/assets/uploads/images";
+        $cdn = CDN;
 
-        $photo = Photograph::first(array(
+        $file = Photograph::first(array(
             "id = ?" => $id
         ));
 
@@ -97,7 +102,7 @@ class Files extends Controller {
             $width = 64;
             $height = 64;
 
-            $name = $file->name;
+            $name = $file->filename;
             $filename = pathinfo($name, PATHINFO_FILENAME);
             $extension = pathinfo($name, PATHINFO_EXTENSION);
 
@@ -105,9 +110,9 @@ class Files extends Controller {
                 $thumbnail = "{$filename}-{$width}x{$height}.{$extension}";
 
                 if (!file_exists("{$path}/{$thumbnail}")) {
-                    $imagine = new Imagine\Gd\Imagine();
+                    $imagine = new \Imagine\Gd\Imagine();
 
-                    $size = new Imagine\Image\Box($width, $height);
+                    $size = new \Imagine\Image\Box($width, $height);
                     $mode = Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
 
                     $imagine
@@ -116,20 +121,13 @@ class Files extends Controller {
                             ->save("{$path}/thumbnails/{$thumbnail}");
                 }
 
-                header("Location: /uploads/thumbnails/{$thumbnail}");
+                header("Location: {$cdn}uploads/images/thumbnails/{$thumbnail}");
                 exit();
             }
 
-            header("Location: /uploads/{$name}");
+            header("Location: /images/{$name}");
             exit();
         }
-    }
-
-    /**
-     * @before _secure, _admin
-     */
-    public function view() {
-        $this->actionView->set("files", File::all());
     }
 
     /**
@@ -141,20 +139,6 @@ class Files extends Controller {
         ));
         if ($file) {
             $file->deleted = true;
-            $file->save();
-        }
-        self::redirect("/files/view.html");
-    }
-
-    /**
-     * @before _secure, _admin
-     */
-    public function undelete($id) {
-        $file = File::first(array(
-            "id = ?" => $id
-        ));
-        if ($file) {
-            $file->deleted = false;
             $file->save();
         }
         self::redirect("/files/view.html");

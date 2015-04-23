@@ -38,6 +38,11 @@ class Organizations extends Controller {
         $this->getActionView()->set("organizations", $organizations);
     }
     
+    public function photo($organization_id) {
+        $org = Organization::first(array("id = ?" => $organization_id),array("photo_id"));
+        self::redirect("/thumbnails/{$org->photo_id}");
+    }
+    
     public function organization($name, $id) {
         $view = $this->getActionView();
         $organization = Organization::first(

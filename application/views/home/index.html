@@ -24,16 +24,17 @@
 <section id="featured">
     <div class="container">
         <div class="row">
+            <h1 class="text-center">Get the perfect internship and training this summer</h1>
             <div class="col-xs-12 col-md-9">
-
                 <table class="table table-striped">
                     <tbody id="results">
                         {foreach $opportunity in $opportunities}
+                        {script $org = Organization::first(array("id = ?" => $opportunity->organization_id),array("photo_id"))}
                         <tr>
                             <td>
                                 <div class="media">
                                     <a class="pull-left hidden-xs" href="{echo urlencode($opportunity->title)}/{echo $opportunity->id}">
-                                        <img src="http://assets.swiftintern.com/uploads/images/sml_7921790.jpg" class="media-object small_image" alt="{echo $opportunity->title}">
+                                        <img src="/thumbnails/{$org->photo_id}" class="media-object small_image" alt="{echo $opportunity->title}">
                                     </a>
                                     <div class="media-body">
                                         <h4 class="media-heading"><a href="{echo urlencode($opportunity->title)}/{echo $opportunity->id}">{echo $opportunity->title}</a></h4>
@@ -55,7 +56,8 @@
                 </div>
                 <br>
             </div>
-            <aside class="col-xs-12 col-md-3">
+            
+            <aside class="col-md-3">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <i class="fa fa-search"></i> Advanced Search
@@ -78,15 +80,23 @@
                         <input type="submit" class="btn btn-primary btn-block" value="Search">
                     </form>
                 </div>
-                <div class="panel panel-default">
+                
+                <div class="list-group">
+                    <a href="employer/register" class="list-group-item"><i class="fa fa-user-plus fa-2x"></i> Hire Interns</a>
+                    <a href="students/register" class="list-group-item"><i class="fa fa-briefcase fa-2x"></i> Get Internhsip</a>
+                </div>
+                
+                <!--<div class="panel panel-default">
                     <div class="panel-heading">
-                        <i class="fa fa-twitter"></i> Follow us on Twitter
+                        <i class="fa fa-facebook-square"></i> Like us on FaceBook
                     </div>
                     <div class="panel-body">
-                        <div class="fb-like-box" data-href="https://www.facebook.com/swiftintern" data-width="230" data-colorscheme="light" data-show-faces="true" data-header="true" data-stream="false" data-show-border="true"></div>
+                        
                     </div>
-                </div>
+                </div>-->
+                
             </aside>
+            
         </div>
     </div>
 </section>

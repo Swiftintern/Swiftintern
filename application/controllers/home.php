@@ -28,7 +28,7 @@ class Home extends Controller {
             "validity = ?" => true
         );
 
-        $fields = array("id", "title", "eligibility", "location", "last_date");
+        $fields = array("id", "title", "eligibility", "location", "last_date", "organization_id");
 
         $count = Opportunity::count($where);
         $opportunities = Opportunity::all($where, $fields, $order, $direction, $limit, $page);

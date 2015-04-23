@@ -1,22 +1,18 @@
 <?php
+ob_start();
 define("DEBUG", TRUE);
 
-if(DEBUG){
-    //echo "Website is Under Testing and Updation, please try later. sorry for inconvinience";
-}
-
 // 1. define the default path for includes
-//define("APP_PATH", dirname(dirname(__FILE__)));
-
 define("APP_PATH", str_replace(DIRECTORY_SEPARATOR, "/", dirname(__FILE__)));
-define("CDN", "http://localhost/swiftintern/public/assets/");
+
+define("CDN", "http://assets.swiftintern.com/");
 define("LOGO", "1431");
 
 try {
 
     // imagine library's class autoloader
     spl_autoload_register(function($class) {
-        $path = lcfirst(str_replace("\\", DIRECTORY_SEPARATOR, $class));
+        $path = ucfirst(str_replace("\\", DIRECTORY_SEPARATOR, $class));
         $file = APP_PATH . "/application/libraries/{$path}.php";
 
         if (file_exists($file)) {
@@ -24,7 +20,7 @@ try {
             return true;
         }
     });
-
+    
     // 2. load the Core class that includes an autoloader
     require("framework/core.php");
     Framework\Core::initialize();
@@ -69,7 +65,6 @@ try {
 
     // include custom routes 
     include("public/routes.php");
-
     // 8. dispatch the current request 
     $router->dispatch();
 

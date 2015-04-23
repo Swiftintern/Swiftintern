@@ -2,7 +2,7 @@
 
     var Model = (function () {
         function Model(opts) {
-            this.api = 'http://localhost/swiftintern/';
+            this.api = window.location.origin + '/';
             this.ext = '.json';
         }
 
