@@ -9,7 +9,7 @@ use Shared\Controller as Controller;
 use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
-class Home extends Controller {
+class Home extends Users {
 
     public function index() {
         $view = $this->getActionView();
@@ -238,112 +238,6 @@ class Home extends Controller {
         $view->set("enddate", $datetime->format("Y-m-d"));
         $view->set("opportunity", $opportunity);
         $view->set("organization", $organization);
-    }
-
-    public function login() {
-        $seo = Registry::get("seo");
-        $li = Framework\Registry::get("linkedin");
-        $li->changeCallbackURL("http://swiftintern.com/login");
-
-        $url = $li->getLoginUrl(array(
-            LinkedIn::SCOPE_FULL_PROFILE,
-            LinkedIn::SCOPE_EMAIL_ADDRESS,
-            LinkedIn::SCOPE_CONTACT_INFO
-        ));
-
-        $seo->setTitle("Login");
-        $seo->setKeywords("login, signin, students account login, employer account login");
-        $seo->setDescription("Login to your account on swiftintern, students login to apply for internship and employer login to hire interns.");
-        
-        $this->getLayoutView()->set("seo", $seo);
-        $view = $this->getActionView();
-        $view->set("url", $url);
-
-        $session = Registry::get("session");
-        $user = $this->user;
-
-        if (!empty($user)) {
-            self::redirect(Framework\StringMethods::plural($user->type));
-        }
-        
-        if (isset($_REQUEST['code'])) {
-            $token = $li->getAccessToken($_REQUEST['code']);
-            $token_expires = $li->getAccessTokenExpiration();
-        }
-        
-        if ($li->hasAccessToken()) {
-            $info = $li->get('/people/~:(email-address,picture-url)');
-
-            if ($info) {
-                $user = User::first(array(
-                    "email = ?" => $info["emailAddress"],
-                    "validity = ?" => true
-                ));
-
-                if (!empty($user)) {
-                    $this->user = $user;
-                    $session->set("pictureUrl", $info["pictureUrl"]);
-                    switch ($user->type) {
-                        case "student":
-                            $student = Student::first(array(
-                                        "user_id = ?" => $user->id
-                            ));
-                            if (!empty($student)) {
-                                $session->set("student", $student);
-                            }
-                            self::redirect("/students");
-                            break;
-                        case "employer":
-                            $member = Member::all(
-                                            array(
-                                        "user_id = ?" => $user->id,
-                                        "validity = ?" => true
-                                            ), array("id", "organization_id", "designation", "authority")
-                            );
-
-                            $membersof = array();
-                            foreach ($member as $mem) {
-                                $organization = Organization::first(
-                                                array("id = ?" => $mem->organization_id), array("id", "name", "photo_id")
-                                );
-                                $membersof[] = array(
-                                    "id" => $mem->id,
-                                    "organization" => $organization,
-                                    "designation" => $mem->designation,
-                                    "authority" => $mem->authority
-                                );
-                            }
-
-                            $employer = \Framework\ArrayMethods::toObject($membersof[0]);
-                            if (!empty($employer)) {
-                                $session->set("member", \Framework\ArrayMethods::toObject($membersof));
-                                $session->set("employer", $employer);
-                                self::redirect("/employer");
-                            } else {
-                                self::redirect("/users/blocked");
-                            }
-                            break;
-                    }
-                } else {
-                    $view->set("password_error", "Email address and/or password are incorrect");
-                }
-            }
-        }
-    }
-
-    public function blocked() {
-        $this->setUser(false);
-        $this->seo(array(
-            "title" => "Blocked",
-            "keywords" => "",
-            "description" => "",
-            "view" => $this->getLayoutView()
-        ));
-    }
-
-    public function logout() {
-        $this->setUser(false);
-        self::redirect("/home");
     }
 
     /**

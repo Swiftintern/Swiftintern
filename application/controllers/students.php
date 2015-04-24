@@ -9,7 +9,7 @@ use Shared\Controller as Controller;
 use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
-class Students extends Controller {
+class Students extends Users {
 
     /**
      * @before _secure
@@ -32,27 +32,19 @@ class Students extends Controller {
         $student = $session->get("student");
 
         $qualifications = Qualification::all(
-                        array(
-                    "student_id = ?" => $student->id
-                        ), array("id", "degree", "major", "organization_id", "gpa", "passing_year")
+                        array("student_id = ?" => $student->id), array("id", "degree", "major", "organization_id", "gpa", "passing_year")
         );
 
         $works = Work::all(
-                        array(
-                    "student_id = ?" => $student->id
-                        ), array("id", "designation", "responsibility", "organization_id", "duration")
+                        array("student_id = ?" => $student->id), array("id", "designation", "responsibility", "organization_id", "duration")
         );
 
         $socials = Social::all(
-                        array(
-                    "user_id = ?" => $user->id
-                        ), array("id", "social_platform", "link")
+                        array("user_id = ?" => $user->id), array("id", "social_platform", "link")
         );
 
         $resumes = Resume::all(
-                        array(
-                    "student_id = ?" => $student->id
-                        ), array("id", "type")
+                        array("student_id = ?" => $student->id), array("id", "type")
         );
 
         if (count($qualifications))
@@ -72,25 +64,130 @@ class Students extends Controller {
         $view->set("resumes", $resumes);
         $view->set("socials", $socials);
     }
+    
+    protected function newstudent($info) {
+        if ($info["phoneNumbers"]["_total"] > 0) {
+            $phone = $info["phoneNumbers"]["values"]["0"]["phoneNumber"];
+        } else {
+            $phone = "";
+        }
+        $user = new User(array(
+            "name" => $info["firstName"] . " " . $info["lastName"],
+            "email" => $info["emailAddress"],
+            "phone" => $phone,
+            "password" => rand(100000, 99999999),
+            "access_token" => rand(100000, 99999999),
+            "type" => "student",
+            "validity" => "1"
+        ));
+
+        if ($user->save()) {
+
+            $social = new Social(array(
+                "user_id" => $user->id,
+                "social_platform" => "linkedin",
+                "link" => $info["publicProfileUrl"]
+            ));
+            $social->save();
+
+            if (isset($info["location"]["name"])) {
+                $city = $info["location"]["name"];
+            } else {
+                $city = "";
+            }
+            $skills = "";
+            if ($info["skills"]["_total"] > 0) {
+                foreach ($info["skills"]["values"] as $key => $value) {
+                    $skills .= $value["skill"]["name"];
+                    $skills .= ",";
+                }
+            }
+
+            $student = new Student(array(
+                "user_id" => $user->id,
+                "city" => $city,
+                "skills" => $skills
+            ));
+
+            if ($student->save()) {
+                /**
+                 * Saving Education Info
+                 */
+                if ($info["educations"]["_total"] > 0) {
+                    foreach ($info["educations"]["values"] as $key => $value) {
+                        $org = Organization::first(array("name = ?" => $value["schoolName"]), array("id"));
+                        if ($org) {
+                            $orgId = $org->id;
+                        } else {
+                            $organization = new Organization(array(
+                                "name" => $value["schoolName"]
+                            ));
+                            if ($organization->save()) {
+                                $orgId = $organization->id;
+                            }
+                        }
+                        $qualification = new Qualification(array(
+                            "student_id" => $student->id,
+                            "organization_id" => $orgId,
+                            "degree" => $value["degree"],
+                            "major" => $value["fieldOfStudy"],
+                            "gpa" => "",
+                            "passing_year" => $value["endDate"]["year"]
+                        ));
+                        $qualification->save();
+                    }
+                }
+
+                /**
+                 * Adding work experience
+                 */
+                if ($info["positions"]["_total"] > 0) {
+                    foreach ($info["positions"]["values"] as $key => $value) {
+                        $org = Organization::first(array("name = ?" => $value["company"]["name"]), array("id"));
+                        if ($org) {
+                            $orgId = $org->id;
+                        } else {
+                            $organization = new Organization(array(
+                                "name" => $value["company"]["name"]
+                            ));
+                            if ($organization->save()) {
+                                $orgId = $organization->id;
+                            }
+                        }
+                        $work = new Work(array(
+                            "student_id" => $student->id,
+                            "organization_id" => $orgId,
+                            "duration" => "from " . $value["startDate"]["year"],
+                            "designation" => $value["title"],
+                            "responsibility" => $value["summary"]
+                        ));
+                        $work->save();
+                    }
+                }
+            }
+        }
+        return $user;
+    }
 
     /**
-     * Does three important things, first is retrieving the posted form data, second is checking each form field’s value
-     * third thing it does is to create a new user row in the database
+     * ALgorithm to register
+     * if(check user exist) logins user
+     * else creates new student and then logins user
      */
     public function register() {
         $li = Framework\Registry::get("linkedin");
+        $li->changeCallbackURL("http://swiftintern.com/students/register");
+        $url = $li->getLoginUrl(array(
+            LinkedIn::SCOPE_FULL_PROFILE,
+            LinkedIn::SCOPE_EMAIL_ADDRESS,
+            LinkedIn::SCOPE_CONTACT_INFO
+        ));
 
         $this->seo(array(
             "title" => "Get Internship | Student Register",
             "keywords" => "get internship, student register",
             "description" => "Register with us to get internship from top companies in india and various startups in Delhi, Mumbai, Bangalore, Chennai, hyderabad etc",
             "view" => $this->getLayoutView()
-        ));
-
-        $url = $li->getLoginUrl(array(
-            LinkedIn::SCOPE_FULL_PROFILE,
-            LinkedIn::SCOPE_EMAIL_ADDRESS,
-            LinkedIn::SCOPE_CONTACT_INFO
         ));
 
         $view = $this->getActionView();
@@ -103,105 +200,14 @@ class Students extends Controller {
 
         if ($li->hasAccessToken()) {
             $info = $li->get('/people/~:(first-name,last-name,positions,email-address,public-profile-url,location,picture-url,educations,skills)');
-            if ($info["phoneNumbers"]["_total"] > 0) {
-                $phone = $info["phoneNumbers"]["values"]["0"]["phoneNumber"];
+
+            //checks user exist and then logins
+            if ($this->access($info)) {
+                self::redirect("/" . $user->type);
             } else {
-                $phone = "";
-            }
-            $user = new User(array(
-                "name" => $info["firstName"] . " " . $info["lastName"],
-                "email" => $info["emailAddress"],
-                "phone" => $phone,
-                "password" => rand(100000, 99999999),
-                "access_token" => rand(100000, 99999999),
-                "type" => "student",
-                "validity" => "1"
-            ));
-
-            if ($user->save()) {
-                
-                $social = new Social(array(
-                    "user_id" => $user->id,
-                    "social_platform" => "linkedin",
-                    "link" => $info["publicProfileUrl"]
-                ));
-                $social->save();
-                
-                if (isset($info["location"]["name"])) {
-                    $city = $info["location"]["name"];
-                } else {
-                    $city = "";
-                }
-                $skills = "";
-                if ($info["skills"]["_total"] > 0) {
-                    foreach ($info["skills"]["values"] as $key => $value) {
-                        $skills .= $value["skill"]["name"];
-                        $skills .= ",";
-                    }
-                }
-
-                $student = new Student(array(
-                    "user_id" => $user->id,
-                    "city" => $city,
-                    "skills" => $skills
-                ));
-
-                if ($student->save()) {
-                    /**
-                     * Saving Education Info
-                     */
-                    if ($info["educations"]["_total"] > 0) {
-                        foreach ($info["educations"]["values"] as $key => $value) {
-                            $org = Organization::first(array("name = ?" => $value["schoolName"]),array("id"));
-                            if($org){
-                                $orgId = $org->id;
-                            }else{
-                                $organization = new Organization(array(
-                                    "name" => $value["schoolName"]
-                                ));
-                                if($organization->save()){
-                                    $orgId = $organization->id;
-                                }
-                            }
-                            $qualification = new Qualification(array(
-                                "student_id" => $student->id,
-                                "organization_id" => $orgId,
-                                "degree" => $value["degree"],
-                                "major" => $value["fieldOfStudy"],
-                                "gpa" => "",
-                                "passing_year" => $value["endDate"]["year"]
-                            ));
-                            $qualification->save();
-                        }
-                    }
-                    
-                    /**
-                     * Adding work experience
-                     */
-                    if ($info["positions"]["_total"] > 0) {
-                        foreach ($info["positions"]["values"] as $key => $value) {
-                            $org = Organization::first(array("name = ?" => $value["company"]["name"]),array("id"));
-                            if($org){
-                                $orgId = $org->id;
-                            }else{
-                                $organization = new Organization(array(
-                                    "name" => $value["company"]["name"]
-                                ));
-                                if($organization->save()){
-                                    $orgId = $organization->id;
-                                }
-                            }
-                            $work = new Work(array(
-                                "student_id" => $student->id,
-                                "organization_id" => $orgId,
-                                "duration" => "from ".$value["startDate"]["year"],
-                                "designation" => $value["title"],
-                                "responsibility" => $value["summary"]
-                            ));
-                            $work->save();
-                        }
-                    }
-                    
+                $newuser = $this->newstudent($info);
+                if ($newuser) {
+                    $this->createSession($newuser);
                 }
             }
         }

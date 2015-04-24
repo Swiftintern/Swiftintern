@@ -2,6 +2,8 @@
 ob_start();
 define("DEBUG", TRUE);
 
+die('The Site is under Development please check on 25-04-2014');
+
 // 1. define the default path for includes
 define("APP_PATH", str_replace(DIRECTORY_SEPARATOR, "/", dirname(__FILE__)));
 

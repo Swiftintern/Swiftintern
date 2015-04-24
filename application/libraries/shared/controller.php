@@ -22,7 +22,7 @@ namespace Shared {
         public function seo($params = array()) {
             $seo = Registry::get("seo");
             foreach ($params as $key => $value) {
-                $property = "set".ucfirst($key);
+                $property = "set" . ucfirst($key);
                 $seo->$property($value);
             }
             $params["view"]->set("seo", $seo);
@@ -36,6 +36,18 @@ namespace Shared {
             if (!$user) {
                 header("Location: /login.html");
                 exit();
+            }
+        }
+
+        protected function _checkitem($options = array()) {
+            $model = $options["model"];
+            
+            $r = new \ReflectionClass(ucfirst($model));
+            $object = $r->newInstanceWithoutConstructor()->first($options["where"]);
+            if ($object) {
+                return $object;
+            } else {
+                return FALSE;
             }
         }
 

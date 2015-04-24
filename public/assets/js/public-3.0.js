@@ -75,6 +75,20 @@ function loadOpportunities(opts) {
 
 }
 
+function login(redirect){
+    request.read({
+        action: "home/login",
+        data: {
+            redirect: redirect
+        },
+        callback: function (data) {
+            if (data.url) {
+                window.location.href = data.url;
+            }
+        }
+    });
+}
+
 function loadSponsored(opts) {
     request.read({
         action: "home/sponsored",

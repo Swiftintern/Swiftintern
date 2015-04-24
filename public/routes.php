@@ -55,7 +55,7 @@ $routes = array(
     ),
     array(
         "pattern" => "login",
-        "controller" => "home",
+        "controller" => "users",
         "action" => "login"
     ),
     array(
