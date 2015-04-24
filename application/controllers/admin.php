@@ -14,19 +14,8 @@ class Admin extends Controller {
     public function index() {
         $this->willRenderLayoutView = false;
         $this->willRenderActionView = false;
-            
-        $response = $this->_checkitem(array(
-            "model" => "user",
-            "where" => array(
-                "id = ? " => "31"
-            )
-        ));
-        
-        var_dump($response);
     }
     
-    public function loginuser($param) {
-        
-    }
+    
 
 }

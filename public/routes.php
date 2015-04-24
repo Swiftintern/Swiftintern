@@ -9,6 +9,11 @@ $routes = array(
         "action" => "register"
     ),
     array(
+        "pattern" => "student",
+        "controller" => "students",
+        "action" => "index"
+    ),
+    array(
         "pattern" => "blog",
         "controller" => "home",
         "action" => "blog"

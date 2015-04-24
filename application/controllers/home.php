@@ -200,32 +200,42 @@ class Home extends Users {
 
         $view->set("opportunity", $opportunity);
     }
+    
+    function application() {
+        $this->willRenderLayoutView = false;
+        $this->willRenderActionView = false;
+        $application = new Application(array(
+            "student_id" => RequestMethods::post("student_id", "1"),
+            "opportunity_id" => RequestMethods::post("opportunity_id", "363"),
+            "property_id" => RequestMethods::post("property_id", "204"),
+            "status" => RequestMethods::post("status", "applied"),
+            "updated" => RequestMethods::post("updated", "")
+        ));
+
+        $application->save();
+        echo '<pre>', print_r($application),'</pre>';
+    }
 
     public function internship($title, $id) {
         global $datetime;
         $view = $this->getActionView();
         $session = Registry::get("session");
-        $user = $this->user;
         $student = $session->get("student");
 
         $opportunity = Opportunity::first(array("id = ?" => $id));
         $organization = Organization::first(array("id = ?" => $opportunity->organization_id), array("id", "name"));
 
-        $view->set("errors", array());
         if (RequestMethods::post("action") == "application") {
             $application = new Application(array(
                 "student_id" => RequestMethods::post("student_id", $student->id),
                 "opportunity_id" => RequestMethods::post("opportunity_id"),
-                "resume_id" => RequestMethods::post("resume_id", ""),
-                "status" => RequestMethods::post("status", "applied")
+                "property_id" => RequestMethods::post("resume_id", ""),
+                "status" => RequestMethods::post("status", "applied"),
+                "updated" => RequestMethods::post("updated", "")
             ));
 
-            if ($application->validate()) {
-                $application->save();
-                $view->set("success", true);
-            }
-
-            $view->set("errors", $user->getErrors());
+            $application->save();
+            $view->set("application", $application);
         }
 
         $this->seo(array(

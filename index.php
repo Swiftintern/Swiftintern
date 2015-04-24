@@ -2,7 +2,7 @@
 ob_start();
 define("DEBUG", TRUE);
 
-die('The Site is under Development please check on 25-04-2014');
+//die('The Site is under Development please check on 25-04-2014');
 
 // 1. define the default path for includes
 define("APP_PATH", str_replace(DIRECTORY_SEPARATOR, "/", dirname(__FILE__)));
@@ -12,7 +12,7 @@ define("LOGO", "1431");
 
 try {
 
-    // imagine library's class autoloader
+    // library's class autoloader
     spl_autoload_register(function($class) {
         $path = ucfirst(str_replace("\\", DIRECTORY_SEPARATOR, $class));
         $file = APP_PATH . "/application/libraries/{$path}.php";
