@@ -11,7 +11,7 @@ use Framework\RequestMethods as RequestMethods;
 
 class Admin extends Controller {
 
-    public function index() {
+    public function noview() {
         $this->willRenderLayoutView = false;
         $this->willRenderActionView = false;
     }

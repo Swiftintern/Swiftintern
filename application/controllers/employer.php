@@ -109,12 +109,9 @@ class Employer extends Users {
             "description" => "Contains all realtime stats",
             "view" => $this->getLayoutView()
         ));
-
         $view = $this->getActionView();
 
-        $opportunities = Opportunity::all(
-                        array("organization_id = ?" => $this->employer->organization->id), array("id")
-        );
+        $opportunities = Opportunity::all(array("organization_id = ?" => $this->employer->organization->id), array("id"));
 
         $messages = Message::count(array("to_user_id = ?" => $this->user->id));
         $applicants = "0";
@@ -161,13 +158,14 @@ class Employer extends Users {
             "keywords" => "dashboard",
             "description" => "Contains all realtime stats",
             "view" => $this->getLayoutView()
-        ));$view = $this->getActionView();
-        
+        ));
+        $view = $this->getActionView();
+
         $user = $this->getUser();
         $session = Registry::get("session");
 
-        $inboxs = Message::all(array("to_user_id = ?" => $user->id,"validity = ?" => true), array("id", "from_user_id", "message", "created"), "id", "desc", 5, 1);
-        $outboxs = Message::all(array("from_user_id = ?" => $user->id,"validity = ?" => true), array("id", "to_user_id", "message", "created"), "id", "desc", 5, 1);
+        $inboxs = Message::all(array("to_user_id = ?" => $user->id, "validity = ?" => true), array("id", "from_user_id", "message", "created"), "id", "desc", 5, 1);
+        $outboxs = Message::all(array("from_user_id = ?" => $user->id, "validity = ?" => true), array("id", "to_user_id", "message", "created"), "id", "desc", 5, 1);
 
         $allinbox = array();
         foreach ($inboxs as $in) {
@@ -181,7 +179,7 @@ class Employer extends Users {
                 "received" => \Framework\StringMethods::datetime_to_text($in->created)
             ];
         }
-        
+
         $alloutbox = array();
         foreach ($outboxs as $out) {
             $user = User::first(array("id = ?" => $out->to_user_id), array("name"));
@@ -213,7 +211,7 @@ class Employer extends Users {
         $user = $this->getUser();
         $view->set("errors", array());
     }
-    
+
     public function reach() {
         $this->changeLayout();
         $this->seo(array(
@@ -221,13 +219,82 @@ class Employer extends Users {
             "keywords" => "reach",
             "description" => "opportunity internshipy reach posted on linkedin",
             "view" => $this->getLayoutView()
-        ));$view = $this->getActionView();
-        
+        ));
+        $view = $this->getActionView();
+
         $opportunities = Opportunity::all(array("organization_id = ?" => $this->employer->organization->id, "type = ?" => "internship"));
         $view->set("opportunities", $opportunities);
     }
-    
+
     public function followers() {
+        $this->changeLayout();
+        $this->seo(array(
+            "title" => "Company Followers on linkedin",
+            "keywords" => "followers",
+            "description" => "Your company followers on linkedin",
+            "view" => $this->getLayoutView()
+        ));
+
+        $view = $this->getActionView();
+    }
+
+    public function postinternship() {
+        $this->changeLayout();
+        $this->seo(array(
+            "title" => "Post Internship",
+            "keywords" => "internshhip",
+            "description" => "Your company internships on linkedin",
+            "view" => $this->getLayoutView()
+        ));
+        $view = $this->getActionView();
+        if (RequestMethods::post("action") == "internship") {
+            $opportunity = new Opportunity(array(
+                "user_id" => $this->user->id,
+                "organization_id" => $this->employer->organization->id,
+                "title" => RequestMethods::post("title"),
+                "details" => RequestMethods::post("details"),
+                "eligibility" => RequestMethods::post("eligibility"),
+                "category" => RequestMethods::post("category"),
+                "duration" => RequestMethods::post("duration"),
+                "location" => RequestMethods::post("location"),
+                "type" => "internship",
+                "last_date" => RequestMethods::post("last_date"),
+                "payment" => RequestMethods::post("payment"),
+                "payment_mode" => "offline",
+                "application_type" => "resume",
+                "type_id" => "",
+                "is_active" => "1",
+                "validity" => "0",
+                "updated" => ""
+            ));
+
+            if ($opportunity->validate()) {
+                $opportunity->save();
+                $view->set("success", true);
+            }
+
+            $view->set("errors", $opportunity->getErrors());
+        }
+    }
+
+    /**
+     * @before _secure
+     */
+    public function internship($id = 1) {
+        $this->changeLayout();
+        if ($id == 1) { $internship = Opportunity::first(array("organization_id = ? " => $this->employer->organization->id));}
+        else { $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id));}
+        $this->seo(array(
+            "title" => "Edit Internship",
+            "keywords" => "followers",
+            "description" => "Your company followers on linkedin",
+            "view" => $this->getLayoutView()
+        ));
+        $view = $this->getActionView();
+        $view->set("internship", $internship);
+    }
+
+    public function applicants() {
         $this->changeLayout();
         $this->seo(array(
             "title" => "Company Followers on linkedin",
@@ -280,5 +347,4 @@ class Employer extends Users {
     public function switchOrganization($organization_id) {
         $session = Registry::get("session");
     }
-
 }
