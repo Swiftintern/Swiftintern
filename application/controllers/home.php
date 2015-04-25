@@ -40,7 +40,7 @@ class Home extends Users {
         $this->getLayoutView()->set("seo", Framework\Registry::get("seo"));
     }
 
-    public function linkedin() {
+    public function linkedins() {
         $li = Framework\Registry::get("linkedin");
 
         $url = $li->getLoginUrl(array(
@@ -70,6 +70,16 @@ class Home extends Users {
         $seo->setKeywords("about us, how swiftintern works, swiftintern");
         $seo->setDescription("SwiftIntern is the india's largest student-focused internship portal, bringing students, employers and higher education institutions together in one centralized location.");
         $seo->setPhoto("http://assets.swiftintern.com/img/newsletter/header.png");
+
+        $this->getLayoutView()->set("seo", $seo);
+    }
+    
+    public function support() {
+        $seo = Framework\Registry::get("seo");
+
+        $seo->setTitle("Suppprt");
+        $seo->setKeywords("support, faq, frequently asked Questions");
+        $seo->setDescription("See the answer related to problems on internship and hiring interns");
 
         $this->getLayoutView()->set("seo", $seo);
     }

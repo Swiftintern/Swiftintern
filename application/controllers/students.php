@@ -48,30 +48,9 @@ class Students extends Users {
     }
 
     protected function newstudent($info) {
-        if ($info["phoneNumbers"]["_total"] > 0) {
-            $phone = $info["phoneNumbers"]["values"]["0"]["phoneNumber"];
-        } else {
-            $phone = "";
-        }
-        $user = new User(array(
-            "name" => $info["firstName"] . " " . $info["lastName"],
-            "email" => $info["emailAddress"],
-            "phone" => $phone,
-            "password" => rand(100000, 99999999),
-            "access_token" => rand(100000, 99999999),
-            "type" => "student",
-            "validity" => "1",
-            "last_ip" => $_SERVER['REMOTE_ADDR'],
-            "last_login" => "",
-            "updated" => ""
-        ));$user->save();
-        
-        $social = new Social(array(
-            "user_id" => $user->id,
-            "social_platform" => "linkedin",
-            "link" => $info["publicProfileUrl"]
-        ));$social->save();
-        
+        $info["type"] = "student";
+        $user = $this->newUser($info);
+
         if (isset($info["location"]["name"])) {$city = $info["location"]["name"];}
         else {$city = "";}
         $skills = "";
@@ -108,6 +87,7 @@ class Students extends Users {
                         "type" => "institute",
                         "about" => "",
                         "fbpage" => "",
+                        "linkedin_id" => "",
                         "validity" => "1",
                         "updated" => ""
                     ));$organization->save();
@@ -143,6 +123,7 @@ class Students extends Users {
                         "type" => "company",
                         "about" => "",
                         "fbpage" => "",
+                        "linkedin_id" => "",
                         "validity" => "1",
                         "updated" => ""
                     ));$organization->save();

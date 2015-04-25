@@ -34,56 +34,34 @@
             <li>
                 <a href="#"><i class="fa fa-user fa-fw"></i> Profile<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    <li><a href="employer/edit/profile">Edit</a></li>
-                    <li><a href="employer/members">Members</a></li>
+                    <li><a href="/employer/settings">Settings</a></li>
+                    <li><a href="/employer/members">Members</a></li>
                 </ul>
             </li>
             <li>
                 <a href="#"><i class="fa fa-building-o fa-fw"></i> Company<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    <li><a href="organization/{echo urlencode($employer->organization->name)}/{echo $employer->organization->id}" target="_blank">View</a></li>
-                    <li><a href="employer/edit/company">Edit</a></li>
+                    <li><a href="/organization/{echo urlencode($employer->organization->name)}/{echo $employer->organization->id}" target="_blank">View</a></li>
+                    <li><a href="https://www.linkedin.com/company/">LinkedIn</a></li>
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-graduation-cap fa-fw"></i> Internship<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-graduation-cap fa-fw"></i> My Internships<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    <li><a href="employer/create/internship">Create</a></li>
-                    <li><a href="employer/opportunities">View/Edit</a></li>
-                    <li><a href="employer/applicants">Applicants</a></li>
+                    <li><a href="/employer/createinternship">Create</a></li>
+                    <li><a href="/employer/opportunities">Manage</a></li>
+                    <li><a href="/employer/applicants">Applicants</a></li>
                 </ul>
             </li>
-            <!--<li>
-                <a href="#"><i class="fa fa-trophy fa-fw"></i> Competition<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li><a href="employer/create/competition">Create</a></li>
-                    <li><a href="employer/opportunities">View/Edit</a></li>
-                    <li><a href="employer/participants">Participants</a></li>
-                </ul>
-            </li>-->
-            <!--<li>
-                <a href="#"><i class="fa fa-clock-o fa-fw"></i> Test<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li><a href="employer/create/test">Create Test</a></li>
-                    <li><a href="employer/tests">View/Edit</a></li>
-                    <li><a href="employer/participants">Submissions</a></li>
-                </ul>
-            </li>-->
-            <!--<li>
+            <li>
                 <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Analytics<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    <li><a href="employer/analytics/opportunity">Opportunity</a></li>
-                    <li><a href="employer/analytics/profile">Profile</a></li>
+                    <li><a href="employer/followers">Followers</a></li>
+                    <li><a href="employer/reach">Reach</a></li>
                 </ul>
-            </li>-->
-            <!--<li>
-                <a href="#"><i class="fa fa-desktop fa-fw"></i> Integration<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li><a href="employer/integration/website">Website</a></li>
-                </ul>
-            </li>-->
+            </li>
             <li><a href="/employer/messages"><i class="fa fa-envelope fa-fw"></i> Messages</a></li>
-            <li><a href="employer/faq"><i class="fa fa-thumbs-up fa-fw"></i> Help</a></li>
+            <li><a href="/employer/resources"><i class="fa fa-wrench fa-fw"></i> Resources</a></li>
         </ul>
     </div>
 </nav>

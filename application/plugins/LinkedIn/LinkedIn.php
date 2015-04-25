@@ -19,6 +19,7 @@ class LinkedIn {
     const SCOPE_READ_WRTIE_UPDATES = 'rw_nus'; // Retrieve and post updates to LinkedIn as you
     const SCOPE_READ_WRITE_GROUPS = 'rw_groups'; // Retrieve and post group discussions as you
     const SCOPE_WRITE_MESSAGES = 'w_messages'; // Send messages and invitations to connect as you
+    const SCOPE_COMPANY_ADMIN = 'rw_company_admin'; // Send messages and invitations to connect as you
     const HTTP_METHOD_GET = 'GET';
     const HTTP_METHOD_POST = 'POST';
     const HTTP_METHOD_PUT = 'PUT';
@@ -225,6 +226,23 @@ class LinkedIn {
      */
     public function fetch($endpoint, array $payload = array(), $method = 'GET', array $headers = array(), array $curl_options = array()) {
         $endpoint = self::API_BASE . '/' . trim($endpoint, '/\\') . '?oauth2_access_token=' . $this->getAccessToken();
+        $headers[] = 'x-li-format: json';
+
+        return $this->_makeRequest($endpoint, $payload, $method, $headers, $curl_options);
+    }
+    
+    /**
+     * Makes a request to find out persons page admin
+     * 
+     * @param string $endpoint
+     * @param array $payload
+     * @param type $method
+     * @param array $headers
+     * @param array $curl_options
+     * @return type
+     */
+    public function isCompanyAdmin($endpoint, array $payload = array(), $method = 'GET', array $headers = array(), array $curl_options = array()) {
+        $endpoint = self::API_BASE . '/' . trim($endpoint, '/\\') . '?oauth2_access_token=' . $this->getAccessToken() . '&is-company-admin=true';
         $headers[] = 'x-li-format: json';
 
         return $this->_makeRequest($endpoint, $payload, $method, $headers, $curl_options);

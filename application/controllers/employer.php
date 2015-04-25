@@ -9,7 +9,7 @@ use Shared\Controller as Controller;
 use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
-class Employer extends Controller {
+class Employer extends Users {
 
     /**
      * @readwrite
@@ -23,26 +23,78 @@ class Employer extends Controller {
             "description" => "Hire Quality interns register with us and post internship, then further select from thousands of applicants available",
             "view" => $this->getLayoutView()
         ));
-
         $view = $this->getActionView();
 
-        $view->set("errors", array());
+        $li = $this->LinkedIn("http://swiftintern.com/employer/register");
+        $url = $li->getLoginUrl(array(
+            LinkedIn::SCOPE_FULL_PROFILE,
+            LinkedIn::SCOPE_EMAIL_ADDRESS,
+            LinkedIn::SCOPE_COMPANY_ADMIN
+        ));
+        $view->set("url", $url);
 
-        if (RequestMethods::post("register")) {
-            $user = new User(array(
-                "first" => RequestMethods::post("first"),
-                "last" => RequestMethods::post("last"),
-                "email" => RequestMethods::post("email"),
-                "password" => RequestMethods::post("password")
-            ));
+        if (isset($_REQUEST['code'])) {
+            $token = $li->getAccessToken($_REQUEST['code']);
+        }
 
-            if ($user->validate()) {
-                $user->save();
-                $this->_upload("photo", $user->id);
-                $view->set("success", true);
+        if ($li->hasAccessToken()) {
+            $info = $li->get('/people/~:(first-name,last-name,positions,email-address,public-profile-url,picture-url)');
+
+            //checks user exist and then logins
+            if (!$this->access($info)) {
+                //check if person is admin of any page
+                $companies = $li->isCompanyAdmin('/companies');
+                if (isset($companies["_total"]) && ($companies["_total"] > 0)) {
+                    $orgs = array();
+                    foreach ($companies["values"] as $key => $value) {
+                        $org = Organization::first(array("linkedin_id = ?" => $value["id"]));
+                        $company = $li->get("/companies/{$value['id']}:(id,name,website-url,description,industries,logo-url,employee-count-range,locations)");
+                        if (!$org) {
+                            //add all its company on our platform
+                            $organization = new Organization(array(
+                                "photo_id" => "",
+                                "name" => $value["company"]["name"],
+                                "address" => $company["locations"]["values"]["0"]["address"]["city"],
+                                "phone" => "",
+                                "country" => "",
+                                "website" => $company["websiteUrl"],
+                                "sector" => $company["industries"]["values"]["0"]["name"],
+                                "number_employee" => $company["employeeCountRange"]["name"],
+                                "type" => "company",
+                                "about" => $company["description"],
+                                "fbpage" => "",
+                                "linkedin_id" => $value["company"]["id"],
+                                "validity" => "1",
+                                "updated" => ""
+                            ));
+                            $orgs[] = $organization->save();
+                        }
+                    }
+                    $user = $this->newUser($info);
+                    $info["user"] = $user;
+                    $info["orgs"] = $orgs;
+                    $this->newMember($info);
+                    $this->createSession($user);
+                } else {
+                    $view->set("message", 'Please Register your company and be its admin on linkedin first....<a href="/support#register-on-linkedin-first">Read More</a>');
+                }
             }
+        }
+    }
 
-            $view->set("errors", $user->getErrors());
+    protected function newMember($info = array()) {
+        if ($info["orgs"]) {
+            foreach ($info["orgs"] as $org) {
+                $member = new Member(array(
+                    "user_id" => $info["user"]->id,
+                    "organization_id" => $org->id,
+                    "designation" => "manager",
+                    "authority" => "admin",
+                    "validity" => "1",
+                    "updated" => ""
+                ));
+                $member->save();
+            }
         }
     }
 
@@ -77,25 +129,16 @@ class Employer extends Controller {
 
     public function members() {
         $this->changeLayout();
-        $this->seo(array(
-            "title" => "Members",
-            "keywords" => "dashboard",
-            "description" => "Contains all realtime stats",
-            "view" => $this->getLayoutView()
-        ));
-
         $view = $this->getActionView();
+        $this->seo(array("title" => "Members", "keywords" => "dashboard", "description" => "Contains all realtime stats", "view" => $this->getLayoutView()));
+
         $session = Registry::get("session");
         $company = $session->get("employer")->organization;
-        $employees = Member::all(
-                        array(
-                    "organization_id = ?" => $company->id,
-                    "validity = ?" => true), array("user_id", "designation", "authority", "created")
-        );
+
+        $employees = Member::all(array("organization_id = ?" => $company->id, "validity = ?" => true), array("user_id", "designation", "authority", "created"));
         $allmembers = array();
         foreach ($employees as $emp) {
             $user = User::first(array("id = ?" => $emp->user_id), array("name"));
-
             $allmembers[] = [
                 "id" => $emp->id,
                 "user_id" => $emp->user_id,
@@ -105,46 +148,8 @@ class Employer extends Controller {
                 "created" => \Framework\StringMethods::datetime_to_text($emp->created)
             ];
         }
-        
-        if (RequestMethods::post("action") == "member") {
-            $name = explode("@", RequestMethods::post("email"));
-            $exists = User::first(array("email"=> RequestMethods::post("email")));
-            if(!$exists){
-                $user = new User(array(
-                    "name" => $name[0],
-                    "email" => RequestMethods::post("email"),
-                    "password" => sha1($name[0]),
-                    "access_token" => rand(100000, 9999999),
-                    "type" => "employer",
-                    "validity" => true
-                ));
-
-                if ($user->validate()) {
-                    $user->save();
-                    $member = new Member(array(
-                        "user_id" => $user->id,
-                        "organization_id" => $company->id,
-                        "designation" => "Team Member",
-                        "authority" => RequestMethods::post("authority"),
-                        "validity" => true
-                    ));
-                    
-                    $view->set("success", true);
-                }
-
-                $view->set("errors", $user->getErrors());
-                
-                
-            }  else {
-                $member = Member::first(array(
-                    "user_id" => $exists->id,
-                    "organization_id" => $company->id
-                ));
-            }
-        }
 
         $view->set("company", $company);
-        $view->set("user", $this->getUser());
         $view->set("allmembers", \Framework\ArrayMethods::toObject($allmembers));
         $view->set("memberOf", $session->get("member"));
     }
@@ -156,30 +161,17 @@ class Employer extends Controller {
             "keywords" => "dashboard",
             "description" => "Contains all realtime stats",
             "view" => $this->getLayoutView()
-        ));
-
-        $view = $this->getActionView();
+        ));$view = $this->getActionView();
+        
         $user = $this->getUser();
         $session = Registry::get("session");
 
-        $inboxs = Message::all(
-                        array(
-                    "to_user_id = ?" => $user->id,
-                    "validity = ?" => true
-                        ), array("id", "from_user_id", "message", "created"), "id", "desc", 5, 1
-        );
-        $outboxs = Message::all(
-                        array(
-                    "from_user_id = ?" => $user->id,
-                    "validity = ?" => true
-                        ), array("id", "to_user_id", "message", "created"), "id", "desc", 5, 1
-        );
+        $inboxs = Message::all(array("to_user_id = ?" => $user->id,"validity = ?" => true), array("id", "from_user_id", "message", "created"), "id", "desc", 5, 1);
+        $outboxs = Message::all(array("from_user_id = ?" => $user->id,"validity = ?" => true), array("id", "to_user_id", "message", "created"), "id", "desc", 5, 1);
 
         $allinbox = array();
         foreach ($inboxs as $in) {
-            $user = User::first(
-                            array("id = ?" => $in->from_user_id), array("name")
-            );
+            $user = User::first(array("id = ?" => $in->from_user_id), array("name"));
 
             $allinbox[] = [
                 "id" => $in->id,
@@ -189,12 +181,10 @@ class Employer extends Controller {
                 "received" => \Framework\StringMethods::datetime_to_text($in->created)
             ];
         }
-
+        
         $alloutbox = array();
         foreach ($outboxs as $out) {
-            $user = User::first(
-                            array("id = ?" => $out->to_user_id), array("name")
-            );
+            $user = User::first(array("id = ?" => $out->to_user_id), array("name"));
 
             $alloutbox[] = [
                 "id" => $out->id,
@@ -210,53 +200,6 @@ class Employer extends Controller {
         $view->set("allinbox", \Framework\ArrayMethods::toObject($allinbox));
     }
 
-    public function profile_analytics() {
-        $this->changeLayout();
-        $this->seo(array(
-            "title" => "Profile Analytics",
-            "keywords" => "Analytics",
-            "description" => "Contains all realtime stats",
-            "view" => $this->getLayoutView()
-        ));
-
-        $view = $this->getActionView();
-        $startdate = strftime("%Y-%m-%d", strtotime('-1 week'));
-        $enddate = strftime("%Y-%m-%d", time());
-        $range = "{$startdate} - {$enddate}";
-        $view->set("range", $range);
-    }
-
-    public function opportunity_analytics() {
-        $this->changeLayout();
-        $this->seo(array(
-            "title" => "Opportuntiy Analytics",
-            "keywords" => "Analytics",
-            "description" => "Contains all realtime stats",
-            "view" => $this->getLayoutView()
-        ));
-
-        $session = Registry::get("session");
-        $view = $this->getActionView();
-        $company = $session->get("employer")->organization;
-
-        $opportunity = Opportunity::all(array("organization_id = ?" => $company->id), array("id", "title", "created"));
-        $opportunities = array();
-        foreach ($opportunity as $opp) {
-            $find = Opportunity::first(array("id = ?" => $opp->id), array("id", "title", "created"));
-            $opportunities[] = [
-                "id" => $find->id,
-                "title" => $find->title,
-                "created" => $find->created
-            ];
-        }
-        $view->set("opportunities", \Framework\ArrayMethods::toObject($opportunities));
-
-        $startdate = strftime("%Y-%m-%d", strtotime('-1 week'));
-        $enddate = strftime("%Y-%m-%d", time());
-        $range = "{$startdate} - {$enddate}";
-        $view->set("range", $range);
-    }
-
     public function settings() {
         $this->changeLayout();
         $this->seo(array(
@@ -269,58 +212,36 @@ class Employer extends Controller {
         $view = $this->getActionView();
         $user = $this->getUser();
         $view->set("errors", array());
-        
-        if (RequestMethods::post("action") == "profile") {
-            echo 'here';
-            $user = new User(array(
-                "name" => RequestMethods::post("name"),
-                "phone" => RequestMethods::post("phone")
-            ));
-
-            if ($user->validate()) {
-                $user->save();
-                $view->set("success", true);
-            }
-
-            $view->set("errors", $user->getErrors());
-        }
     }
-
-    public function edit_company() {
+    
+    public function reach() {
         $this->changeLayout();
-        $session = Registry::get("session");
-        $company = $session->get("employer")->organization;
-        
         $this->seo(array(
-            "title" => "Edit ".$company->name,
-            "keywords" => "Analytics",
-            "description" => "Contains all realtime stats",
+            "title" => "Internship Reach",
+            "keywords" => "reach",
+            "description" => "opportunity internshipy reach posted on linkedin",
+            "view" => $this->getLayoutView()
+        ));$view = $this->getActionView();
+        
+        $opportunities = Opportunity::all(array("organization_id = ?" => $this->employer->organization->id, "type = ?" => "internship"));
+        $view->set("opportunities", $opportunities);
+    }
+    
+    public function followers() {
+        $this->changeLayout();
+        $this->seo(array(
+            "title" => "Company Followers on linkedin",
+            "keywords" => "followers",
+            "description" => "Your company followers on linkedin",
             "view" => $this->getLayoutView()
         ));
 
         $view = $this->getActionView();
-        $view->set("company", $company);
     }
 
-    public function integration() {
-        $this->changeLayout();
+    public function resources() {
         $this->seo(array(
-            "title" => "Website Integration",
-            "keywords" => "dashboard",
-            "description" => "Contains all realtime stats",
-            "view" => $this->getLayoutView()
-        ));
-
-        $view = $this->getActionView();
-        $session = Registry::get("session");
-        $company = $session->get("employer")->organization;
-        $view->set("company", $company);
-    }
-
-    public function faq() {
-        $this->changeLayout();
-        $this->seo(array(
-            "title" => "Frequently asked Questions",
+            "title" => "Employer Resources",
             "keywords" => "faq",
             "description" => "Frequently asked Questions",
             "view" => $this->getLayoutView()

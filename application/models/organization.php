@@ -89,6 +89,13 @@ class Organization extends Shared\Model {
      * @type text
      */
     protected $_fbpage;
+    
+    /**
+     * @column
+     * @readwrite
+     * @type integer
+     */
+    protected $_linkedin_id;
 
     /**
      * @column
