@@ -2,7 +2,7 @@
 ob_start();
 define("DEBUG", TRUE);
 $ip = $_SERVER['REMOTE_ADDR'];
-$ips = array("120.59.60.125", "125.63.115.30");
+$ips = array("125.63.115.6");
 if(!in_array($ip, $ips)){die("Under Development");}
 
 // 1. define the default path for includes

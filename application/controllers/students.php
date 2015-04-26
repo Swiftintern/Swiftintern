@@ -191,8 +191,8 @@ class Students extends Users {
         $profile = 0;
         $view = $this->getActionView();
         
-        $user = User::first(array("id = ?" => $id), array("id", "name", "email", "type"));
-        $student = Student::first(array("user_id = ?" => $user->id));
+        $student = Student::first(array("id = ?" => $id));
+        $user = User::first(array("id = ?" => $student->user_id), array("id", "name", "email", "type"));
 
         $this->seo(array("title" => $user->name,"keywords" => "user profile","description" => "Your Profile Page","view" => $this->getLayoutView()));
 

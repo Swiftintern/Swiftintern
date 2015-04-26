@@ -276,34 +276,112 @@ class Employer extends Users {
             $view->set("errors", $opportunity->getErrors());
         }
     }
+    
+    /**
+     * @before _secure
+     */
+    public function internships() {
+        $this->changeLayout();
+        $internships = Opportunity::all(array("organization_id = ?" => $this->employer->organization->id, "type = ?" => "internship"), array("id", "title", "created"));
+        $this->seo(array(
+            "title" => "Manage Internships",
+            "keywords" => "followers",
+            "description" => "Your company followers on linkedin",
+            "view" => $this->getLayoutView()
+        ));$view = $this->getActionView();
+        
+
+        $view->set("internships", $internships);
+    }
 
     /**
      * @before _secure
      */
     public function internship($id = 1) {
         $this->changeLayout();
-        if ($id == 1) { $internship = Opportunity::first(array("organization_id = ? " => $this->employer->organization->id));}
-        else { $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id));}
+        if ($id == 1) { $internship = Opportunity::first(array("organization_id = ? " => $this->employer->organization->id), array("id", "title", "eligibility", "last_date", "details", "payment"));}
+        else { $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id), array("id", "title", "eligibility", "last_date", "details", "payment"));}
+        $opportunities = Opportunity::all(array("organization_id = ?" => $this->employer->organization->id), array("id", "title"));
         $this->seo(array(
             "title" => "Edit Internship",
             "keywords" => "followers",
             "description" => "Your company followers on linkedin",
             "view" => $this->getLayoutView()
-        ));
-        $view = $this->getActionView();
+        ));$view = $this->getActionView();
+        
+        if (RequestMethods::post("action") == "edit") {
+            $id = RequestMethods::post("id");
+            header("Location: /employer/internship/{$id}");
+            exit();
+        }
+        
+        if (RequestMethods::post("action") == "update") {
+            $internship->title = RequestMethods::post("title");
+            $internship->eligibility = RequestMethods::post("eligibility");
+            $internship->last_date = RequestMethods::post("last_date");
+            $internship->details = RequestMethods::post("details");
+            $internship->payment = RequestMethods::post("payment");
+            $internship->updated = date("Y-m-d H:i:s");
+            
+            if($internship->validate()){
+                $internship->save();
+                $view->set("success", true);
+            }
+            $view->set("errors", $internship->getErrors());
+        }
         $view->set("internship", $internship);
+        $view->set("opportunities", $opportunities);
     }
 
-    public function applicants() {
+    public function applicants($id =1) {
         $this->changeLayout();
         $this->seo(array(
-            "title" => "Company Followers on linkedin",
+            "title" => "Applications received on internship posted",
             "keywords" => "followers",
             "description" => "Your company followers on linkedin",
             "view" => $this->getLayoutView()
-        ));
-
-        $view = $this->getActionView();
+        ));$view = $this->getActionView();
+        
+        if ($id == 1) { $internship = Opportunity::first(array("organization_id = ? " => $this->employer->organization->id), array("id", "title"));}
+        else { $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id), array("id", "title"));}
+        $shortlisted = [];$selected = [];$applicants = [];
+        
+        $order = RequestMethods::get("order", "created");
+        $direction = RequestMethods::get("direction", "desc");
+        $applications = Application::all(array("opportunity_id = ?" => $internship->id), array("student_id", "property_id", "status", "created"), $order, $direction);
+        
+        foreach ($applications as $application) {
+            $student = Student::first(array("id = ?" => $application->student_id), array("user_id", "about"));
+            $user = User::first(array("id = ?" => $student->user_id), array("name"));
+            $qualification = Qualification::first(array("student_id = ?" => $application->student_id), array("organization_id", "degree", "major", "passing_year"), "passing_year", "desc");
+            $organization = Organization::first(array("id = ?" => $qualification->organization_id), array("name"));
+            
+            $applicant = \Framework\ArrayMethods::toObject(array(
+                "name" => $user->name,
+                "qualification" => $qualification,
+                "organization" => $organization,
+                "student_id" => $application->student_id,
+                "property_id" => $application->property_id,
+                "status" => $application->status,
+                "created" => $application->created
+            ));
+            switch ($application->status) {
+                case "shortlist":
+                    $shortlisted[] = $applicant;
+                    break;
+                case "selected":
+                    $selected[] = $applicant;
+                    break;
+                default :
+                    $applicants[] = $applicant;
+                    break;
+            }
+        }
+        
+        $view->set("internship", $internship);
+        $view->set("shortlisted", $shortlisted);
+        $view->set("selected", $selected);
+        $view->set("applicants", $applicants);
     }
 
     public function resources() {
@@ -313,7 +391,6 @@ class Employer extends Users {
             "description" => "Frequently asked Questions",
             "view" => $this->getLayoutView()
         ));
-
         $view = $this->getActionView();
     }
 

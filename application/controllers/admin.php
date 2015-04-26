@@ -10,12 +10,6 @@ use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
 class Admin extends Controller {
-
-    public function noview() {
-        $this->willRenderLayoutView = false;
-        $this->willRenderActionView = false;
-    }
-    
     
 
 }

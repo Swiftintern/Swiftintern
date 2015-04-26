@@ -24,6 +24,11 @@
     font-size: 40px;
 }
 
+.blog, h1 {
+    font-family: Lora,"Times New Roman",serif;
+    color: #404040;
+}
+
 @media(min-width:768px) {
     #page-wrapper {
         position: inherit;

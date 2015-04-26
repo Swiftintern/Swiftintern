@@ -1,29 +1,51 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header text-center">Linkedin Follower Analytics</h1>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <form class="form-inline text-center" role="form" id="profile_analytics_form">
-                <div class="form-group">
-                    <div class="input-group">
-                        <label class="sr-only">Duration</label>
-                        <span class="add-on input-group-addon"><i class="fa fa-calendar fa-fw"></i></span>
-                        <input type="text" style="width: 200px" name="range" id="range" class="form-control" value="{echo $range}" />
+            <h2 class="page-header text-center">{echo $internship->title}</h2>
+            <ul class="nav nav-tabs nav-justified" role="tablist" id="myTab">
+                <li class="active"><a href="#applications" role="tab" data-toggle="tab">Applications <span class="badge">{echo count($applicants)}</span></a></li>
+                <li><a href="#shortlisted" role="tab" data-toggle="tab">Shortlisted <span class="badge">{echo count($shortlisted)}</span></a></li>
+                <li><a href="#selected" role="tab" data-toggle="tab">Selected <span class="badge">{echo count($selected)}</span></a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="applications">
+                    <div class="panel panel-default">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Major</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {foreach $applicant in $applicants}
+                                <tr>
+                                    <td>{echo $applicant->name}</td>
+                                    <td>{echo $applicant->qualification->major}</td>
+                                    <td>{echo $applicant->status}</td>
+                                    <td>
+                                        <button class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>&nbsp;
+                                        <a href="/employer/applicants/{$internship->id}" class="btn btn-success btn-xs"><i class="fa fa-fax"></i> Applications </a>&nbsp;
+                                        <a href="/students/profile/{echo $applicant->student_id}" class="btn btn-primary btn-xs"><i class="fa fa-user"></i> View </a>&nbsp;
+                                    </td>
+                                </tr>
+                                {/foreach}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">View Analytics</button>
-            </form>
-            <hr>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <i class="fa fa-bullhorn fa-fw"></i> Reach
+
+                <div class="tab-pane" id="shortlisted">
+                    
                 </div>
-                <div class="panel-body">
-                    <div id="profile_reach">Select an opportunity and date range and then click on view analytics button to show details.</div>
+                
+                <div class="tab-pane" id="selected">
+                    
                 </div>
+
             </div>
         </div>
     </div>

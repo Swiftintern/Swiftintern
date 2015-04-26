@@ -155,5 +155,10 @@ class Users extends Controller {
         
         return $li;
     }
+    
+    public function noview() {
+        $this->willRenderLayoutView = false;
+        $this->willRenderActionView = false;
+    }
 
 }
