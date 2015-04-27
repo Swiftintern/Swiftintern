@@ -1,9 +1,6 @@
 <?php
 ob_start();
 define("DEBUG", TRUE);
-$ip = $_SERVER['REMOTE_ADDR'];
-$ips = array("125.63.115.6");
-if(!in_array($ip, $ips)){die("Under Development");}
 
 // 1. define the default path for includes
 define("APP_PATH", str_replace(DIRECTORY_SEPARATOR, "/", dirname(__FILE__)));
