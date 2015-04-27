@@ -1,0 +1,18 @@
+{if !isset($error)}
+	<h1>Details of User: {echo $user}</h1>
+	<h2>{echo $name}</h2>
+	<table id="details" cellpadding="20" cellspacing="10" border="2">
+		<tbody>
+			{echo $details}
+		</tbody>
+	</table>
+	<br /><hr />
+	<h3>Rankings</h3>
+		<tbody>
+			{echo $rank}
+		</tbody>
+	</table>
+{/if}
+{else}
+	{echo $error}
+{/else}
