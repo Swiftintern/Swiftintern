@@ -148,17 +148,17 @@ class Users extends Controller {
     
     protected function LinkedIn($redirect = "") {
         $li = Framework\Registry::get("linkedin");
-        
-        if(!empty($redirect)){
-            $li->changeCallbackURL($redirect);
-        }
-        
+        if(!empty($redirect)){ $li->changeCallbackURL($redirect);}
         return $li;
     }
     
     public function noview() {
         $this->willRenderLayoutView = false;
         $this->willRenderActionView = false;
+    }
+    
+    public function switchOrganization($organization_id) {
+        $session = Registry::get("session");
     }
 
 }

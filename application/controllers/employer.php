@@ -365,15 +365,13 @@ class Employer extends Users {
                 "status" => $application->status,
                 "created" => $application->created
             ));
+            $applicants[] = $applicant;
             switch ($application->status) {
                 case "shortlist":
                     $shortlisted[] = $applicant;
                     break;
                 case "selected":
                     $selected[] = $applicant;
-                    break;
-                default :
-                    $applicants[] = $applicant;
                     break;
             }
         }
@@ -419,9 +417,5 @@ class Employer extends Users {
         $this->getLayoutView()->set("employer", $employer);
         $this->getActionView()->set("member", $member);
         $this->getLayoutView()->set("member", $member);
-    }
-
-    public function switchOrganization($organization_id) {
-        $session = Registry::get("session");
     }
 }
