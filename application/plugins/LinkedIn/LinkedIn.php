@@ -105,7 +105,7 @@ class LinkedIn {
             throw new \RuntimeException('Access Token Request Error: ' . $data['error'] . ' -- ' . $data['error_description']);
         }
 
-        $this->_access_token = $data['access_token'];
+        $this->_access_token = $_SESSION['access_token'] = $data['access_token'];
         $this->_access_token_expires = $data['expires_in'];
 
         return $this->_access_token;

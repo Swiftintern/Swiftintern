@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of employer
+ * The Controller to handle all employer pages
  *
  * @author Faizan Ayubi
  */

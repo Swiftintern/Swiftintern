@@ -10,6 +10,7 @@ use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
 class Admin extends Users {
+
     public function index() {
         $this->seo(array(
             "title" => "Hire Interns | Register Company",
@@ -21,31 +22,31 @@ class Admin extends Users {
         $opportunities = Opportunity::count();
         $view->set("opportunities", count($opportunities));
     }
-    
+
     public function internships() {
         
     }
-    
+
     public function competitions() {
         
     }
-    
+
     public function trainings() {
         
     }
-    
+
     public function editopportunities($id) {
         
     }
-    
+
     public function createcrm($param) {
         
     }
-    
+
     public function search() {
         
     }
-    
+
     public function changeLayout() {
         $this->defaultLayout = "layouts/admin";
         $this->setLayout();
@@ -61,4 +62,5 @@ class Admin extends Users {
         $this->getActionView()->set("member", $member);
         $this->getLayoutView()->set("member", $member);
     }
+
 }
