@@ -106,7 +106,7 @@ class LinkedIn {
         }
 
         $this->_access_token = $_SESSION['access_token'] = $data['access_token'];
-        $this->_access_token_expires = $data['expires_in'];
+        $this->_access_token_expires = $_SESSION['access_token_expires'] = $data['expires_in'];
 
         return $this->_access_token;
     }
@@ -149,7 +149,10 @@ class LinkedIn {
      * @return boolean
      */
     public function hasAccessToken() {
-        return !empty($this->_access_token);
+        if(isset($_SESSION['access_token'])){
+            $this->setAccessToken($_SESSION['access_token']);
+        }
+        return $this->_access_token;
     }
 
     /**

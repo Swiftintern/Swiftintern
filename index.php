@@ -151,7 +151,7 @@ try {
     // log or email any error
     // render fallback template
     header("Content-type: text/html");
-    echo "An error occurred.";
+    echo "An error occurred.". $e;
     exit;
 }
 ?>

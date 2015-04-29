@@ -107,10 +107,6 @@ class Users extends Controller {
         }
 
         $li = Framework\Registry::get("linkedin");
-        $redirect = RequestMethods::get("redirect", "");
-        if (!empty($redirect)) {
-            $li->changeCallbackURL($redirect);
-        }
 
         $url = $li->getLoginUrl(array(
             LinkedIn::SCOPE_FULL_PROFILE,
@@ -128,6 +124,14 @@ class Users extends Controller {
             } else {
                 self::redirect("/students/register");
             }
+        }
+    }
+    
+    protected function picture() {
+        $li = Registry::get("linkedin");
+        if($li->hasAccessToken()){
+            $info = $li->get('/people/~:(picture-url)');
+            echo $info["pictureUrl"];
         }
     }
 
