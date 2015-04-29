@@ -2,6 +2,8 @@
 ob_start();
 define("DEBUG", TRUE);
 
+die('Under Development');
+
 // 1. define the default path for includes
 define("APP_PATH", str_replace(DIRECTORY_SEPARATOR, "/", dirname(__FILE__)));
 
