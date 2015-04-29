@@ -20,12 +20,17 @@ class Users extends Controller {
                 )
             ));
             if ($user) {
+                $social = $this->_checkitem(array(
+                    "model" => "social",
+                    "where" => array(
+                        "user_id = ?" => $user->id,
+                    )
+                ));
                 $session = Registry::get("session");
                 $session->set("pictureUrl", $info["pictureUrl"]);
-                
                 $this->createSession($user);
+                return TRUE;
             }
-            return TRUE;
         }
         return FALSE;
     }
@@ -37,7 +42,9 @@ class Users extends Controller {
         switch ($user->type) {
             case "student":
                 $student = Student::first(array("user_id = ?" => $user->id));
-                if (!empty($student)) { $session->set("student", $student);}
+                if (!empty($student)) {
+                    $session->set("student", $student);
+                }
                 self::redirect("/students");
                 break;
             case "employer":
@@ -65,10 +72,13 @@ class Users extends Controller {
                 break;
         }
     }
-    
+
     protected function newUser($info = array()) {
-        if ($info["phoneNumbers"]["_total"] > 0) { $phone = $info["phoneNumbers"]["values"]["0"]["phoneNumber"];}
-        else { $phone = "";}
+        if ($info["phoneNumbers"]["_total"] > 0) {
+            $phone = $info["phoneNumbers"]["values"]["0"]["phoneNumber"];
+        } else {
+            $phone = "";
+        }
         $user = new User(array(
             "name" => $info["firstName"] . " " . $info["lastName"],
             "email" => $info["emailAddress"],
@@ -80,17 +90,19 @@ class Users extends Controller {
             "last_ip" => $_SERVER['REMOTE_ADDR'],
             "last_login" => "",
             "updated" => ""
-        ));$user->save();
-        
+        ));
+        $user->save();
+
         $social = new Social(array(
             "user_id" => $user->id,
             "social_platform" => "linkedin",
             "link" => $info["publicProfileUrl"]
-        ));$social->save();
-        
+        ));
+        $social->save();
+
         return $user;
     }
-    
+
     public function login() {
         $seo = Registry::get("seo");
 
@@ -115,7 +127,9 @@ class Users extends Controller {
         ));
         $this->getActionView()->set("url", $url);
 
-        if (isset($_REQUEST['code'])) { $token = $li->getAccessToken($_REQUEST['code']);}
+        if (isset($_REQUEST['code'])) {
+            $token = $li->getAccessToken($_REQUEST['code']);
+        }
 
         if ($li->hasAccessToken()) {
             $info = $li->get('/people/~:(first-name,last-name,positions,email-address,public-profile-url,location,picture-url,educations,skills,phone-numbers)');
@@ -126,10 +140,10 @@ class Users extends Controller {
             }
         }
     }
-    
+
     protected function picture() {
         $li = Registry::get("linkedin");
-        if($li->hasAccessToken()){
+        if ($li->hasAccessToken()) {
             $info = $li->get('/people/~:(picture-url)');
             echo $info["pictureUrl"];
         }
@@ -149,18 +163,20 @@ class Users extends Controller {
         $this->setUser(false);
         self::redirect("/home");
     }
-    
+
     protected function LinkedIn($redirect = "") {
         $li = Framework\Registry::get("linkedin");
-        if(!empty($redirect)){ $li->changeCallbackURL($redirect);}
+        if (!empty($redirect)) {
+            $li->changeCallbackURL($redirect);
+        }
         return $li;
     }
-    
+
     public function noview() {
         $this->willRenderLayoutView = false;
         $this->willRenderActionView = false;
     }
-    
+
     public function switchOrganization($organization_id) {
         $session = Registry::get("session");
     }

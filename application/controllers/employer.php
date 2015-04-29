@@ -22,15 +22,10 @@ class Employer extends Users {
             "keywords" => "hire interns, post internship, register company, post training courses",
             "description" => "Hire Quality interns register with us and post internship, then further select from thousands of applicants available",
             "view" => $this->getLayoutView()
-        ));
-        $view = $this->getActionView();
+        ));$view = $this->getActionView();
 
         $li = $this->LinkedIn("http://swiftintern.com/employer/register");
-        $url = $li->getLoginUrl(array(
-            LinkedIn::SCOPE_FULL_PROFILE,
-            LinkedIn::SCOPE_EMAIL_ADDRESS,
-            LinkedIn::SCOPE_COMPANY_ADMIN
-        ));
+        $url = $li->getLoginUrl(array(LinkedIn::SCOPE_FULL_PROFILE, LinkedIn::SCOPE_EMAIL_ADDRESS, LinkedIn::SCOPE_COMPANY_ADMIN));
         $view->set("url", $url);
 
         if (isset($_REQUEST['code'])) {
