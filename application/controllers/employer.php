@@ -94,13 +94,15 @@ class Employer extends Users {
             $organization = Organization::first(array("linkedin_id = ?" => $value["id"]));
             if (!$organization) {
                 $company = $li->get("/companies/{$value['id']}:(id,name,website-url,description,industries,logo-url,employee-count-range,locations)");
-                $photo = new Photograph();
-                if($photo->linkedinphoto($company["logoUrl"])){
+                $photo = new Photograph();$photoId = "";
+                if(!empty($company["logoUrl"])){
+                    $photo->linkedinphoto($company["logoUrl"]);
                     $photo->save();
+                    $photoId = $photo->id;
                 }
                 
                 $organization = new Organization(array(
-                    "photo_id" => "",
+                    "photo_id" => $photoId,
                     "name" => $company["name"],
                     "address" => $this->checkData($company["locations"]["values"]["0"]["address"]["city"]),
                     "phone" => "",
@@ -118,7 +120,7 @@ class Employer extends Users {
                 $organization->save();
             }
 
-            $member = Member::first(array("user_id = ?" => $social->user_id));
+            $member = Member::first(array("user_id = ?" => $social->user_id, "organization_id = ?" => $organization->id));
             if (!$member) {
                 $member = new Member(array(
                     "user_id" => $social->user_id,
@@ -127,7 +129,7 @@ class Employer extends Users {
                     "authority" => "admin",
                     "validity" => "1",
                     "updated" => ""
-                ));
+                ));$member->save();
             }
 
             $membersof[] = array(
@@ -144,63 +146,8 @@ class Employer extends Users {
     protected function login($info = array()) {
         $this->user = $info["user"];
         $session = Registry::get("session");
-        $session->set("employer", $info["members"][0]);
-        $session->set("member", $info["members"]);
-    }
-
-    protected function newEmployer($info) {
-        //check if person is admin of any page
-        $companies = $li->isCompanyAdmin('/companies');
-        if (isset($companies["_total"]) && ($companies["_total"] > 0)) {
-            $orgs = array();
-            foreach ($companies["values"] as $key => $value) {
-                $org = Organization::first(array("linkedin_id = ?" => $value["id"]));
-                $company = $li->get("/companies/{$value['id']}:(id,name,website-url,description,industries,logo-url,employee-count-range,locations)");
-                if (!$org) {
-                    //add all its company on our platform
-                    $organization = new Organization(array(
-                        "photo_id" => "",
-                        "name" => $value["company"]["name"],
-                        "address" => $company["locations"]["values"]["0"]["address"]["city"],
-                        "phone" => "",
-                        "country" => "",
-                        "website" => $company["websiteUrl"],
-                        "sector" => $company["industries"]["values"]["0"]["name"],
-                        "number_employee" => $company["employeeCountRange"]["name"],
-                        "type" => "company",
-                        "about" => $company["description"],
-                        "fbpage" => "",
-                        "linkedin_id" => $value["company"]["id"],
-                        "validity" => "1",
-                        "updated" => ""
-                    ));
-                    $orgs[] = $organization->save();
-                }
-            }
-            $user = $this->newUser($info);
-            $info["user"] = $user;
-            $info["orgs"] = $orgs;
-            $this->newMember($info);
-            $this->createSession($user);
-        } else {
-            $view->set("message", 'Please Register your company and be its admin on linkedin first....<a href="/support#register-on-linkedin-first">Read More</a>');
-        }
-    }
-
-    protected function newMember($info = array()) {
-        if ($info["orgs"]) {
-            foreach ($info["orgs"] as $org) {
-                $member = new Member(array(
-                    "user_id" => $info["user"]->id,
-                    "organization_id" => $org->id,
-                    "designation" => "manager",
-                    "authority" => "admin",
-                    "validity" => "1",
-                    "updated" => ""
-                ));
-                $member->save();
-            }
-        }
+        $session->set("employer", Framework\ArrayMethods::toObject($info["members"][0]));
+        $session->set("member", Framework\ArrayMethods::toObject($info["members"]));
     }
 
     /**

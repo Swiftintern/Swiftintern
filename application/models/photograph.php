@@ -31,7 +31,7 @@ class Photograph extends Shared\Model {
      */
     protected $_size;
 
-    protected function linkedinphoto($logoUrl) {
+    public function linkedinphoto($logoUrl) {
         $path = APP_PATH . "/public/assets/uploads/images/";
         $this->filename = end(explode("/", $logoUrl));
         $this->type = "";
