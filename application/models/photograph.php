@@ -6,6 +6,7 @@
  * @author Faizan Ayubi
  */
 class Photograph extends Shared\Model {
+
     /**
      * @column
      * @readwrite
@@ -13,7 +14,7 @@ class Photograph extends Shared\Model {
      * @length 255
      */
     protected $_filename;
-    
+
     /**
      * @column
      * @readwrite
@@ -21,7 +22,7 @@ class Photograph extends Shared\Model {
      * @length 64
      */
     protected $_type;
-    
+
     /**
      * @column
      * @readwrite
@@ -29,4 +30,16 @@ class Photograph extends Shared\Model {
      * @length 64
      */
     protected $_size;
+
+    protected function linkedinphoto($logoUrl) {
+        $path = APP_PATH . "/public/assets/uploads/images/";
+        $this->filename = end(explode("/", $logoUrl));
+        $this->type = "";
+        $this->size = "";
+        if (file_put_contents($path.$this->filename, file_get_contents($logoUrl))) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
 }

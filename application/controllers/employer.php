@@ -22,15 +22,15 @@ class Employer extends Users {
             "keywords" => "hire interns, post internship, register company, post training courses",
             "description" => "Hire Quality interns register with us and post internship, then further select from thousands of applicants available",
             "view" => $this->getLayoutView()
-        ));
-        $view = $this->getActionView();
+        ));$view = $this->getActionView();
 
         $li = $this->LinkedIn("http://swiftintern.com/employer/register");
-        $url = $li->getLoginUrl(array(LinkedIn::SCOPE_FULL_PROFILE, LinkedIn::SCOPE_EMAIL_ADDRESS, LinkedIn::SCOPE_COMPANY_ADMIN));
-        $view->set("url", $url);
 
         if (isset($_REQUEST['code'])) {
             $token = $li->getAccessToken($_REQUEST['code']);
+        } else {
+            $url = $li->getLoginUrl(array(LinkedIn::SCOPE_FULL_PROFILE, LinkedIn::SCOPE_EMAIL_ADDRESS, LinkedIn::SCOPE_COMPANY_ADMIN));
+            $view->set("url", $url);
         }
 
         if ($li->hasAccessToken()) {
@@ -94,17 +94,22 @@ class Employer extends Users {
             $organization = Organization::first(array("linkedin_id = ?" => $value["id"]));
             if (!$organization) {
                 $company = $li->get("/companies/{$value['id']}:(id,name,website-url,description,industries,logo-url,employee-count-range,locations)");
+                $photo = new Photograph();
+                if($photo->linkedinphoto($company["logoUrl"])){
+                    $photo->save();
+                }
+                
                 $organization = new Organization(array(
                     "photo_id" => "",
                     "name" => $company["name"],
-                    "address" => $company["locations"]["values"]["0"]["address"]["city"],
+                    "address" => $this->checkData($company["locations"]["values"]["0"]["address"]["city"]),
                     "phone" => "",
                     "country" => "",
-                    "website" => $company["websiteUrl"],
-                    "sector" => $company["industries"]["values"]["0"]["name"],
-                    "number_employee" => $company["employeeCountRange"]["name"],
+                    "website" => $this->checkData($company["websiteUrl"]),
+                    "sector" => $this->checkData($company["industries"]["values"]["0"]["name"]),
+                    "number_employee" => $this->checkData($company["employeeCountRange"]["name"]),
                     "type" => "company",
-                    "about" => $company["description"],
+                    "about" => $this->checkData($company["description"]),
                     "fbpage" => "",
                     "linkedin_id" => $company["id"],
                     "validity" => "1",

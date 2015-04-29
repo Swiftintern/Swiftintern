@@ -29,7 +29,12 @@
                         </div>
                         <hr>
                         {if(isset($user))}
-                            <button id="apply_internship" class="btn btn-primary pull-right"><i class="fa fa-check-circle fa-lg"></i> Apply</button>
+                            {if(isset($application))}
+                                <a href="/students/applications" class="btn btn-primary pull-right"><i class="fa fa-check-circle fa-lg"></i> See Application Status</a>
+                            {/if}
+                            {else}
+                                <button id="apply_internship" class="btn btn-primary pull-right"><i class="fa fa-check-circle fa-lg"></i> Apply</button>
+                            {/else}
                         {/if}
                         {else}
                             <button onclick="login()" class="btn btn-primary pull-right"><i class="fa fa-linkedin fa-lg"></i>  | Apply with Linkedin</button>

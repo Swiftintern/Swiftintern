@@ -234,6 +234,10 @@ class Home extends Users {
 
         $opportunity = Opportunity::first(array("id = ?" => $id));
         $organization = Organization::first(array("id = ?" => $opportunity->organization_id), array("id", "name"));
+        if($student) {
+            $application = Application::first(array("student_id = ?" => $student->id, "opportunity_id = ?" => $id));
+            $view->set("application", $application);
+        }
 
         if (RequestMethods::post("action") == "application") {
             $application = new Application(array(

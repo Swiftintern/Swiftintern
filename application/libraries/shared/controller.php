@@ -27,6 +27,10 @@ namespace Shared {
             }
             $params["view"]->set("seo", $seo);
         }
+        
+        protected function checkData($data) {
+            return empty($data)? "" : $data;
+        }
 
         /**
          * @protected

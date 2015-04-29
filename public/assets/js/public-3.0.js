@@ -49,7 +49,7 @@ $(document).ready(function () {
 
     $('#apply_internship').click(function (e) {
         var self = this,
-            path = window.location.pathname.split("/");
+                path = window.location.pathname.split("/");
         $(this).addClass('disabled');
 
         request.read({
@@ -58,18 +58,18 @@ $(document).ready(function () {
             callback: function (person) {
                 if (person.profile >= 50) {
                     var resumeId = findResume(person.resumes);
-                    request.create({
-                        action: path[1]+'/'+path[2]+'/'+path[3],
-                        data: {
-                            action: "application",
-                            opportunity_id: path[3],
-                            resume_id: resumeId
-                        },
-                        callback: function (data) {
-                            $(self).html('Applied Successfully');
-                        }
-                    });
                 }
+                request.create({
+                    action: path[1] + '/' + path[2] + '/' + path[3],
+                    data: {
+                        action: "application",
+                        opportunity_id: path[3],
+                        resume_id: resumeId
+                    },
+                    callback: function (data) {
+                        $(self).html('Applied Successfully');
+                    }
+                });
             }
         });
 
@@ -77,10 +77,10 @@ $(document).ready(function () {
 
 });
 
-function findResume(resumes){
+function findResume(resumes) {
     var id = "";
-    $.each(resumes, function(i, resume){
-        if(resume._type == "file"){
+    $.each(resumes, function (i, resume) {
+        if (resume._type == "file") {
             id = resume._id;
         }
     });
@@ -105,12 +105,9 @@ function loadOpportunities(opts) {
 
 }
 
-function login(redirect) {
+function login() {
     request.read({
-        action: "home/login",
-        data: {
-            redirect: redirect
-        },
+        action: "students/register",
         callback: function (data) {
             if (data.url) {
                 window.location.href = data.url;

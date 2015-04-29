@@ -48,42 +48,33 @@ class Students extends Users {
     }
 
     public function register() {
-        $li = Framework\Registry::get("linkedin");
-        $li->changeCallbackURL("http://swiftintern.com/students/register");
-        $url = $li->getLoginUrl(array(LinkedIn::SCOPE_FULL_PROFILE, LinkedIn::SCOPE_EMAIL_ADDRESS, LinkedIn::SCOPE_CONTACT_INFO));
-
         $this->seo(array(
             "title" => "Get Internship | Student Register",
             "keywords" => "get internship, student register",
             "description" => "Register with us to get internship from top companies in india and various startups in Delhi, Mumbai, Bangalore, Chennai, hyderabad etc",
             "view" => $this->getLayoutView()
-        ));
-
-        $view = $this->getActionView();
-        $view->set("url", $url);
-
+        ));$view = $this->getActionView();
+        
+        $li = $this->LinkedIn("http://swiftintern.com/students/register");
         if (isset($_REQUEST['code'])) {
-            $token = $li->getAccessToken($_REQUEST['code']);
+            $li->getAccessToken($_REQUEST['code']);
+        } else {
+            $url = $li->getLoginUrl(array(LinkedIn::SCOPE_FULL_PROFILE, LinkedIn::SCOPE_EMAIL_ADDRESS, LinkedIn::SCOPE_CONTACT_INFO));
+            $view->set("url", $url);
         }
 
         if ($li->hasAccessToken()) {
-            $info = $li->get('/people/~:(first-name,last-name,positions,email-address,public-profile-url,location,picture-url,educations,skills)');
-
+            $info = $li->get('/people/~:(summary,first-name,last-name,positions,email-address,public-profile-url,location,picture-url,educations,skills)');
             $user = $this->read(array(
                 "model" => "user",
                 "where" => array("email = ?" => $info["emailAddress"])
             ));
-
             if ($user) {
                 $social = $this->read(array(
                     "model" => "social",
                     "where" => array("user_id = ?" => $user->id, "social_platform = ?" => "linkedin")
                 ));
                 $student = Student::first(array("user_id = ?" => $user->id));
-                if(!$social){
-                    $this->linkedinDetails($info, $student);
-                }
-                
             } else {
                 $user = new User(array(
                     "name" => $info["firstName"] . " " . $info["lastName"],
@@ -120,30 +111,36 @@ class Students extends Users {
                     "updated" => ""
                 ));
                 $student->save();
-                
+            }
+            
+            if(!$social){
                 $social = new Social(array(
                     "user_id" => $user->id,
                     "social_platform" => "linkedin",
                     "link" => $info["publicProfileUrl"]
                 ));
                 $social->save();
-                
                 $this->linkedinDetails($info, $student);
             }
 
             $info["user"] = $user;
-            $this->login($info);
+            $this->login($info, $student);
             self::redirect("/students");
         }
     }
     
-    protected function linkedinDetails($info = array(), $student) {
+    protected function login($info, $student) {
+        $this->user = $info["user"];
+        $session = Registry::get("session");
+        $session->set("student", $student);
+    }
+    
+    protected function linkedinDetails($info, $student) {
         // Saving Education Info
         if ($info["educations"]["_total"] > 0) {
             foreach ($info["educations"]["values"] as $key => $value) {
-                $org = Organization::first(array("name = ?" => $value["schoolName"]), array("id"));
-                if ($org) { $orgId = $org->id;} 
-                else {
+                $organization = Organization::first(array("name = ?" => $value["schoolName"]), array("id"));
+                if (!$organization) {
                     $organization = new Organization(array(
                         "photo_id" => "",
                         "name" => $value["schoolName"],
@@ -160,15 +157,14 @@ class Students extends Users {
                         "validity" => "1",
                         "updated" => ""
                     ));$organization->save();
-                    $orgId = $organization->id;
                 }
                 $qualification = new Qualification(array(
                     "student_id" => $student->id,
-                    "organization_id" => $orgId,
-                    "degree" => $value["degree"],
-                    "major" => $value["fieldOfStudy"],
+                    "organization_id" => $organization->id,
+                    "degree" => $this->checkData($value["degree"]),
+                    "major" => $this->checkData($value["fieldOfStudy"]),
                     "gpa" => "",
-                    "passing_year" => $value["endDate"]["year"]
+                    "passing_year" => $this->checkData($value["endDate"]["year"])
                 ));
                 $qualification->save();
             }
@@ -177,9 +173,8 @@ class Students extends Users {
         //Adding work experience
         if ($info["positions"]["_total"] > 0) {
             foreach ($info["positions"]["values"] as $key => $value) {
-                $org = Organization::first(array("name = ?" => $value["company"]["name"]), array("id"));
-                if ($org) { $orgId = $org->id;}
-                else {
+                $organization = Organization::first(array("name = ?" => $value["company"]["name"]), array("id"));
+                if (!$organization) {
                     $organization = new Organization(array(
                         "photo_id" => "",
                         "name" => $value["company"]["name"],
@@ -192,16 +187,15 @@ class Students extends Users {
                         "type" => "company",
                         "about" => "",
                         "fbpage" => "",
-                        "linkedin_id" => "",
+                        "linkedin_id" => $this->checkData($value["company"]["id"]),
                         "validity" => "1",
                         "updated" => ""
                     ));$organization->save();
-                    $orgId = $organization->id;
                 }
                 $work = new Work(array(
                     "student_id" => $student->id,
-                    "organization_id" => $orgId,
-                    "duration" => "from " . $value["startDate"]["year"],
+                    "organization_id" => $organization->id,
+                    "duration" => $this->checkData($value["startDate"]["year"]),
                     "designation" => $value["title"],
                     "responsibility" => $value["summary"]
                 ));
