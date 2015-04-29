@@ -22,7 +22,8 @@ class Employer extends Users {
             "keywords" => "hire interns, post internship, register company, post training courses",
             "description" => "Hire Quality interns register with us and post internship, then further select from thousands of applicants available",
             "view" => $this->getLayoutView()
-        ));$view = $this->getActionView();
+        ));
+        $view = $this->getActionView();
 
         $li = $this->LinkedIn("http://swiftintern.com/employer/register");
         $url = $li->getLoginUrl(array(LinkedIn::SCOPE_FULL_PROFILE, LinkedIn::SCOPE_EMAIL_ADDRESS, LinkedIn::SCOPE_COMPANY_ADMIN));
@@ -35,11 +36,111 @@ class Employer extends Users {
         if ($li->hasAccessToken()) {
             $info = $li->get('/people/~:(first-name,last-name,positions,email-address,public-profile-url,picture-url)');
 
-            //checks user exist and then logins
-            if (!$this->access($info)) {
-                $this->newEmployer($info);
+            $user = $this->read(array(
+                "model" => "user",
+                "where" => array("email = ?" => $info["emailAddress"])
+            ));
+
+            if ($user) {
+                $social = $this->read(array(
+                    "model" => "social",
+                    "where" => array("user_id = ?" => $user->id, "social_platform = ?" => "linkedin")
+                ));
+            } else {
+                $user = new User(array(
+                    "name" => $info["firstName"] . " " . $info["lastName"],
+                    "email" => $info["emailAddress"],
+                    "phone" => $phone,
+                    "password" => rand(100000, 99999999),
+                    "access_token" => rand(100000, 99999999),
+                    "type" => "employer",
+                    "validity" => "1",
+                    "last_ip" => $_SERVER['REMOTE_ADDR'],
+                    "last_login" => "",
+                    "updated" => ""
+                ));
+                $user->save();
+            }
+            if (!$social) {
+                $social = new Social(array(
+                    "user_id" => $user->id,
+                    "social_platform" => "linkedin",
+                    "link" => $info["publicProfileUrl"]
+                ));
+                $social->save();
+            }
+
+            $members = $this->member($social);
+            if (!$members) {
+                $view->set("message", 'Please Register your company and be its admin on linkedin first....<a href="/support#register-on-linkedin-first">Read More</a>');
+            } else {
+                $info["members"] = $members;
+                $info["user"] = $user;
+                $this->login($info);
+                self::redirect("/employer");
             }
         }
+    }
+
+    protected function member($social) {
+        $li = Registry::get("linkedin");
+        $companies = $li->isCompanyAdmin('/companies');
+        $membersof = array();
+        if ($companies["_total"] == 0) {
+            return FALSE;
+        }
+        //add all its company on our platform
+        foreach ($companies["values"] as $key => $value) {
+            $organization = Organization::first(array("linkedin_id = ?" => $value["id"]));
+            if (!$organization) {
+                $company = $li->get("/companies/{$value['id']}:(id,name,website-url,description,industries,logo-url,employee-count-range,locations)");
+                $organization = new Organization(array(
+                    "photo_id" => "",
+                    "name" => $company["name"],
+                    "address" => $company["locations"]["values"]["0"]["address"]["city"],
+                    "phone" => "",
+                    "country" => "",
+                    "website" => $company["websiteUrl"],
+                    "sector" => $company["industries"]["values"]["0"]["name"],
+                    "number_employee" => $company["employeeCountRange"]["name"],
+                    "type" => "company",
+                    "about" => $company["description"],
+                    "fbpage" => "",
+                    "linkedin_id" => $company["id"],
+                    "validity" => "1",
+                    "updated" => ""
+                ));
+                $organization->save();
+            }
+
+            $member = Member::first(array("user_id = ?" => $social->user_id));
+            if (!$member) {
+                $member = new Member(array(
+                    "user_id" => $social->user_id,
+                    "organization_id" => $organization->id,
+                    "designation" => "Member",
+                    "authority" => "admin",
+                    "validity" => "1",
+                    "updated" => ""
+                ));
+            }
+
+            $membersof[] = array(
+                "id" => $member->id,
+                "organization" => $organization,
+                "designation" => $member->designation,
+                "authority" => $member->authority
+            );
+        }
+
+        return $membersof;
+    }
+
+    protected function login($info = array()) {
+        $this->user = $info["user"];
+        $session = Registry::get("session");
+        $session->set("employer", $info["members"][0]);
+        $session->set("member", $info["members"]);
     }
 
     protected function newEmployer($info) {

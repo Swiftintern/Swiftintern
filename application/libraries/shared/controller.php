@@ -38,8 +38,8 @@ namespace Shared {
                 exit();
             }
         }
-
-        protected function _checkitem($options = array()) {
+        
+        protected function read($options = array()) {
             $model = $options["model"];
             
             $r = new \ReflectionClass(ucfirst($model));
