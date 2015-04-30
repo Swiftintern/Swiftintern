@@ -28,9 +28,4 @@ class Users extends Controller {
         $this->willRenderLayoutView = false;
         $this->willRenderActionView = false;
     }
-
-    public function switchOrganization($organization_id) {
-        $session = Registry::get("session");
-    }
-
 }

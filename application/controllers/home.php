@@ -73,7 +73,7 @@ class Home extends Users {
 
         $this->getLayoutView()->set("seo", $seo);
     }
-    
+
     public function support() {
         $seo = Framework\Registry::get("seo");
 
@@ -138,9 +138,7 @@ class Home extends Users {
     public function post($title, $id) {
         $seo = Framework\Registry::get("seo");
 
-        $post = BlogPost::first(
-                        array("id = ?" => $id), array("id", "title", "content", "category", "created")
-        );
+        $post = BlogPost::first(array("id = ?" => $id), array("id", "title", "content", "category", "created"));
 
         $seo->setTitle($post->title);
         $seo->setKeywords($post->category);
@@ -210,7 +208,7 @@ class Home extends Users {
 
         $view->set("opportunity", $opportunity);
     }
-    
+
     function application() {
         $this->willRenderLayoutView = false;
         $this->willRenderActionView = false;
@@ -223,7 +221,7 @@ class Home extends Users {
         ));
 
         $application->save();
-        echo '<pre>', print_r($application),'</pre>';
+        echo '<pre>', print_r($application), '</pre>';
     }
 
     public function internship($title, $id) {
@@ -233,8 +231,8 @@ class Home extends Users {
         $student = $session->get("student");
 
         $opportunity = Opportunity::first(array("id = ?" => $id));
-        $organization = Organization::first(array("id = ?" => $opportunity->organization_id), array("id", "name"));
-        if($student) {
+        $organization = Organization::first(array("id = ?" => $opportunity->organization_id), array("id", "name", "photo_id"));
+        if ($student) {
             $application = Application::first(array("student_id = ?" => $student->id, "opportunity_id = ?" => $id));
             $view->set("application", $application);
         }
@@ -256,6 +254,7 @@ class Home extends Users {
             "title" => $opportunity->title,
             "keywords" => $opportunity->category . ', ' . $opportunity->location,
             "description" => substr(strip_tags($opportunity->details), 0, 150),
+            "photo" => APP . "thumbnails/" . $organization->photo_id,
             "view" => $this->getLayoutView()
         ));
 
@@ -294,19 +293,19 @@ class Home extends Users {
             }
         }
     }
-	
-	public function spoj() {
+
+    public function spoj() {
         $view = $this->getActionView();
-		
-		$seo = Framework\Registry::get("seo");
+
+        $seo = Framework\Registry::get("seo");
         $seo->setTitle("Spoj User");
         $seo->setKeywords("swiftintern");
         $seo->setDescription("find details of any spoj user.");
-		
+
         $user = "viplov";
         $spoj = new Spoj(array('username' => $user));
-        
-        if($spoj->isValid) {
+
+        if ($spoj->isValid) {
 
             $view->set("user", $user);
             $view->set("joined", $spoj->getJoined());
@@ -320,16 +319,16 @@ class Home extends Users {
 
     public function codechef() {
         $view = $this->getActionView();
-		
-		$seo = Framework\Registry::get("seo");
+
+        $seo = Framework\Registry::get("seo");
         $seo->setTitle("Codechef User");
         $seo->setKeywords("swiftintern");
         $seo->setDescription("find details of any codechef user.");
-		
+
         $user = "ashish1610";
         $codechef = new CodeChef(array('username' => $user));
-        
-        if($codechef->isValid) {
+
+        if ($codechef->isValid) {
 
             $view->set("user", $user);
             $view->set("name", $codechef->getName());
@@ -339,4 +338,5 @@ class Home extends Users {
             $view->set("error", "Could find the details for given user");
         }
     }
+
 }

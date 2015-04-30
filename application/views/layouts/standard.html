@@ -57,13 +57,13 @@
     <meta property="og:title" content="{echo $seo->getTitle()}"/>
     <meta property="og:type" content="article"/>
     <meta property="og:image" content="{echo $seo->getPhoto()}"/>
-    <meta property="og:url" content=""/>
+    <meta property="og:url" content="{echo URL}"/>
     <meta property="og:description" content="{echo strip_tags($seo->getDescription())}"/>
     <meta property="fb:app_id" content="561287280655510"/>
     
     <!-- twitter -->
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:url" content="">
+    <meta name="twitter:url" content="{echo URL}">
     <meta name="twitter:title" content="{echo $seo->getTitle()}">
     <meta name="twitter:description" content="{echo strip_tags($seo->getDescription())}">
     <meta name="twitter:image" content="{echo $seo->getPhoto()}">

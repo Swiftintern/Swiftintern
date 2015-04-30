@@ -6,7 +6,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="employer">
+        <a class="navbar-brand" href="/employer">
             <i class="fa fa-briefcase fa-fw"></i>{echo $employer->organization->name}
         </a>
     </div>
@@ -20,8 +20,11 @@
             <ul class="dropdown-menu dropdown-user">
                 <li><a href="employer/faq"><i class="fa fa-thumbs-up fa-fw"></i> Help</a></li>
                 <li><a href="employer"><i class="fa fa-gear fa-fw"></i> Dashboard</a></li>
-                <li class="divider"></li>
                 <li><a href="logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
+                <li class="divider"></li>
+                {foreach $mem in $member}
+                <li><a href="/employer/switchorg/{echo $mem->organization->id}"><i class="fa fa-briefcase fa-fw"></i> {echo $mem->organization->name}</a></li>
+                {/foreach}
             </ul>
         </li>
     </ul>
@@ -49,7 +52,7 @@
                 <a href="#"><i class="fa fa-graduation-cap fa-fw"></i> My Internships<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li><a href="/employer/postinternship">Create</a></li>
-                    <li><a href="/employer/internship">Manage</a></li>
+                    <li><a href="/employer/internships">Manage</a></li>
                     <li><a href="/employer/applicants">Applicants</a></li>
                 </ul>
             </li>

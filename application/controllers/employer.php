@@ -350,9 +350,9 @@ class Employer extends Users {
     /**
      * @before _secure
      */
-    public function internship($id = 1) {
+    public function internship($id = 0) {
         $this->changeLayout();
-        if ($id == 1) {
+        if ($id == 0) {
             $internship = Opportunity::first(array("organization_id = ? " => $this->employer->organization->id), array("id", "title", "eligibility", "last_date", "details", "payment"));
         } else {
             $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id), array("id", "title", "eligibility", "last_date", "details", "payment"));
@@ -387,6 +387,7 @@ class Employer extends Users {
             $view->set("errors", $internship->getErrors());
         }
         $view->set("internship", $internship);
+        $view->set("id", $id);
         $view->set("opportunities", $opportunities);
     }
 
@@ -466,15 +467,21 @@ class Employer extends Users {
         $view = $this->getActionView();
     }
 
-    public function shareupdate() {
+    protected function shareupdate() {
         $this->noview();
         $li = Registry::get("linkedin");
-        $li->hasAccessToken();
         if ($li->hasAccessToken()) {
             $info = $li->post('/companies/3756293/shares', array(
-                "comment" => "swift testing"
+                "content" => array(
+                    "title" => "Content Writing Internship",
+                    "description" => "Research for new ideas around youth &amp; teen's life.  - Reporting on Assignments. - Conducting Interviews with important personalities. - Writing",
+                    "submitted-url" => "http://swiftintern.com/internship/Content+Writing+Internship/363"
+                ),
+                "visibility" => array(
+                    "code" => "anyone"
+                )
             ));
-            var_dump($info);
+            return $info;
         }
     }
 
@@ -492,6 +499,21 @@ class Employer extends Users {
         $this->getLayoutView()->set("employer", $employer);
         $this->getActionView()->set("member", $member);
         $this->getLayoutView()->set("member", $member);
+        //echo '<pre>', print_r($member), '</pre>';
+    }
+    
+    public function switchorg($organization_id) {
+        $this->noview();
+        $session = Registry::get("session");
+        $member = $session->get("member");
+        
+        foreach ($member as $mem) {
+            if($organization_id == $mem->organization->id){
+                $session->set("employer", $mem);
+                self::redirect("/employer");
+            }
+        }
+
     }
 
 }
