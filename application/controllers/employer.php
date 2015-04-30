@@ -22,7 +22,8 @@ class Employer extends Users {
             "keywords" => "hire interns, post internship, register company, post training courses",
             "description" => "Hire Quality interns register with us and post internship, then further select from thousands of applicants available",
             "view" => $this->getLayoutView()
-        ));$view = $this->getActionView();
+        ));
+        $view = $this->getActionView();
 
         $li = $this->LinkedIn("http://swiftintern.com/employer/register");
 
@@ -94,13 +95,14 @@ class Employer extends Users {
             $organization = Organization::first(array("linkedin_id = ?" => $value["id"]));
             if (!$organization) {
                 $company = $li->get("/companies/{$value['id']}:(id,name,website-url,description,industries,logo-url,employee-count-range,locations)");
-                $photo = new Photograph();$photoId = "";
-                if(!empty($company["logoUrl"])){
+                $photo = new Photograph();
+                $photoId = "";
+                if (!empty($company["logoUrl"])) {
                     $photo->linkedinphoto($company["logoUrl"]);
                     $photo->save();
                     $photoId = $photo->id;
                 }
-                
+
                 $organization = new Organization(array(
                     "photo_id" => $photoId,
                     "name" => $company["name"],
@@ -129,7 +131,8 @@ class Employer extends Users {
                     "authority" => "admin",
                     "validity" => "1",
                     "updated" => ""
-                ));$member->save();
+                ));
+                $member->save();
             }
 
             $membersof[] = array(
@@ -322,7 +325,19 @@ class Employer extends Users {
 
             if ($opportunity->validate()) {
                 $opportunity->save();
-                $view->set("success", true);
+                if (RequestMethods::post("linkedin") == "1") {
+                    $this->shareupdate(array(
+                        "content" => array(
+                            "title" => $opportunity->title,
+                            "description" => substr(strip_tags($opportunity->details), 0, 150),
+                            "submitted-url" => "http://swiftintern.com/internship/" . urlencode($opportunity->title) . "/" . $opportunity->id
+                        ),
+                        "visibility" => array(
+                            "code" => "anyone"
+                        )
+                    ), $opportunity);
+                }
+                self::redirect('/employer/internships');
             }
 
             $view->set("errors", $opportunity->getErrors());
@@ -467,22 +482,22 @@ class Employer extends Users {
         $view = $this->getActionView();
     }
 
-    protected function shareupdate() {
-        $this->noview();
+    protected function shareupdate($opts, $meta) {
         $li = Registry::get("linkedin");
         if ($li->hasAccessToken()) {
-            $info = $li->post('/companies/3756293/shares', array(
-                "content" => array(
-                    "title" => "Content Writing Internship",
-                    "description" => "Research for new ideas around youth &amp; teen's life.  - Reporting on Assignments. - Conducting Interviews with important personalities. - Writing",
-                    "submitted-url" => "http://swiftintern.com/internship/Content+Writing+Internship/363"
-                ),
-                "visibility" => array(
-                    "code" => "anyone"
-                )
-            ));
+            $info = $li->post('/companies/' . $this->employer->organization->linkedin_id . '/shares', $opts);
+            foreach ($info as $key => $value) {
+                $linkedin = new Meta(array(
+                    "property" => "company_share_opportunity",
+                    "property_id" => $meta->id,
+                    "meta_key" => $key,
+                    "meta_value" => $value
+                ));
+                $linkedin->save();
+            }
             return $info;
         }
+        return FALSE;
     }
 
     public function changeLayout() {
@@ -501,19 +516,36 @@ class Employer extends Users {
         $this->getLayoutView()->set("member", $member);
         //echo '<pre>', print_r($member), '</pre>';
     }
-    
+
     public function switchorg($organization_id) {
         $this->noview();
         $session = Registry::get("session");
         $member = $session->get("member");
-        
+
         foreach ($member as $mem) {
-            if($organization_id == $mem->organization->id){
+            if ($organization_id == $mem->organization->id) {
                 $session->set("employer", $mem);
                 self::redirect("/employer");
             }
         }
+    }
 
+    public function testshare() {
+        $this->noview();
+        $li = Registry::get("linkedin");
+        if ($li->hasAccessToken()) {
+            $info = $li->post('/companies/2414183/shares', array(
+                "content" => array(
+                    "title" => "Content Writing Internship",
+                    "description" => "Research for new ideas around youth &amp; teen's life.  - Reporting on Assignments. - Conducting Interviews with important personalities. - Writing",
+                    "submitted-url" => "http://swiftintern.com/internship/Content+Writing+Internship/363"
+                ),
+                "visibility" => array(
+                    "code" => "anyone"
+                )
+            ));
+            var_dump($info);
+        }
     }
 
 }

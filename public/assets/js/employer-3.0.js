@@ -32,3 +32,11 @@ $(function() {
     })
 });
 
+$(document).ready(function () {
+    
+    //initialize beautiful datetime picker
+    $("input[type=date]").datepicker();
+    $("input[type=date]").datepicker("option", "dateFormat", "yy-mm-dd");
+    
+    
+});

@@ -1,21 +1,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h2 class="page-header">Edit</h2>
-            <form class="form-inline text-center" role="form" method="post" action="/employer/internship/{echo $id}">
-                <div class="form-group">
-                    <div class="input-group">
-                        <label class="sr-only">Opportunity</label>
-                        <select name="id" class="form-control" value="{echo $internship->id}">
-                            {foreach $opportunity in $opportunities}
-                            <option value="{echo $opportunity->id}">{echo $opportunity->title}</option>
-                            {/foreach}
-                        </select>
-                    </div>
-                </div>
-                <input type="hidden" name="action" value="edit">
-                <button type="submit" class="btn btn-primary">Edit</button>
-            </form>
+            <h1 class="page-header text-center">{echo $internship->title}</h1>
             <form class="panel panel-default text-center" method="post" action="/employer/internship">
                 <table class="table">
                     <tbody>
