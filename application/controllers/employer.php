@@ -288,9 +288,36 @@ class Employer extends Users {
             "keywords" => "followers",
             "description" => "Your company followers on linkedin",
             "view" => $this->getLayoutView()
-        ));
-
-        $view = $this->getActionView();
+        ));$view = $this->getActionView();
+        
+        if (RequestMethods::get("action")) {
+            $data = $this->followerstats(RequestMethods::post("startdate"),RequestMethods::post("startdate"));
+        } else {
+            $data = $this->followerstats(strftime("%Y-%m-%d", strtotime('-1 week')), strftime("%Y-%m-%d", strtotime('now')));
+        }
+        $view->set("data", $data);
+        var_dump($data);
+    }
+    
+    protected function followerstats($startdate, $enddate) {
+        $li = Registry::get("linkedin");
+        $totalFollowerCount = array();$time = array();$data = array();
+        if ($li->hasAccessToken()) {
+            $info = $li->get('/companies/3756293/historical-follow-statistics', array(
+                "start-timestamp" => strtotime($startdate) * 1000,
+                "time-granularity" => "day",
+                "end-timestamp" => strtotime($enddate) * 1000
+            ));
+            foreach ($info["values"] as $key => $value) {
+                array_push($totalFollowerCount, $value["totalFollowerCount"]);
+                array_push($time, $value["time"]);
+            }
+            $data = array(
+                "time" => $time,
+                "totalFollowerCount" => $totalFollowerCount
+            );
+            return $data;
+        }
     }
 
     public function postinternship() {
@@ -529,23 +556,4 @@ class Employer extends Users {
             }
         }
     }
-
-    public function testshare() {
-        $this->noview();
-        $li = Registry::get("linkedin");
-        if ($li->hasAccessToken()) {
-            $info = $li->post('/companies/2414183/shares', array(
-                "content" => array(
-                    "title" => "Content Writing Internship",
-                    "description" => "Research for new ideas around youth &amp; teen's life.  - Reporting on Assignments. - Conducting Interviews with important personalities. - Writing",
-                    "submitted-url" => "http://swiftintern.com/internship/Content+Writing+Internship/363"
-                ),
-                "visibility" => array(
-                    "code" => "anyone"
-                )
-            ));
-            var_dump($info);
-        }
-    }
-
 }
