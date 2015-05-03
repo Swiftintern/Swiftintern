@@ -24,6 +24,11 @@ $routes = array(
         "action" => "post"
     ),
     array(
+        "pattern" => "test/:title/:id",
+        "controller" => "onlinetest",
+        "action" => "test"
+    ),
+    array(
         "pattern" => "support",
         "controller" => "home",
         "action" => "support"

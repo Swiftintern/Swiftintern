@@ -283,6 +283,7 @@ class Employer extends Users {
 
     public function followers() {
         $this->changeLayout();
+        $this->noview();
         $this->seo(array(
             "title" => "Company Followers on linkedin",
             "keywords" => "followers",
@@ -295,8 +296,18 @@ class Employer extends Users {
         } else {
             $data = $this->followerstats(strftime("%Y-%m-%d", strtotime('-1 week')), strftime("%Y-%m-%d", strtotime('now')));
         }
+        
+        $myData = new pChart\classes\pData();
+        $myData->addPoints($data["totalFollowerCount"]);
+        $myPicture = new pChart\classes\pImage(700,230,$myData);
+        $myPicture->setFontProperties(array("FontName"=>APP_PATH."/libraries/pChart/fonts/Forgotte.ttf","FontSize"=>11));
+        $myPicture->setGraphArea(60,40,670,190);
+        $myPicture->drawScale();
+        $myPicture->drawSplineChart();
+        $myPicture->autoOutput("example.basic.png");
+        
         $view->set("data", $data);
-        var_dump($data);
+        echo '<pre>', print_r($data), '</pre>';
     }
     
     protected function followerstats($startdate, $enddate) {

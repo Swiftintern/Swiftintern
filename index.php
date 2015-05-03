@@ -1,6 +1,9 @@
 <?php
 ob_start();
 define("DEBUG", TRUE);
+if($_SERVER["REMOTE_ADDR"] != '125.63.115.11'){
+    die('Under Devlopment');
+}
 
 // 1. define the default path for includes
 define("APP_PATH", str_replace(DIRECTORY_SEPARATOR, "/", dirname(__FILE__)));
@@ -13,7 +16,7 @@ try {
 
     // library's class autoloader
     spl_autoload_register(function($class) {
-        $path = ucfirst(str_replace("\\", DIRECTORY_SEPARATOR, $class));
+        $path = str_replace("\\", DIRECTORY_SEPARATOR, $class);
         $file = APP_PATH . "/application/libraries/{$path}.php";
 
         if (file_exists($file)) {

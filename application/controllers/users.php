@@ -11,6 +11,9 @@ use Framework\RequestMethods as RequestMethods;
 
 class Users extends Controller {
 
+    /**
+     * Destroys session of current user
+     */
     public function logout() {
         $this->setUser(false);
         self::redirect("/home");

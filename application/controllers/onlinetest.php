@@ -104,14 +104,12 @@ class OnlineTest extends Controller {
     /**
      * @before _secure
      */
-    public function test($title, $test_id) {
+    public function test($title, $id) {
         $seo = Framework\Registry::get("seo");
         $user = $this->getUser();
         $view = $this->getActionView();
 
-        $test = Test::first(array(
-                    "id = ?" => $test_id
-        ));
+        $test = Test::first(array("id = ?" => $id));
         $seo->setTitle($test->title);
         $seo->setKeywords($test->title);
         $seo->setDescription(strip_tags($test->syllabus));
