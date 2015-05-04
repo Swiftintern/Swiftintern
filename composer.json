@@ -1,0 +1,11 @@
+{
+    "name": "vendor/swiftintern",
+    "description": "A Platform for Students to apply to internship with their linkedin profile and companies to sort candidates.",
+    "authors": [
+        {
+            "name": "Faizan Ayubi",
+            "email": "indianayubi@gmail.com"
+        }
+    ],
+    "require": {}
+}
