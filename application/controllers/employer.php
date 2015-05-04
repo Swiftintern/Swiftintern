@@ -283,34 +283,22 @@ class Employer extends Users {
 
     public function followers() {
         $this->changeLayout();
-        $this->noview();
         $this->seo(array(
             "title" => "Company Followers on linkedin",
             "keywords" => "followers",
             "description" => "Your company followers on linkedin",
             "view" => $this->getLayoutView()
-        ));$view = $this->getActionView();
+        ));
+        $view = $this->getActionView();
         
-        if (RequestMethods::get("action")) {
-            $data = $this->followerstats(RequestMethods::post("startdate"),RequestMethods::post("startdate"));
-        } else {
-            $data = $this->followerstats(strftime("%Y-%m-%d", strtotime('-1 week')), strftime("%Y-%m-%d", strtotime('now')));
-        }
+        $week = strftime("%Y-%m-%d", strtotime('-1 week'));
+        $now = strftime("%Y-%m-%d", strtotime('now'));
         
-        $myData = new pChart\classes\pData();
-        $myData->addPoints($data["totalFollowerCount"]);
-        $myPicture = new pChart\classes\pImage(700,230,$myData);
-        $myPicture->setFontProperties(array("FontName"=>APP_PATH."/libraries/pChart/fonts/Forgotte.ttf","FontSize"=>11));
-        $myPicture->setGraphArea(60,40,670,190);
-        $myPicture->drawScale();
-        $myPicture->drawSplineChart();
-        $myPicture->autoOutput("example.basic.png");
-        
-        $view->set("data", $data);
-        echo '<pre>', print_r($data), '</pre>';
+        $view->set("week", $week);
+        $view->set("now", $now);
     }
     
-    protected function followerstats($startdate, $enddate) {
+    public function followerstats($startdate, $enddate) {
         $li = Registry::get("linkedin");
         $totalFollowerCount = array();$time = array();$data = array();
         if ($li->hasAccessToken()) {
@@ -322,12 +310,13 @@ class Employer extends Users {
             foreach ($info["values"] as $key => $value) {
                 array_push($totalFollowerCount, $value["totalFollowerCount"]);
                 array_push($time, $value["time"]);
+                $t = strftime("%Y-%m-%d", $value["time"]/1000);
+                $data[$t] = $value["totalFollowerCount"];
             }
-            $data = array(
-                "time" => $time,
-                "totalFollowerCount" => $totalFollowerCount
-            );
-            return $data;
+            $chart = new PHPChart\Chart($data);
+            $chart->drawBar(800, 400);
+            //return $data;
+            //echo '<pre>', print_r($data), '</pre>';
         }
     }
 

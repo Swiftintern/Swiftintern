@@ -38,5 +38,10 @@ $(document).ready(function () {
     $("input[type=date]").datepicker();
     $("input[type=date]").datepicker("option", "dateFormat", "yy-mm-dd");
     
-    
+    $("#followers").submit(function(e){
+        e.preventDefault();
+        var startdate = $('input[name="startdate"]').val();
+        var enddate = $('input[name="enddate"]').val();
+        $('#output').attr("src", "/employer/followerstats/"+startdate+"/"+enddate+"");
+    });
 });

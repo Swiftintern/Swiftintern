@@ -1,5 +1,7 @@
 <?php
 
+namespace PHPChart;
+
 /**
  * Main Class to Draw Chart and Graphs
  *
@@ -8,7 +10,6 @@
 class Chart {
 
     public $data;
-    public $img;
     public $barWidth = 20;
 
     public function __construct($data) {
@@ -18,11 +19,11 @@ class Chart {
     /**
      * Method to Draw Bar Graph
      * 
-     * @param type $img_width Set Graph width
-     * @param type $img_height Sets Graph Height
-     * @param type $margins Sets Margin around Graph
+     * @param type $img_width
+     * @param type $img_height
+     * @param type $margins
      */
-    function drawBar($img_width = 450, $img_height = 300, $margins = 20) {
+    public function drawBar($img_width = 450, $img_height = 300, $margins = 20) {
         //Finding the size of graph by substracting the size of borders
         $graph_width = $this->automargin($img_width, $margins);
         $graph_height = $this->automargin($img_height, $margins);
@@ -69,22 +70,29 @@ class Chart {
             imagestring($img, 0, $x1 + 3, $img_height - 15, $key, $bar_color);
             imagefilledrectangle($img, $x1, $y1, $x2, $y2, $bar_color);
         }
-        $this->img = $img;
+        
+        header("Content-type:image/png");
+        imagepng($img);
     }
 
     /**
      * Adjust Margin for graphs
+     * 
      * @param type $length
      * @param type $margin
      * @return type
      */
-    function automargin($length, $margin) {
+    public function automargin($length, $margin) {
         return $length - $margin * 2;
     }
-
-    function __destruct() {
-        header("Content-type:image/png");
-        imagepng($this->img);
+    
+    public function save() {
+        $path = APP_PATH . "/public/assets/uploads/images/";
+        $filename = '';
+        if(!file_exists($path.'/'.$filename)){
+            file_put_contents($path.'/'.$filename, $this->show());
+        }
     }
-
+    
+    
 }
