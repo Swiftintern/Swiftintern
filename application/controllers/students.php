@@ -82,10 +82,10 @@ class Students extends Users {
                     "phone" => $phone,
                     "password" => rand(100000, 99999999),
                     "access_token" => rand(100000, 99999999),
-                    "type" => "employer",
+                    "type" => "student",
                     "validity" => "1",
                     "last_ip" => $_SERVER['REMOTE_ADDR'],
-                    "last_login" => "",
+                    "last_login" => "1",
                     "updated" => ""
                 ));
                 $user->save();
