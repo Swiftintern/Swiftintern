@@ -64,7 +64,7 @@ class Students extends Users {
         }
 
         if ($li->hasAccessToken()) {
-            $info = $li->get('/people/~:(summary,first-name,last-name,positions,email-address,public-profile-url,location,picture-url,educations,skills)');
+            $info = $li->get('/people/~:(phone-numbers,summary,first-name,last-name,positions,email-address,public-profile-url,location,picture-url,educations,skills)');
             $user = $this->read(array(
                 "model" => "user",
                 "where" => array("email = ?" => $info["emailAddress"])
@@ -79,7 +79,7 @@ class Students extends Users {
                 $user = new User(array(
                     "name" => $info["firstName"] . " " . $info["lastName"],
                     "email" => $info["emailAddress"],
-                    "phone" => $phone,
+                    "phone" => $this->checkData($info["phoneNumbers"]["values"][0]["phoneNumber"]),
                     "password" => rand(100000, 99999999),
                     "access_token" => rand(100000, 99999999),
                     "type" => "student",

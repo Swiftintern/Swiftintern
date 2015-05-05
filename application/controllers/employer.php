@@ -35,7 +35,7 @@ class Employer extends Users {
         }
 
         if ($li->hasAccessToken()) {
-            $info = $li->get('/people/~:(first-name,last-name,positions,email-address,public-profile-url,picture-url)');
+            $info = $li->get('/people/~:(phone-numbers,first-name,last-name,positions,email-address,public-profile-url,picture-url)');
 
             $user = $this->read(array(
                 "model" => "user",
@@ -51,7 +51,7 @@ class Employer extends Users {
                 $user = new User(array(
                     "name" => $info["firstName"] . " " . $info["lastName"],
                     "email" => $info["emailAddress"],
-                    "phone" => $phone,
+                    "phone" => $this->checkData($info["phoneNumbers"]["values"][0]["phoneNumber"]),
                     "password" => rand(100000, 99999999),
                     "access_token" => rand(100000, 99999999),
                     "type" => "employer",
