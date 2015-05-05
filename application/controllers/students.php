@@ -91,11 +91,6 @@ class Students extends Users {
                 $user->save();
 
                 //add student
-                if (isset($info["location"]["name"])) {
-                    $city = $info["location"]["name"];
-                } else {
-                    $city = "";
-                }
                 $skills = "";
                 if ($info["skills"]["_total"] > 0) {
                     foreach ($info["skills"]["values"] as $key => $value) {
@@ -105,8 +100,8 @@ class Students extends Users {
                 }
                 $student = new Student(array(
                     "user_id" => $user->id,
-                    "about" => $info["summary"],
-                    "city" => $city,
+                    "about" => $this->checkData($info["summary"]),
+                    "city" => $this->checkData($info["location"]["name"]),
                     "skills" => $skills,
                     "updated" => ""
                 ));
@@ -117,7 +112,7 @@ class Students extends Users {
                 $social = new Social(array(
                     "user_id" => $user->id,
                     "social_platform" => "linkedin",
-                    "link" => $info["publicProfileUrl"]
+                    "link" => $this->checkData($info["publicProfileUrl"])
                 ));
                 $social->save();
                 $this->linkedinDetails($info, $student);
