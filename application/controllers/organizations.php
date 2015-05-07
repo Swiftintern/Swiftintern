@@ -47,7 +47,7 @@ class Organizations extends Controller {
         $view = $this->getActionView();
         $organization = Organization::first(
             array("id = ?" => $id),
-            array("id", "name", "address", "phone", "website", "type", "about", "fbpage")
+            array("id", "name", "address", "phone", "website", "type", "about", "photo_id")
         );
         
         $opportunities = Opportunity::all(
