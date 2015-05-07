@@ -22,13 +22,11 @@
                 </div>
                 <hr>
                 <span class="pull-right">
-                    <a href="https://www.linkedin.com/company/{echo $organization->linkedin_id}" class="btn btn-primary"><i class="fa fa-linkedin fa-lg"></i>  | Linkedin</a>
-                    <button name="follow" value="organization" id="{echo $organization->id}" class="btn btn-info">Follow</button>
+                    <a href="https://www.linkedin.com/company/{echo $organization->linkedin_id}" target="_blank" class="btn btn-primary"><i class="fa fa-linkedin fa-lg"></i>  | Linkedin</a>
+                    <!--<button name="follow" value="organization" id="{echo $organization->id}" class="btn btn-info">Follow</button>-->
                 </span>
-            </div>
-
-
-            <ul class="nav nav-tabs nav-justified" role="tablist" id="myTab">
+                
+                <ul class="nav nav-tabs nav-justified" role="tablist" id="myTab">
                 <li class="active"><a href="#opportunity" role="tab" data-toggle="tab">Opportunity</a></li>
                 <li><a href="#experience" role="tab" data-toggle="tab">Experience</a></li>
             </ul>
@@ -40,15 +38,7 @@
                             {foreach $opportunity in $opportunities}
                             <tr>
                                 <td>
-                                    <div class="media">
-                                        <a class="pull-left" href="{echo urlencode($opportunity->title)}/{echo $opportunity->id}">
-                                            <img src="/thumbnails/{echo $organization->photo_id}" class="media-object small_image" alt="{echo $opportunity->title}">
-                                        </a>
-                                        <div class="media-body">
-                                            <h4 class="media-heading"><a href="{echo urlencode($opportunity->title)}/{echo $opportunity->id}">{echo $opportunity->title}</a></h4>
-                                            {echo $opportunity->eligibility}
-                                        </div>
-                                    </div>
+                                    <a href="{echo urlencode($opportunity->title)}/{echo $opportunity->id}">{echo $opportunity->title}</a>
                                 </td>
                                 <td class="job-location">
                                     <p><i class="fa fa-calendar fa-fw"></i>{echo $opportunity->last_date}</p>
@@ -80,10 +70,8 @@
                     </table>
                 </div>
             </div>
+                
+            </div>
         </div>
-
-
-
-
     </div>
 </section>
