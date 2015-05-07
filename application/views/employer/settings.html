@@ -1,39 +1,14 @@
 <div id="page-wrapper">
     <div class="row col-lg-12">
         <br>
-        <form class="row update_user_profile" method="post" action="employer/settings">
-            <legend>Basic Details</legend>
-            <div class="row">
-                <div class="col-xs-12 col-md-6">
-                    <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" name="name" class="form-control" value="{echo $user->name}" required="">
-                        {echo Shared\Markup::errors($errors, "first")}
-                    </div>
-                </div>
-                <div class="col-xs-12 col-md-6">
-                    <div class="form-group">
-                        <label for="phone">Phone</label>
-                        <input type="tel" name="phone" class="form-control" value="{echo $user->phone}" required="">
-                        {echo Shared\Markup::errors($errors, "first")}
-                    </div>
-                </div>
-            </div>
-            <input type="hidden" name="action" value="profile">
-            <button type="submit" class="btn btn-primary pull-right">Save</button>
-        </form>
+        <legend>Profile</legend>
+        <p class="text-center"><a href="{echo $url}" class="btn btn-primary"><i class="fa fa-linkedin fa-lg"></i>  | Update with Linkedin</a></p>
 
-        <legend>Change Password</legend>
-        <form class="form-inline update_user_profile" role="form">
-            <div class="form-group">
-                <div class="input-group">
-                    <label class="sr-only">Opportunity</label>
-                    <input type="text" name="password" class="form-control" placeholder="New Password">
-                </div>
-            </div>
-            <input type="hidden" name="user_id" value="{echo $user->id}">
-            <button type="submit" class="btn btn-primary">Update Password</button>
-        </form>
+        <legend>Newsletter</legend>
+        <ul class="list-group">
+            <li class="list-group-item">Monthly Summary <span class="badge"><input type="checkbox" checked=""></span></li>
+            <li class="list-group-item">Notification on Student Apply <span class="badge"><input type="checkbox" checked=""></span></li>
+        </ul>
 
     </div>
 </div>

@@ -2,33 +2,9 @@
     <div class="row col-lg-12">
 
         <h1 class="page-header text-center">Team Members</h1>
-        {if(isset($success))}
-        <p>Sent Request Successfully</p>
-        {/if}
-        <form class="form-inline" role="form" method="POST" action="employer/member">
-            <div class="form-group">
-                <div class="input-group">
-                    <label class="sr-only">Email address</label>
-                    <div class="input-group-addon">@</div>
-                    <input type="email" name="email" class="form-control" placeholder="Enter email">
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="input-group">
-                    <label class="sr-only">Authority</label>
-                    <select name="authority" class="form-control">
-                        <option value="editor">Editor</option>
-                    </select>
-                </div>
-            </div>
-
-            <input type="hidden" name="action" value="member">
-            <button type="submit" class="btn btn-primary">Invite</button>
-        </form>
-        <hr>
         <div class="panel panel-default">
             <div class="panel-body" id="result_status">
-                <p>Note : you can invite other members with different authority to manage your profile/organization.</p>
+                <p>Note : All people admin on your linkedin page can access your company account on swiftintern.com</p>
             </div>
             <table class="table">
                 <thead>
