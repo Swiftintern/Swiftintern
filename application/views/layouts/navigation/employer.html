@@ -44,7 +44,7 @@
             <li>
                 <a href="#"><i class="fa fa-building-o fa-fw"></i> Company<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    <li><a href="/organization/{echo urlencode($employer->organization->name)}/{echo $employer->organization->id}" target="_blank">View</a></li>
+                    <li><a href="/organization/{echo Framework\StringMethods::url($employer->organization->name)}/{echo $employer->organization->id}" target="_blank">View</a></li>
                     <li><a href="https://www.linkedin.com/company/{echo $employer->organization->linkedin_id}" target="_blank">LinkedIn</a></li>
                 </ul>
             </li>

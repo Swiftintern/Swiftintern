@@ -276,9 +276,34 @@ class Employer extends Users {
             "view" => $this->getLayoutView()
         ));
         $view = $this->getActionView();
+        
+        $week = strftime("%Y-%m-%d", strtotime('-1 week'));
+        $now = strftime("%Y-%m-%d", strtotime('now'));
 
-        $opportunities = Opportunity::all(array("organization_id = ?" => $this->employer->organization->id, "type = ?" => "internship"));
+        $opportunities = Opportunity::all(array("organization_id = ?" => $this->employer->organization->id, "type = ?" => "internship"), array("id,title"));
         $view->set("opportunities", $opportunities);
+        $view->set("week", $week);
+        $view->set("now", $now);
+    }
+    
+    public function reachstats($updatekey, $startdate, $enddate) {
+        $li = Registry::get("linkedin");
+        $session = Registry::get("session");
+        $employer = $session->get("employer");$data = array();
+        if ($li->hasAccessToken()) {
+            $info = $li->get('/companies/' . $employer->organization->linkedin_id . '/historical-status-update-statistics', array(
+                "start-timestamp" => strtotime($startdate) * 1000,
+                "time-granularity" => "day",
+                "end-timestamp" => strtotime($enddate) * 1000,
+                "update-key" => $updatekey
+            ));
+            foreach ($info["values"] as $key => $value) {
+                $t = strftime("%Y-%m-%d", $value["time"]/1000);
+                $data[$t] = $value["impressionCount"];
+            }
+            $chart = new PHPChart\Chart($data);
+            $chart->drawBar(800, 400);
+        }
     }
 
     public function followers() {
@@ -300,9 +325,11 @@ class Employer extends Users {
     
     public function followerstats($startdate, $enddate) {
         $li = Registry::get("linkedin");
+        $session = Registry::get("session");
+        $employer = $session->get("employer");
         $totalFollowerCount = array();$time = array();$data = array();
         if ($li->hasAccessToken()) {
-            $info = $li->get('/companies/3756293/historical-follow-statistics', array(
+            $info = $li->get('/companies/' . $employer->organization->linkedin_id . '/historical-follow-statistics', array(
                 "start-timestamp" => strtotime($startdate) * 1000,
                 "time-granularity" => "day",
                 "end-timestamp" => strtotime($enddate) * 1000

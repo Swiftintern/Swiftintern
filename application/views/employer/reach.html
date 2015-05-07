@@ -6,22 +6,30 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <form class="form-inline text-center" role="form" id="opportunity_analytics_form">
+            <form class="form-inline text-center" role="form" id="reach">
                 <div class="form-group">
                     <div class="input-group">
                         <label class="sr-only">Opportunity</label>
-                        <select name="opportunity_id" class="form-control">
+                        <select name="meta_value" class="form-control">
                             {foreach $opportunity in $opportunities}
-                            <option value="{echo $opportunity->id}">{echo $opportunity->title}</option>
+                            {script $meta = Meta::first(array("property = ?" => "company_share_opportunity", "property_id = ?" => $opportunity->id, "meta_key = ?" => "updateKey"))}
+                            <option value="{echo $meta->meta_value}">{echo $opportunity->title}</option>
                             {/foreach}
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="input-group">
-                        <label class="sr-only">Duration</label>
-                        <span class="add-on input-group-addon"><i class="fa fa-calendar fa-fw"></i></span>
-                        <input type="text" style="width: 200px" name="range" id="range" class="form-control" value="{echo $range}" />
+                        <label class="sr-only">From</label>
+                        <span class="add-on input-group-addon"><i class="fa fa-calendar fa-fw"></i> From</span>
+                        <input type="date" style="width: 200px" name="startdate" class="form-control" value="{echo $week}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <label class="sr-only">To</label>
+                        <span class="add-on input-group-addon"><i class="fa fa-calendar fa-fw"></i> To</span>
+                        <input type="date" style="width: 200px" name="enddate" class="form-control" value="{echo $now}" />
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">View Analytics</button>
@@ -32,7 +40,7 @@
                     <i class="fa fa-bullhorn fa-fw"></i> Reach
                 </div>
                 <div class="panel-body text-center">
-                    <div id="opportunity_reach">Select an opportunity and date range and then click on view analytics button to show details.</div>
+                    <img id="output" src="/employer/reachstats/$meta->meta_value/{echo $week}/{echo $now}">
                 </div>
             </div>
         </div>

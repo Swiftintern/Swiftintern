@@ -194,7 +194,7 @@ namespace Framework {
         public static function url($url) {
             $pattern = array(' ', '?', '.', ':', '\'', '/', '(', ')', ',', '&');
             $replace = array('-', '', '', '', '', '', '', '', '', '');
-            return str_replace($pattern, $replace, $url);
+            return urlencode(str_replace($pattern, $replace, $url));
         }
 
     }
