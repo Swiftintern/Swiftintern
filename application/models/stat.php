@@ -5,7 +5,7 @@
  *
  * @author Faizan Ayubi
  */
-class View extends Shared\Model {
+class Stat extends Shared\Model {
     /**
      * @column
      * @readwrite
