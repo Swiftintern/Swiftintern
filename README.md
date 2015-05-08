@@ -1,5 +1,6 @@
 ## Swiftintern ##
 Internship platform made on SwiftMVC framework with features of students, employer, organization profiling and placement papers, online test, resume creator
+![Swiftintern](https://github.com/Swiftintern/Swiftintern/blob/master/public/assets/images/newsletter/header.png?raw=true)
 
 ### Libraries Used: ###
 - [Imagine] (https://github.com/avalanche123/Imagine)
