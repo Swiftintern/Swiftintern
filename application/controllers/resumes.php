@@ -9,84 +9,44 @@ use Shared\Controller as Controller;
 use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
-class Resumes extends Controller {
+class Resumes extends Students {
 
-    public function about() {
-        $seo = Registry::get("seo");
-
-        $seo->setTitle("Resume for Internship, Job | Create and Edit online");
-        $seo->setKeywords("resume for internship, resume, resume online, cv for internship");
-        $seo->setDescription("Swiftintern.com is a great place to build and post your resume online for free. Its easy to sign up, free to use, and you can access your resume from anywhere once you have posted it. Use our free resume builder to create the perfect resume online in minutes.");
-
-        $this->getLayoutView()->set("seo", $seo);
-        $view = $this->getActionView();
-
-        $total_resumes = Resume::count();
-        $total_users = User::count();
-        $today_resume = 0;
-
-        $view->set("total_resumes", $total_resumes);
-        $view->set("total_users", $total_users);
-        $view->set("today_resume", $today_resume);
-    }
-
-    public function create() {
-        include APP_PATH . '/public/datalist.php';
-        $seo = Registry::get("seo");
-
-        $seo->setTitle("Resume for Internship, Job | Create and Edit online");
-        $seo->setKeywords("resume for internship, resume, resume online, cv for internship");
-        $seo->setDescription("Swiftintern.com is a great place to build and post your resume online for free. Its easy to sign up, free to use, and you can access your resume from anywhere once you have posted it. Use our free resume builder to create the perfect resume online in minutes.");
-
-        $this->getLayoutView()->set("seo", $seo);
-        $view = $this->getActionView();
-
-        $colleges = Organization::all(
-                        array(
-                    "type = ?" => "institute"
-                        ), array("name")
-        );
-
-        $companys = Organization::all(
-                        array(
-                    "type = ?" => "company"
-                        ), array("name")
-        );
-
-        $view->set("colleges", $colleges);
-        $view->set("companys", $companys);
-        $view->set("allmajors", $allmajors);
-        $view->set("alldegrees", $alldegrees);
+    public function index() {
+        $this->seo(array(
+            "title" => "Resume for Internship | Create and Edit online",
+            "keywords" => "resume for internship, resume, resume online, cv for internship",
+            "description" => "Swiftintern.com is a great place to build and post your resume online for free. Its easy to sign up, free to use, and you can access your resume from anywhere once you have posted it. Use our free resume builder to create the perfect resume online in minutes.",
+            "view" => $this->getLayoutView()
+        ));$view = $this->getActionView();
+        
+        $li = $this->LinkedIn("http://swiftintern.com/students/register");
+        if (isset($_REQUEST['code'])) {
+            $li->getAccessToken($_REQUEST['code']);
+            self::redirect('/success');
+        } else {
+            $url = $li->getLoginUrl(array(LinkedIn::SCOPE_FULL_PROFILE, LinkedIn::SCOPE_EMAIL_ADDRESS, LinkedIn::SCOPE_CONTACT_INFO));
+            $view->set("url", $url);
+        }
     }
 
     /**
      * @before _secure
      */
     public function success() {
-        $seo = Registry::get("seo");
-        $session = Registry::get("session");
-        $user = $this->user;
-        $student = $session->get("student");
-
-        $seo->setTitle($user->name." Resume");
-        $seo->setKeywords("Resume");
-        $seo->setDescription("Edit, Delete and create a new resume");
-
-        $this->getLayoutView()->set("seo", $seo);
-        $view = $this->getActionView();
+        $this->noview();
+        $this->seo(array(
+            "title" => "Resume",
+            "keywords" => "resume",
+            "description" => "Edit resume online",
+            "view" => $this->getLayoutView()
+        ));$view = $this->getActionView();
         
-        $qualifications = Qualification::all(
-            array("student_id = ?" => $student->id),
-            array("id", "degree", "major", "organization_id", "gpa", "passing_year")
-        );
-        $works = Work::all(
-            array("student_id = ?" => $student->id),
-            array("id", "designation", "responsibility", "organization_id", "duration")
-        );
+        $li = Registry::get('linkedin');
+        if ($li->hasAccessToken()) {
+            $info = $li->get('/people/~:(phone-numbers,summary,first-name,last-name,positions,email-address,public-profile-url,location,picture-url,educations,skills)');
+        }
         
-        $view->set("student", $student);
-        $view->set("qualifications", $qualifications);
-        $view->set("works", $works);
+        echo '<pre>', print_r($info), '</pre>';
     }
 
 }

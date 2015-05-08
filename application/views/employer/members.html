@@ -13,26 +13,18 @@
                         <th>Joined</th>
                         <th>Designation</th>
                         <th>Authority</th>
-                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody id="results">
                     {foreach $mem in $allmembers}
+                    {script $social = Social::first(array("user_id = ?" => $mem->user_id),array("link"))}
                     <tr>
-                        <td>{echo $mem->name}</td>
+                        <td><a href="{echo $social->link}">{echo $mem->name}</a></td>
                         <td>{echo $mem->created}</td>
                         <td>{echo $mem->designation}</td>
                         <td>{echo ucfirst($mem->authority)}</td>
-
-                        {if $mem->authority != 'admin'}
-                            <td><button name="" value="" class="btn btn-danger btn-xs"><i class="fa fa-trash fa-fw"></i> Delete</button></td>
-                        {/if}
-                        {else}
-                            <td><button name="message" value="{echo $mem->user_id}" class="btn btn-warning btn-xs"><i class="fa fa-envelope fa-fw"></i> Message</button></td>
-                        {/else}
                     <tr>
-
-                        {/foreach}
+                    {/foreach}
                 </tbody>
             </table>
         </div>

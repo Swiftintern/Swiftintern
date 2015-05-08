@@ -51,7 +51,7 @@ $routes = array(
     array(
         "pattern" => "resume-for-internship",
         "controller" => "resumes",
-        "action" => "about"
+        "action" => "index"
     ),
     array(
         "pattern" => "placement-papers",
