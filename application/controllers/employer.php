@@ -179,6 +179,9 @@ class Employer extends Users {
         $view->set("messages", $messages);
     }
 
+    /**
+     * @before _secure
+     */
     public function members() {
         $this->changeLayout();
         $view = $this->getActionView();
@@ -206,6 +209,9 @@ class Employer extends Users {
         $view->set("memberOf", $session->get("member"));
     }
 
+    /**
+     * @before _secure
+     */
     public function messages() {
         $this->changeLayout();
         $this->seo(array(
@@ -253,6 +259,9 @@ class Employer extends Users {
         $view->set("allinbox", \Framework\ArrayMethods::toObject($allinbox));
     }
 
+    /**
+     * @before _secure
+     */
     public function settings() {
         $this->changeLayout();
         $this->seo(array(
@@ -267,6 +276,9 @@ class Employer extends Users {
         $view->set("errors", array());
     }
 
+    /**
+     * @before _secure
+     */
     public function reach() {
         $this->changeLayout();
         $this->seo(array(
@@ -276,7 +288,7 @@ class Employer extends Users {
             "view" => $this->getLayoutView()
         ));
         $view = $this->getActionView();
-        
+
         $week = strftime("%Y-%m-%d", strtotime('-1 week'));
         $now = strftime("%Y-%m-%d", strtotime('now'));
 
@@ -285,11 +297,15 @@ class Employer extends Users {
         $view->set("week", $week);
         $view->set("now", $now);
     }
-    
+
+    /**
+     * @before _secure
+     */
     public function reachstats($updatekey, $startdate, $enddate) {
         $li = Registry::get("linkedin");
         $session = Registry::get("session");
-        $employer = $session->get("employer");$data = array();
+        $employer = $session->get("employer");
+        $data = array();
         if ($li->hasAccessToken()) {
             $info = $li->get('/companies/' . $employer->organization->linkedin_id . '/historical-status-update-statistics', array(
                 "start-timestamp" => strtotime($startdate) * 1000,
@@ -298,7 +314,7 @@ class Employer extends Users {
                 "update-key" => $updatekey
             ));
             foreach ($info["values"] as $key => $value) {
-                $t = strftime("%Y-%m-%d", $value["time"]/1000);
+                $t = strftime("%Y-%m-%d", $value["time"] / 1000);
                 $data[$t] = $value["impressionCount"];
             }
             $chart = new PHPChart\Chart($data);
@@ -306,6 +322,9 @@ class Employer extends Users {
         }
     }
 
+    /**
+     * @before _secure
+     */
     public function followers() {
         $this->changeLayout();
         $this->seo(array(
@@ -315,19 +334,24 @@ class Employer extends Users {
             "view" => $this->getLayoutView()
         ));
         $view = $this->getActionView();
-        
+
         $week = strftime("%Y-%m-%d", strtotime('-1 week'));
         $now = strftime("%Y-%m-%d", strtotime('now'));
-        
+
         $view->set("week", $week);
         $view->set("now", $now);
     }
-    
+
+    /**
+     * @before _secure
+     */
     public function followerstats($startdate, $enddate) {
         $li = Registry::get("linkedin");
         $session = Registry::get("session");
         $employer = $session->get("employer");
-        $totalFollowerCount = array();$time = array();$data = array();
+        $totalFollowerCount = array();
+        $time = array();
+        $data = array();
         if ($li->hasAccessToken()) {
             $info = $li->get('/companies/' . $employer->organization->linkedin_id . '/historical-follow-statistics', array(
                 "start-timestamp" => strtotime($startdate) * 1000,
@@ -337,7 +361,7 @@ class Employer extends Users {
             foreach ($info["values"] as $key => $value) {
                 array_push($totalFollowerCount, $value["totalFollowerCount"]);
                 array_push($time, $value["time"]);
-                $t = strftime("%Y-%m-%d", $value["time"]/1000);
+                $t = strftime("%Y-%m-%d", $value["time"] / 1000);
                 $data[$t] = $value["totalFollowerCount"];
             }
             $chart = new PHPChart\Chart($data);
@@ -347,6 +371,9 @@ class Employer extends Users {
         }
     }
 
+    /**
+     * @before _secure
+     */
     public function postinternship() {
         $this->changeLayout();
         $this->seo(array(
@@ -389,7 +416,7 @@ class Employer extends Users {
                         "visibility" => array(
                             "code" => "anyone"
                         )
-                    ), $opportunity);
+                            ), $opportunity);
                 }
                 self::redirect('/employer/internships');
             }
@@ -460,6 +487,9 @@ class Employer extends Users {
         $view->set("opportunities", $opportunities);
     }
 
+    /**
+     * @before _secure
+     */
     public function applicants($id = 1) {
         $this->changeLayout();
         $this->seo(array(
@@ -515,6 +545,9 @@ class Employer extends Users {
         $view->set("applicants", $applicants);
     }
 
+    /**
+     * @before _secure
+     */
     public function resources() {
         $this->seo(array(
             "title" => "Employer Resources",
@@ -583,4 +616,19 @@ class Employer extends Users {
             }
         }
     }
+
+    /**
+     * @protected
+     */
+    public function _secure() {
+        $user = $this->getUser();
+        $session = Registry::get("session");
+        $member = $session->get("member");
+        
+        if (!$user || !$member) {
+            header("Location: /home");
+            exit();
+        }
+    }
+
 }
