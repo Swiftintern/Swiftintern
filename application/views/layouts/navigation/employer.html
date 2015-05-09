@@ -18,9 +18,9 @@
                 <i class="fa fa-user fa-fw"></i> {echo $user->name}  <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-user">
-                <li><a href="employer/faq"><i class="fa fa-thumbs-up fa-fw"></i> Help</a></li>
-                <li><a href="employer"><i class="fa fa-gear fa-fw"></i> Dashboard</a></li>
-                <li><a href="logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
+                <li><a href="/employer/faq"><i class="fa fa-thumbs-up fa-fw"></i> Help</a></li>
+                <li><a href="/employer"><i class="fa fa-gear fa-fw"></i> Dashboard</a></li>
+                <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
                 <li class="divider"></li>
                 {foreach $mem in $member}
                 <li><a href="/employer/switchorg/{echo $mem->organization->id}"><i class="fa fa-briefcase fa-fw"></i> {echo $mem->organization->name}</a></li>

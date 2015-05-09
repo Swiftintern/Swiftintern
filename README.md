@@ -9,11 +9,13 @@ Internship platform made on SwiftMVC framework with features of students, employ
 - [Sendgrid] (https://github.com/sendgrid/sendgrid-php)
 - [Smtpapi] (https://github.com/sendgrid/smtpapi-php)
 - Fonts
+- jModel
 
 ### Plugins Used: ###
 - Logger(Logs events in application)
 - SEO (setting up meta tags for website)
  
 ### Under Development ###
-- JavaScript MVC
+- Application Manage employer
+- Admin Panel
 - API
