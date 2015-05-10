@@ -10,10 +10,10 @@ require("_cache.php");
 require("_configuration.php");
 require("_database.php");
 require("_model.php");
-require("_template.php");/*
-require("_forms.php");
-require("_functions.php");
-*/
+require("_template.php"); /*
+  require("_forms.php");
+  require("_functions.php");
+ */
 
 // connect to database
 require("_options.php");
@@ -24,15 +24,15 @@ $database = $database->connect();
 // execute tests
 
 $results = Framework\Test::run(
-                // setup
-                function() use ($database) {
-            // do nothing
-        },
-                // cleanup
-                function() use ($database) {
-            $database->execute("DROP TABLE `example`");
-            $database->execute("DELETE FROM `users` WHERE `email` = \"info@example.com\" AND `password` = \"password\"");
-        }
+    // setup
+    function() use ($database) {
+        // do nothing
+    },
+    // cleanup
+    function() use ($database) {
+        $database->execute("DROP TABLE `example`");
+        $database->execute("DELETE FROM `users` WHERE `email` = \"info@example.com\" AND `password` = \"password\"");
+    }
 );
 ?>
 <!DOCTYPE html>
@@ -97,29 +97,29 @@ $results = Framework\Test::run(
             <span class="failed">Failed: <?php echo sizeof($results["failed"]); ?></span>
             <span class="exceptions">Exceptions: <?php echo sizeof($results["exceptions"]); ?></span>
         </div>
-<?php if (sizeof($results["exceptions"])): ?>
+        <?php if (sizeof($results["exceptions"])): ?>
             <div class="exceptions">
                 <div class="title">Exceptions</div>
-    <?php foreach ($results["exceptions"] as $exception): ?>
+                <?php foreach ($results["exceptions"] as $exception): ?>
                     <div class="test"><span class="set"><?php echo $exception["set"]; ?></span> <span class="title"><?php echo $exception["title"]; ?></span> <span class="exception"><?php echo $exception["type"]; ?></span></div>
                 <?php endforeach; ?>
             </div>
-            <?php endif; ?>
+        <?php endif; ?>
         <?php if (sizeof($results["failed"])): ?>
             <div class="failed">
                 <div class="title">Failed</div>
-    <?php foreach ($results["failed"] as $fail): ?>
+                <?php foreach ($results["failed"] as $fail): ?>
                     <div class="test"><span class="set"><?php echo $fail["set"]; ?></span> <span class="title"><?php echo $fail["title"]; ?></span></div>
                 <?php endforeach; ?>
             </div>
-            <?php endif; ?>
+        <?php endif; ?>
         <?php if (sizeof($results["passed"])): ?>
             <div class="passed">
                 <div class="title">Passed</div>
-    <?php foreach ($results["passed"] as $pass): ?>
+                <?php foreach ($results["passed"] as $pass): ?>
                     <div class="test"><span class="set"><?php echo $pass["set"]; ?></span> <span class="title"><?php echo $pass["title"]; ?></span></div>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
             </div>
-                <?php endif; ?>
+        <?php endif; ?>
     </body>
 </html>
