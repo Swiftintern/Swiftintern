@@ -19,3 +19,7 @@ Internship platform made on SwiftMVC framework with features of students, employ
 - Application Manage employer
 - Admin Panel
 - API
+
+### Tests ###
+All are working except Memcache Not working.
+![Tests](https://github.com/Swiftintern/Swiftintern/blob/master/public/assets/images/screenshots/tests.png?raw=true)
