@@ -30,7 +30,7 @@ class Employer extends Users {
         if (isset($_REQUEST['code'])) {
             $token = $li->getAccessToken($_REQUEST['code']);
         } else {
-            $url = $li->getLoginUrl(array(LinkedIn::SCOPE_FULL_PROFILE, LinkedIn::SCOPE_EMAIL_ADDRESS, LinkedIn::SCOPE_COMPANY_ADMIN));
+            $url = $li->getLoginUrl(array(LinkedIn::SCOPE_BASIC_PROFILE, LinkedIn::SCOPE_EMAIL_ADDRESS, LinkedIn::SCOPE_COMPANY_ADMIN));
             $view->set("url", $url);
         }
 

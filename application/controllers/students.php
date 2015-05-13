@@ -59,7 +59,7 @@ class Students extends Users {
         if (isset($_REQUEST['code'])) {
             $li->getAccessToken($_REQUEST['code']);
         } else {
-            $url = $li->getLoginUrl(array(LinkedIn::SCOPE_FULL_PROFILE, LinkedIn::SCOPE_EMAIL_ADDRESS, LinkedIn::SCOPE_CONTACT_INFO));
+            $url = $li->getLoginUrl(array(LinkedIn::SCOPE_BASIC_PROFILE, LinkedIn::SCOPE_EMAIL_ADDRESS));
             $view->set("url", $url);
         }
 
