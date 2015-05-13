@@ -15,10 +15,8 @@ Internship platform made on SwiftMVC framework with features of students, employ
 - Logger(Logs events in application)
 - SEO (setting up meta tags for website)
  
-### Under Development ###
-- Application Manage employer
-- Admin Panel
-- API
+### APIs ###
+- Linkedin
 
 ### Tests ###
 All are working except Memcache Not working.
