@@ -50,21 +50,19 @@ $(document).ready(function () {
     $('#apply_internship').click(function (e) {
         var self = this,
                 path = window.location.pathname.split("/");
-        $(this).addClass('disabled');
+        $(self).addClass('disabled');
+        $(self).html('<i class="fa fa-spinner fa-spin"></i>  | Processing...');
 
         request.read({
             action: 'students',
             data: {},
             callback: function (person) {
-                if (person.profile >= 50) {
-                    var resumeId = findResume(person.resumes);
-                }
+                console.log(person);
                 request.create({
                     action: path[1] + '/' + path[2] + '/' + path[3],
                     data: {
                         action: "application",
-                        opportunity_id: path[3],
-                        resume_id: resumeId
+                        opportunity_id: path[3]
                     },
                     callback: function (data) {
                         $(self).html('Applied Successfully');
