@@ -30,6 +30,7 @@ $results = Framework\Test::run(
     },
     // cleanup
     function() use ($database) {
+        $database->execute("DROP TABLE `examples`");
         $database->execute("DROP TABLE `example`");
         $database->execute("DELETE FROM `users` WHERE `email` = \"info@example.com\" AND `password` = \"password\"");
     }
