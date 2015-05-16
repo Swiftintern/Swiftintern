@@ -1,5 +1,5 @@
 <?php
-
+namespace Smtpapi;
 class Smtpapi
 {
     const VERSION = '0.5.0';
