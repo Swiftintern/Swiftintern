@@ -1,4 +1,5 @@
 <?php
+namespace SendGrid;
 
 class SendGrid
 {
@@ -54,7 +55,7 @@ class SendGrid
      * @throws SendGrid\Exception if the response code is not 200
      * @return stdClass SendGrid response object
      */
-    public function send(SendGrid\Email $email)
+    public function send(Email $email)
     {
         $form             = $email->toWebFormat();
         $form['api_user'] = $this->apiUser;
@@ -81,7 +82,7 @@ class SendGrid
 
         $res = $req->send();
 
-        $response = new SendGrid\Response($res->getStatusCode(), $res->getHeaders(), $res->getBody(true), $res->json());
+        $response = new Response($res->getStatusCode(), $res->getHeaders(), $res->getBody(true), $res->json());
 
         return $response;
     }
