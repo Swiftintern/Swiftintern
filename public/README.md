@@ -7,3 +7,8 @@ Assets folder contains CSS, Javascript, Fonts, Javascript Plugins and Images
 - Javascript Framework
   - Bootstrap
   - jModel
+
+### Flowchart ###
+- Student register/Login
+- Employer register/Login
+- Internship Apply
