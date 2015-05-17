@@ -209,21 +209,6 @@ class Home extends Users {
         $view->set("opportunity", $opportunity);
     }
 
-    function application() {
-        $this->willRenderLayoutView = false;
-        $this->willRenderActionView = false;
-        $application = new Application(array(
-            "student_id" => RequestMethods::post("student_id", "1"),
-            "opportunity_id" => RequestMethods::post("opportunity_id", "363"),
-            "property_id" => RequestMethods::post("property_id", "204"),
-            "status" => RequestMethods::post("status", "applied"),
-            "updated" => RequestMethods::post("updated", "")
-        ));
-
-        $application->save();
-        echo '<pre>', print_r($application), '</pre>';
-    }
-
     public function internship($title, $id) {
         global $datetime;
         $view = $this->getActionView();
