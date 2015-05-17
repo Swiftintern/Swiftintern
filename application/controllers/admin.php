@@ -23,20 +23,6 @@ class Admin extends Users {
         $view->set("opportunities", count($opportunities));
     }
     
-    public function testmail() {
-        $this->noview();
-        $sendgrid = new \SendGrid\SendGrid('swiftintern', 'folder007');
-        $email = new \SendGrid\Email();
-	$email
-            ->addTo('indianayubi@gmail.com')
-            ->setFrom('info@swiftintern.com')
-            ->setFromName('Swiftintern Team')
-            ->setSubject('Test')
-            ->setHtml('<h1>Hello</h1>');
-        if($sendgrid->send($email))
-		echo "working";
-    }
-
     public function internships() {
         
     }
