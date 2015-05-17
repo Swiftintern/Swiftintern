@@ -6,20 +6,13 @@
  * @author Faizan Ayubi
  */
 class Newsletter extends Shared\Model {
-    /**
-     * @column
-     * @readwrite
-     * @type text
-     * @length 128
-     */
-    protected $_subject;
     
     /**
      * @column
      * @readwrite
-     * @type text
+     * @type integer
      */
-    protected $_message;
+    protected $_message_id;
     
     /**
      * @column
@@ -32,21 +25,7 @@ class Newsletter extends Shared\Model {
     /**
      * @column
      * @readwrite
-     * @type integer
-     */
-    protected $_sent_count;
-    
-    /**
-     * @column
-     * @readwrite
      * @type date
      */
     protected $_scheduled;
-    
-    /**
-     * @column
-     * @readwrite
-     * @type datetime
-     */
-    protected $_updated;
 }
