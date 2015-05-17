@@ -20,4 +20,5 @@ Internship platform made on SwiftMVC framework with features of students, employ
 
 ### Tests ###
 All are working except Memcache Not working.
+PHPUnit test to be added soon
 ![Tests](https://github.com/Swiftintern/Swiftintern/blob/master/public/assets/images/screenshots/tests.png?raw=true)
