@@ -5,13 +5,18 @@
  *
  * @author Faizan Ayubi
  */
-use Shared\Controller as Controller;
 use Framework\Registry as Registry;
-use Framework\RequestMethods as RequestMethods;
 
 class Mail extends Users {
     
     protected $_sendgrid;
+    private static $_template = array(
+        "STUDENT_REGISTER" => "1",
+        "INTERNSHIP_VERIFIED" => "2",
+        "APPLICATION_SELECTED" => "3",
+        "APPLICATION_REJECTED" => "4",
+        "APPLICATION_INTERNSHIP" => 5
+    );
     
     public function __construct($options = array()) {
         parent::__construct($options);
@@ -28,9 +33,20 @@ class Mail extends Users {
         
     }
     
-    protected function studentRegister($user) {
+    protected function test() {
         $stuReg = '1';
         $mail = Message::first(array("id = ?"=> $stuReg));
+        $email = new \SendGrid\Email();
+        $email->addTo('indianayubi@gmail.com')
+            ->setFrom('info@swiftintern.com')
+            ->setFromName('Swiftintern Team')
+            ->setSubject($mail->subject)
+            ->setHtml($mail->body);
+        $this->_sendgrid->send($email);
+    }
+    
+    protected function notify($user, $type) {
+        $mail = Message::first(array("id = ?"=> self::$_template[$type]));
         $email = new \SendGrid\Email();
         $email->addTo($user->email)
             ->setFrom('info@swiftintern.com')
@@ -39,4 +55,6 @@ class Mail extends Users {
             ->setHtml($mail->body);
         $this->_sendgrid->send($email);
     }
+    
+    
 }
