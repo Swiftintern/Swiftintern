@@ -1,4 +1,15 @@
 html, body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:#878787;}
+.sb-page-header {
+    background-color: #b84d45;
+    background-image: url("http://assets.swiftintern.com/images/bg.png");
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 20px;
+    margin-bottom: 40px;
+    padding: 30px 15px;
+    position: relative;
+    text-align: center;
+}
+
 .whitetext{color:white;}
 .small_image{max-height:60px;float:left;}
 .medium_image{max-height:160px;max-width:350px;float:left;}
