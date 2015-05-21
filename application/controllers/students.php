@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of users
+ * Students Method for profile, application, messages and Resume etc
  *
  * @author Faizan Ayubi
  */
@@ -89,6 +89,7 @@ class Students extends Users {
                     "updated" => ""
                 ));
                 $user->save();
+                $this->notify($user, "STUDENT_REGISTER");
 
                 //add student
                 $skills = "";
