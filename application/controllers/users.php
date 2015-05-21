@@ -15,16 +15,26 @@ class Users extends Controller {
         "INTERNSHIP_VERIFIED" => "2",
         "APPLICATION_SELECTED" => "3",
         "APPLICATION_REJECTED" => "4",
-        "APPLICATION_INTERNSHIP" => 5
+        "APPLICATION_INTERNSHIP" => "5"
     );
     
     protected function sendgrid() {
         $configuration = Registry::get("configuration");
-        $parsed = $configuration->parse("configuration/sendgrid");
+        $parsed = $configuration->parse("configuration/mail");
 
-        if (!empty($parsed->sendgrid->default) && !empty($parsed->sendgrid->default->username)) {
-            $sendgrid = new \SendGrid\SendGrid($parsed->sendgrid->default->username, $parsed->sendgrid->default->password);
+        if (!empty($parsed->mail->sendgrid) && !empty($parsed->mail->sendgrid->username)) {
+            $sendgrid = new \SendGrid\SendGrid($parsed->mail->sendgrid->username, $parsed->mail->sendgrid->password);
             return $sendgrid;
+        }
+    }
+    
+    protected function mailgun() {
+        $configuration = Registry::get("configuration");
+        $parsed = $configuration->parse("configuration/mail");
+
+        if (!empty($parsed->mail->mailgun)) {
+            $mailgun = new \Mailgun\Mailgun($parsed->mail->mailgun->key);
+            return $mailgun;
         }
     }
     
