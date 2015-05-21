@@ -160,12 +160,6 @@ class Home extends Users {
 
     public function sponsored() {
         global $datetime;
-        $this->seo(array(
-            "title" => "Get Internship | Student Register",
-            "keywords" => "get internship, student register",
-            "description" => "Register with us to get internship from top companies in india and various startups in Delhi, Mumbai, Bangalore, Chennai, hyderabad etc",
-            "view" => $this->getLayoutView()
-        ));
         $sponsoreds = array();
 
         $order = RequestMethods::get("order", "id");
@@ -179,16 +173,11 @@ class Home extends Users {
             "validity = ?" => true,
             "is_active = ?" => true
         );
-
         $fields = array("opportunity_id");
 
         $sponsored = Sponsored::all($where, $fields, $order, $direction, $limit, $page);
         foreach ($sponsored as $sd) {
-            $sponsoreds = Opportunity::all(
-                            array(
-                        "id = ?" => $sd->opportunity_id
-                            ), array("id", "title", "location", "last_date", "eligibility")
-            );
+            $sponsoreds = Opportunity::all(array("id = ?" => $sd->opportunity_id), array("id", "title", "location", "last_date", "eligibility"));
         }
         $this->getActionView()->set("sponsoreds", $sponsoreds);
     }
@@ -232,6 +221,7 @@ class Home extends Users {
             ));
 
             $application->save();
+            $this->notify($this->user, "APPLICATION_INTERNSHIP");
             $view->set("application", $application);
         }
 

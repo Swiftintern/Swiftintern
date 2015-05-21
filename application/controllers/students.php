@@ -89,7 +89,10 @@ class Students extends Users {
                     "updated" => ""
                 ));
                 $user->save();
-                $this->notify($user, "STUDENT_REGISTER");
+                $this->notify(array(
+                    "user" => $user,
+                    "type" => "STUDENT_REGISTER"
+                ));
 
                 //add student
                 $skills = "";

@@ -38,8 +38,9 @@ class Users extends Controller {
         }
     }
     
-    protected function notify($user, $type) {
+    protected function notify($options) {
         $sendgrid = $this->sendgrid();
+        $type = $options["type"];$user = $options["user"];
         $mail = Message::first(array("id = ?"=> self::$_template[$type]));
         $email = new \SendGrid\Email();
         $email->addTo($user->email)
