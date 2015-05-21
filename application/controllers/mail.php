@@ -50,11 +50,9 @@ class Mail extends Users {
         $email = new \SendGrid\Email();
         $email->addTo($user->email)
             ->setFrom('info@swiftintern.com')
-            ->setFromName('Swiftintern Team')
+            ->setFromName('Saud Akhtar')
             ->setSubject($mail->subject)
             ->setHtml($mail->body);
         $this->_sendgrid->send($email);
     }
-    
-    
 }
