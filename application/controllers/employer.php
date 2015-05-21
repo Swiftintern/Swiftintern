@@ -168,7 +168,7 @@ class Employer extends Users {
 
         $opportunities = Opportunity::all(array("organization_id = ?" => $this->employer->organization->id), array("id"));
 
-        $messages = Message::count(array("to_user_id = ?" => $this->user->id));
+        $messages = "";
         $applicants = "0";
         foreach ($opportunities as $opportunity) {
             $applicants += Application::count(array("opportunity_id = ?" => $opportunity->id));
@@ -511,7 +511,7 @@ class Employer extends Users {
 
         $order = RequestMethods::get("order", "created");
         $direction = RequestMethods::get("direction", "desc");
-        $applications = Application::all(array("opportunity_id = ?" => $internship->id), array("student_id", "property_id", "status", "created"), $order, $direction);
+        $applications = Application::all(array("opportunity_id = ?" => $internship->id), array("id", "student_id", "property_id", "status", "created"), $order, $direction);
 
         foreach ($applications as $application) {
             $student = Student::first(array("id = ?" => $application->student_id), array("user_id", "about"));
@@ -520,6 +520,7 @@ class Employer extends Users {
             $organization = Organization::first(array("id = ?" => $qualification->organization_id), array("name"));
 
             $applicant = \Framework\ArrayMethods::toObject(array(
+                        "id" => $application->id,
                         "name" => $user->name,
                         "qualification" => $qualification,
                         "organization" => $organization,

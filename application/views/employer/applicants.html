@@ -23,13 +23,14 @@
                             <tbody>
                                 {foreach $applicant in $applicants}
                                 <tr>
-                                    <td>{echo $applicant->name}</td>
+                                    <td><a href="/students/profile/{echo $applicant->student_id}" target="_blank" >{echo $applicant->name}</a></td>
                                     <td>{echo $applicant->qualification->major}</td>
                                     <td>{echo $applicant->status}</td>
                                     <td>
-                                        <button class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>&nbsp;
-                                        <a href="/employer/applicants/{$internship->id}" class="btn btn-success btn-xs"><i class="fa fa-fax"></i> Applications </a>&nbsp;
-                                        <a href="/students/profile/{echo $applicant->student_id}" class="btn btn-primary btn-xs"><i class="fa fa-user"></i> View </a>&nbsp;
+                                        <a href="/students/profile/{echo $applicant->student_id}" class="btn btn-info btn-xs"><i class="fa fa-eye"></i> View</a>&nbsp;
+                                        <button data-application="{echo $applicant->id}" data-status="shortlist" class="btn btn-success btn-xs status"><i class="fa fa-check"></i> Shortlist</button>&nbsp;
+                                        <a href="" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Notes </a>&nbsp;
+                                        
                                     </td>
                                 </tr>
                                 {/foreach}
