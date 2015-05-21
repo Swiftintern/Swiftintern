@@ -6,10 +6,10 @@
  * @author Faizan Ayubi
  */
 use Shared\Controller as Controller;
+use Framework\Registry as Registry;
 
 class Users extends Controller {
     
-    protected $_sendgrid;
     private static $_template = array(
         "STUDENT_REGISTER" => "1",
         "INTERNSHIP_VERIFIED" => "2",
@@ -18,21 +18,18 @@ class Users extends Controller {
         "APPLICATION_INTERNSHIP" => 5
     );
     
-    protected function mail() {
+    protected function sendgrid() {
         $configuration = Registry::get("configuration");
-        $configuration = $configuration->initialize();
         $parsed = $configuration->parse("configuration/sendgrid");
 
         if (!empty($parsed->sendgrid->default) && !empty($parsed->sendgrid->default->username)) {
             $sendgrid = new \SendGrid\SendGrid($parsed->sendgrid->default->username, $parsed->sendgrid->default->password);
-            $this->_sendgrid = $sendgrid;
+            return $sendgrid;
         }
     }
     
-    /**
-     * @before mail
-     */
     protected function notify($user, $type) {
+        $sendgrid = $this->sendgrid();
         $mail = Message::first(array("id = ?"=> self::$_template[$type]));
         $email = new \SendGrid\Email();
         $email->addTo($user->email)
@@ -40,7 +37,7 @@ class Users extends Controller {
             ->setFromName('Saud Akhtar')
             ->setSubject($mail->subject)
             ->setHtml($mail->body);
-        $this->_sendgrid->send($email);
+        $sendgrid->send($email);
     }
 
     public function logout() {
