@@ -2,40 +2,35 @@
 
 namespace SendGrid;
 
-class Response
-{
+class Response {
 
     public
-        $code,
-        $headers,
-        $raw_body,
-        $body;
+            $code,
+            $headers,
+            $raw_body,
+            $body;
 
-    public function __construct($code, $headers, $raw_body, $body)
-    {
-        $this->code     = $code;
-        $this->headers  = $headers;
+    public function __construct($code, $headers, $raw_body, $body) {
+        $this->code = $code;
+        $this->headers = $headers;
         $this->raw_body = $raw_body;
-        $this->body     = $body;
+        $this->body = $body;
     }
 
-    public function getCode()
-    {
+    public function getCode() {
         return $this->code;
     }
 
-    public function getHeaders()
-    {
+    public function getHeaders() {
         return $this->headers;
     }
 
-    public function getRawBody()
-    {
+    public function getRawBody() {
         return $this->raw_body;
     }
 
-    public function getBody()
-    {
+    public function getBody() {
         return $this->body;
     }
+
 }

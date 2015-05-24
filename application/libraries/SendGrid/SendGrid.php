@@ -1,25 +1,24 @@
 <?php
+
 namespace SendGrid;
 
-class SendGrid
-{
+class SendGrid {
+
     const VERSION = '3.0.0';
 
     protected
-        $namespace  = 'SendGrid',
-        $headers    = array('Content-Type' => 'application/json'),
-        $client,
-        $options;
-
+            $namespace = 'SendGrid',
+            $headers = array('Content-Type' => 'application/json'),
+            $client,
+            $options;
     public
-        $apiUser,
-        $apiKey,
-        $url,
-        $endpoint,
-        $version    = self::VERSION;
+            $apiUser,
+            $apiKey,
+            $url,
+            $endpoint,
+            $version = self::VERSION;
 
-    public function __construct($apiUser, $apiKey, $options = array())
-    {
+    public function __construct($apiUser, $apiKey, $options = array()) {
         $this->apiUser = $apiUser;
         $this->apiKey = $apiKey;
 
@@ -27,7 +26,7 @@ class SendGrid
         $protocol = isset($options['protocol']) ? $options['protocol'] : 'https';
         $host = isset($options['host']) ? $options['host'] : 'api.sendgrid.com';
         $port = isset($options['port']) ? $options['port'] : '';
-        $this->options  = $options;
+        $this->options = $options;
 
         $this->url = isset($options['url']) ? $options['url'] : $protocol . '://' . $host . ($port ? ':' . $port : '');
         $this->endpoint = isset($options['endpoint']) ? $options['endpoint'] : '/api/mail.send.json';
@@ -44,8 +43,7 @@ class SendGrid
     /**
      * @return array The protected options array
      */
-    public function getOptions()
-    {
+    public function getOptions() {
         return $this->options;
     }
 
@@ -55,16 +53,15 @@ class SendGrid
      * @throws SendGrid\Exception if the response code is not 200
      * @return stdClass SendGrid response object
      */
-    public function send(Email $email)
-    {
-        $form             = $email->toWebFormat();
+    public function send(Email $email) {
+        $form = $email->toWebFormat();
         $form['api_user'] = $this->apiUser;
-        $form['api_key']  = $this->apiKey;
+        $form['api_key'] = $this->apiKey;
 
         $response = $this->postRequest($this->endpoint, $form);
 
         if ($response->code != 200) {
-            throw new SendGrid\Exception($response->raw_body, $response->code);
+            throw new Exception($response->raw_body, $response->code);
         }
 
         return $response;
@@ -76,8 +73,7 @@ class SendGrid
      * @param $form array web ready version of SendGrid\Email
      * @return SendGrid\Response
      */
-    public function postRequest($endpoint, $form)
-    {
+    public function postRequest($endpoint, $form) {
         $req = $this->client->post($endpoint, null, $form);
 
         $res = $req->send();
@@ -87,13 +83,11 @@ class SendGrid
         return $response;
     }
 
-    public static function register_autoloader()
-    {
+    public static function register_autoloader() {
         spl_autoload_register(array('SendGrid', 'autoloader'));
     }
 
-    public static function autoloader($class)
-    {
+    public static function autoloader($class) {
         // Check that the class starts with 'SendGrid'
         if ($class == 'SendGrid' || stripos($class, 'SendGrid\\') === 0) {
             $file = str_replace('\\', '/', $class);
@@ -103,4 +97,5 @@ class SendGrid
             }
         }
     }
+
 }
