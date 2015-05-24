@@ -10,14 +10,11 @@ use Framework\Registry as Registry;
 
 class Users extends Controller {
     
-    private static $_template = array(
-        "STUDENT_REGISTER" => "1",
-        "INTERNSHIP_VERIFIED" => "2",
-        "APPLICATION_SELECTED" => "3",
-        "APPLICATION_REJECTED" => "4",
-        "APPLICATION_INTERNSHIP" => "5"
-    );
-    
+    /**
+     * The Main Method to return SendGrid Instance
+     * 
+     * @return \SendGrid\SendGrid Instance of Sendgrid
+     */
     protected function sendgrid() {
         $configuration = Registry::get("configuration");
         $parsed = $configuration->parse("configuration/mail");
@@ -28,6 +25,11 @@ class Users extends Controller {
         }
     }
     
+    /**
+     * The Main Method to return MailGun Instance
+     * 
+     * @return \Mailgun\Mailgun Instance of MailGun
+     */
     protected function mailgun() {
         $configuration = Registry::get("configuration");
         $parsed = $configuration->parse("configuration/mail");
@@ -38,28 +40,41 @@ class Users extends Controller {
         }
     }
     
-    protected function notify($options) {
-        $sendgrid = $this->sendgrid();
-        $type = $options["type"];$user = $options["user"];
-        $mail = Message::first(array("id = ?"=> self::$_template[$type]));
-        $email = new \SendGrid\Email();
-        $email->addTo($user->email)
-            ->setFrom('info@swiftintern.com')
-            ->setFromName('Saud Akhtar')
-            ->setSubject($mail->subject)
-            ->setHtml($mail->body);
-        $sendgrid->send($email);
+    protected function test() {
+        $this->noview();
+        $options = array(
+            "template" => "studentRegister",
+            "subject" => "Getting Started on Swiftintern.com",
+            "user" => User::first(array("id = ?" => "31"))
+        );
+        $this->notify($options);
     }
     
-    protected function testEmailTemplate() {
-        $this->noview();
+    protected function notify($options) {
+        $template = $options["template"];
         $view = new Framework\View(array(
-            "file" => APP_PATH . "/application/views/users/emails/applicationInternship.html"
+            "file" => APP_PATH . "/application/views/users/emails/{$template}.html"
         ));
-        //echo '<pre>', print_r($view), '</pre>';
-        $opportunity = Opportunity::first(array("id = ?" => '380'));
-        $view->set("opportunity", $opportunity);
-        echo htmlentities($view->render());
+        foreach ($options as $key => $value) {
+            $view->set($key, $value);
+            $$key = $value;
+        }
+        $body = $view->render();
+        
+        switch ($options["delivery"]) {
+            case "mailgun":
+                break;
+            default:
+                $sendgrid = $this->sendgrid();
+                $email = new \SendGrid\Email();
+                $email->addTo($user->email)
+                    ->setFrom('info@swiftintern.com')
+                    ->setFromName('Saud Akhtar')
+                    ->setSubject($options["subject"])
+                    ->setHtml($body);
+                $sendgrid->send($email);
+                break;
+        }
     }
 
     public function logout() {
