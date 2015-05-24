@@ -221,7 +221,12 @@ class Home extends Users {
             ));
 
             $application->save();
-            $this->notify($this->user, "APPLICATION_INTERNSHIP");
+            $this->notify(array(
+                "template" => "applicationInternship",
+                "subject" => "Internship Application",
+                "opportunity" => $opportunity,
+                "user" => $this->getUser()
+            ));
             $view->set("application", $application);
         }
 

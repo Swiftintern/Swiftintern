@@ -57,7 +57,6 @@ $(document).ready(function () {
             action: 'students',
             data: {},
             callback: function (person) {
-                console.log(person);
                 request.create({
                     action: path[1] + '/' + path[2] + '/' + path[3],
                     data: {
@@ -65,6 +64,7 @@ $(document).ready(function () {
                         opportunity_id: path[3]
                     },
                     callback: function (data) {
+                        console.log(data);
                         $(self).html('Applied Successfully');
                     }
                 });
