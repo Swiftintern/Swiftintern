@@ -50,6 +50,17 @@ class Users extends Controller {
             ->setHtml($mail->body);
         $sendgrid->send($email);
     }
+    
+    protected function testEmailTemplate() {
+        $this->noview();
+        $view = new Framework\View(array(
+            "file" => APP_PATH . "/application/views/users/emails/applicationInternship.html"
+        ));
+        //echo '<pre>', print_r($view), '</pre>';
+        $opportunity = Opportunity::first(array("id = ?" => '380'));
+        $view->set("opportunity", $opportunity);
+        echo htmlentities($view->render());
+    }
 
     public function logout() {
         $this->setUser(false);
