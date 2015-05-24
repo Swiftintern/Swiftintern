@@ -90,8 +90,9 @@ class Students extends Users {
                 ));
                 $user->save();
                 $this->notify(array(
-                    "user" => $user,
-                    "type" => "STUDENT_REGISTER"
+                    "template" => "studentRegister",
+                    "subject" => "Getting Started on Swiftintern.com",
+                    "user" => $user
                 ));
 
                 //add student
