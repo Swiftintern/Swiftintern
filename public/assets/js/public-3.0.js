@@ -72,6 +72,33 @@ $(document).ready(function () {
         });
 
     });
+    
+    //onlinetest
+    $('#search_test').submit(function (e) {
+        e.preventDefault();
+        window.opts = {};
+        var data = $(this).serializeArray();
+        $.each(data, function () {
+            if (window.opts[this.name] !== undefined) {
+                if (!window.opts[this.name].push) {
+                    window.opts[this.name] = [window.opts[this.name]];
+                }
+                window.opts[this.name].push(this.value || '');
+            } else {
+                window.opts[this.name] = this.value || '';
+            }
+        });
+        $('#results').html('');
+        $('#results').html('<p id="loader" class="text-center"><i class="fa fa-spinner fa-spin fa-5x"></i></p>');
+        loadTests(window.opts);
+        $('#loader').html('');
+    });
+
+    $('#load_test').click(function (e) {
+        $(this).html('<i class="fa fa-spinner fa-spin"></i> Loading');
+        loadTests(window.opts);
+        $(this).html('Load More');
+    });
 
 });
 
@@ -94,6 +121,24 @@ function loadOpportunities(opts) {
             if (data.count > 1) {
                 $.each(data.opportunities, function (i, opportunity) {
                     $('#results').append('<tr><td><div class="media"><a class="pull-left hidden-xs" href="' + encodeURI(opportunity._title) + '/' + opportunity._id + '"><img src="/organizations/photo/' + opportunity._organization_id + '" class="media-object small_image" alt="' + opportunity._title + '"></a><div class="media-body"><h4 class="media-heading"><a href="' + encodeURI(opportunity._title) + '/' + opportunity._id + '">' + opportunity._title + '</a></h4>' + opportunity._eligibility + '</div></div></td><td class="job-location"><p><i class="fa fa-calendar fa-fw"></i>' + opportunity._last_date + '</p><p><i class="fa fa-map-marker"></i>' + opportunity._location + '</p></td></tr>');
+                });
+            } else {
+                $('#results').append("No Results Found, Check later");
+            }
+        }
+    });
+}
+
+function loadTests(opts) {
+    request.read({
+        action: "onlinetest/index",
+        data: opts,
+        callback: function (data) {
+            $('#loader').html('');
+            console.log(data);
+            if (data.count >= 1) {
+                $.each(data.exams, function (i, exam) {
+                    $('#results').append('<div class="col-sm-4 col-md-3"><div class="thumbnail"><a href="test/'+encodeURI(exam._title)+'/'+exam._id+'"><img src="/onlinetest/photo/'+exam._id+'" alt="'+exam._title+'" width="100"></a><div class="caption"><p><b>'+exam._title+'</b></p><p><a href="test-details/'+encodeURI(exam._title)+'/'+exam._id+'" class="btn btn-primary">Details</a><a href="test/'+encodeURI(exam._title)+'/'+exam._id+'" class="btn btn-success" id="taketest">Start Test</a></p></div></div></div>');
                 });
             } else {
                 $('#results').append("No Results Found, Check later");

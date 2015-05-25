@@ -21,11 +21,11 @@ class OnlineTest extends Controller {
         $this->getLayoutView()->set("seo", $seo);
         $view = $this->getActionView();
 
-        $query = RequestMethods::post("query", "");
-        $order = RequestMethods::post("order", "created");
-        $direction = RequestMethods::post("direction", "desc");
-        $page = RequestMethods::post("page", 1);
-        $limit = RequestMethods::post("limit", 10);
+        $query = RequestMethods::get("query", "");
+        $order = RequestMethods::get("order", "created");
+        $direction = RequestMethods::get("direction", "desc");
+        $page = RequestMethods::get("page", 1);
+        $limit = RequestMethods::get("limit", 12);
 
         $where = array(
             "is_active = ?" => true,
@@ -39,7 +39,14 @@ class OnlineTest extends Controller {
         $count = Test::count($where);
         $exams = Test::all($where, $fields, $order, $direction, $limit, $page);
 
+        $view->set("limit", $limit);
+        $view->set("count", count($exams));
         $view->set("exams", $exams);
+    }
+    
+    public function photo($test_id) {
+        $image = Image::first(array("property = ? "=>"test", "property_id = ?"=> $test_id),array("photo_id"));
+        self::redirect("/thumbnails/{$image->photo_id}");
     }
 
     public function test_details($title, $id) {
