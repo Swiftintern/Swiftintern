@@ -1,8 +1,55 @@
 <div class="container">
     <article class="row">
-        <div class="panel panel-default hidden-print" id="finish">
+        <div class="panel panel-default col-md-9">
+            <div class="panel-body" id="resume" style="padding: 60px;">
+                <span style="text-align: center;">
+                    <h1>{echo $info["firstName"]} {echo $info["lastName"]}</h1>
+                    <p>
+                        <span>{echo $info["emailAddress"]}</span> | 
+                        <span>{echo $info["contact"]}</span> | 
+                        <span>{echo $info["location"]["name"]}</span>
+                    </p>
+                </span>
+                <h4 style="padding-top: 60px;">Objective</h4><hr style="margin-top: 0px;">
+                <p>
+                    {if(empty($info["summary"]))}
+                        Seeking a position as an accountant where extensive experience will be further developed and utilised. Extensive experience to the credit.
+                    {/if}
+                    {else}
+                        {echo $info["summary"]}
+                    {/else}
+                </p>
+
+                <h4 style="padding-top: 30px;">Education</h4><hr style="margin-top: 0px;">
+                {if(isset($info["education"]))}
+                {foreach $qualification in $info["education"]}
+                    <p>
+                        {echo $qualification->degree}, {echo $qualification->major} with <span>{echo $qualification->gpa}</span>
+                        <span class="pull-right">{echo $qualification->passing_year}</span><br>
+                        {echo $organization->name}
+                    </p>
+                {/foreach}
+                {/if}
+
+                <h4 style="padding-top: 30px;">Work Experience</h4><hr style="margin-top: 0px;">
+                {foreach $work in $info["positions"]["values"]}
+                    <p>
+                        {echo $work["title"]}, {echo $work["company"]["name"]} 
+                        From <span class="pull-right">{echo $work["startDate"]["year"]}</span>
+                        <br><span>{echo $work["summary"]}</span>
+                    </p>
+                {/foreach}
+                
+                <h4 style="padding-top: 30px;">Skills</h4><hr style="margin-top: 0px;">
+                <p>{echo $info["skills"]}</p><br>
+
+            </div>
+        </div>
+        
+        <div class="panel panel-default hidden-print col-md-3">
             <div class="panel-body text-center">
                 <label>Thanks for Creating Resume with us.</label>
+                <p class="text-center"><a href="{echo $info["publicProfileUrl"]}" target="_blank"><img src="{echo $info["pictureUrl"]}" class="thumbnail" width="100"></a></p>
                 <p>You can use this resume to apply to varoius opportunities such as internship, competitions, freelance etc on our <a href="home" target="_blank">site</a>.</p>
                 <p>We have registered your account with us and emailed you the details. Check your Email.</p>
                 <p>
@@ -11,51 +58,6 @@
                     <button name="print" value="#resume" class="btn btn-info"><i class="fa fa-print fa-fw"></i> Print Resume</button>
                     <button name="message" value="{echo $admin_id}" class="btn btn-warning"><i class="fa fa-comment fa-fw"></i> Feedback</button>
                 </p>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-body" id="resume" style="padding: 60px;">
-                <span style="text-align: center;">
-                    <h1>{echo $user->name}</h1>
-                    <p>
-                        <span>{echo $user->email}</span> | 
-                        <span>{echo $user->phone}</span> | 
-                        <span>{echo $student->city}</span>
-                    </p>
-                </span>
-                <h4 style="padding-top: 60px;">Objective</h4><hr style="margin-top: 0px;">
-                <p>
-                    {if(empty($student->about))}
-                        Seeking a position as an accountant where extensive experience will be further developed and utilised. Extensive experience to the credit.
-                    {/if}
-                    {else}
-                        {echo $student->about}
-                    {/else}
-                </p>
-
-                <h4 style="padding-top: 30px;">Education</h4><hr style="margin-top: 0px;">
-                {foreach $qualification in $qualifications}
-                    {script $organization  = Organization::first(array("id = ?" => $qualification->organization_id), array("id", "name"))}
-                    <p>
-                        {echo $qualification->degree}, {echo $qualification->major} with <span>{echo $qualification->gpa}</span>
-                        <span class="pull-right">{echo $qualification->passing_year}</span><br>
-                        {echo $organization->name}
-                    </p>
-                {/foreach}
-
-                <h4 style="padding-top: 30px;">Work Experience</h4><hr style="margin-top: 0px;">
-                {foreach $work in $works}
-                    {script $organization  = Organization::first(array("id = ?" => $work->organization_id), array("id", "name"))}
-                    <p>
-                        {echo $work->designation}, {echo $organization->name} 
-                        <span class="pull-right">{echo $work->duration}</span>
-                        <br><span>{echo $work->responsibility}</span>
-                    </p>
-                {/foreach}
-                
-                <h4 style="padding-top: 30px;">Skills</h4><hr style="margin-top: 0px;">
-                <p>{echo $student->skills}</p><br>
-
             </div>
         </div>
 

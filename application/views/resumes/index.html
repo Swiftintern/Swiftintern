@@ -1,33 +1,54 @@
-<header class="intro-header">
+<header class="sb-page-header">
     <div class="container">
-        <div class="row text-center">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="site-heading" style="padding-top: 0px; ">
-                    <h1 class="huge">Resume for Internship</h1>
-                    <hr class="small">
-                    <span class="subheading">
-                        <a href="{echo $url}" class="btn btn-primary btn-lg"><i class="fa fa-linkedin fa-lg"></i> | Continue with Linkedin</a>
-                    </span>
-                </div>
-            </div>
-        </div>
+        <h1>
+            Resume for Internship
+            <span class="pull-right">
+                <img src="http://assets.swiftintern.com/images/resume/resume2.gif" class="thumbnail" width="200">
+            </span>
+        </h1>
+        <p>
+            Create the perfect resume in minutes and save in PDF or Word<br><br>
+            {if ($li->hasAccessToken())}
+            <a href="/resumes/success" class="btn btn-primary btn-lg"><i class="fa fa-check fa-lg"></i> | Continue</a>
+            {/if}
+            {else}
+            <a href="{echo $url}" class="btn btn-primary btn-lg"><i class="fa fa-linkedin fa-lg"></i> | Continue with Linkedin</a>
+            {/else}
+        </p>
     </div>
 </header>
 <section class="container">
-    <article class="row">
-        <div class="blog col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <p>Swiftintern.com is a great place to build and post your resume online for free. It’s easy to sign up, free to use, and you can access your resume from anywhere once you have posted it. Use our free resume builder to create the perfect resume online in minutes. Have you asked yourself how do I post my resume free? We thought so. That’s why we created a system for you to post your resume online that is simple and easy.</p>
-            <p>
-            <!--<div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" width="560" height="315" src="https://www.youtube.com/embed/Syb9j-ux6S8" frameborder="0" allowfullscreen></iframe>
-            </div>-->
-            </p>
-            <p>Login any time to edit and update your online resume. Preview, print, and email your resume, cover letter, and references. Download your resume as a Microsoft Word document or email it directly to your job interview. </p>
-            <p>Using our resume builder and when you’re ready to share it, we’ll guide you through sharing and promoting your resume online using social networks and professional networks. If you don’t want to post your resume right away, you can also download a plain text version for free and save it for later. </p>
+    <article class="row blog">
+        <div class="col-lg-8">
+            <img src="http://assets.swiftintern.com/images/resume/selected.jpg" class="thumbnail text-center">
+        </div>
+        <div class="col-lg-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-6"><i class="fa fa-files-o fa-5x"></i></div>
+                        <div class="col-xs-6 text-right">
+                            <p class="announcement-heading huge">7983579</p>
+                            <p class="announcement-text">Total Resumes</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel panel-default panel-body">
+                <h3>Edit, Save and Download</h3>
+                <p>Your resume content is fetched from and then further you can download it in Word format for further editing</p>
+            </div>
+            
+            <div class="panel panel-default panel-body">
+                <h3>Choose a Template</h3>
+                <p>Pick a Resume template which best suits your design. Out of Chronological, Combination, Functional</p>
+            </div>
         </div>
     </article>
 </section>
 <script type="text/javascript">
-    $(".site-heading").css("padding-top", "-10px");
-    $(".site-heading").css("padding-bottom", "10px");
+    $(document).ready(function () {
+        $(".navbar").css("margin-bottom", "0px");
+    });
 </script>
