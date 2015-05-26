@@ -113,60 +113,21 @@ class OnlineTest extends Controller {
      */
     public function test($title, $id) {
         $seo = Framework\Registry::get("seo");
-        $user = $this->getUser();
-        $view = $this->getActionView();
-
         $test = Test::first(array("id = ?" => $id));
         $seo->setTitle($test->title);
         $seo->setKeywords($test->title);
         $seo->setDescription(strip_tags($test->syllabus));
+        $user = $this->getUser();
+        $view = $this->getActionView();
+
         $this->getLayoutView()->set("seo", $seo);
 
-        $image = Image::first(array(
-                    "property = ?" => "test",
-                    "property_id = ?" => $test->id
-        ));
-        if ($image) {
-            $photo = Photograph::first(array("id = ?" => $image->photo_id));
-        } else {
-            $organization = Organization::first(array("id = ?" => $test->organization_id));
-            $photo = Photograph::first(array("id = ?" => $organization->photo_id));
-        }
         $questions = Question::all(array("test_id = ?" => $test->id));
 
         $participated = Participant::first(array(
                     "test_id = ?" => $test->id,
                     "user_id = ?" => $user->id
         ));
-
-        $time = strftime("%Y-%m-%d %H:%M:%S", time());
-        if ($participated) {
-            $date1 = date_create($participated->created);
-            $date2 = date_create($time);
-            $diff = date_diff($date1, $date2);
-
-            if ($diff->format("%a") < '15') {
-                echo 'hello';
-                $this->_willRenderActionView = false;
-                $this->_willRenderLayoutView = false;
-                self::redirect('/test-participated/' . urlencode($test->title) . '/' . $test->id);
-            } else {
-                $participant = new Participant(array(
-                    "test_id" => $test->id,
-                    "user_id" => $user->id,
-                    "created" => $time
-                ));
-                $participant->save();
-            }
-        } else {
-            $participant = new Participant(array(
-                "test_id" => $test->id,
-                "user_id" => $user->id,
-                "created" => $time
-            ));
-
-            $participant->save();
-        }
 
         $view->set("participant", $participant);
         $view->set("test", $test);
