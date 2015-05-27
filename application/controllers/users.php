@@ -40,7 +40,7 @@ class Users extends Controller {
         }
     }
     
-    protected function test() {
+    protected function mailtest() {
         $this->noview();
         $options = array(
             "template" => "studentRegister",
