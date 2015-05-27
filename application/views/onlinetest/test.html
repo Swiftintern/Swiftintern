@@ -1,70 +1,49 @@
 <!-- the middle contents -->
 <section class="container">
     <div class="row">
-        <h3 class="page-header">{echo $test->title}</h3>
-        <small class="pull-right"><span id="countdown">30</span> minutes</small>
+        <h1 class="page-header text-center">{echo $test->title}</h1>
+        <ol class="breadcrumb">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/onlinetest">All Exams</a></li>
+            <li><a href="/onlinetest/details/{echo urlencode($test->title)}/{echo $test->id}">{echo $test->title}</a></li>
+            <li class="active">Exam</li>
+        </ol>
         <article class="col-md-12">
-            <form id="testform" class="col-md-offset-2">
+            <form class="col-md-offset-2 col-md-8" method="post" action="/onlinetest/result">
                 {script $i=1}
                 {foreach $question in $questions}
-                <p>&nbsp;Q{echo $i}&nbsp;{echo $question->question}</p>
-                {script $options = Option::all(array('ques_id = ?' => $question->id))}
-                <ul class="nav col-md-offset-1">
-                    {foreach $option in $options}
-                    {script $option = Option::first(array('id = ?' => $option->id))}
-                    <li>
-                        <div class="radio">
-                            <label><input type="radio" name="question_{echo $question->id}" value="{$option->id}">{echo $option->ques_option}</label>
-                        </div>
-                    </li>
-                    {/foreach}
-                </ul>
-                {script $i++}
+                <div class="{if($i!=1)} hide {/if}" id="question_{echo $i}">
+                    <label>&nbsp;Q{echo $i}&nbsp;{echo $question->question}</label>
+                    {script $options = Option::all(array('ques_id = ?' => $question->id))}
+                    <ul class="list-group">
+                        {foreach $option in $options}
+                        {script $option = Option::first(array('id = ?' => $option->id))}
+                        <li class="list-group-item">
+                            <div class="radio">
+                                <label><input type="radio" name="question[{echo $question->id}]" value="{$option->id}">{echo $option->ques_option}</label>
+                            </div>
+                        </li>
+                        {/foreach}
+                    </ul>
+                    {script $i++}
+                </div>
                 {/foreach}
                 <input type="hidden" name="test_id" value="{echo $test->id}">
                 <input type="hidden" name="participant_id" value="{echo $participant->id}">
                 <input type="hidden" name="action" value="test_result">
-                <p class="text-center"><button type="submit" class="btn btn-primary btn-lg">Submit</button></p>
+                <nav>
+                    <ul class="pager">
+                        <li><a href="#" id="prevQues">Previous</a></li>
+                        <li><a href="#" id="nextQues">Next</a></li>
+                    </ul>
+                </nav>
+                <button type="submit" class="btn btn-primary btn-lg pull-right">Submit</button>
             </form>
         </article>
     </div>
 </section>
 <script type="text/javascript">
-    var warn = 0;
-    $(document).ready(function () {
-        $(window).blur(function () {
-            if (warn > 3) {
-                bootbox.alert('Your Test is now cancelled');
-                submitTest();
-            } else {
-                bootbox.alert('You are not allowed to open any new tab. or minimize the window');
-                warn++;
-            }
-        });
-
-        var dt = new Date();
-        var starttime = new Date().getTime();
-        window.starttime = starttime;
-
-        var test_id = $('input[name="test_id"]').val();
-        testDetails(test_id).success(function (data) {
-            var test = data[0];
-            if (test.time_limit != '0') {
-                var timeSpent = test.time_limit;
-                function countdown() {
-                    console.log(timeSpent);
-                    timeSpent -= 1;
-                    if (timeSpent > 0) {
-                        setTimeout(countdown, 1000);
-                    }
-                    if (timeSpent == 1) {
-                        alert('submitted');
-                        submitTest();
-                    }
-                    ;
-                }
-                setTimeout(countdown, 1000);
-            }
-        });
-    });
+$(document).ready(function () {
+    window.opts.ques = 1;
+});
 </script>

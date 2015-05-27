@@ -9,6 +9,11 @@ $(".chosen").chosen({
 });
 
 $(document).ready(function () {
+    
+    var dt = new Date(),
+        starttime = dt.getTime();
+        window.opts.time = starttime;
+    
     $('#new_category li').click(function (e) {
         window.opts.query = $(this).children('span').html();
         window.opts.page = '1';
@@ -99,7 +104,64 @@ $(document).ready(function () {
         loadTests(window.opts);
         $(this).html('Load More');
     });
+    
+    //test
+    $('#prevQues').click(function (e) {
+        e.preventDefault();
+        var ques = window.opts.ques,
+            prev = "#question_" + (+ques + -1),
+            cur  = "#question_" + ques,
+            self = this;
+        if($(prev).length > 0){
+            $(cur).addClass('hide');
+            $(prev).removeClass('hide');
 
+            window.opts.ques = --ques;
+        } else {
+            $(self).addClass('disabled');
+        }
+        console.log(window.opts.ques);
+    });
+    
+    $('#nextQues').click(function (e) {
+        e.preventDefault();
+        var ques = window.opts.ques,
+            next = "#question_" + (+ques + +1),
+            cur  = "#question_" + ques,
+            self = this;
+        if($(next).length > 0){
+            $(cur).addClass('hide');
+            $(next).removeClass('hide');
+            
+            window.opts.ques = ++ques;
+        } else {
+            $(self).addClass('disabled');
+        }
+        console.log(window.opts.ques);
+    });
+
+    $('#test').submit(function (e) {
+        e.preventDefault();
+        var test_id = $('input[name="test_id"]').val();
+        
+        var test = data[0];
+        if (test.time_limit != '0') {
+            var timeSpent = test.time_limit;
+            function countdown() {
+                console.log(timeSpent);
+                timeSpent -= 1;
+                if (timeSpent > 0) {
+                    setTimeout(countdown, 1000);
+                }
+                if (timeSpent == 1) {
+                    alert('submitted');
+                    submitTest();
+                }
+                ;
+            }
+            setTimeout(countdown, 1000);
+        }
+    });
 });
 
 function findResume(resumes) {

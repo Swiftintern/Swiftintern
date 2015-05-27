@@ -5,20 +5,18 @@
  *
  * @author Faizan Ayubi
  */
-use Shared\Controller as Controller;
 use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
-class OnlineTest extends Controller {
+class OnlineTest extends Users {
 
     public function index() {
-        $seo = Framework\Registry::get("seo");
-
-        $seo->setTitle("Online Test with Certificate");
-        $seo->setKeywords("online test, practice test, online exams, skills verification");
-        $seo->setDescription("Appear to Online Exam and verify your skills for getting internship.");
-
-        $this->getLayoutView()->set("seo", $seo);
+        $this->seo(array(
+            "title" => "Online Test with Certificate",
+            "keywords" => "online test, practice test, online exams, skills verification",
+            "description" => "Appear to Online Exam and verify your skills for getting internship.",
+            "view" => $this->getLayoutView()
+        ));
         $view = $this->getActionView();
 
         $query = RequestMethods::get("query", "");
@@ -27,54 +25,67 @@ class OnlineTest extends Controller {
         $page = RequestMethods::get("page", 1);
         $limit = RequestMethods::get("limit", 12);
 
-        $where = array(
-            "is_active = ?" => true,
-            "validity = ?" => true
-        );
+        $where = array("is_active = ?" => true, "validity = ?" => true);
 
-        $fields = array(
-            "id", "title"
-        );
+        $fields = array("id", "title");
 
         $count = Test::count($where);
         $exams = Test::all($where, $fields, $order, $direction, $limit, $page);
 
         $view->set("limit", $limit);
-        $view->set("count", count($exams));
+        $view->set("count", $count);
         $view->set("exams", $exams);
     }
-    
+
     public function photo($test_id) {
-        $image = Image::first(array("property = ? "=>"test", "property_id = ?"=> $test_id),array("photo_id"));
+        $image = Image::first(array("property = ? " => "test", "property_id = ?" => $test_id), array("photo_id"));
         self::redirect("/thumbnails/{$image->photo_id}");
     }
 
-    public function test_details($title, $id) {
-        $seo = Framework\Registry::get("seo");
+    public function details($title, $id) {
+        $test = Test::first(array("id = ?" => $id));
+        $this->seo(array(
+            "title" => $test->title,
+            "keywords" => $title,
+            "description" => strip_tags($test->syllabus),
+            "view" => $this->getLayoutView()
+        ));
         $view = $this->getActionView();
-        $test = Test::first(array(
-                    "id = ?" => $id
-        ));
-
-        $image = Image::first(array(
-                    "property = ?" => "test",
-                    "property_id = ?" => $id
-        ));
-        if ($image) {
-            $photo = Photograph::first(array(
-                        'id = ?' => $image->photo_id
-            ));
-        } else {
-            $organization = Organization::first(array('id = ?' => $test->organization_id));
-            $photo = Photograph::first(array('id = ?' => $organization->photo_id));
-        }
-        $seo->setTitle($test->title . " Details");
-        $seo->setKeywords($test->title . ", online test, practice test, online exams, skills verification");
-        $seo->setDescription($test->syllabus);
 
         $view->set("test", $test);
-        $view->set("photo", $photo);
-        $this->getLayoutView()->set("seo", $seo);
+    }
+
+    public function result() {
+        $this->noview();
+        echo '<pre>', print_r($_POST), '</pre>';
+        
+        /*$participant = Participant::first(array("id = ?" => $participant_id));
+        $test = Test::first(array("id = ?" => $participant->test_id));
+        $this->seo(array(
+            "title" => $test->title,
+            "keywords" => $test->title,
+            "description" => strip_tags($test->syllabus),
+            "view" => $this->getLayoutView()
+        ));$view = $this->getActionView();
+
+        if (RequestMethods::post("action") == "test_result") {
+            $questions = Question::all(array("test_id = ?" => $test->id), array("id", "question", "type"));
+            $per_ques = 100 / count($questions);$marks = 0;$count = 0;
+            
+            foreach ($_POST as $field_name => $val) {
+                $field_name = strip_tags(trim($field_name));
+                if (strpos($field_name, 'question') !== false) {
+                    $name = explode('_', $field_name);
+                    $ques_id = $name[1];
+                    $option_id = filterdata($val);
+                    $option = Option::find_by_id('id', $option_id);
+                    if ($option->is_answer) {
+                        $marks += $per_ques;
+                    }
+                    $count++;
+                }
+            }
+        }*/
     }
 
     public function test_certi($certi_id) {
@@ -112,22 +123,18 @@ class OnlineTest extends Controller {
      * @before _secure
      */
     public function test($title, $id) {
-        $seo = Framework\Registry::get("seo");
-        $test = Test::first(array("id = ?" => $id));
-        $seo->setTitle($test->title);
-        $seo->setKeywords($test->title);
-        $seo->setDescription(strip_tags($test->syllabus));
-        $user = $this->getUser();
+        $test = Test::first(array("id = ?" => $id), array("id", "title", "syllabus", "type", "subject", "time_limit"));
+        $this->seo(array(
+            "title" => $test->title,
+            "keywords" => $title,
+            "description" => strip_tags($test->syllabus),
+            "view" => $this->getLayoutView()
+        ));
         $view = $this->getActionView();
 
-        $this->getLayoutView()->set("seo", $seo);
+        $questions = Question::all(array("test_id = ?" => $test->id), array("id", "question", "type"));
 
-        $questions = Question::all(array("test_id = ?" => $test->id));
-
-        $participated = Participant::first(array(
-                    "test_id = ?" => $test->id,
-                    "user_id = ?" => $user->id
-        ));
+        $participant = Participant::first(array("test_id = ?" => $test->id, "user_id = ?" => $this->user->id));
 
         $view->set("participant", $participant);
         $view->set("test", $test);
@@ -149,8 +156,8 @@ class OnlineTest extends Controller {
         ));
         if ($image) {
             $photo = Photograph::first(array("id = ?" => $image->photo_id));
-        } else { 
-           $organization = Organization::first(array("id = ?" => $test->organization_id));
+        } else {
+            $organization = Organization::first(array("id = ?" => $test->organization_id));
             $photo = Photograph::first(array("id = ?" => $organization->photo_id));
         }
         $seo->setTitle($test->title);

@@ -1,0 +1,40 @@
+<!-- the middle contents -->
+<section class="container">
+    <div class="row">
+        <nav><ol class="breadcrumb">
+                <li><a href="home">Home</a></li>
+                <li><a href="test">Test</a></li>
+                <li class="active">{echo $test->title}</li>
+            </ol></nav>
+        <article class="content-inner-detail" id="search_results">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{echo $test->title}</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="media">
+                        <a class="pull-left hidden-xs" href="test/{echo Framework\StringMethods::url($test->title)}/{echo $test->id}">
+                            <img class="media-object" src="/onlinetest/photo/{echo $test->id}" alt="{echo $test->title}" width="300px">
+                        </a>
+                        <div class="media-body">
+                            <h3 class="media-heading">{echo $test->title}</h3>
+                            <p><b>Subject :</b> {echo $test->subject}</p>
+                            <p><b>Level :</b> {echo $test->level}</p>
+                            <p>
+                                <b>Time Limit :</b> 
+                                {if ($test->time_limit == '00:00:00')}
+                                {echo "30 Minutes"}
+                                {/if}
+                                {else}
+                                {echo $test->time_limit}
+                                {/else}
+                            </p>
+                            <p><b>Instructions :</b> Once the Test Start do not press back button or refresh. The result will be shown after you complete the test. If you obtain Good Marks above 70% a certificate will be generated which we will deliver to your home, and the test marks will be added to your profile.</p>
+                            <p class="pull-right"><a href="/test/{echo Framework\StringMethods::url($test->title)}/{echo $test->id}" class="btn btn-primary" id="taketest">Proceed to Exam</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</section>
