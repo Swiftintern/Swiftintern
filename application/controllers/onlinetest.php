@@ -114,77 +114,25 @@ class OnlineTest extends Users {
         $view->set("test", $test);
     }
 
-    public function test_certi($certi_id) {
-        if (empty($certi_id)) {
-            self::redirect("/tests");
-        }
-        $certificate = Certificate::first(array(
-                    "uniqid = ?" => $certi_id
-        ));
-
-        if (!$certificate) {
-            self::redirect("/tests");
-        }
-        $seo = Framework\Registry::get("seo");
-        $view = $this->getActionView();
-
-        $participant = Participant::first(array('id = ?' => $certificate->property_id));
-        $test = Test::first(array('id = ?' => $participant->test_id));
-        $user = User::first(array('id = ?' => $participant->user_id));
-        $student = Student::first(array('user_id = ?' => $participant->user_id));
-
-        $seo->setTitle($user->name . "'s certificate of " . $test->title);
-        $seo->setKeywords($user->name . "'s certificate of " . $test->title);
-        $seo->setDescription($user->name . "'s certificate of " . $test->title);
-        $this->getLayoutView()->set("seo", $seo);
-
-        $view->set("participant", $participant);
-        $view->set("test", $test);
-        $view->set("user", $user);
-        $view->set("student", $student);
-        $view->set("certificate", $certificate);
-    }
-
     public function test_participated($title, $id) {
         $seo = Framework\Registry::get("seo");
         $view = $this->getActionView();
-        $test = Test::first(array(
-                    "id = ?" => $id
-        ));
-        $image = Image::first(array(
-                    "property = ?" => "test",
-                    "property_id = ?" => $test->id
-        ));
-        if ($image) {
-            $photo = Photograph::first(array("id = ?" => $image->photo_id));
-        } else {
-            $organization = Organization::first(array("id = ?" => $test->organization_id));
-            $photo = Photograph::first(array("id = ?" => $organization->photo_id));
-        }
+        $test = Test::first(array("id = ?" => $id));
+        
         $seo->setTitle($test->title);
         $seo->setKeywords($test->title);
         $seo->setDescription(strip_tags($test->syllabus));
         $this->getLayoutView()->set("seo", $seo);
+        
         $view->set("test", $test);
         $view->set("photo", $photo);
     }
 
-    public function certification() {
-        $seo = Framework\Registry::get("seo");
-        $view = $this->getActionView();
-
-        $seo->setTitle("Online Certification Test");
-        $seo->setKeywords("online certification, get certificate, ");
-        $seo->setDescription("Get certified Online by Appearing in the test of various topics");
-        $this->getLayoutView()->set("seo", $seo);
-
-        $tests = Test::all(array(
-                    "validity = ?" => true,
-                    "type = ?" => "certification",
-                    "is_active = ?" => true
-        ));
-
-        $view->set("tests", $tests);
+    public function certificate($uniqid) {
+        $this->noview();
+        $certificate = Certificate::first(array("uniqid = ?" => $uniqid));
+        $participant = Participant::first(array("id = ?" => $certificate->property_id));
+        $test = Test::first(array("id = ?" => $participant->test_id));
     }
 
 }
