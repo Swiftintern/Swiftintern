@@ -45,5 +45,14 @@
 <script type="text/javascript">
 $(document).ready(function () {
     window.opts.ques = 1;
+    var warn = 0;
+    $(window).blur(function () {
+        if (warn > 1) {
+            alert("Your Test is now cancelled");
+            window.location.href = 'home';
+        }
+        alert("You are not allowed to open any new tab. or minimize the window");
+        warn++;
+    });
 });
 </script>
