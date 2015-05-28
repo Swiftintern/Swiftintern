@@ -1,60 +1,52 @@
-<!-- the middle contents -->
 <section class="container">
-	<div class="row">
-		<nav><ol class="breadcrumb">
-			<li><a href="home">Home</a></li>
-			<li><a href="test">Test</a></li>
-			<li class="active">{echo $test->title}</li>
-		</ol></nav>
-		<article class="row">
-			<div class="col-md-4">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">Test Result</h3>
-					</div>
-					<div class="panel-body">
-						<p>Marks : {echo $participant->score} out of 100</p>
-						<p>Question Attempted : {echo $participant->attempted}</p>
-						<p>Give On : {echo Framework\StringMethods::only_date($participant->created)}</p>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">Test Details</h3>
-					</div>
-					<div class="panel-body">
-						<p>{echo $test->title}</p>
-						<p>Category : {echo $test->subject}</p>
-						<p>Created On : {echo Framework\StringMethods::only_date($test->created)}</p>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">Student Details</h3>
-					</div>
-					<div class="panel-body">
-						<p>{echo $user->name}</p>
-						<p>Skills : {echo $student->skills}</p>
-					</div>
-				</div>
-			</div>
-			<hr>
-		</article>
-		<article>
-			<div class="row text-center">
-			{if($participant->score < 60)}
-                            <p class="text-warning">You have Got {echo $participant->score}% Marks which is less than 70% so we could not certify. Please try again tomorrow to give test here.</p>
-                        {/if}
-			{else}
-                            <p class="text-warning">You have Got {echo $participant->score}% Marks. Good work keep it up.</p>
-			{/else}
-                            <p>You can also see various other test available on site from <a href="/tests">Here</a></p>
-                            <hr>
-			</div>
-		</article>
-	</div>
+    <div class="row">
+        <h1 class="page-header text-center">Result {echo $test->title}</h1>
+        <ol class="breadcrumb">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/onlinetest">All Exams</a></li>
+            <li><a href="/onlinetest/details/{echo urlencode($test->title)}/{echo $test->id}">{echo $test->title}</a></li>
+            <li class="active">Result</li>
+        </ol>
+        <article class="col-md-12">
+            <div class="col-md-offset-2 col-md-8">
+                <div class="panel panel-default">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>Marks</td>
+                                <td>{echo $participant->score}</td>
+                            </tr>
+                            <tr>
+                                <td>Question Attempted</td>
+                                <td>{echo $participant->attempted}</td>
+                            </tr>
+                            <tr>
+                                <td>Student</td>
+                                <td>{echo $user->name}</td>
+                            </tr>
+                            <tr>
+                                <td>Appeared</td>
+                                <td>{echo Framework\StringMethods::only_date($participant->created)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </article>
+        <article>
+            <div class="row text-center">
+                {if($participant->score < 60)}
+                    <p class="text-warning">You have Got {echo $participant->score}% Marks which is less than 60% so we could not certify. Please try again tomorrow to give test here.</p>
+                {/if}
+                {else}
+                    <p class="text-warning">You have Got {echo $participant->score}% Marks. Good work keep it up.</p>
+                    <p>
+                        <a href="" class="btn btn-primary"><i class="fa fa-linkedin-square fa-lg"></i> Add to profile</a>
+                        <a href="/onlinetest/certificate/{echo $certificate->uniqid}.png" download class="btn btn-success"><i class="fa fa-download fa-fw"></i> Download Certificate</a>
+                    </p>
+                {/else}
+                <hr>
+            </div>
+        </article>
+    </div>
 </section>

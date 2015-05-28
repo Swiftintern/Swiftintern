@@ -54,7 +54,7 @@ class OnlineTest extends Users {
 
         $view->set("test", $test);
     }
-    
+
     /**
      * @before _secure
      */
@@ -71,12 +71,13 @@ class OnlineTest extends Users {
         $questions = Question::all(array("test_id = ?" => $test->id), array("id", "question", "type"));
 
         $participant = Participant::first(array("test_id = ?" => $test->id, "user_id = ?" => $this->user->id));
-        if(!$participant){
+        if (!$participant) {
             $participant = new Participant(array(
                 "test_id" => $test->id,
                 "user_id" => $this->user->id,
                 "score" => "", "time_taken" => "", "attempted" => ""
-            ));$participant->save();
+            ));
+            $participant->save();
         }
 
         $view->set("participant", $participant);
@@ -86,19 +87,23 @@ class OnlineTest extends Users {
 
     public function result($participant_id) {
         $participant = Participant::first(array("id = ?" => $participant_id));
-        $test = Test::first(array("id = ?" => $participant->test_id));
+        $test = Test::first(array("id = ?" => $participant->test_id), array("id","title","syllabus"));
+        $user = User::first(array("id = ?" => $participant->user_id), array("name"));
         $this->seo(array(
-            "title" => $test->title,
+            "title" => "Result " . $test->title,
             "keywords" => $test->title,
             "description" => strip_tags($test->syllabus),
             "view" => $this->getLayoutView()
-        ));$view = $this->getActionView();
+        ));
+        $view = $this->getActionView();
 
         if (RequestMethods::post("action") == "test_result") {
             $total_questions = Question::count(array("test_id = ?" => $test->id));
-            $per_ques = 100 /$total_questions;$marks = 0;$count = 0;
+            $per_ques = 100 / $total_questions;
+            $marks = 0;
+            $count = 0;
             $questions = RequestMethods::post("question");
-            
+
             foreach ($questions as $question => $answer) {
                 $option = Option::first(array("id = ?" => $answer), array("is_answer"));
                 if ($option->is_answer) {
@@ -107,25 +112,28 @@ class OnlineTest extends Users {
             }
             $participant->score = $marks;
             $participant->attempted = $count;
-            
+
             $participant->save();
+            
+            if($marks >= 60){
+                $certificate = new Certificate(array(
+                    "property" => "participant",
+                    "property_id" => $participant->id,
+                    "uniqid" => uniqid(),
+                    "validity" => "1"
+                ));
+                $certificate->save();
+            }
         }
+        
+        if(!$certificate){
+            $certificate = Certificate::first(array("property_id = ?" => $participant->id));
+        }
+        
         $view->set("participant", $participant);
         $view->set("test", $test);
-    }
-
-    public function test_participated($title, $id) {
-        $seo = Framework\Registry::get("seo");
-        $view = $this->getActionView();
-        $test = Test::first(array("id = ?" => $id));
-        
-        $seo->setTitle($test->title);
-        $seo->setKeywords($test->title);
-        $seo->setDescription(strip_tags($test->syllabus));
-        $this->getLayoutView()->set("seo", $seo);
-        
-        $view->set("test", $test);
-        $view->set("photo", $photo);
+        $view->set("user", $user);
+        $view->set("certificate", $certificate);
     }
 
     public function certificate($uniqid) {
@@ -133,6 +141,22 @@ class OnlineTest extends Users {
         $certificate = Certificate::first(array("uniqid = ?" => $uniqid));
         $participant = Participant::first(array("id = ?" => $certificate->property_id));
         $test = Test::first(array("id = ?" => $participant->test_id));
+        $user = User::first(array("id = ?" => $participant->user_id), array("name"));
+
+        $im = imagecreatefromjpeg(APP_PATH . '/public/assets/images/others/newcerti.jpg');
+        $black = imagecolorallocate($im, 0x00, 0x00, 0x00);
+        $times = APP_PATH . '/public/assets/fonts/times.ttf';
+
+        // Draw the text
+        imagettftext($im, 30, 0, 370, 355, $black, $times, $user->name);
+        imagettftext($im, 30, 0, 370, 480, $black, $times, $test->title);
+        imagettftext($im, 15, 0, 760, 637, $black, $times, $uniqid);
+
+        // Output image to the browser
+        header('Content-Type: image/png');
+        
+        imagepng($im);
+        imagedestroy($im);
     }
 
 }
