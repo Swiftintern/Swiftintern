@@ -89,24 +89,9 @@ $routes = array(
         "action" => "logout"
     ),
     array(
-        "pattern" => "fonts/:id",
-        "controller" => "files",
-        "action" => "fonts"
-    ),
-    array(
         "pattern" => "thumbnails/:id",
-        "controller" => "files",
+        "controller" => "home",
         "action" => "thumbnails"
-    ),
-    array(
-        "pattern" => "files/delete/:id",
-        "controller" => "files",
-        "action" => "delete"
-    ),
-    array(
-        "pattern" => "files/undelete/:id",
-        "controller" => "files",
-        "action" => "undelete"
     ),
     array(
         "pattern" => "internship/:title/:id",

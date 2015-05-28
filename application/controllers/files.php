@@ -90,46 +90,6 @@ class Files extends Controller {
         }
     }
 
-    public function thumbnails($id) {
-        $path = APP_PATH . "/public/assets/uploads/images";
-        $cdn = CDN;
-
-        $file = Photograph::first(array(
-            "id = ?" => $id
-        ));
-
-        if ($file) {
-            $width = 64;
-            $height = 64;
-
-            $name = $file->filename;
-            $filename = pathinfo($name, PATHINFO_FILENAME);
-            $extension = pathinfo($name, PATHINFO_EXTENSION);
-
-            if ($filename && $extension) {
-                $thumbnail = "{$filename}-{$width}x{$height}.{$extension}";
-
-                if (!file_exists("{$path}/{$thumbnail}")) {
-                    $imagine = new \Imagine\Gd\Imagine();
-
-                    $size = new \Imagine\Image\Box($width, $height);
-                    $mode = Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
-
-                    $imagine
-                            ->open("{$path}/{$name}")
-                            ->thumbnail($size, $mode)
-                            ->save("{$path}/thumbnails/{$thumbnail}");
-                }
-
-                header("Location: {$cdn}uploads/images/thumbnails/{$thumbnail}");
-                exit();
-            }
-
-            header("Location: /images/{$name}");
-            exit();
-        }
-    }
-
     /**
      * @before _secure, _admin
      */
