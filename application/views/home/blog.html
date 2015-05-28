@@ -1,35 +1,63 @@
-<header class="intro-header" style="background-image: url('assets/img/others/blog.jpg');">
+<header class="sb-page-header">
     <div class="container">
-        <div class="row text-center">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="site-heading">
-                    <h1 class="huge">Intern Blog</h1>
-                </div>
-            </div>
-        </div>
+        <h1>Intern Blog</h1>
+        <p>The latest tips, news in internships world, we are also on <a href="https://www.facebook.com/swiftintern">Facebook</a> and <a href="https://twitter.com/swiftintern">Twitter</a></p>
     </div>
 </header>
-<section class="container">
-    <div class="row col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <article id="search_results" class="">
+<section class="container row">
+    <div class="col-md-8 col-md-offset-1">
+        <article id="results" class="panel panel-default panel-body">
             {foreach $post in $posts}
             <div class="post-preview">
                 <a href="blog/{echo urlencode($post->title)}/{echo $post->id}">
-                <h2 class="post-title">{echo $post->title}</h2>
-                <h3 class="post-subtitle">{echo substr(strip_tags($post->content), 0, 150)}</h3>
+                    <h2 class="post-title">{echo $post->title}</h2>
+                    <h3 class="post-subtitle">{echo substr(strip_tags($post->content), 0, 150)}</h3>
                 </a>
                 <p class="post-meta">Posted on {echo $post->created}</p>
             </div><hr>
             {/foreach}
         </article>
         <div class="text-center">
-            <button id="loadmorebtn" onclick="loadmoreBlogPost(++page, '10');" class="btn btn-primary">Load More</button><hr>
+            <button id="loadmorebtn" onclick="loadmoreBlogPost(++page, '10');" class="btn btn-primary">Load More</button>
         </div>
+    </div>
+    <div class="col-md-3">
+
+        <div class="panel panel-default">
+            <table class="table">
+                <tr>
+                    <td><b>Youtube Videos</b></td>
+                </tr>
+                <tr>
+                    <td><a href="https://www.youtube.com/watch?v=VHt6V2fgke0">Deolite Internship Experience</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://www.youtube.com/watch?v=1U5utGeZ9Gc">Shlumberger Internship Experience</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://www.youtube.com/watch?v=qNeogK2_eQE">Internship Experience at Tata Steel</a></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="panel panel-default panel-body">
+            <form id="test_search" id="search_test">
+                <div class="form-group">
+                    <label>Search Articles</label>
+                    <input type="search" id="test_keywords" name="keywords" class="form-control" placeholder="Search...">
+                </div>
+                <br>
+                <input type="submit" class="btn btn-primary input-lg btn-block" value="Search">
+            </form>
+        </div>
+        
+        <a href="mailto:info@swiftintern.com?Subject=Articles%20for%20Blog" class="btn btn-danger btn-block"><i class="fa fa-envelope fa-lg"></i> Send Articles</a><br>
+
     </div>
 </section>
 <script type="text/javascript">
     var page = 1;
     $(document).ready(function () {
-        $('.navbar').css('margin-bottom', '-20px');
+        $(".navbar").css("margin-bottom", "0px");
     });
 </script>
