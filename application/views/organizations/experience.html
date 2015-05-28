@@ -1,29 +1,29 @@
 <div class="container">
     <article class="row">
-        <nav><ol class="breadcrumb">
-                <li><a href="home">Home</a></li>
-                <li><a href="companies">Companies</a></li>
-                <li><a href="organization/{echo urlencode($organization->name)}/{echo $organization->id}">{echo $organization->name}</a></li>
-                <li><a href="organization/{echo urlencode($organization->name)}/{echo $organization->id}#experience">Papers</a></li>
-                <li class="active">{echo $experience->title}</li>
-            </ol></nav>
-
-        <h2 class="sub-heading">{echo $experience->title}</h2>
-
-        <nav>
-            <ul class="pager">
-            {if($previous)}
-                <li class="previous"><a href="experience/{echo urlencode($experience->title)}/{echo $previous}"><span aria-hidden="true">&larr;</span> Previous</a></li>
-            {/if}
-            {if($next)}
-                <li class="next"><a href="experience/{echo urlencode($experience->title)}/{echo $next}">Next <span aria-hidden="true">&rarr;</span></a></li>
-            {/if}
-            </ul>
-        </nav>
+        <h1 class="page-header">{echo $experience->title}</h1>
+        <ol class="breadcrumb">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/companies">Companies</a></li>
+            <li><a href="/organization/{echo urlencode($organization->name)}/{echo $organization->id}">{echo $organization->name}</a></li>
+            <li><a href="/organization/{echo urlencode($organization->name)}/{echo $organization->id}#experience">Papers</a></li>
+            <li class="active">{echo $experience->title}</li>
+        </ol>
+        
         <div class="panel panel-default">
             <div class="panel-body">
                 {echo $experience->details}
             </div>
         </div>
+        
+        <nav>
+            <ul class="pager">
+                {if($previous)}
+                <li class="previous"><a href="experience/{echo urlencode($experience->title)}/{echo $previous}"><span aria-hidden="true">&larr;</span> Previous</a></li>
+                {/if}
+                {if($next)}
+                <li class="next"><a href="experience/{echo urlencode($experience->title)}/{echo $next}">Next <span aria-hidden="true">&rarr;</span></a></li>
+                {/if}
+            </ul>
+        </nav>
     </article>
 </div>
