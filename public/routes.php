@@ -55,12 +55,12 @@ $routes = array(
     ),
     array(
         "pattern" => "placement-papers",
-        "controller" => "placementpaper",
-        "action" => "companies"
+        "controller" => "organizations",
+        "action" => "placementpapers"
     ),
     array(
         "pattern" => "experience/:title/:id",
-        "controller" => "placementpaper",
+        "controller" => "organizations",
         "action" => "experience"
     ),
     array(
