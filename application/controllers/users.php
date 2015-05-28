@@ -94,4 +94,35 @@ class Users extends Controller {
         $this->willRenderLayoutView = false;
         $this->willRenderActionView = false;
     }
+    
+    /**
+     * The method checks whether a file has been uploaded. If it has, the method attempts to move the file to a permanent location.
+     * @param type $name
+     * @param type $user
+     */
+    protected function _upload($name, $user) {
+        if (isset($_FILES[$name])) {
+            $file = $_FILES[$name];
+            $path = APP_PATH . "/public/uploads/";
+            $time = time();
+            $extension = pathinfo($file["name"], PATHINFO_EXTENSION);
+            $filename = "{$user}-{$time}.{$extension}";
+            if (move_uploaded_file($file["tmp_name"], $path . $filename)) {
+                $meta = getimagesize($path . $filename);
+                if ($meta) {
+                    $width = $meta[0];
+                    $height = $meta[1];
+                    $file = new File(array(
+                        "name" => $filename,
+                        "mime" => $file["type"],
+                        "size" => $file["size"],
+                        "width" => $width,
+                        "height" => $height,
+                        "user" => $user
+                    ));
+                    $file->save();
+                }
+            }
+        }
+    }
 }

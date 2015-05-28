@@ -5,7 +5,6 @@
  *
  * @author Faizan Ayubi
  */
-use Shared\Controller as Controller;
 use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
@@ -241,37 +240,6 @@ class Home extends Users {
         $view->set("enddate", $datetime->format("Y-m-d"));
         $view->set("opportunity", $opportunity);
         $view->set("organization", $organization);
-    }
-
-    /**
-     * The method checks whether a file has been uploaded. If it has, the method attempts to move the file to a permanent location.
-     * @param type $name
-     * @param type $user
-     */
-    protected function _upload($name, $user) {
-        if (isset($_FILES[$name])) {
-            $file = $_FILES[$name];
-            $path = APP_PATH . "/public/uploads/";
-            $time = time();
-            $extension = pathinfo($file["name"], PATHINFO_EXTENSION);
-            $filename = "{$user}-{$time}.{$extension}";
-            if (move_uploaded_file($file["tmp_name"], $path . $filename)) {
-                $meta = getimagesize($path . $filename);
-                if ($meta) {
-                    $width = $meta[0];
-                    $height = $meta[1];
-                    $file = new File(array(
-                        "name" => $filename,
-                        "mime" => $file["type"],
-                        "size" => $file["size"],
-                        "width" => $width,
-                        "height" => $height,
-                        "user" => $user
-                    ));
-                    $file->save();
-                }
-            }
-        }
     }
 
     public function spoj() {
