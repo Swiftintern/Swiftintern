@@ -127,12 +127,13 @@ class OnlineTest extends Users {
         }
         
         if(!$certificate){
-            $certificate = Certificate::first(array("property_id = ?" => $participant->id));
+            $certificate = Certificate::first(array("property_id = ?" => $participant->id),array("uniqid"));
         }
         
+        $view->set("created", strftime("%Y%m", strtotime($participant->created)));
         $view->set("participant", $participant);
         $view->set("test", $test);
-        $view->set("user", $user);
+        $view->set("person", $user);
         $view->set("certificate", $certificate);
     }
 

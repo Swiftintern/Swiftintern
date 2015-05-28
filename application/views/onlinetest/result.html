@@ -22,7 +22,7 @@
                             </tr>
                             <tr>
                                 <td>Student</td>
-                                <td>{echo $user->name}</td>
+                                <td>{echo $person->name}</td>
                             </tr>
                             <tr>
                                 <td>Appeared</td>
@@ -41,7 +41,9 @@
                 {else}
                     <p class="text-warning">You have Got {echo $participant->score}% Marks. Good work keep it up.</p>
                     <p>
-                        <a href="" class="btn btn-primary"><i class="fa fa-linkedin-square fa-lg"></i> Add to profile</a>
+                        {if isset($user)}
+                            <a href="https://www.linkedin.com/profile/add?_ed=0_ZcIwGCXmSQ8TciBtRYgI1j4OsllETrtl_xajtrVc5LaaImXEsXtVW49ekKQ2HJFTaSgvthvZk7wTBMS3S-m0L6A6mLjErM6PJiwMkk6nYZylU7__75hCVwJdOTZCAkdv&pfCertificationName={echo urlencode($test->title)}&pfCertificationUrl={echo urlencode(URL)}&pfLicenseNo={echo $certificate->uniqid}&pfCertStartDate={echo $created}&trk=onsite_longurl" target="_blank" class="btn btn-primary"><i class="fa fa-linkedin-square fa-lg"></i> Add to profile</a>
+                        {/if}
                         <a href="/onlinetest/certificate/{echo $certificate->uniqid}.png" download class="btn btn-success"><i class="fa fa-download fa-fw"></i> Download Certificate</a>
                     </p>
                 {/else}
