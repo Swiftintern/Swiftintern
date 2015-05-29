@@ -9,7 +9,7 @@ use Shared\Controller as Controller;
 use Framework\Registry as Registry;
 
 class Users extends Controller {
-    
+
     /**
      * The Main Method to return SendGrid Instance
      * 
@@ -24,7 +24,7 @@ class Users extends Controller {
             return $sendgrid;
         }
     }
-    
+
     /**
      * The Main Method to return MailGun Instance
      * 
@@ -39,7 +39,7 @@ class Users extends Controller {
             return $mailgun;
         }
     }
-    
+
     protected function mailtest() {
         $this->noview();
         $options = array(
@@ -49,7 +49,7 @@ class Users extends Controller {
         );
         $this->notify($options);
     }
-    
+
     protected function notify($options) {
         $template = $options["template"];
         $view = new Framework\View(array(
@@ -60,18 +60,27 @@ class Users extends Controller {
             $$key = $value;
         }
         $body = $view->render();
-        
+
         switch ($options["delivery"]) {
             case "mailgun":
+                $domain = "swiftintern.com";
+
+                # Make the call to the client.
+                $result = $mgClient->sendMessage($domain, array(
+                    'from' => 'Swiftintern Team <info@swiftintern.com>',
+                    'to' => 'Faizan <indianayubi@gmail.com>',
+                    'subject' => 'Hello',
+                    'text' => 'Testing some Mailgun awesomness!'
+                ));
                 break;
             default:
                 $sendgrid = $this->sendgrid();
                 $email = new \SendGrid\Email();
                 $email->addTo($user->email)
-                    ->setFrom('info@swiftintern.com')
-                    ->setFromName('Saud Akhtar')
-                    ->setSubject($options["subject"])
-                    ->setHtml($body);
+                        ->setFrom('info@swiftintern.com')
+                        ->setFromName('Saud Akhtar')
+                        ->setSubject($options["subject"])
+                        ->setHtml($body);
                 $sendgrid->send($email);
                 break;
         }
@@ -94,7 +103,23 @@ class Users extends Controller {
         $this->willRenderLayoutView = false;
         $this->willRenderActionView = false;
     }
-    
+
+    public function log($message = "") {
+        $logfile = APP_PATH . "/logs/" . date("Y-m-d") . ".txt";
+        $new = file_exists($logfile) ? false : true;
+        if ($handle = fopen($logfile, 'a')) {
+            $timestamp = strftime("%Y-%m-%d %H:%M:%S", time() + 1800);
+            $content = "[{$timestamp}]{$message}\n";
+            fwrite($handle, $content);
+            fclose($handle);
+            if ($new) {
+                chmod($logfile, 0755);
+            }
+        } else {
+            echo "Could not open log file for writing";
+        }
+    }
+
     /**
      * The method checks whether a file has been uploaded. If it has, the method attempts to move the file to a permanent location.
      * @param type $name
@@ -125,4 +150,5 @@ class Users extends Controller {
             }
         }
     }
+
 }
