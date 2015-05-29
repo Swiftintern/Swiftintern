@@ -5,7 +5,6 @@
  *
  * @author Faizan Ayubi
  */
-use Shared\Controller as Controller;
 use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
@@ -64,7 +63,8 @@ class Students extends Users {
         }
 
         if ($li->hasAccessToken()) {
-            $info = $li->get('/people/~:(phone-numbers,summary,first-name,last-name,positions,email-address,public-profile-url,location,picture-url,educations,skills)');
+            //$info = $li->get('/people/~:(phone-numbers,summary,first-name,last-name,positions,email-address,public-profile-url,location,picture-url,educations,skills)');
+            $info = $li->get('/people/~:(summary,first-name,last-name,positions,email-address,public-profile-url,location,picture-url)');
             $user = $this->read(array(
                 "model" => "user",
                 "where" => array("email = ?" => $info["emailAddress"])
@@ -196,8 +196,8 @@ class Students extends Users {
                     "student_id" => $student->id,
                     "organization_id" => $organization->id,
                     "duration" => $this->checkData($value["startDate"]["year"]),
-                    "designation" => $value["title"],
-                    "responsibility" => $value["summary"]
+                    "designation" => $this->checkData($value["title"]),
+                    "responsibility" => $this->checkData($value["summary"])
                 ));
                 $work->save();
             }
