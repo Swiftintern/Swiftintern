@@ -67,10 +67,10 @@ class Users extends Controller {
 
                 # Make the call to the client.
                 $result = $mgClient->sendMessage($domain, array(
-                    'from' => 'Swiftintern Team <info@swiftintern.com>',
-                    'to' => 'Faizan <indianayubi@gmail.com>',
-                    'subject' => 'Hello',
-                    'text' => 'Testing some Mailgun awesomness!'
+                    'from' => 'Saud Akhtar <info@swiftintern.com>',
+                    'to' => $options["email"],
+                    'subject' => $options["subject"],
+                    'html' => $body
                 ));
                 break;
             default:
