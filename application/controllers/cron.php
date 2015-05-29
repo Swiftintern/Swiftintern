@@ -67,6 +67,16 @@ class CRON extends Users {
                         "organization" => Organization::first(array("id = ?"=> $opportunity->organization_id),array("id","linkedin_id","name"))
                     ));
                     break;
+                case 'selected':
+                    $this->notify(array(
+                        "template" => "applicationSelected",
+                        "subject" => $opportunity->title,
+                        "user" => User::first(array("id = ?" => "31"),array("name")),
+                        "opportunity" => $opportunity,
+                        "application" => $application,
+                        "organization" => Organization::first(array("id = ?"=> $opportunity->organization_id),array("id","linkedin_id","name"))
+                    ));
+                    break;
             }
         }
     }
