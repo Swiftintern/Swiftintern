@@ -1,7 +1,7 @@
 <?php
 
 /**
- * The admin controller which has hihest privilege
+ * The admin controller which has highest privilege to manage the website
  *
  * @author Faizan Ayubi
  */

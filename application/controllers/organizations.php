@@ -1,12 +1,11 @@
 <?php
 
 /**
- * Description of Organizations
+ * Controller to Manage all Organization related stuffs such as profile, experience shared, photos, opportunities
  *
  * @author Faizan Ayubi
  */
 use Shared\Controller as Controller;
-use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
 class Organizations extends Controller {

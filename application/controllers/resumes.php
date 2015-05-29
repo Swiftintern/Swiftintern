@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class containing all action of resumes
+ * Class containing all action of resumes creating, publisinhg, sharing
  *
  * @author Faizan Ayubi
  */

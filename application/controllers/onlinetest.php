@@ -1,11 +1,10 @@
 <?php
 
 /**
- * Description of test
+ * Controller to manage Certification of students through online test, result view etc
  *
  * @author Faizan Ayubi
  */
-use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
 class OnlineTest extends Users {

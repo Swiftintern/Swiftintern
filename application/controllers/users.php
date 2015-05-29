@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of users
+ * Parent controller class to test and have Common methods
  *
  * @author Faizan Ayubi
  */

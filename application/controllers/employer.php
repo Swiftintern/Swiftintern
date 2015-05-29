@@ -1,7 +1,7 @@
 <?php
 
 /**
- * The Controller to handle all employer pages
+ * The Controller to handle all employer related request such as post internship stats etc
  *
  * @author Faizan Ayubi
  */

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of home
+ * Controller to all Public Request such as contact, about etc
  *
  * @author Faizan Ayubi
  */

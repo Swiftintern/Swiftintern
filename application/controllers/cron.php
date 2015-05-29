@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Scheduler Class which executes daily
+ * Scheduler Class which executes daily and perfoms the initiated job
  *
  * @author Faizan Ayubi
  */
