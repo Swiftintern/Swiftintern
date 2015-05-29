@@ -35,7 +35,8 @@ class Employer extends Users {
         }
 
         if ($li->hasAccessToken()) {
-            $info = $li->get('/people/~:(phone-numbers,first-name,last-name,positions,email-address,public-profile-url,picture-url)');
+            //$info = $li->get('/people/~:(phone-numbers,first-name,last-name,positions,email-address,public-profile-url,picture-url)');
+            $info = $li->get('/people/~:(first-name,last-name,positions,email-address,public-profile-url,picture-url)');
 
             $user = $this->read(array(
                 "model" => "user",
@@ -115,7 +116,7 @@ class Employer extends Users {
                     "type" => "company",
                     "about" => $this->checkData($company["description"]),
                     "fbpage" => "",
-                    "linkedin_id" => $company["id"],
+                    "linkedin_id" => $this->checkData($company["id"]),
                     "validity" => "1",
                     "updated" => ""
                 ));
