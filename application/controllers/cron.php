@@ -2,14 +2,14 @@
 
 /**
  * Scheduler Class which executes daily and perfoms the initiated job
+ * 
+ * 
  *
  * @author Faizan Ayubi
  */
-use Shared\Controller as Controller;
-use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
-class CRON extends Controller {
+class CRON extends Users {
 
     public function __construct($options = array()) {
         parent::__construct($options);
@@ -17,18 +17,35 @@ class CRON extends Controller {
         $this->willRenderActionView = false;
     }
 
-    /**
-     * @before _secure
-     */
     public function index() {
-        $this->notifications();
+        $this->newsletters();
     }
 
     protected function newsletters() {
         $now = strftime("%Y-%m-%d", strtotime('now'));
+        $emails = array();$limit = 0;$count = 0;
+
         $newsletters = Newsletter::all(array("scheduled = ?" => $now));
         foreach ($newsletters as $newsletter) {
-            $users = User::first();
+            $message = Message::first(array("id = ?"=>$newsletter->message_id));
+            $users = User::all(array("type = ?" => $newsletter->user_group), array("email"));
+            foreach ($users as $user) {
+                $emails[$limit][] = $user->email;
+                $count++;
+                if($count == '999'){
+                    $count=0;$limit++;
+                }
+            }
+            
+            for ($i=0;$i<=$limit;$i++){
+                $this->notify(array(
+                    "template" => "newsletter",
+                    "delivery" => "mailgun",
+                    "subject" => $message->subject,
+                    "message" => $message,
+                    "email" => implode(",", $emails[$i])
+                ));
+            }
         }
     }
 
@@ -36,10 +53,6 @@ class CRON extends Controller {
         $yesterday = strftime("%Y-%m-%d", strtotime('-1 day'));
         $applications = Application::all(array("updated = ?" => $yesterday), array("id", "student_id", "opportunity_id", "status"));
         echo count($applications);
-    }
-
-    public function trackImage($property, $property_id) {
-        
     }
 
     /**
