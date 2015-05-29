@@ -119,6 +119,28 @@ class Users extends Controller {
             echo "Could not open log file for writing";
         }
     }
+    
+    public function track($property, $property_id) {
+        header( 'Content-Type: image/png' );
+        
+        Stat::log($property, $property_id);
+        $pixel = 'http://assets.swiftintern.com/images/others/track.png';
+        
+        //Get the filesize of the image for headers
+        $filesize = filesize(APP_PATH . '/assets/images/others/track.png');
+    
+        //Now actually output the image requested, while disregarding if the database was affected
+        header('Pragma: public');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Cache-Control: private',false);
+        header('Content-Disposition: attachment; filename="pixel.png"');
+        header('Content-Transfer-Encoding: binary' );
+        header('Content-Length: '.$filesize);
+        readfile($pixel);
+        
+        exit;
+    }
 
     /**
      * The method checks whether a file has been uploaded. If it has, the method attempts to move the file to a permanent location.
