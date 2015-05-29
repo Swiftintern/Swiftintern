@@ -57,5 +57,14 @@ class Resumes extends Students {
         $view->set('info', $info);
         //echo '<pre>', print_r($info), '</pre>';
     }
+    
+    public function test() {
+        $this->noview();
+        $li = Registry::get('linkedin');
+        if ($li->hasAccessToken()) {
+            $info = $li->get('/people/~:(phone-numbers,summary,first-name,last-name,positions,email-address,public-profile-url,location,picture-url,educations,skills)');
+        }
+        echo '<pre>', print_r($info), '</pre>';
+    }
 
 }
