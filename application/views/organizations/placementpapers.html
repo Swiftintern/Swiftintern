@@ -6,12 +6,12 @@
             {foreach $org in $orgs}
                 <div class="col-sm-4 col-md-3">
                     <div class="thumbnail">
-                        <img src="" alt="{echo $org['name']}">
+                        <img src="" alt="{echo $org->name}">
                         <div class="caption">
-                            <p><small>{echo substr($org['name'], 0, 18)}</small></p>
+                            <p><small>{echo substr($org->name, 0, 18)}</small></p>
                             <p>
-                                <a href="organization/{echo urlencode($org['name'])}/{echo $org['id']}#experience" class="btn btn-primary btn-sm" role="button">Papers</a> 
-                                <a href="organization/{echo urlencode($org['name'])}/{echo $org['id']}" class="btn btn-info btn-sm">Profile</a></p>
+                                <a href="organization/{echo urlencode($org->name)}/{echo $org->id}#experience" class="btn btn-primary btn-sm" role="button">Papers</a> 
+                                <a href="organization/{echo urlencode($org->name)}/{echo $org->id}" class="btn btn-info btn-sm">Profile</a></p>
                         </div>
                     </div>
                 </div>

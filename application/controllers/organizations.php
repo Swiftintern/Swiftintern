@@ -73,28 +73,23 @@ class Organizations extends Controller {
     }
     
     public function placementpapers() {
-        $seo = Framework\Registry::get("seo");
-
-        $seo->setTitle("Companies Placement Papers, Experiences");
-        $seo->setKeywords("placement papers");
-        $seo->setDescription("Browse through thousands of placement papers and experiences shared by thousands of student across india");
+        $this->seo(array(
+            "title"         => "Companies Placement Papers, Experiences",
+            "keywords"      => "placement papers",
+            "description"   => "Browse through thousands of placement papers and experiences shared by thousands of student across india",
+            "view"          => $this->getLayoutView()
+        ));$view = $this->getActionView();
         
-        $this->getLayoutView()->set("seo", $seo);
-        $view = $this->getActionView();
-        
-        $query = RequestMethods::post("query", "");
         $order = RequestMethods::post("order", "created");
         $direction = RequestMethods::post("direction", "desc");
         $page = RequestMethods::post("page", 1);
         $limit = RequestMethods::post("limit", 10);
         
         $where = array("validity = ?" => true);
-
         $fields = array("DISTINCT organization_id");
-
         $companies = Experience::all($where, $fields, $order, $direction, $limit, $page);
-        $orgs = array();
         
+        $orgs = array();
         foreach ($companies as $company){
             $organization = Organization::first(
                 array("id = ?" => $company->organization_id),
@@ -112,7 +107,7 @@ class Organizations extends Controller {
             );
         }
 
-        $view->set("orgs", $orgs);
+        $view->set("orgs", \Framework\ArrayMethods::toObject($orgs));
     }
     
     public function experience($title, $id) {
