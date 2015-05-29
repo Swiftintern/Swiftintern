@@ -1,12 +1,17 @@
+<header class="sb-page-header">
+    <div class="container">
+        <h1>Placement Papers</h1>
+        <p>All Company with Placement Papers and Interview Experiences</p>
+    </div>
+</header>
 <div class="container">
     <div class="row">
-        <h3 class="page-header">All Company with Placement Papers and Interview Experiences</h3>
         <article class="col-md-9 col-xs-12">
-            <div class="row" id="search_results">
+            <div class="row" id="results">
             {foreach $org in $orgs}
                 <div class="col-sm-4 col-md-3">
                     <div class="thumbnail">
-                        <img src="" alt="{echo $org->name}">
+                        <img src="/thumbnails/{echo $org->photo_id}" alt="{echo $org->name}" width="80">
                         <div class="caption">
                             <p><small>{echo substr($org->name, 0, 18)}</small></p>
                             <p>
@@ -51,17 +56,12 @@
                 </div>
             </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Follow us on Facebook</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="fb-like-box" data-href="https://www.facebook.com/allplacement" data-width="230" data-colorscheme="light" data-show-faces="true" data-header="true" data-stream="false" data-show-border="true"></div>
-                </div>
-            </div>
         </aside>
     </div>
 </div>
 <script type="text/javascript">
     var page = 2;
+    $(document).ready(function () {
+        $(".navbar").css("margin-bottom", "0px");
+    });
 </script>

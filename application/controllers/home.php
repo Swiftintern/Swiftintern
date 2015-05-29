@@ -309,6 +309,9 @@ class Home extends Users {
             }
             header("Location: /images/{$name}");
             exit();
+        } else {
+            header("Location: {$cdn}images/logo.png");
+            exit();
         }
     }
 

@@ -2,8 +2,8 @@
 <section class="container">
     <div class="row">
         <nav><ol class="breadcrumb">
-                <li><a href="home">Home</a></li>
-                <li><a href="companies">Companies</a></li>
+                <li><a href="/home">Home</a></li>
+                <li><a href="/organizations">Companies</a></li>
                 <li class="active">{echo $organization->name}</li>
             </ol></nav>
 
@@ -25,53 +25,62 @@
                     <a href="https://www.linkedin.com/company/{echo $organization->linkedin_id}" target="_blank" class="btn btn-primary"><i class="fa fa-linkedin fa-lg"></i>  | Linkedin</a>
                     <!--<button name="follow" value="organization" id="{echo $organization->id}" class="btn btn-info">Follow</button>-->
                 </span>
-                
+
                 <ul class="nav nav-tabs nav-justified" role="tablist" id="myTab">
-                <li class="active"><a href="#opportunity" role="tab" data-toggle="tab">Opportunity</a></li>
-                <li><a href="#experience" role="tab" data-toggle="tab">Experience</a></li>
-            </ul>
+                    <li class="active"><a href="#opportunity" role="tab" data-toggle="tab">Opportunity</a></li>
+                    <li><a href="#experience" role="tab" data-toggle="tab">Experience</a></li>
+                </ul>
 
-            <div class="tab-content">
-                <div class="tab-pane active" id="opportunity">
-                    <table class="table table-striped">
-                        <tbody id="opportunity">
-                            {foreach $opportunity in $opportunities}
-                            <tr>
-                                <td>
-                                    <a href="{echo urlencode($opportunity->title)}/{echo $opportunity->id}">{echo $opportunity->title}</a>
-                                </td>
-                                <td class="job-location">
-                                    <p><i class="fa fa-calendar fa-fw"></i>{echo $opportunity->last_date}</p>
-                                    <p><i class="fa fa-map-marker"></i>{echo $opportunity->location}</p>
-                                </td>
-                            </tr>
-                            {/foreach}
-                        </tbody>
-                    </table>
-                </div>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="opportunity">
+                        <table class="table table-striped">
+                            <tbody id="opportunity">
+                                {foreach $opportunity in $opportunities}
+                                <tr>
+                                    <td>
+                                        <a href="{echo urlencode($opportunity->title)}/{echo $opportunity->id}">{echo $opportunity->title}</a>
+                                    </td>
+                                    <td class="job-location">
+                                        <p><i class="fa fa-calendar fa-fw"></i>{echo $opportunity->last_date}</p>
+                                        <p><i class="fa fa-map-marker"></i>{echo $opportunity->location}</p>
+                                    </td>
+                                </tr>
+                                {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
 
-                <div class="tab-pane" id="experience">
-                    <p class="page-header text-center">Shared Experiences of {echo $organization->name}<small>(interview, internship)</small></p>
-                    <table class="table table-striped">
-                        <tbody id="opportunity">
-                            {foreach $experience in $experiences}
-                            <tr>
-                                <td>
-                                    <div class="media">
-                                        <div class="media-body">
-                                            <h4 class="media-heading"><a href="experience/{echo urlencode($experience->title)}/{echo $experience->id}">{echo $experience->title}</a></h4>
-                                            {echo substr(strip_tags($experience->details), 0, 350)}......<a href="experience/{echo urlencode($experience->title)}/{echo $experience->id}">Read More</a>
+                    <div class="tab-pane" id="experience">
+                        <p class="page-header text-center">Shared Experiences of {echo $organization->name}<small>(interview, internship)</small></p>
+                        <table class="table table-striped">
+                            <tbody id="opportunity">
+                                {foreach $experience in $experiences}
+                                <tr>
+                                    <td>
+                                        <div class="media">
+                                            <div class="media-body">
+                                                <h4 class="media-heading"><a href="experience/{echo urlencode($experience->title)}/{echo $experience->id}">{echo $experience->title}</a></h4>
+                                                {echo substr(strip_tags($experience->details), 0, 350)}......<a href="experience/{echo urlencode($experience->title)}/{echo $experience->id}">Read More</a>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            {/foreach}
-                        </tbody>
-                    </table>
+                                    </td>
+                                </tr>
+                                {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-                
+
             </div>
         </div>
     </div>
 </section>
+<script type="text/javascript">
+    $(document).ready(function () {
+        if (window.location.href.search("#")) {
+            var pieces = window.location.href.split("#"),
+                href = "#" + pieces[1];
+            $("#myTab a[href="+ href +"]").tab("show");
+        }
+    });
+</script>

@@ -31,7 +31,7 @@ class Organizations extends Controller {
                 "name LIKE ?" => "%{$name}%",
                 "type LIKE ?" => "%{$type}%",
             ),
-            array("id", "name"),
+            array("id", "name", "photo_id"),
             $order, $direction, $limit, $page
         );
         
@@ -44,28 +44,16 @@ class Organizations extends Controller {
     }
     
     public function organization($name, $id) {
-        $view = $this->getActionView();
-        $organization = Organization::first(
-            array("id = ?" => $id),
-            array("id", "name", "address", "phone", "website", "type", "linkedin_id", "photo_id")
-        );
-        
-        $opportunities = Opportunity::all(
-            array("organization_id = ?" => $organization->id),
-            array("id", "title", "last_date", "location")
-        );
-        
-        $experiences = Experience::all(
-            array("organization_id = ?" => $organization->id),
-            array("id", "title", "details")
-        );
-        
         $this->seo(array(
-            "title"         => "Companies | Organizations | NGO | Colleges",
+            "title"         => "{$name} Placement Papers, internship",
             "keywords"      => "company, organization, ngo, internship",
             "description"   => "Comapnies which have used swiftintern to hire interns.",
             "view"          => $this->getLayoutView()
-        ));
+        ));$view = $this->getActionView();
+        
+        $organization = Organization::first(array("id = ?" => $id),array("id", "name", "address", "phone", "website", "type", "linkedin_id", "photo_id"));
+        $opportunities = Opportunity::all(array("organization_id = ?" => $organization->id),array("id", "title", "last_date", "location"));
+        $experiences = Experience::all(array("organization_id = ?" => $organization->id),array("id", "title", "details"));
         
         $view->set("organization", $organization);
         $view->set("opportunities", $opportunities);
@@ -83,7 +71,7 @@ class Organizations extends Controller {
         $order = RequestMethods::post("order", "created");
         $direction = RequestMethods::post("direction", "desc");
         $page = RequestMethods::post("page", 1);
-        $limit = RequestMethods::post("limit", 10);
+        $limit = RequestMethods::post("limit", 12);
         
         $where = array("validity = ?" => true);
         $fields = array("DISTINCT organization_id");

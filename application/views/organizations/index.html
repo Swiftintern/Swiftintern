@@ -1,14 +1,17 @@
+<header class="sb-page-header">
+    <div class="container">
+        <h1>Organizations</h1>
+        <p></p>
+    </div>
+</header>
 <section class="container">
     <div class="row">
         <div class="col-xs-12 col-md-9">
-            <h2 class="page-header text-center">
-                All Organizations
-            </h2>
             <div class="row" id="search_results">
                 {foreach $organization in $organizations}
                 <div class="col-sm-4 col-md-3">
                     <div class="thumbnail">
-                        <img src="" alt="{echo $organization->name}">
+                        <img src="/thumbnails/{echo $organization->photo_id}" alt="{echo $organization->name}" width="80">
                         <div class="caption">
                             <p><small>{echo substr($organization->name, 0, 20)}</small></p>
                             <p>
@@ -42,14 +45,12 @@
                     </form>
                 </div>
             </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Follow us on Facebook</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="fb-like-box" data-href="https://www.facebook.com/pages/SwiftInterncom/268084876704495" data-width="230" data-colorscheme="light" data-show-faces="true" data-header="true" data-stream="false" data-show-border="true"></div>
-                </div>
-            </div>
         </aside>
     </div>
 </section>
+<script type="text/javascript">
+    var page = 2;
+    $(document).ready(function () {
+        $(".navbar").css("margin-bottom", "0px");
+    });
+</script>
