@@ -23,21 +23,24 @@ class CRON extends Users {
 
     protected function newsletters() {
         $now = strftime("%Y-%m-%d", strtotime('now'));
-        $emails = array();$limit = 0;$count = 0;
+        $emails = array();
+        $limit = 0;
+        $count = 0;
 
         $newsletters = Newsletter::all(array("scheduled = ?" => $now));
         foreach ($newsletters as $newsletter) {
-            $message = Message::first(array("id = ?"=>$newsletter->message_id));
+            $message = Message::first(array("id = ?" => $newsletter->message_id));
             $users = User::all(array("type = ?" => $newsletter->user_group), array("email"));
             foreach ($users as $user) {
                 $emails[$limit][] = $user->email;
                 $count++;
-                if($count == '999'){
-                    $count=0;$limit++;
+                if ($count == '999') {
+                    $count = 0;
+                    $limit++;
                 }
             }
-            
-            for ($i=0;$i<=$limit;$i++){
+
+            for ($i = 0; $i <= $limit; $i++) {
                 $this->notify(array(
                     "template" => "newsletter",
                     "delivery" => "mailgun",
@@ -52,7 +55,20 @@ class CRON extends Users {
     protected function notifications() {
         $yesterday = strftime("%Y-%m-%d", strtotime('-1 day'));
         $applications = Application::all(array("updated = ?" => $yesterday), array("id", "student_id", "opportunity_id", "status"));
-        echo count($applications);
+        foreach ($applications as $application) {
+            $opportunity = Opportunity::first(array("id = ?"=> $application->opportunity_id),array("title","id","organization_id"));
+            switch ($application->status) {
+                case 'rejected':
+                    $this->notify(array(
+                        "template" => "applicationRejected",
+                        "subject" => $opportunity->title,
+                        "user" => User::first(array("id = ?" => "31"),array("name")),
+                        "opportunity" => $opportunity,
+                        "organization" => Organization::first(array("id = ?"=> $opportunity->organization_id),array("id","linkedin_id","name"))
+                    ));
+                    break;
+            }
+        }
     }
 
     /**
