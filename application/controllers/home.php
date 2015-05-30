@@ -33,7 +33,7 @@ class Home extends Users {
         $opportunities = Opportunity::all($where, $fields, $order, $direction, $limit, $page);
 
         $view->set("limit", $limit);
-        $view->set("count", count($opportunities));
+        $view->set("count", $count);
         $view->set("opportunities", $opportunities);
 
         $this->getLayoutView()->set("seo", Framework\Registry::get("seo"));

@@ -16,7 +16,7 @@ class Organizations extends Controller {
             "keywords"      => "company, organization, ngo, internship",
             "description"   => "Comapnies which have used swiftintern to hire interns.",
             "view"          => $this->getLayoutView()
-        ));
+        ));$view = $this->getActionView();
         
         $name = RequestMethods::get("name", "");
         $type = RequestMethods::get("type", "");
@@ -25,16 +25,22 @@ class Organizations extends Controller {
         $page = RequestMethods::get("page", 1);
         $limit = RequestMethods::get("limit", 10);
         
+        $where = array(
+            "name LIKE ?" => "%{$name}%",
+            "type LIKE ?" => "%{$type}%",
+        );
+        
+        $count = Organization::count($where);
         $organizations = Organization::all(
-            array(
-                "name LIKE ?" => "%{$name}%",
-                "type LIKE ?" => "%{$type}%",
-            ),
+            $where,
             array("id", "name", "photo_id"),
             $order, $direction, $limit, $page
         );
         
-        $this->getActionView()->set("organizations", $organizations);
+        $view->set("limit", $limit);
+        $view->set("page", $page);
+        $view->set("count", $count);
+        $view->set("organizations", $organizations);
     }
     
     public function photo($organization_id) {
