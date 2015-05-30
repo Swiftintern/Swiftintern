@@ -282,5 +282,22 @@ class Students extends Users {
 
         $view->set("applications", $applications);
     }
+    
+    /**
+     * @before _secure, changeLayout
+     */
+    public function settings() {
+        $this->seo(array(
+            "title" => "Settings",
+            "keywords" => "profile",
+            "description" => "Updated Profile",
+            "view" => $this->getLayoutView()
+        ));$view = $this->getActionView();
+        
+        $session = Registry::get("session");
+        $student = $session->get("student");
+        
+        $view->set("student", $student);
+    }
 
 }

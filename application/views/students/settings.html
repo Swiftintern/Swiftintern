@@ -1,0 +1,34 @@
+<section class="container">
+    <div class="row">
+        <h1 class="page-header text-center">Settings</h1>
+        <ol class="breadcrumb">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/students">Profile</a></li>
+            <li class="active">Settings</li>
+        </ol>
+
+        <div class="col-md-offset-2 col-lg-8 panel panel-default panel-body">
+            <form>
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" name="name" class="form-control" placeholder="Enter name" value="{$user->name}" required="">
+                </div>
+                <div class="form-group">
+                    <label>Email address</label>
+                    <input type="email" name="email" class="form-control" placeholder="Enter email" value="{$user->email}" disabled>
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" name="phone" class="form-control" placeholder="Enter phone number" value="{$user->phone}" required="">
+                    <small class="help-block">Companies may contact you to hire</small>
+                </div>
+                <div class="form-group">
+                    <label>Skills</label>
+                    <input type="text" name="skills" class="form-control" placeholder="Enter your skills" value="{$student->skills}" required="">
+                    <small class="help-block">Effective to companies</small>
+                </div>
+                <button type="submit" class="btn btn-primary pull-right">Save</button>
+            </form>
+        </div>
+    </div>
+</section>
