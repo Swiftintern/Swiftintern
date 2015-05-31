@@ -93,7 +93,7 @@
                             <td>{echo $qualification->gpa}</td>
                             <td>{echo $qualification->passing_year}</td>
                             <td>
-                                <button type="button" name="delete" value="qualification" id="{echo $qualification->id}" class="btn btn-danger btn-xs"><i class="fa fa-trash fa-fw"></i> Delete</button>
+                                <a href="/students/qualification/{echo $qualification->id}" class="btn btn-primary btn-xs"><i class="fa fa-edit fa-fw"></i> Edit</a>
                             </td>
                         </tr>
                         {/foreach}
@@ -131,7 +131,7 @@
                             <td>{echo $work->responsibility}</td>
                             <td>{echo $work->duration}</td>
                             <td>
-                                <button type="button" name="delete" value="work" id="{echo $work->id}" class="btn btn-danger btn-xs"><i class="fa fa-trash fa-fw"></i> Delete</button>
+                                <a href="/students/work/{echo $work->id}" class="btn btn-danger btn-xs"><i class="fa fa-edit fa-fw"></i> Edit</a>
                             </td>
                         </tr>
                         {/foreach}
