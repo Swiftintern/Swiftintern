@@ -349,5 +349,44 @@ class Students extends Users {
         $view->set("qualification", $qualification);
         $view->set("organization", $organization);
     }
+    
+    /**
+     * @before _secure, changeLayout
+     */
+    public function work($id = NULL) {
+        $this->seo(array(
+            "title" => "Work",
+            "keywords" => "profile",
+            "description" => "Updated Profile",
+            "view" => $this->getLayoutView()
+        ));$view = $this->getActionView();
+
+        if (isset($id)) {
+            $work = Work::first(array("id = ?" => $id, "student_id = ?" => $this->student->id));
+            $organization = Organization::first(array("id = ?" => $work->organization_id), array("id", "name"));
+        } else {
+            $work = new Work();
+        }
+
+        if (RequestMethods::post('action') == 'saveWork') {
+            $institute = RequestMethods::post('institute');
+            $organization = Organization::first(array("name = ?" => $institute), array("id","name"));
+            if (!$organization) {
+                $organization = new Organization(array("photo_id" => "", "name" => $institute, "address" => "", "phone" => "", "country" => "", "website" => "", "sector" => "", "number_employee" => "", "type" => "institute", "about" => "", "fbpage" => "", "linkedin_id" => "", "validity" => "1", "updated" => ""));
+                $organization->save();
+            }
+            
+            $work->organization_id = $organization->id;
+            $work->student_id = $this->student->id;
+            $work->duration = RequestMethods::post("duration", "");
+            $work->designation = RequestMethods::post("designation", "");
+            $work->responsibility = RequestMethods::post("responsibility", "");
+
+            $work->save();
+            $view->set("success", true);
+        }
+        $view->set("work", $work);
+        $view->set("organization", $organization);
+    }
 
 }
