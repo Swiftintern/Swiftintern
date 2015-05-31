@@ -323,6 +323,7 @@ class Students extends Users {
         
         if (isset($id)) {
             $qualification = Qualification::first(array("id = ?" => $id, "student_id = ?" => $this->student->id));
+            $organization = Organization::first(array("id = ?" => $qualification->organization_id), array("id","name"));
         } else {
             if (RequestMethods::post('action') == 'saveQual') {
                 $institute = RequestMethods::post('institute');
@@ -344,7 +345,7 @@ class Students extends Users {
             }
         }
         $view->set("qualification", $qualification);
-        $view->set("student", $this->student);
+        $view->set("organization", $organization);
     }
 
 }

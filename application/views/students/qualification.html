@@ -7,32 +7,42 @@
             <li class="active">qualification</li>
         </ol>
 
-        <div class="col-md-offset-2 col-lg-8 panel panel-default panel-body">
-            <form>
+        <div class="col-md-offset-2 col-lg-8">
+            <form class="form-horizontal" method="post" action="/students/qualification/{echo $qualification->id}">
                 <div class="form-group">
-                    <label><i class="fa fa-bank"></i> College/University/School</label>
-                    <input type="text" name="institute" class="form-control" required="" placeholder="start typing full name..." autocomplete="off">
+                    <label class="col-sm-4 control-label"><i class="fa fa-bank"></i> College/University/School</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="institute" class="form-control" required="" placeholder="start typing full name..." autocomplete="off" value="{echo $organization->name}">
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label><i class="fa fa-graduation-cap"></i> Qualification/Degree</label>
-                    <input type="text" name="degree" class="form-control" required="" placeholder="eg. B.Tech, Intermediate, 10th" autocomplete="off" value="{echo $qualification->degree}">
+                    <label class="col-sm-4 control-label"><i class="fa fa-graduation-cap"></i> Qualification/Degree</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="degree" class="form-control" required="" placeholder="eg. B.Tech, Intermediate, 10th" autocomplete="off" value="{echo $qualification->degree}">
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label><i class="fa fa-bookmark"></i> Major</label>
-                    <input type="text" name="major" class="form-control" required="" placeholder="eg. Economics, Civil Engineering etc" autocomplete="off" value="{echo $qualification->major}">
+                    <label class="col-sm-4 control-label"><i class="fa fa-bookmark"></i> Major</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="major" class="form-control" required="" placeholder="eg. Economics, Civil Engineering etc" autocomplete="off" value="{echo $qualification->major}">
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label><i class="fa fa-certificate"></i> Percentage or GPA<small>(till now for current)</small></label>
-                    <input type="tel" name="gpa" class="form-control" placeholder="eg. 8.2, 73%, etc" value="{echo $qualification->gpa}">
-                    <small class="help-block">Effective to companies</small>
+                    <label class="col-sm-4 control-label"><i class="fa fa-certificate"></i> Percentage or GPA<small>(till now for current)</small></label>
+                    <div class="col-sm-8">
+                        <input type="tel" name="gpa" class="form-control" placeholder="eg. 8.2, 73%, etc" value="{echo $qualification->gpa}">
+                        <small class="help-block">Effective to companies</small>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label><i class="fa fa-calendar"></i> Passing Year</label>
-                    <input type="tel" name="passing_year" class="form-control" required="" placeholder="eg. 2016" value="{echo $qualification->passing_year}">
+                    <label class="col-sm-4 control-label"><i class="fa fa-calendar"></i> Passing Year</label>
+                    <div class="col-sm-8">
+                        <input type="tel" name="passing_year" class="form-control" required="" placeholder="eg. 2016" value="{echo $qualification->passing_year}">
+                    </div>
                 </div>
                 <input type="hidden" name="action" value="saveQual">
                 <button type="submit" class="btn btn-success pull-right">Save <i class="fa fa-check-circle fa-fw"></i></button>
             </form>
         </div>
-    </div>
+    </div><br>
 </section>
