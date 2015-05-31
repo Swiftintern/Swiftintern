@@ -320,29 +320,31 @@ class Students extends Users {
             "description" => "Updated Profile",
             "view" => $this->getLayoutView()
         ));$view = $this->getActionView();
-        
+
         if (isset($id)) {
             $qualification = Qualification::first(array("id = ?" => $id, "student_id = ?" => $this->student->id));
-            $organization = Organization::first(array("id = ?" => $qualification->organization_id), array("id","name"));
+            $organization = Organization::first(array("id = ?" => $qualification->organization_id), array("id", "name"));
         } else {
-            if (RequestMethods::post('action') == 'saveQual') {
-                $institute = RequestMethods::post('institute');
+            $qualification = new Qualification();
+        }
 
-                $organization = Organization::first(array("name = ?" => $institute), array("id"));
-                if (!$organization) {
-                    $organization = new Organization(array("photo_id" => "", "name" => $institute, "address" => "", "phone" => "", "country" => "", "website" => "", "sector" => "", "number_employee" => "", "type" => "institute", "about" => "", "fbpage" => "", "linkedin_id" => "", "validity" => "1", "updated" => ""));
-                    $organization->save();
-                }
-                $qualification = new Qualification(array(
-                    "student_id" => $this->student->id,
-                    "organization_id" => $organization->id,
-                    "degree" => RequestMethods::post('degree', ""),
-                    "major" => RequestMethods::post('major', ""),
-                    "gpa" => RequestMethods::post('gpa', ""),
-                    "passing_year" => RequestMethods::post('passing_year', "")
-                ));
-                $qualification->save();
+        if (RequestMethods::post('action') == 'saveQual') {
+            $institute = RequestMethods::post('institute');
+            $organization = Organization::first(array("name = ?" => $institute), array("id","name"));
+            if (!$organization) {
+                $organization = new Organization(array("photo_id" => "", "name" => $institute, "address" => "", "phone" => "", "country" => "", "website" => "", "sector" => "", "number_employee" => "", "type" => "institute", "about" => "", "fbpage" => "", "linkedin_id" => "", "validity" => "1", "updated" => ""));
+                $organization->save();
             }
+            
+            $qualification->organization_id = $organization->id;
+            $qualification->student_id = $this->student->id;
+            $qualification->degree = RequestMethods::post('degree', "");
+            $qualification->major = RequestMethods::post('major', "");
+            $qualification->gpa = RequestMethods::post('gpa', "");
+            $qualification->passing_year = RequestMethods::post('passing_year', "");
+
+            $qualification->save();
+            $view->set("success", true);
         }
         $view->set("qualification", $qualification);
         $view->set("organization", $organization);
