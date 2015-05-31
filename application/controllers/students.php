@@ -301,13 +301,17 @@ class Students extends Users {
             "keywords" => "profile",
             "description" => "Updated Profile",
             "view" => $this->getLayoutView()
-        ));
-        $view = $this->getActionView();
+        ));$view = $this->getActionView();
+        
+        if (RequestMethods::post('action') == 'saveUser') {
+            $user = User::first(array("id = ?" => $this->user->id));
+            $user->phone = RequestMethods::post('phone');
+            $user->name = RequestMethods::post('name');
+            $user->save();
+            $view->set("success", true);
+        }
 
-        $session = Registry::get("session");
-        $student = $session->get("student");
-
-        $view->set("student", $student);
+        $view->set("student", $this->student);
     }
 
     /**

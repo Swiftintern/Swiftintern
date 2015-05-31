@@ -7,28 +7,82 @@
             <li class="active">Settings</li>
         </ol>
 
-        <div class="col-md-offset-2 col-lg-8 panel panel-default panel-body">
-            <form>
+        <div class="col-md-offset-2 col-lg-8">
+            <legend id="basic">Basic Details</legend>
+            <form class="form-horizontal panel panel-default panel-body" method="post" action="/students/settings">
                 <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" name="name" class="form-control" placeholder="Enter name" value="{$user->name}" required="">
+                    <label class="col-sm-3 control-label">Full Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="name" class="form-control" placeholder="Enter name" value="{$user->name}" required="">
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label>Email address</label>
-                    <input type="email" name="email" class="form-control" placeholder="Enter email" value="{$user->email}" disabled>
+                    <label class="col-sm-3 control-label">Email</label>
+                    <div class="col-sm-9">
+                        <input type="email" name="email" class="form-control" placeholder="Enter email" value="{$user->email}" disabled>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label>Phone</label>
-                    <input type="tel" name="phone" class="form-control" placeholder="Enter phone number" value="{$user->phone}" required="">
-                    <small class="help-block">Companies may contact you to hire</small>
+                    <label class="col-sm-3 control-label">Phone</label>
+                    <div class="col-sm-9">
+                        <input type="tel" name="phone" class="form-control" placeholder="Enter phone number" value="{$user->phone}" required="">
+                        <small class="help-block">Companies may contact you to hire</small>
+                    </div>
+                </div>
+                <input type="hidden" name="action" value="saveUser">
+                <button type="submit" class="btn btn-success pull-right">Save <i class="fa fa-check-circle fa-fw"></i></button>
+            </form><br>
+
+            <legend id="student">Student Details</legend>
+            <form class="form-horizontal panel panel-default panel-body" method="post" action="/students/settings">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">City</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="city" class="form-control" placeholder="Enter your current city" value="{$student->city}" required="">
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label>Skills</label>
-                    <input type="text" name="skills" class="form-control" placeholder="Enter your skills" value="{$student->skills}" required="">
-                    <small class="help-block">Effective to companies</small>
+                    <label class="col-sm-3 control-label">Objective</label>
+                    <div class="col-sm-9">
+                        <textarea name="about" class="form-control" placeholder="Enter your objective" required="" rows="3">{$student->about}</textarea>
+                        <small class="help-block">Objective to be used in resume</small>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary pull-right">Save</button>
-            </form>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Skills</label>
+                    <div class="col-sm-9">
+                        <textarea name="skills" class="form-control" placeholder="Enter your skills" required="" rows="3">{$student->skills}</textarea>
+                        <small class="help-block">Add your skills separated by comma</small>
+                    </div>
+                </div>
+                <input type="hidden" name="action" value="saveStudent">
+                <button type="submit" class="btn btn-success pull-right">Save <i class="fa fa-check-circle fa-fw"></i></button>
+            </form><br>
+
+            <legend id="profile">Profile Links</legend>
+            <form class="form-horizontal panel panel-default panel-body" method="post" action="/students/settings">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Profile</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" name="social_platform">
+                            <option>Google Plus</option>
+                            <option>Facebook</option>
+                            <option>Github</option>
+                            <option>Codechef</option>
+                            <option>Spoj</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Phone</label>
+                    <div class="col-sm-9">
+                        <input type="url" name="link" class="form-control" placeholder="Enter Profile Link" required="">
+                        <small class="help-block">Complete URL</small>
+                    </div>
+                </div>
+                <input type="hidden" name="action" value="saveSocial">
+                <button type="submit" class="btn btn-success pull-right">Save <i class="fa fa-check-circle fa-fw"></i></button>
+            </form><br>
         </div>
     </div>
 </section>
