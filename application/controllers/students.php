@@ -311,14 +311,18 @@ class Students extends Users {
     }
 
     /**
-     * @before _secure
+     * @before _secure, changeLayout
      */
     public function qualification($id = NULL) {
-        $session = Registry::get("session");
-        $student = $session->get("student");
-
+        $this->seo(array(
+            "title" => "Qualification",
+            "keywords" => "profile",
+            "description" => "Updated Profile",
+            "view" => $this->getLayoutView()
+        ));$view = $this->getActionView();
+        
         if (isset($id)) {
-            $qualification = Qualification::first(array("id = ?" => $id, "student_id = ?" => $student->id));
+            $qualification = Qualification::first(array("id = ?" => $id, "student_id = ?" => $this->student->id));
         } else {
             if (RequestMethods::post('action') == 'saveQual') {
                 $institute = RequestMethods::post('institute');
@@ -329,7 +333,7 @@ class Students extends Users {
                     $organization->save();
                 }
                 $qualification = new Qualification(array(
-                    "student_id" => $student->id,
+                    "student_id" => $this->student->id,
                     "organization_id" => $organization->id,
                     "degree" => RequestMethods::post('degree', ""),
                     "major" => RequestMethods::post('major', ""),
@@ -339,6 +343,8 @@ class Students extends Users {
                 $qualification->save();
             }
         }
+        $view->set("qualification", $qualification);
+        $view->set("student", $this->student);
     }
 
 }
