@@ -302,6 +302,7 @@ class Students extends Users {
             "description" => "Updated Profile",
             "view" => $this->getLayoutView()
         ));$view = $this->getActionView();
+        $view->set("student", $this->student);
         
         if (RequestMethods::post('action') == 'saveUser') {
             $user = User::first(array("id = ?" => $this->user->id));
@@ -310,8 +311,25 @@ class Students extends Users {
             $user->save();
             $view->set("success", true);
         }
+        if (RequestMethods::post('action') == 'saveStudent') {
+            $student = Student::first(array("id = ?" => $this->student->id));
+            $student->city = RequestMethods::post("city");
+            $student->about = RequestMethods::post("about");
+            $student->skills = RequestMethods::post("skills");
+            $student->save();
 
-        $view->set("student", $this->student);
+            $view->set("success", true);
+            $view->set("student", $student);
+        }
+        if (RequestMethods::post('action') == 'saveSocial') {
+            $social = new Social(array(
+                "user_id" => $this->user->id,
+                "social_platform" => RequestMethods::post('social_platform'),
+                "link" => RequestMethods::post('link')
+            ));
+            $social->save();
+            $view->set("success", true);
+        }
     }
 
     /**
