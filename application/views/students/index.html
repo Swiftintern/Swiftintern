@@ -12,11 +12,6 @@
                 <div class="panel-body">
                     <p><b>Your profile is {echo $profile}% complete</b></p>
                     <p>
-                        {if(empty($student->about))}
-                        <a href="students/settings#student">Add your Objective</a>
-                        {/if}
-                    </p>
-                    <p>
                         {if(!count($works))}
                         <a href="students/work">Add Work Experience</a>
                         {/if}
@@ -27,16 +22,9 @@
                         {/if}
                     </p>
                     <p>
-                        {if(empty($student->skills))}
-                        <a href="students/settings#student">Add your Skills</a>
-                        {/if}
-                    </p>
-                    <label>Uploaded Resume</label>
-                    <p>
-                        {foreach $resume in $resumes}
-                        Resume {echo $resume->id}, 
-                        {/foreach}
+                        {if(!count($resumes))}
                         <a href="#">New Resume</a>
+                        {/if}
                     </p>
                 </div>
 
@@ -146,7 +134,8 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    Skills matter as it will help employer to chose if you are better for an internship
+                    {$student->skills}<br>
+                    <small class="help-block">Skills matter as it will help employer to chose if you are better for an internship</small>
                 </div>
 
                 <div class="panel-heading">
