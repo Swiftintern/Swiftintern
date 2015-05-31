@@ -271,8 +271,11 @@ class Students extends Users {
             "keywords" => "user messages",
             "description" => "Your Inbox/Outbox",
             "view" => $this->getLayoutView()
-        ));
-        $view = $this->getActionView();
+        ));$view = $this->getActionView();
+        
+        $conversations = Conversation::all(array("user_id = ?" => $this->user->id));
+        
+        $view->set("conversations", $conversations);
     }
 
     /**
