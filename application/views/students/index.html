@@ -13,7 +13,7 @@
                     <p><b>Your profile is {echo $profile}% complete</b></p>
                     <p>
                         {if(empty($student->about))}
-                        <a href="students/settings">Add your Objective</a>
+                        <a href="students/settings#student">Add your Objective</a>
                         {/if}
                     </p>
                     <p>
@@ -28,7 +28,7 @@
                     </p>
                     <p>
                         {if(empty($student->skills))}
-                        <a href="students/settings">Add your Skills</a>
+                        <a href="students/settings#student">Add your Skills</a>
                         {/if}
                     </p>
                     <label>Uploaded Resume</label>
@@ -54,7 +54,7 @@
                 <div class="panel-heading">
                     Objective
                     <div class="pull-right">
-                        <a href="/students/settings" class="btn btn-info btn-xs"><i class="fa fa-edit fa-fw"></i> Add/Edit</a>
+                        <a href="/students/settings#student" class="btn btn-info btn-xs"><i class="fa fa-edit fa-fw"></i> Add/Edit</a>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -142,7 +142,7 @@
                 <div class="panel-heading">
                     Skills
                     <div class="pull-right">
-                        <a href="/students/settings" class="btn btn-info btn-xs"><i class="fa fa-edit fa-fw"></i> Add/Edit</a>
+                        <a href="/students/settings#student" class="btn btn-info btn-xs"><i class="fa fa-edit fa-fw"></i> Add/Edit</a>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -152,7 +152,7 @@
                 <div class="panel-heading">
                     Links
                     <div class="pull-right">
-                        <a href="/students/settings" class="btn btn-info btn-xs"><i class="fa fa-plus-square fa-fw"></i> Add More</a>
+                        <a href="/students/settings#profile" class="btn btn-info btn-xs"><i class="fa fa-plus-square fa-fw"></i> Add More</a>
                     </div>
                 </div>
                 <table class="table">
