@@ -1,6 +1,6 @@
 <div class="modal fade" id="modal_qualification">
     <div class="modal-dialog">
-        <form class="modal-content">
+        <form class="modal-content" method="post" action="/students/qualification">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h3 class="modal-title">Education Details</h3>
@@ -10,40 +10,39 @@
                     <div class="row">
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group">
-                                <label for=""><i class="fa fa-bank"></i> College/University/School</label>
-                                <input type="text" name="name[]" class="form-control" required="" placeholder="start typing full name..." autocomplete="off">
+                                <label><i class="fa fa-bank"></i> College/University/School</label>
+                                <input type="text" name="institute" class="form-control" required="" placeholder="start typing full name..." autocomplete="off">
                             </div>
                         </div>
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group">
-                                <label for=""><i class="fa fa-graduation-cap"></i> Qualification/Degree</label>
-                                <input type="text" name="degree[]" class="form-control" required="" placeholder="eg. B.Tech, Intermediate, 10th" autocomplete="off">
+                                <label><i class="fa fa-graduation-cap"></i> Qualification/Degree</label>
+                                <input type="text" name="degree" class="form-control" required="" placeholder="eg. B.Tech, Intermediate, 10th" autocomplete="off" value="{echo $qualification->degree}">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group">
-                                <label for=""><i class="fa fa-bookmark"></i> Major</label>
-                                <input type="text" name="major[]" class="form-control" required="" placeholder="eg. Economics, Civil Engineering etc" autocomplete="off">
+                                <label><i class="fa fa-bookmark"></i> Major</label>
+                                <input type="text" name="major" class="form-control" required="" placeholder="eg. Economics, Civil Engineering etc" autocomplete="off" value="{echo $qualification->major}">
                             </div>
                             <div class="form-group">
-                                <label for=""><i class="fa fa-certificate"></i> Percentage or GPA<small>(till now for current)</small></label>
-                                <input type="tel" name="gpa[]" class="form-control" placeholder="eg. 8.2, 73%, etc">
+                                <label><i class="fa fa-certificate"></i> Percentage or GPA<small>(till now for current)</small></label>
+                                <input type="tel" name="gpa" class="form-control" placeholder="eg. 8.2, 73%, etc" value="{echo $qualification->gpa}">
                             </div>
                         </div>
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group">
-                                <label for=""><i class="fa fa-calendar"></i> Passing Year</label>
-                                <input type="tel" name="passing_year[]" class="form-control" required="" placeholder="eg. 2016">
+                                <label><i class="fa fa-calendar"></i> Passing Year</label>
+                                <input type="tel" name="passing_year" class="form-control" required="" placeholder="eg. 2016" value="{echo $qualification->passing_year}">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <input type="hidden" name="action" value="update_qualification">
-                <button type="button" name="more" value="more_edu" class="btn btn-info pull-left"><i class="fa fa-plus-circle fa-fw"></i> Add More Education</button>
+                <input type="hidden" name="action" value="saveQual">
                 <button type="submit" class="btn btn-success pull-right">Save <i class="fa fa-check-circle fa-fw"></i></button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>

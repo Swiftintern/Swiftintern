@@ -10,16 +10,23 @@ use Framework\RequestMethods as RequestMethods;
 
 class Students extends Users {
 
+    /**
+     * @readwrite
+     */
+    protected $_student;
+
     public function changeLayout() {
         $this->defaultLayout = "layouts/student";
         $this->setLayout();
+        $session = Registry::get("session");
+        $this->student = $session->get("student");
     }
 
     /**
-     * @before _secure
+     * @before _secure, changeLayout
      */
     public function index() {
-        $this->changeLayout();$profile = 0;
+        $profile = 0;
 
         $this->seo(array("title" => "Profile", "keywords" => "user profile", "description" => "Your Profile Page", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
@@ -33,10 +40,18 @@ class Students extends Users {
         $socials = Social::all(array("user_id = ?" => $user->id), array("id", "social_platform", "link"));
         $resumes = Resume::all(array("student_id = ?" => $student->id), array("id", "type"));
 
-        if (count($qualifications)) {++$profile;}
-        if (count($works)) {++$profile;}
-        if (!empty($student->about)) {++$profile;}
-        if (!empty($student->skills)) {++$profile;}
+        if (count($qualifications)) {
+            ++$profile;
+        }
+        if (count($works)) {
+            ++$profile;
+        }
+        if (!empty($student->about)) {
+            ++$profile;
+        }
+        if (!empty($student->skills)) {
+            ++$profile;
+        }
 
         $view->set("student", $student);
         $view->set("qualifications", $qualifications);
@@ -52,8 +67,9 @@ class Students extends Users {
             "keywords" => "get internship, student register",
             "description" => "Register with us to get internship from top companies in india and various startups in Delhi, Mumbai, Bangalore, Chennai, hyderabad etc",
             "view" => $this->getLayoutView()
-        ));$view = $this->getActionView();
-        
+        ));
+        $view = $this->getActionView();
+
         $li = $this->LinkedIn("http://swiftintern.com/students/register");
         if (isset($_REQUEST['code'])) {
             $li->getAccessToken($_REQUEST['code']);
@@ -112,8 +128,8 @@ class Students extends Users {
                 ));
                 $student->save();
             }
-            
-            if(!$social){
+
+            if (!$social) {
                 $social = new Social(array(
                     "user_id" => $user->id,
                     "social_platform" => "linkedin",
@@ -128,13 +144,13 @@ class Students extends Users {
             self::redirect("/students");
         }
     }
-    
+
     protected function login($info, $student) {
         $this->user = $info["user"];
         $session = Registry::get("session");
         $session->set("student", $student);
     }
-    
+
     protected function linkedinDetails($info, $student) {
         // Saving Education Info
         if ($info["educations"]["_total"] > 0) {
@@ -156,7 +172,8 @@ class Students extends Users {
                         "linkedin_id" => "",
                         "validity" => "1",
                         "updated" => ""
-                    ));$organization->save();
+                    ));
+                    $organization->save();
                 }
                 $qualification = new Qualification(array(
                     "student_id" => $student->id,
@@ -169,7 +186,7 @@ class Students extends Users {
                 $qualification->save();
             }
         }
-        
+
         //Adding work experience
         if ($info["positions"]["_total"] > 0) {
             foreach ($info["positions"]["values"] as $key => $value) {
@@ -190,7 +207,8 @@ class Students extends Users {
                         "linkedin_id" => $this->checkData($value["company"]["id"]),
                         "validity" => "1",
                         "updated" => ""
-                    ));$organization->save();
+                    ));
+                    $organization->save();
                 }
                 $work = new Work(array(
                     "student_id" => $student->id,
@@ -221,10 +239,18 @@ class Students extends Users {
         $socials = Social::all(array("user_id = ?" => $user->id), array("id", "social_platform", "link"));
         $resumes = Resume::all(array("student_id = ?" => $student->id), array("id", "type"));
 
-        if (count($qualifications)) {++$profile;}
-        if (count($works)) {++$profile;}
-        if (!empty($student->about)) {++$profile;}
-        if (!empty($student->skills)) {++$profile;}
+        if (count($qualifications)) {
+            ++$profile;
+        }
+        if (count($works)) {
+            ++$profile;
+        }
+        if (!empty($student->about)) {
+            ++$profile;
+        }
+        if (!empty($student->skills)) {
+            ++$profile;
+        }
 
 
         $view->set("student", $student);
@@ -237,52 +263,35 @@ class Students extends Users {
     }
 
     /**
-     * @before _secure
+     * @before _secure, changeLayout
      */
     public function messages() {
-        $this->changeLayout();
-        $seo = Registry::get("seo");
-
-        $seo->setTitle("Messages");
-        $seo->setKeywords("user messages");
-        $seo->setDescription("Your Inbox/Outbox");
-
-        $this->getLayoutView()->set("seo", $seo);
+        $this->seo(array(
+            "title" => "Messages",
+            "keywords" => "user messages",
+            "description" => "Your Inbox/Outbox",
+            "view" => $this->getLayoutView()
+        ));
         $view = $this->getActionView();
-
-        $user = $this->user;
-
-        $inboxs = Message::all(array("to_user_id = ?" => $user->id, "validity = ?" => true), array("id", "from_user_id", "message", "created"));
-
-        $outboxs = Message::all(array("from_user_id = ?" => $user->id, "validity = ?" => true), array("id", "to_user_id", "message", "created"));
-
-        $view->set("inboxs", $inboxs);
-        $view->set("outboxs", $outboxs);
     }
 
     /**
-     * @before _secure
+     * @before _secure, changeLayout
      */
     public function applications() {
-        $this->defaultLayout = "layouts/student";
-        $this->setLayout();
-        $seo = Registry::get("seo");
-
-        $seo->setTitle("Applications");
-        $seo->setKeywords("student opportunity applications");
-        $seo->setDescription("Your Application and its status");
-
-        $this->getLayoutView()->set("seo", $seo);
+        $this->seo(array(
+            "title" => "Applications",
+            "keywords" => "student opportunity applications",
+            "description" => "Your Application and its status",
+            "view" => $this->getLayoutView()
+        ));
         $view = $this->getActionView();
 
-        $session = Registry::get("session");
-        $student = $session->get("student");
-
-        $applications = Application::all(array("student_id = ?" => $student->id), array("id", "opportunity_id", "status", "created", "updated"));
+        $applications = Application::all(array("student_id = ?" => $this->student->id), array("id", "opportunity_id", "status", "created", "updated"));
 
         $view->set("applications", $applications);
     }
-    
+
     /**
      * @before _secure, changeLayout
      */
@@ -292,12 +301,44 @@ class Students extends Users {
             "keywords" => "profile",
             "description" => "Updated Profile",
             "view" => $this->getLayoutView()
-        ));$view = $this->getActionView();
-        
+        ));
+        $view = $this->getActionView();
+
         $session = Registry::get("session");
         $student = $session->get("student");
-        
+
         $view->set("student", $student);
+    }
+
+    /**
+     * @before _secure
+     */
+    public function qualification($id = NULL) {
+        $session = Registry::get("session");
+        $student = $session->get("student");
+
+        if (isset($id)) {
+            $qualification = Qualification::first(array("id = ?" => $id, "student_id = ?" => $student->id));
+        } else {
+            if (RequestMethods::post('action') == 'saveQual') {
+                $institute = RequestMethods::post('institute');
+
+                $organization = Organization::first(array("name = ?" => $institute), array("id"));
+                if (!$organization) {
+                    $organization = new Organization(array("photo_id" => "", "name" => $institute, "address" => "", "phone" => "", "country" => "", "website" => "", "sector" => "", "number_employee" => "", "type" => "institute", "about" => "", "fbpage" => "", "linkedin_id" => "", "validity" => "1", "updated" => ""));
+                    $organization->save();
+                }
+                $qualification = new Qualification(array(
+                    "student_id" => $student->id,
+                    "organization_id" => $organization->id,
+                    "degree" => RequestMethods::post('degree', ""),
+                    "major" => RequestMethods::post('major', ""),
+                    "gpa" => RequestMethods::post('gpa', ""),
+                    "passing_year" => RequestMethods::post('passing_year', "")
+                ));
+                $qualification->save();
+            }
+        }
     }
 
 }
