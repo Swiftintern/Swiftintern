@@ -46,10 +46,10 @@ class Students extends Users {
         if (count($works)) {
             ++$profile;
         }
-        if (!empty($student->about)) {
+        if ($student->about) {
             ++$profile;
         }
-        if (!empty($student->skills)) {
+        if ($student->skills) {
             ++$profile;
         }
 
@@ -245,10 +245,10 @@ class Students extends Users {
         if (count($works)) {
             ++$profile;
         }
-        if (!empty($student->about)) {
+        if ($student->about) {
             ++$profile;
         }
-        if (!empty($student->skills)) {
+        if ($student->skills) {
             ++$profile;
         }
 
@@ -273,9 +273,17 @@ class Students extends Users {
             "view" => $this->getLayoutView()
         ));$view = $this->getActionView();
         
-        $conversations = Conversation::all(array("user_id = ?" => $this->user->id));
+        $conversations = array();
+        $conv1 = Conversation::all(array("user_id = ?" => $this->user->id));
+        $conv2 = Conversation::all(array("user_id = ?" => $this->user->id));
+        foreach ($conv1 as $con1) {
+            $conversations[] = $con1;
+        }
+        foreach ($conv2 as $con2) {
+            $conversations[] = $con2;
+        }
         
-        $view->set("conversations", $conversations);
+        $view->set("conversations", Framework\ArrayMethods::toObject($conversations));
     }
 
     /**
