@@ -5,7 +5,6 @@
  *
  * @author Faizan Ayubi
  */
-use Shared\Controller as Controller;
 use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
@@ -15,14 +14,10 @@ class Admin extends Users {
      * @readwrite
      */
     protected $_employer;
-
+    
     public function index() {
-        $this->seo(array(
-            "title" => "Admin Panel",
-            "keywords" => "admin",
-            "description" => "admin",
-            "view" => $this->getLayoutView()
-        ));$view = $this->getActionView();
+        $this->changeLayout();
+        $this->seo(array("title" => "Admin Panel","keywords" => "admin","description" => "admin","view" => $this->getLayoutView()));$view = $this->getActionView();
         
     }
     
@@ -38,8 +33,15 @@ class Admin extends Users {
         
     }
 
-    public function editopportunities($id) {
+    public function read($model = NULL, $id = NULL) {
+        $this->changeLayout();
+        $this->seo(array("title" => "Read","keywords" => "admin","description" => "admin","view" => $this->getLayoutView()));$view = $this->getActionView();
+        $r = new \ReflectionClass(ucfirst($model));
+        $object = $r->newInstanceWithoutConstructor()->first(array("id = ?" => $id));
         
+        echo '<pre>', print_r($object), '</pre>';
+        
+        $view->set("{$model}", $object);
     }
 
     public function createcrm($param) {
