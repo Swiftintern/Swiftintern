@@ -10,17 +10,20 @@ use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
 class Admin extends Users {
+    
+    /**
+     * @readwrite
+     */
+    protected $_employer;
 
     public function index() {
         $this->seo(array(
-            "title" => "Hire Interns | Register Company",
-            "keywords" => "hire interns, post internship, register company, post training courses",
-            "description" => "Hire Quality interns register with us and post internship, then further select from thousands of applicants available",
+            "title" => "Admin Panel",
+            "keywords" => "admin",
+            "description" => "admin",
             "view" => $this->getLayoutView()
-        ));
-        $view = $this->getActionView();
-        $opportunities = Opportunity::count();
-        $view->set("opportunities", count($opportunities));
+        ));$view = $this->getActionView();
+        
     }
     
     public function internships() {
@@ -50,6 +53,10 @@ class Admin extends Users {
     public function changeLayout() {
         $this->defaultLayout = "layouts/admin";
         $this->setLayout();
+        
+        if($this->user->type != 'admin'){
+            die('Not Admin');
+        }
 
         $session = Registry::get("session");
         $employer = $session->get("employer");
