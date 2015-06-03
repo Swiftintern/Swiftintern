@@ -51,7 +51,7 @@ i{font-size:10px;}
 #featured .featured:nth-child(2n+1) > td{background-color:transparent;}
 #featured .featured:after{border-right:2px solid #EEA236;content:" ";display:block;height:101px;position:absolute;right:15px;}
 .clients{background-color:#F5F5F5;height:100px;padding:20px;text-align:center;}
-footer{background-color:#3276B1;padding:15px 0 5px;color:#f6f6f6;bottom: 0px;position: absolute;width: 100%;}
+footer{background-color:#3276B1;padding:15px 0 5px;color:#f6f6f6;}
 @media only screen and (min-width:320px) and (max-width:680px){.navbar{height:auto;text-align:center;}
 .navbar .navbar-left{margin-left:0;}
 .navbar-toggle{background-color:#FFFFFF;color:#EEA265;}
