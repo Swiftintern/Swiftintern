@@ -273,17 +273,9 @@ class Students extends Users {
             "view" => $this->getLayoutView()
         ));$view = $this->getActionView();
         
-        $conversations = array();
-        $conv1 = Conversation::all(array("user_id = ?" => $this->user->id));
-        $conv2 = Conversation::all(array("user_id = ?" => $this->user->id));
-        foreach ($conv1 as $con1) {
-            $conversations[] = $con1;
-        }
-        foreach ($conv2 as $con2) {
-            $conversations[] = $con2;
-        }
-        
-        $view->set("conversations", Framework\ArrayMethods::toObject($conversations));
+        $conversations = Conversation::all(array("user_id = ?" => $this->user->id));
+
+        $view->set("conversations", $conversations);
     }
 
     /**

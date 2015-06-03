@@ -13,17 +13,19 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>To</th>
-                        <th>Started</th>
-                        <th>Action</th>
+                        <th>From</th>
+                        <th>At</th>
+                        <th>Message</th>
                     </tr>
                 </thead>
                 <tbody>
                     {foreach $conversation in $conversations}
+                    {script $user = User::first(array("id = ?"=>$conversation->user_id),array("name"))}
+                    {script $message = Message::first(array("id = ?"=>$conversation->message_id),array("body"))}
                     <tr>
-                        <td></td>
-                        <td>{echo $conversation->created}</td>
-                        <td></td>
+                        <td>{echo $user->name}</td>
+                        <td><small>{echo $conversation->created}</small></td>
+                        <td>{echo $message->body}</td>
                     </tr>
                     {/foreach}
                 </tbody>
