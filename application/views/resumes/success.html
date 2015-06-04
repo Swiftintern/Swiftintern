@@ -21,15 +21,14 @@
                 </p>
 
                 <h4 style="padding-top: 30px;">Education</h4><hr style="margin-top: 0px;">
-                {if(isset($info["education"]))}
-                {foreach $qualification in $info["education"]}
+                {script $education = !empty($info["education"]) ? $info["education"] : $edu}
+                {foreach $qualification in $education}
                     <p>
                         {echo $qualification->degree}, {echo $qualification->major} with <span>{echo $qualification->gpa}</span>
                         <span class="pull-right">{echo $qualification->passing_year}</span><br>
                         {echo $organization->name}
                     </p>
                 {/foreach}
-                {/if}
 
                 <h4 style="padding-top: 30px;">Work Experience</h4><hr style="margin-top: 0px;">
                 {foreach $work in $info["positions"]["values"]}
@@ -41,7 +40,7 @@
                 {/foreach}
                 
                 <h4 style="padding-top: 30px;">Skills</h4><hr style="margin-top: 0px;">
-                <p>{echo $info["skills"]}</p><br>
+                <p>{echo !empty($info["skills"]) ? $info["skills"] : $skills}</p><br>
 
             </div>
         </div>

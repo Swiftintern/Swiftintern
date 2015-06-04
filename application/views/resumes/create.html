@@ -2,62 +2,9 @@
     <article class="row">
         <h1 class="page-header text-center">Resume Builder</h1>
         <p id="showMessage" class="text-center">Note : If you already have an account login and create resume easily or continue here.</p>
-
-        <form class="panel panel-default" id="basics">
-            <div class="panel-body"><br>
-                <legend>Basic Details</legend>
-                <div class="row">
-                    <div class="col-xs-12 col-md-6">
-                        <div class="form-group">
-                            <label for=""><i class="fa fa-user"></i> Full Name</label>
-                            <input type="text" name="name" class="form-control" required="" placeholder="eg. John Doe">
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-md-6">
-                        <div class="form-group">
-                            <label for=""><i class="fa fa-envelope"></i> E-mail</label>
-                            <input type="email" name="email" class="form-control" required="" placeholder="eg. email@example.com">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12 col-md-6">
-                        <div class="form-group">
-                            <label for=""><i class="fa fa-mobile"></i> Mobile</label>
-                            <input type="tel" name="phone" class="form-control" required="" placeholder="eg. +91-99XXXXXXXX">
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-md-6">
-                        <div class="form-group">
-                            <label for=""><i class="fa fa-pencil"></i> Objective</label>
-                            <input type="text" name="about" class="form-control" placeholder="resumes objective...">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12 col-md-6">
-                        <div class="form-group">
-                            <label for=""><i class="fa fa-wrench"></i> Skills</label>
-                            <input type="text" name="skills" class="form-control" required="" placeholder="MS Office, C++, etc">
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-md-6">
-                        <div class="form-group">
-                            <label for=""><i class="fa fa-map-marker"></i> Address/City</label>
-                            <input type="text" name="city" class="form-control" required="" placeholder="eg. New Delhi">
-                        </div>
-                    </div>
-                </div>
-                <div class="row col-md-12">
-                    <input type="hidden" name="action" value="create_resume_basics">
-                    <input type="hidden" name="about" value="Seeking a position as an accountant where extensive experience will be further developed and utilised. Extensive experience to the credit.">
-                    <button type="submit" class="btn btn-success pull-right">Next <i class="fa fa-arrow-circle-o-right fa-fw"></i></button>
-                </div>
-            </div>
-        </form>
-
-
-        <form class="panel panel-default hide" id="education">
+        
+        {if $edu}
+        <form class="panel panel-default" id="education" method="post">
             <div class="panel-body"><br>
                 <legend>Education Details</legend>
                 <div id="more_edu">
@@ -65,7 +12,7 @@
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group">
                                 <label for=""><i class="fa fa-bank"></i> College/University/School</label>
-                                <input type="text" list="college" name="name[]" class="form-control" required="" placeholder="start typing full name..." autocomplete="off">
+                                <input type="text" list="college" name="name[]" class="form-control" required="" placeholder="start typing full name..." autocomplete="on">
                                 <datalist id="college">
                                 {foreach $college in $colleges}
                                     <option value="{echo $college->name}">
@@ -76,7 +23,7 @@
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group">
                                 <label for=""><i class="fa fa-graduation-cap"></i> Qualification/Degree</label>
-                                <input type="text" list="degree" name="degree[]" class="form-control" required="" placeholder="eg. B.Tech, Intermediate, 10th" autocomplete="off">
+                                <input type="text" list="degree" name="degree[]" class="form-control" required="" placeholder="eg. B.Tech, Intermediate, 10th" autocomplete="on">
                                 <datalist id="degree">
                                 {foreach $degree in $alldegrees}
                                     <option value="{echo $degree}">
@@ -89,7 +36,7 @@
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group">
                                 <label for=""><i class="fa fa-bookmark"></i> Major</label>
-                                <input type="text" list="major" name="major[]" class="form-control" required="" placeholder="eg. Economics, Civil Engineering etc" autocomplete="off">
+                                <input type="text" list="major" name="major[]" class="form-control" required="" placeholder="eg. Economics, Civil Engineering etc" autocomplete="on">
                                 <datalist id="major">
                                 {foreach $major in $allmajors}
                                     <option value="{echo $major}">
@@ -112,13 +59,14 @@
                 <input type="hidden" name="action" value="update_qualification">
                 <div class="row col-md-12">
                     <button type="button" name="more" value="more_edu" class="btn btn-info pull-left"><i class="fa fa-plus-circle fa-fw"></i> Add More Education</button>
-                    <button type="submit" class="btn btn-success pull-right">Next <i class="fa fa-arrow-circle-o-right fa-fw"></i></button>
+                    <button type="submit" name="education" class="btn btn-success pull-right">Next <i class="fa fa-arrow-circle-o-right fa-fw"></i></button>
                 </div>
             </div>
         </form>
+        {/if}
 
-
-        <form class="panel panel-default hide" id="work">
+        {if ($work)}
+        <form class="panel panel-default {if $edu}hide{/if}" id="work" method="post">
             <div class="panel-body"><br>
                 <legend>Experience Details <small>(small work even working in college fest counts)</small></legend>
                 <div id="more_work">
@@ -156,13 +104,42 @@
                         </div>
                     </div>
                 </div>
+                {if $skills}
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        <div class="form-group">
+                            <label for=""><i class="fa fa-wrench"></i> Skills</label>
+                            <input type="text" name="skills" class="form-control" required="" placeholder="MS Office, C++, etc">
+                        </div>
+                    </div>
+                </div>
+                {/if}
                 <div class="row col-md-12">
                     <input type="hidden" name="action" value="update_work">
                     <button type="button" name="more" value="more_work" class="btn btn-info pull-left"><i class="fa fa-plus-circle fa-fw"></i> Add More Work</button>
-                    <button type="submit" class="btn btn-success pull-right">Submit <i class="fa fa-check-circle"></i></button>
-                    <a href="resume/create" class="btn btn-primary pull-left">Skip <i class="fa fa-chevron-right"></i></a> 
+                    <button type="submit" name="work" class="btn btn-success pull-right">Submit <i class="fa fa-check-circle"></i></button>
                 </div>
             </div>
         </form>
+        {/if}
+        {elseif $skills}
+        <form class="panel panel-default {if $work}hide{/if}" id="skills" method="post">
+            <div class="panel-body"><br>
+                <legend>Skills</legend>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        <div class="form-group">
+                            <label for=""><i class="fa fa-wrench"></i> Skills</label>
+                            <input type="text" name="skills" class="form-control" required="" placeholder="MS Office, C++, etc">
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12">
+                    <input type="hidden" name="action" value="update_skills">
+                    <button type="submit" class="btn btn-success pull-right">Submit <i class="fa fa-check-circle"></i></button>
+                </div>
+            </div>
+        </form>
+        {/elseif}
     </article>
 </div>
