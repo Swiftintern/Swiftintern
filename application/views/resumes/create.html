@@ -14,9 +14,7 @@
                                 <label for=""><i class="fa fa-bank"></i> College/University/School</label>
                                 <input type="text" list="college" name="name[]" class="form-control" required="" placeholder="start typing full name..." autocomplete="on">
                                 <datalist id="college">
-                                {foreach $college in $colleges}
-                                    <option value="{echo $college->name}">
-                                {/foreach}
+                                {include resumes/list/colleges.html}
                                 </datalist>
                             </div>
                         </div>
@@ -25,9 +23,7 @@
                                 <label for=""><i class="fa fa-graduation-cap"></i> Qualification/Degree</label>
                                 <input type="text" list="degree" name="degree[]" class="form-control" required="" placeholder="eg. B.Tech, Intermediate, 10th" autocomplete="on">
                                 <datalist id="degree">
-                                {foreach $degree in $alldegrees}
-                                    <option value="{echo $degree}">
-                                {/foreach}
+                                {include resumes/list/degrees.html}
                                 </datalist>
                             </div>
                         </div>
@@ -38,9 +34,7 @@
                                 <label for=""><i class="fa fa-bookmark"></i> Major</label>
                                 <input type="text" list="major" name="major[]" class="form-control" required="" placeholder="eg. Economics, Civil Engineering etc" autocomplete="on">
                                 <datalist id="major">
-                                {foreach $major in $allmajors}
-                                    <option value="{echo $major}">
-                                {/foreach}
+                                {include resumes/list/majors.html}
                                 </datalist>
                             </div>
                             <div class="form-group">
@@ -76,9 +70,7 @@
                                 <label for=""><i class="fa fa-bank"></i> Company/Organization Name</label>
                                 <input type="text" list="company" name="name[]" class="form-control" required="" placeholder="start typing..." autocomplete="off">
                                 <datalist id="company">
-                                {foreach $comp in $companys}
-                                    <option value="{echo $comp->name}">
-                                {/foreach}
+                                {include resumes/list/companies.html}
                                 </datalist>
                             </div>
                         </div>

@@ -200,10 +200,5 @@ class Resumes extends Students {
         $view->set("skills", (empty($skills) ? "required" : false));
         $view->set("work", (empty($work) ? "required" : false));
         $view->set("edu", (empty($qual) ? "required" : false));
-
-        $view->set("colleges", []);
-        $view->set("alldegrees", []);
-        $view->set("allmajors", []);
-        $view->set("companys", []);
     }
 }
