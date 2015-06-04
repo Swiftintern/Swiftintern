@@ -172,7 +172,7 @@ class Resumes extends Students {
                            ));
                            $work->save();
 
-                           if (!empty(RequestMethods::post("skills"))) {
+                           if (RequestMethods::post("skills", "")) {
                                $student->skills = RequestMethods::post("skills");
                                $student->save();
                            }
