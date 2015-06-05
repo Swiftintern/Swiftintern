@@ -1,3 +1,8 @@
+(function (window, Model) {
+    window.request = Model.initialize();
+    window.opts = {};
+}(window, window.Model));
+
 $(function () {
     $('#side-menu').metisMenu();
 });
@@ -34,5 +39,31 @@ $(function () {
 
 
 $(document).ready(function () {
-    
+    $('#search').submit(function (e) {
+        e.preventDefault();
+        var action = $('input[name="action"]').val(),
+            model = $('select[name="model"]').val(),
+            key = $('input[name="key"]').val(),
+            value = $('input[name="value"]').val();
+        $('#results').html('');
+        $('#result_status').html('');
+        request.read({
+            action: "admin/search",
+            data: {action : action, model: model, key: key, value: value},
+            callback: function (data) {
+                if (data.results) {
+                    $('#result_status').html('Total Results : ' + data.results.length);
+                    $.each(data.results, function (i, result) {
+                        $.each(val, function (field, value) {
+                            $('#results').append('<tr><td>' + field + '</td><td>' + value + '</td></tr>');
+                        });
+                        $('#results').append('<hr>');
+                    });
+                } else {
+                    $('#result_status').html('Not Found.');
+                }
+            }
+        });
+
+    });
 });
