@@ -39,6 +39,17 @@ class Admin extends Users {
             $view->set("results", $results);
         }
     }
+    
+    public function update($model=NULL, $id=NULL) {
+        $this->changeLayout();
+        $this->seo(array("title" => "Search", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+        
+        $r = new ReflectionClass(ucfirst($model));
+        $object = $r->newInstanceWithoutConstructor()->first(array("id = ?" => $id));
+        
+        $view->set("object", $object);
+    }
 
     public function changeLayout() {
         $this->defaultLayout = "layouts/admin";
