@@ -45,12 +45,22 @@ class Admin extends Users {
         $this->seo(array("title" => "Update", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
         
-        $r = new ReflectionClass(ucfirst($model));
-        $object = $r->newInstanceWithoutConstructor()->first(array("id = ?" => $id));
-        $vars = $object->getJsonData();$array = array();
+        $object = $model::first(array("id = ?" => $id));
+        
+        $vars = $object->columns;$array = array();
         foreach ($vars as $key => $value) {
-            array_push($array, substr($key, 1));
+            array_push($array, $key);
+            $vars[$key] = htmlentities($object->$key);
         }
+        if(RequestMethods::post("action")=="update"){
+            foreach ($array as $field) {
+                $object->$field = RequestMethods::post($field, $vars[$field]);
+                $vars[$field] = htmlentities($object->$field);
+            }
+            $object->save();
+            $view->set("success", true);
+        }
+        
         $view->set("vars", $vars);
         $view->set("array", $array);
         $view->set("model", $model);
