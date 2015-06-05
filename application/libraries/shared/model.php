@@ -55,6 +55,7 @@ namespace Shared {
             unset($this->_columns);
             unset($this->_primary);
             unset($this->_validators);
+            unset($this->_errors);
         }
 
     }

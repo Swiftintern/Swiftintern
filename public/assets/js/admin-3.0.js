@@ -54,7 +54,7 @@ $(document).ready(function () {
                 if (data.results) {
                     $('#result_status').html('Total Results : ' + data.results.length);
                     $.each(data.results, function (i, result) {
-                        $('#results').append('<tr><td><b>Action</b></td><td><a href="/admin/update/" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a></td></tr>');
+                        $('#results').append('<tr><td><b>Action</b></td><td><a href="/admin/update/'+model+'/'+result._id+'" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a></td></tr>');
                         $.each(result, function (field, value) {
                             $('#results').append('<tr><td>' + field + '</td><td>' + value + '</td></tr>');
                         });

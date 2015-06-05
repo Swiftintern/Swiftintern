@@ -1,0 +1,20 @@
+<div id="page-wrapper">
+    <div class="row col-lg-12">
+        <h1 class="page-header text-center">{echo ucfirst($model)}</h1>
+        <div class="col-md-offset-1 col-lg-8">
+            <form class="form-horizontal" method="post" action="/update/{echo $model}/{echo $id}">
+                {foreach $var in $array}
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">{echo $var}</label>
+                    <div class="col-sm-8">
+                        {script $key = "_".$var}
+                        <input type="text" name="{echo $var}" class="form-control" value="{echo $vars[$key]}" {if($var=="id")}disabled{/if}>
+                    </div>
+                </div>
+                {/foreach}
+                <input type="hidden" name="action" value="saveQual">
+                <button type="submit" class="btn btn-success pull-right">Save <i class="fa fa-check-circle fa-fw"></i></button>
+            </form>
+        </div>
+    </div>
+</div>

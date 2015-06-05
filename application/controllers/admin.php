@@ -42,13 +42,19 @@ class Admin extends Users {
     
     public function update($model=NULL, $id=NULL) {
         $this->changeLayout();
-        $this->seo(array("title" => "Search", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
+        $this->seo(array("title" => "Update", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
         
         $r = new ReflectionClass(ucfirst($model));
         $object = $r->newInstanceWithoutConstructor()->first(array("id = ?" => $id));
-        
-        $view->set("object", $object);
+        $vars = $object->getJsonData();$array = array();
+        foreach ($vars as $key => $value) {
+            array_push($array, substr($key, 1));
+        }
+        $view->set("vars", $vars);
+        $view->set("array", $array);
+        $view->set("model", $model);
+        $view->set("id", $id);
     }
 
     public function changeLayout() {
