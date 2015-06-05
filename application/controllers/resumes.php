@@ -54,16 +54,20 @@ class Resumes extends Students {
         if ($li->hasAccessToken()) {
             $info = $li->get('/people/~:(phone-numbers,summary,first-name,last-name,positions,email-address,public-profile-url,location,picture-url,educations,skills)');
         }
+        
+        // Get Details for the student - education, skills
         $student = Registry::get('session')->get("student");
         $qual = Qualification::all(array(
             "student_id = ?" => $student->id
         ));
         $skills = $student->skills;
-        if (empty($qual)) {
+
+        // If details not found redirect the user to resume builder for saving the details
+        if (empty($qual) || empty($info["positions"]) || empty($skills)) {
             self::redirect("/resumes/create");
         }
 
-        $view->set('info', []);
+        $view->set('info', $info);
         $view->set('edu', $qual);
         $view->set('skills', $skills);
         //echo '<pre>', print_r($info), '</pre>';
@@ -173,7 +177,7 @@ class Resumes extends Students {
                            $work->save();
 
                            if (RequestMethods::post("skills", "")) {
-                               $student->skills = RequestMethods::post("skills");
+                               $student->skills = $skills = RequestMethods::post("skills");
                                $student->save();
                            }
                         }
