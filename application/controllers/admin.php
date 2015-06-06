@@ -71,6 +71,26 @@ class Admin extends Users {
         $this->changeLayout();
         $this->seo(array("title" => "CRM", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
+        if(RequestMethods::post("action") == "createCrmTemplate"){
+            $body = RequestMethods::post("message");
+            $subject = RequestMethods::post("subject");
+            foreach ($body as $key => $value) {
+                $msg = new Message(array(
+                    "subject" => $subject[$key],
+                    "body" => $value
+                ));
+                $msg->save();
+                $message[] = $msg;
+            }
+            $crm = new CRM(array(
+                "user_id" => $this->user->id,
+                "title" => RequestMethods::post("title"),
+                "first_message_id" => $message[0]->id,
+                "second_message_id" => $message[1]->id
+            ));
+            $crm->save();
+            $view->set("success", TRUE);
+        }
     }
     
     public function crmManage() {
