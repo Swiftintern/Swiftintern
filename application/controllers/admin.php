@@ -66,6 +66,18 @@ class Admin extends Users {
         $view->set("model", $model);
         $view->set("id", $id);
     }
+    
+    public function crmTemplate() {
+        $this->changeLayout();
+        $this->seo(array("title" => "CRM", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+    }
+    
+    public function crmManage() {
+        $this->changeLayout();
+        $this->seo(array("title" => "Manage CRM", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+    }
 
     public function changeLayout() {
         $this->defaultLayout = "layouts/admin";
