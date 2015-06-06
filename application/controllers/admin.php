@@ -75,12 +75,8 @@ class Admin extends Users {
             $body = RequestMethods::post("message");
             $subject = RequestMethods::post("subject");
             foreach ($body as $key => $value) {
-                $msg = new Message(array(
-                    "subject" => $subject[$key],
-                    "body" => $value
-                ));
-                $msg->save();
-                $message[] = $msg;
+                $msg = new Message(array("subject" => $subject[$key],"body" => $value));
+                $msg->save();$message[] = $msg;
             }
             $crm = new CRM(array(
                 "user_id" => $this->user->id,
@@ -97,6 +93,16 @@ class Admin extends Users {
         $this->changeLayout();
         $this->seo(array("title" => "Manage CRM", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
+        
+        $page = RequestMethods::get("page", 1);
+        $limit = RequestMethods::get("limit", 10);
+        $leads = Lead::all(array("user_id = ?" => $this->user->id), array("*"), "created", "desc", $limit, $page);
+        $crms = CRM::all(array(), array("id","title"));
+        
+        $view->set("limit", $limit);
+        $view->set("page", $page);
+        $view->set("leads", $leads);
+        $view->set("crms", $crms);
     }
 
     public function changeLayout() {
