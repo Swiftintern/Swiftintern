@@ -1,7 +1,7 @@
 <div id="page-wrapper">
     <div class="row col-lg-12">
         <h1 class="page-header text-center">CRM Template</h1>
-        <form class="row" id="schedule_crm">
+        <form class="row" method="post" action="/admin/crmTemplate">
             <div class="form-group">
                 <label>Title</label>
                 <input type="text" name="title" class="form-control" required="" placeholder="Unique CRM Title">
@@ -42,7 +42,7 @@
                     <textarea name="message[]" class="form-control editor"></textarea>
                 </div>
             </div>
-            
+            <input type="hidden" name="action" value="createCrmTemplate">
             <button type="submit" class="btn btn-primary pull-right" id="crm_btn"><i class="fa fa-check-circle"></i> Save</button>
         </form>
     </div>
