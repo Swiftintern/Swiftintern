@@ -89,6 +89,15 @@ class Admin extends Users {
         }
     }
     
+    public function crmLead() {
+        $this->changeLayout();
+        $this->seo(array("title" => "Lead Generation", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+        
+        $crms = CRM::all(array(), array("id","title"));
+        $view->set("crms", $crms);
+    }
+    
     public function crmManage() {
         $this->changeLayout();
         $this->seo(array("title" => "Manage CRM", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
@@ -97,12 +106,10 @@ class Admin extends Users {
         $page = RequestMethods::get("page", 1);
         $limit = RequestMethods::get("limit", 10);
         $leads = Lead::all(array("user_id = ?" => $this->user->id), array("*"), "created", "desc", $limit, $page);
-        $crms = CRM::all(array(), array("id","title"));
         
         $view->set("limit", $limit);
         $view->set("page", $page);
         $view->set("leads", $leads);
-        $view->set("crms", $crms);
     }
 
     public function changeLayout() {
