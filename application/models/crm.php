@@ -35,12 +35,5 @@ class CRM extends Shared\Model {
      * @type integer
      */
     protected $_second_message_id;
-    
-    /**
-     * @column
-     * @readwrite
-     * @type integer
-     */
-    protected $_third_message_id;
 
 }
