@@ -157,6 +157,27 @@ class Admin extends Users {
         $view->set("page", $page);
         $view->set("leads", $leads);
     }
+    
+    public function newsletterCreate() {
+        $this->changeLayout();
+        $this->seo(array("title" => "Manage CRM", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+        
+        if (RequestMethods::post("action") == "createNewsletter") {
+            $message = new Message(array(
+                "subject" => RequestMethods::post("subject"),
+                "body" => RequestMethods::post("body")
+            ));
+            $message->save();
+            $newsletter = new Newsletter(array(
+                "message_id" => $message->id,
+                "user_group" => RequestMethods::post("user_group"),
+                "scheduled" => RequestMethods::post("scheduled")
+            ));
+            $newsletter->save();
+            $view->set("success", TRUE);
+        }
+    }
 
     public function changeLayout() {
         $this->defaultLayout = "layouts/admin";

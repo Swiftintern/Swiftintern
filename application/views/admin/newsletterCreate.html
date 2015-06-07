@@ -1,0 +1,52 @@
+<div id="page-wrapper">
+    <div class="row col-lg-12">
+        <h1 class="page-header text-center">Create Newsletter</h1>
+        {if isset($success)}
+        <div class="alert alert-success alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            Newsletter Scheduled <strong>Successfully!</strong> click <a href="/admin/newsletterManage">here</a> for status
+        </div>
+        {/if}
+        <form class="row">
+            <legend>Create Newsletter</legend>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <label>User Group</label>
+                    <div class="form-group">
+                        <label class="radio-inline">
+                            <input type="radio" name="user_group" value="student"> Student
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="user_group" value="affiliate"> Affiliate
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="user_group" value="employer"> Employer
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="user_group" value="educator"> Educator
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <div class="form-group">
+                        <label>Scheduled Date</label>
+                        <input type="date" name="scheduled" class="form-control" placeholder="YYYY-MM-DD">
+                        <small class="help-text">Format Should be eg. YYYY-MM-DD</small>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="form-group">
+                <label>Subject</label>
+                <input type="text" name="subject" class="form-control" maxlength="64" required="">
+                <small class="help-text">Length less than 64 characters for best practices. see for <a href="http://kb.mailchimp.com/campaigns/previews-and-tests/best-practices-for-email-subject-lines" target="_blank">details</a></small>
+            </div>
+            <div class="form-group">
+                <label>Message Body</label>
+                <textarea name="body" class="form-control editor"></textarea>
+            </div>
+            <input type="hidden" name="action" value="createNewsletter">
+            <button type="submit" class="btn btn-primary pull-right">Schedule</button>
+        </form>
+    </div>
+</div>
