@@ -59,11 +59,11 @@ class Users extends Controller {
             $view->set($key, $value);
             $$key = $value;
         }
-        $body = $view->render();
+        $body = $view->render();$emails = array();
         if(isset($options["emails"])){
             $emails = $options["emails"];
         } else{
-            $emails = $user->email;
+            array_push($emails, $user->email);
         }
         
         if(isset($options["from"])){

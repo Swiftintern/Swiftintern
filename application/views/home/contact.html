@@ -6,19 +6,20 @@
 </header>
 <div class="container">
     <div class="row">
-        <form class="col-md-8">
+        <form class="col-md-8" method="post" action="">
             <div class="form-group">
-                <label for="exampleInputEmail1">Full Name</label>
-                <input type="email" class="form-control" placeholder="Enter email">
+                <label>Full Name</label>
+                <input type="text" name="name" class="form-control" placeholder="Enter your name">
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" placeholder="Enter email">
+                <label>Email address</label>
+                <input name="email" type="email" class="form-control" placeholder="Enter email">
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">Message</label>
-                <textarea class="form-control" placeholder="Enter Message" rows="3"></textarea>
+                <label>Message</label>
+                <textarea name="body" class="form-control" placeholder="Enter Message explaining the problem" rows="3"></textarea>
             </div>
+            <input type="hidden" name="action" value="contact">
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 

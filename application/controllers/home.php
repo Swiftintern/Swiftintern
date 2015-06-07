@@ -91,6 +91,27 @@ class Home extends Users {
         $seo->setDescription("We would love to hear from you. contact us to know more.");
 
         $this->getLayoutView()->set("seo", $seo);
+
+        if (RequestMethods::post("action") == "contact") {
+            $message = new Message(array(
+                "subject" => "Contact US Page",
+                "body" => RequestMethods::post("body")
+            ));
+            $message->save();
+            $conversations = new Conversation(array(
+                "user_id" => "1",
+                "property" => "email",
+                "property_id" => array(RequestMethods::post("email")),
+                "message_id" => $message->id
+            ));
+            $conversations->save();
+            $this->notify(array(
+                "template" => "support",
+                "subject" => "Swiftintern Customer Support",
+                "emails" => $conversations->property_id,
+                "message" => $message
+            ));
+        }
     }
 
     public function privacy() {
@@ -286,12 +307,14 @@ class Home extends Users {
             $view->set("error", "Could find the details for given user");
         }
     }
-    
+
     public function thumbnails($id) {
-        $path = APP_PATH . "/public/assets/uploads/images";$cdn = CDN;
+        $path = APP_PATH . "/public/assets/uploads/images";
+        $cdn = CDN;
         $file = Photograph::first(array("id = ?" => $id));
         if ($file) {
-            $width = 64;$height = 64;
+            $width = 64;
+            $height = 64;
             $name = $file->filename;
             $filename = pathinfo($name, PATHINFO_FILENAME);
             $extension = pathinfo($name, PATHINFO_EXTENSION);
