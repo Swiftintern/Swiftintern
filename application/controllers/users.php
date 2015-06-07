@@ -87,7 +87,7 @@ class Users extends Controller {
             default:
                 $sendgrid = $this->sendgrid();
                 $email = new \SendGrid\Email();
-                $email->addTo($emails)
+                $email->setSmtpapiTos($emails)
                         ->setFrom('info@swiftintern.com')
                         ->setFromName($from)
                         ->setSubject($options["subject"])
