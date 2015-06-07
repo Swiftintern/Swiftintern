@@ -21,7 +21,7 @@ class Admin extends Users {
         $view = $this->getActionView();
     }
 
-    public function search() {
+    public function search($model = NULL, $id = NULL) {
         $this->changeLayout();
         $this->seo(array("title" => "Search", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
