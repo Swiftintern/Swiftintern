@@ -18,6 +18,8 @@ class CRON extends Users {
     }
 
     public function index() {
+        $this->log("cron");
+        $this->_secure();
         $this->newsletters();
     }
 
@@ -47,7 +49,7 @@ class CRON extends Users {
                     "subject" => $message->subject,
                     "message" => $message,
                     "newsletter" => $newsletter,
-                    "email" => implode(",", $emails[$i])
+                    "emails" => implode(",", $emails[$i])
                 ));
             }
         }
@@ -86,7 +88,7 @@ class CRON extends Users {
      * @protected
      */
     public function _secure() {
-        //echo php_sapi_name();
+        echo php_sapi_name();
         if ($_SERVER['REMOTE_ADDR'] != $_SERVER['SERVER_ADDR']) {
             die('access is not permitted');
         }

@@ -75,7 +75,7 @@ class Users extends Controller {
         switch ($options["delivery"]) {
             case "mailgun":
                 $domain = "swiftintern.com";
-
+                $mgClient = $this->mailgun();
                 # Make the call to the client.
                 $result = $mgClient->sendMessage($domain, array(
                     'from' => "{$from} <info@swiftintern.com>",
@@ -83,6 +83,7 @@ class Users extends Controller {
                     'subject' => $options["subject"],
                     'html' => $body
                 ));
+                echo '<pre>', print_r($result), '</pre>';
                 break;
             default:
                 $sendgrid = $this->sendgrid();
