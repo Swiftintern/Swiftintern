@@ -127,7 +127,9 @@ class Admin extends Users {
                 "template" => "leadGeneration",
                 "subject" => $message->subject,
                 "message" => $message,
-                "user" => $this->user
+                "user" => $this->user,
+                "from" => $this->user->name,
+                "emails" => $emails
             ));
             $view->set("success", TRUE);
         }
