@@ -160,7 +160,7 @@ class Admin extends Users {
     
     public function newsletterCreate() {
         $this->changeLayout();
-        $this->seo(array("title" => "Manage CRM", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
+        $this->seo(array("title" => "Create Newsletter", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
         
         if (RequestMethods::post("action") == "createNewsletter") {
@@ -177,6 +177,20 @@ class Admin extends Users {
             $newsletter->save();
             $view->set("success", TRUE);
         }
+    }
+    
+    public function newsletterManage() {
+        $this->changeLayout();
+        $this->seo(array("title" => "Manage Newsletter", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+        
+        $page = RequestMethods::get("page", 1);
+        $limit = RequestMethods::get("limit", 10);
+        $newsletters = Newsletter::all(array(), array("*"), "created", "desc", $limit, $page);
+
+        $view->set("limit", $limit);
+        $view->set("page", $page);
+        $view->set("newsletters", $newsletters);
     }
 
     public function changeLayout() {

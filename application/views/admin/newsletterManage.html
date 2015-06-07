@@ -1,0 +1,32 @@
+<div id="page-wrapper">
+    <div class="row col-lg-12">
+        <h1 class="page-header text-center">Manage Newsletter</h1>
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Message Id</th>
+                    <th>UserGroup</th>
+                    <th>Scheduled</th>
+                    <th>Created</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="results">
+                {foreach $newsletter in $newsletters}
+                <tr>
+                    <td>{echo $newsletter->id}</td>
+                    <td>{echo $newsletter->message_id}</td>
+                    <td>{echo $newsletter->user_group}</td>
+                    <td><small>{echo $newsletter->scheduled}</small></td>
+                    <td><small>{echo $newsletter->created}</small></td>
+                    <td>
+
+                    </td>
+                </tr>
+                {/foreach}
+            </tbody>
+        </table>
+        <div id="after_results" class="text-center"></div>
+    </div>
+</div>
