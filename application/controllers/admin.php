@@ -181,14 +181,14 @@ class Admin extends Users {
             $message = new Message(array(
                 "subject" => RequestMethods::post("subject"),
                 "body" => RequestMethods::post("body")
-            ));
-            $message->save();
+            ));$message->save();
+            
             $newsletter = new Newsletter(array(
                 "message_id" => $message->id,
                 "user_group" => RequestMethods::post("user_group"),
                 "scheduled" => RequestMethods::post("scheduled")
-            ));
-            $newsletter->save();
+            ));$newsletter->save();
+            
             $view->set("success", TRUE);
         }
     }
