@@ -39,6 +39,12 @@ class Admin extends Users {
             $view->set("results", $results);
         }
     }
+    
+    public function info($model = NULL, $id = NULL) {
+        $this->noview();
+        $object = $model::first(array("id = ?" => $id));
+        echo '<pre>', print_r($object), '</pre>';
+    }
 
     public function update($model = NULL, $id = NULL) {
         $this->changeLayout();
