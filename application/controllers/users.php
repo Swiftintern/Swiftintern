@@ -60,6 +60,17 @@ class Users extends Controller {
             $$key = $value;
         }
         $body = $view->render();
+        if(isset($options["emails"])){
+            $emails = $options["emails"];
+        } else{
+            $emails = $user->email;
+        }
+        
+        if(isset($options["from"])){
+            $from = $options["from"];
+        } else{
+            $from = "Saud Akhtar";
+        }
 
         switch ($options["delivery"]) {
             case "mailgun":
@@ -67,8 +78,8 @@ class Users extends Controller {
 
                 # Make the call to the client.
                 $result = $mgClient->sendMessage($domain, array(
-                    'from' => 'Saud Akhtar <info@swiftintern.com>',
-                    'to' => $options["email"],
+                    'from' => "{$from} <info@swiftintern.com>",
+                    'to' => $options["emails"],
                     'subject' => $options["subject"],
                     'html' => $body
                 ));
@@ -76,9 +87,9 @@ class Users extends Controller {
             default:
                 $sendgrid = $this->sendgrid();
                 $email = new \SendGrid\Email();
-                $email->addTo($user->email)
+                $email->addTo($emails)
                         ->setFrom('info@swiftintern.com')
-                        ->setFromName('Saud Akhtar')
+                        ->setFromName($from)
                         ->setSubject($options["subject"])
                         ->setHtml($body);
                 $sendgrid->send($email);
