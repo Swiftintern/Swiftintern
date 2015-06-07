@@ -121,6 +121,14 @@ class Admin extends Users {
                 ));
                 $lead->save();
             }
+            $crm = CRM::first(array("id = ?" => $lead->crm_id),array("first_message_id"));
+            $message = Message::first(array("id = ?" => $crm->first_message_id));
+            $this->notify(array(
+                "template" => "leadGeneration",
+                "subject" => $message->subject,
+                "message" => $message,
+                "user" => $this->user
+            ));
             $view->set("success", TRUE);
         }
 
