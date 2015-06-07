@@ -39,6 +39,11 @@ $(function () {
 
 
 $(document).ready(function () {
+    
+    //initialize beautiful datetime picker
+    $("input[type=date]").datepicker();
+    $("input[type=date]").datepicker("option", "dateFormat", "yy-mm-dd");
+    
     $('#search').submit(function (e) {
         e.preventDefault();
         var action = $('input[name="action"]').val(),
