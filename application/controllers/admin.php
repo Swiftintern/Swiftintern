@@ -19,6 +19,20 @@ class Admin extends Users {
         $this->changeLayout();
         $this->seo(array("title" => "Admin Panel", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
+        
+        $users = User::count();
+        $organizations = Organization::count();
+        $opportunities = Opportunity::count();
+        $applications = Application::count();
+        $leads = Lead::count();
+        $resumes = Resume::count();
+        
+        $view->set("users", $users);
+        $view->set("organizations", $organizations);
+        $view->set("opportunities", $opportunities);
+        $view->set("applications", $applications);
+        $view->set("leads", $leads);
+        $view->set("resumes", $resumes);
     }
 
     public function search($model = NULL, $id = NULL) {
