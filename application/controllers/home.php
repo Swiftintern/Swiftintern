@@ -84,33 +84,33 @@ class Home extends Users {
     }
 
     public function contact() {
-        $seo = Framework\Registry::get("seo");
-
-        $seo->setTitle("Contact Us");
-        $seo->setKeywords("contact, report problem, swiftintern");
-        $seo->setDescription("We would love to hear from you. contact us to know more.");
-
-        $this->getLayoutView()->set("seo", $seo);
+        $this->seo(array(
+            "title" => "Contact Us",
+            "keywords" => "contact, report problem, swiftintern",
+            "description" => "We would love to hear from you. contact us to know more.",
+            "view" => $this->getLayoutView()
+        ));$view = $this->getActionView();
 
         if (RequestMethods::post("action") == "contact") {
             $message = new Message(array(
                 "subject" => "Contact US Page",
                 "body" => RequestMethods::post("body")
-            ));
-            $message->save();
+            ));$message->save();
+            
             $conversations = new Conversation(array(
                 "user_id" => "1",
                 "property" => "email",
                 "property_id" => array(RequestMethods::post("email")),
                 "message_id" => $message->id
-            ));
-            $conversations->save();
+            ));$conversations->save();
+            
             $this->notify(array(
                 "template" => "support",
                 "subject" => "Swiftintern Customer Support",
                 "emails" => $conversations->property_id,
                 "message" => $message
             ));
+            $view->set("success", true);
         }
     }
 

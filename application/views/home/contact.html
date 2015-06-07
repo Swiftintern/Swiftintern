@@ -6,6 +6,12 @@
 </header>
 <div class="container">
     <div class="row">
+        {if isset($success)}
+        <div class="alert alert-success alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            Message Sent <strong>Successfully!</strong>
+        </div>
+        {/if}
         <form class="col-md-8" method="post" action="">
             <div class="form-group">
                 <label>Full Name</label>
