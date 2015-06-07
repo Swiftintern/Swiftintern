@@ -18,9 +18,37 @@ class CRON extends Users {
     }
 
     public function index() {
-        $this->log("cron");
         $this->_secure();
+        $this->log("cron");
         $this->newsletters();
+    }
+
+    protected function leads() {
+        $date = strftime("%Y-%m-%d", strtotime('-4 days'));
+        $now = strftime("%Y-%m-%d", strtotime('now'));
+        //using distinct so as to reduce db query for message and crm
+        $leads = Lead::all(array("created = ?" => $date), array("DISTINCT crm_id"));
+        foreach ($leads as $lead) {
+            $crm = CRM::first(array("id = ?" => $lead->crm_id), array("second_message_id"));
+            $message = Message::first(array("id = ?" => $crm->second_message_id));
+            $lds = Lead::all(array("created = ?" => $date, "crm_id = ?" => $lead->crm_id), array("email"));
+            foreach ($lds as $ld) {
+                $exist = User::first(array("email = ?" => $ld->email), array("id"));
+                if (!$exist) {
+                    $lead->status = "SECOND_MESSAGE_SENT";
+                    $this->notify(array(
+                        "template" => "leadGeneration",
+                        "subject" => $message->subject,
+                        "message" => $message,
+                        "user" => $this->user,
+                        "from" => $this->user->name,
+                        "emails" => $emails
+                    ));
+                }
+                $lead->updated = $now;
+                $lead->save();
+            }
+        }
     }
 
     protected function newsletters() {
@@ -59,25 +87,25 @@ class CRON extends Users {
         $yesterday = strftime("%Y-%m-%d", strtotime('-1 day'));
         $applications = Application::all(array("updated = ?" => $yesterday), array("id", "student_id", "opportunity_id", "status"));
         foreach ($applications as $application) {
-            $opportunity = Opportunity::first(array("id = ?"=> $application->opportunity_id),array("title","id","organization_id"));
+            $opportunity = Opportunity::first(array("id = ?" => $application->opportunity_id), array("title", "id", "organization_id"));
             switch ($application->status) {
                 case 'rejected':
                     $this->notify(array(
                         "template" => "applicationRejected",
                         "subject" => $opportunity->title,
-                        "user" => User::first(array("id = ?" => "31"),array("name")),
+                        "user" => User::first(array("id = ?" => "31"), array("name")),
                         "opportunity" => $opportunity,
-                        "organization" => Organization::first(array("id = ?"=> $opportunity->organization_id),array("id","linkedin_id","name"))
+                        "organization" => Organization::first(array("id = ?" => $opportunity->organization_id), array("id", "linkedin_id", "name"))
                     ));
                     break;
                 case 'selected':
                     $this->notify(array(
                         "template" => "applicationSelected",
                         "subject" => $opportunity->title,
-                        "user" => User::first(array("id = ?" => "31"),array("name")),
+                        "user" => User::first(array("id = ?" => "31"), array("name")),
                         "opportunity" => $opportunity,
                         "application" => $application,
-                        "organization" => Organization::first(array("id = ?"=> $opportunity->organization_id),array("id","linkedin_id","name"))
+                        "organization" => Organization::first(array("id = ?" => $opportunity->organization_id), array("id", "linkedin_id", "name"))
                     ));
                     break;
             }
@@ -88,7 +116,6 @@ class CRON extends Users {
      * @protected
      */
     public function _secure() {
-        echo php_sapi_name();
         if ($_SERVER['REMOTE_ADDR'] != $_SERVER['SERVER_ADDR']) {
             die('access is not permitted');
         }

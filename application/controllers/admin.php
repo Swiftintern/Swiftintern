@@ -135,7 +135,7 @@ class Admin extends Users {
                     "user_id" => $this->user->id,
                     "email" => $email,
                     "crm_id" => RequestMethods::post("crm_id"),
-                    "status" => "started",
+                    "status" => "FIRST_MESSAGE_SENT",
                     "validity" => "1",
                     "updated" => ""
                 ));
