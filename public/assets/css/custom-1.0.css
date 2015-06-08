@@ -84,11 +84,51 @@ h1.text-center
 {
   margin: 0 auto 2em;
 }
-/*h1.text-center:first-letter
-{
-  font-size: 150%;
-}*/
 h1.text-center strong
 {
   font-size: 120%;
+}
+nav
+{
+  border-radius: 0px !important;
+}
+.intro-header
+{
+  margin-top: 20px
+}
+.clients img
+{
+  margin: 0 auto;
+}
+.bs-glyphicons
+{
+  margin: 0 0 20px;
+}
+.bs-glyphicons::before
+{
+  content: "Pick your forte";
+  font-weight: bolder;
+  text-align: center;
+  margin-left: 41%;
+}
+@media (min-width: 768px)
+{
+.bs-glyphicons::before
+  {
+    font-size: 1.4em;
+  }
+}
+@media (min-width: 992px)
+{
+.bs-glyphicons::before
+  {
+    font-size: 1.8em;
+  }
+}
+@media (min-width: 1200px)
+{
+.bs-glyphicons::before
+  {
+    font-size: 2em;
+  }
 }
