@@ -15,6 +15,11 @@ class Admin extends Users {
      */
     protected $_employer;
 
+    /**
+     * Method which sets data stats for admin dashboard
+     * 
+     * @before _secure
+     */
     public function index() {
         $this->changeLayout();
         $this->seo(array("title" => "Admin Panel", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
@@ -35,6 +40,13 @@ class Admin extends Users {
         $view->set("resumes", $resumes);
     }
 
+    /**
+     * Seacrhs for data and returns result from db
+     * 
+     * @before _secure
+     * @param type $model the model name
+     * @param type $id model id
+     */
     public function search($model = NULL, $id = NULL) {
         $this->changeLayout();
         $this->seo(array("title" => "Search", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
@@ -54,12 +66,27 @@ class Admin extends Users {
         }
     }
     
+    /**
+     * Shows any data info
+     * 
+     * @before _secure
+     * @param type $model the model to which shhow info
+     * @param type $id the id of object model
+     */
     public function info($model = NULL, $id = NULL) {
         $this->noview();
         $object = $model::first(array("id = ?" => $id));
         echo '<pre>', print_r($object), '</pre>';
     }
 
+    
+    /**
+     * Updates any data provide with model and id
+     * 
+     * @before _secure
+     * @param type $model the model object to be updated
+     * @param type $id the id of object
+     */
     public function update($model = NULL, $id = NULL) {
         $this->changeLayout();
         $this->seo(array("title" => "Update", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
@@ -88,6 +115,9 @@ class Admin extends Users {
         $view->set("id", $id);
     }
 
+    /**
+     * @before _secure
+     */
     public function crmTemplate() {
         $this->changeLayout();
         $this->seo(array("title" => "CRM", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
@@ -111,6 +141,9 @@ class Admin extends Users {
         }
     }
 
+    /**
+     * @before _secure
+     */
     public function crmLead() {
         $this->changeLayout();
         $this->seo(array("title" => "Lead Generation", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
@@ -158,6 +191,9 @@ class Admin extends Users {
         $view->set("crms", $crms);
     }
 
+    /**
+     * @before _secure
+     */
     public function crmManage() {
         $this->changeLayout();
         $this->seo(array("title" => "Manage CRM", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
@@ -172,6 +208,9 @@ class Admin extends Users {
         $view->set("leads", $leads);
     }
     
+    /**
+     * @before _secure
+     */
     public function newsletterCreate() {
         $this->changeLayout();
         $this->seo(array("title" => "Create Newsletter", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
@@ -193,6 +232,9 @@ class Admin extends Users {
         }
     }
     
+    /**
+     * @before _secure
+     */
     public function newsletterManage() {
         $this->changeLayout();
         $this->seo(array("title" => "Manage Newsletter", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
