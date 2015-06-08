@@ -22,11 +22,9 @@ class Employer extends Users {
             "keywords" => "hire interns, post internship, register company, post training courses",
             "description" => "Hire Quality interns register with us and post internship, then further select from thousands of applicants available",
             "view" => $this->getLayoutView()
-        ));
-        $view = $this->getActionView();
+        ));$view = $this->getActionView();
 
         $li = $this->LinkedIn("http://swiftintern.com/employer/register");
-
         if (isset($_REQUEST['code'])) {
             $token = $li->getAccessToken($_REQUEST['code']);
         } else {
@@ -74,7 +72,7 @@ class Employer extends Users {
 
             $members = $this->member($social);
             if (!$members) {
-                $view->set("message", 'Please Register your company and be its admin on linkedin first....<a href="/support#register-on-linkedin-first">Read More</a>');
+                $view->set("message", 'Please Register your company and be its admin on linkedin first....<a href="https://business.linkedin.com/marketing-solutions/company-pages/get-started">Create Company Page</a>');
             } else {
                 $info["members"] = $members;
                 $info["user"] = $user;
