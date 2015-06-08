@@ -8,12 +8,30 @@ $(".chosen").chosen({
     width: "95%"
 });
 
+//Google Analytics
+(function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', 'UA-49272936-3', 'swiftintern.com');
+ga('require', 'linkid', 'linkid.js');
+ga('send', 'pageview');
+
+
 $(document).ready(function () {
-    
+
     var dt = new Date(),
-        starttime = dt.getTime();
-        window.opts.time = starttime;
-    
+            starttime = dt.getTime();
+    window.opts.time = starttime;
+
     $('#new_category li').click(function (e) {
         window.opts.query = $(this).children('span').html();
         window.opts.page = '1';
@@ -77,7 +95,7 @@ $(document).ready(function () {
         });
 
     });
-    
+
     //onlinetest
     $('#search_test').submit(function (e) {
         e.preventDefault();
@@ -104,15 +122,15 @@ $(document).ready(function () {
         loadTests(window.opts);
         $(this).html('Load More');
     });
-    
+
     //test
     $('#prevQues').click(function (e) {
         e.preventDefault();
         var ques = window.opts.ques,
-            prev = "#question_" + (+ques + -1),
-            cur  = "#question_" + ques,
-            self = this;
-        if($(prev).length > 0){
+                prev = "#question_" + (+ques + -1),
+                cur = "#question_" + ques,
+                self = this;
+        if ($(prev).length > 0) {
             $(cur).addClass('hide');
             $(prev).removeClass('hide');
 
@@ -122,17 +140,17 @@ $(document).ready(function () {
         }
         console.log(window.opts.ques);
     });
-    
+
     $('#nextQues').click(function (e) {
         e.preventDefault();
         var ques = window.opts.ques,
-            next = "#question_" + (+ques + +1),
-            cur  = "#question_" + ques,
-            self = this;
-        if($(next).length > 0){
+                next = "#question_" + (+ques + +1),
+                cur = "#question_" + ques,
+                self = this;
+        if ($(next).length > 0) {
             $(cur).addClass('hide');
             $(next).removeClass('hide');
-            
+
             window.opts.ques = ++ques;
         } else {
             $(self).addClass('disabled');
@@ -143,7 +161,7 @@ $(document).ready(function () {
     $('#test').submit(function (e) {
         e.preventDefault();
         var test_id = $('input[name="test_id"]').val();
-        
+
         var test = data[0];
         if (test.time_limit != '0') {
             var timeSpent = test.time_limit;
@@ -200,7 +218,7 @@ function loadTests(opts) {
             console.log(data);
             if (data.count >= 1) {
                 $.each(data.exams, function (i, exam) {
-                    $('#results').append('<div class="col-sm-4 col-md-3"><div class="thumbnail"><a href="test/'+encodeURI(exam._title)+'/'+exam._id+'"><img src="/onlinetest/photo/'+exam._id+'" alt="'+exam._title+'" width="100"></a><div class="caption"><p><b>'+exam._title+'</b></p><p><a href="test-details/'+encodeURI(exam._title)+'/'+exam._id+'" class="btn btn-primary">Details</a><a href="test/'+encodeURI(exam._title)+'/'+exam._id+'" class="btn btn-success" id="taketest">Start Test</a></p></div></div></div>');
+                    $('#results').append('<div class="col-sm-4 col-md-3"><div class="thumbnail"><a href="test/' + encodeURI(exam._title) + '/' + exam._id + '"><img src="/onlinetest/photo/' + exam._id + '" alt="' + exam._title + '" width="100"></a><div class="caption"><p><b>' + exam._title + '</b></p><p><a href="test-details/' + encodeURI(exam._title) + '/' + exam._id + '" class="btn btn-primary">Details</a><a href="test/' + encodeURI(exam._title) + '/' + exam._id + '" class="btn btn-success" id="taketest">Start Test</a></p></div></div></div>');
                 });
             } else {
                 $('#results').append("No Results Found, Check later");
