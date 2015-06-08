@@ -31,20 +31,24 @@ class CRON extends Users {
         foreach ($leads as $lead) {
             $crm = CRM::first(array("id = ?" => $lead->crm_id), array("second_message_id"));
             $message = Message::first(array("id = ?" => $crm->second_message_id));
-            $lds = Lead::all(array("created = ?" => $date, "crm_id = ?" => $lead->crm_id), array("email"));
+            $lds = Lead::all(array("created = ?" => $date, "crm_id = ?" => $lead->crm_id), array("email", "user_id"));
             foreach ($lds as $ld) {
                 $exist = User::first(array("email = ?" => $ld->email), array("id"));
+                $user = User::first(array("id = ?" => $ld->user_id), array("id","name","email"));
                 if (!$exist) {
                     $lead->status = "SECOND_MESSAGE_SENT";
                     $this->notify(array(
                         "template" => "leadGeneration",
                         "subject" => $message->subject,
                         "message" => $message,
-                        "user" => $this->user,
-                        "from" => $this->user->name,
-                        "emails" => $emails
+                        "user" => $user,
+                        "from" => $user->name,
+                        "emails" => $ld->email
                     ));
+                } else {
+                    $lead->status = "REGISTERED";
                 }
+                
                 $lead->updated = $now;
                 $lead->save();
             }
