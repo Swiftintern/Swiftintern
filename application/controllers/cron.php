@@ -3,8 +3,6 @@
 /**
  * Scheduler Class which executes daily and perfoms the initiated job
  * 
- * 
- *
  * @author Faizan Ayubi
  */
 use Framework\RequestMethods as RequestMethods;
@@ -85,6 +83,10 @@ class CRON extends Users {
                 ));
             }
         }
+    }
+    
+    protected function status() {
+        
     }
 
     protected function notifications() {
