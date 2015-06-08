@@ -1,4 +1,5 @@
-html, body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:#878787;}
+@import url(http://fonts.googleapis.com/css?family=Poiret+One|Quicksand|Muli|Nunito|Play|Orbitron);
+html, body{font-family:"Quicksand",Helvetica,Arial,sans-serif;color:#878787;}
 .sb-page-header {
     background-color: #b84d45;
     background-image: url("http://assets.swiftintern.com/images/bg.png");
@@ -75,4 +76,19 @@ footer .pull-left, footer .pull-right{float:none !important;display:block;}
 .bs-glyphicons .glyphicon-class{display:block;text-align:center;word-wrap:break-word}.bs-glyphicons li:hover{color:#fff;background-color:#563d7c}
 @media (min-width:768px){.bs-glyphicons{margin-right:0;margin-left:0}
 .bs-glyphicons li{width:12.5%;font-size:12px}
+}
+
+/*Improvements, by sakshamsaxena*/
+
+h1.text-center
+{
+  margin: 0 auto 2em;
+}
+/*h1.text-center:first-letter
+{
+  font-size: 150%;
+}*/
+h1.text-center strong
+{
+  font-size: 120%;
 }
