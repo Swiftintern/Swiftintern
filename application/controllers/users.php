@@ -83,7 +83,6 @@ class Users extends Controller {
                     'subject' => $options["subject"],
                     'html' => $body
                 ));
-                echo '<pre>', print_r($result), '</pre>';
                 break;
             default:
                 $sendgrid = $this->sendgrid();
