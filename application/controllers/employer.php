@@ -22,7 +22,8 @@ class Employer extends Users {
             "keywords" => "hire interns, post internship, register company, post training courses",
             "description" => "Hire Quality interns register with us and post internship, then further select from thousands of applicants available",
             "view" => $this->getLayoutView()
-        ));$view = $this->getActionView();
+        ));
+        $view = $this->getActionView();
 
         $li = $this->LinkedIn("http://swiftintern.com/employer/register");
         if (isset($_REQUEST['code'])) {
@@ -69,6 +70,12 @@ class Employer extends Users {
                 ));
                 $social->save();
             }
+
+            $this->notify(array(
+                "template" => "employerRegister",
+                "subject" => "Getting Started on Swiftintern.com",
+                "user" => $user
+            ));
 
             $members = $this->member($social);
             if (!$members) {
@@ -624,7 +631,7 @@ class Employer extends Users {
         $user = $this->getUser();
         $session = Registry::get("session");
         $member = $session->get("member");
-        
+
         if (!$user || !$member) {
             header("Location: /home");
             exit();
