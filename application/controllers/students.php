@@ -67,7 +67,8 @@ class Students extends Users {
             "keywords" => "get internship, student register",
             "description" => "Register with us to get internship from top companies in india and various startups in Delhi, Mumbai, Bangalore, Chennai, hyderabad etc",
             "view" => $this->getLayoutView()
-        ));$view = $this->getActionView();
+        ));
+        $view = $this->getActionView();
 
         $li = $this->LinkedIn("http://swiftintern.com/students/register");
         if (isset($_REQUEST['code'])) {
@@ -306,9 +307,6 @@ class Students extends Users {
         ));$view = $this->getActionView();
         $view->set("student", $this->student);
         
-        $resumes = Resume::all(array("student_id = ?" => $this->student->id));
-        $view->set("resumes", $resumes);
-        
         if (RequestMethods::post('action') == 'saveUser') {
             $user = User::first(array("id = ?" => $this->user->id));
             $user->phone = RequestMethods::post('phone');
@@ -348,33 +346,10 @@ class Students extends Users {
             "view" => $this->getLayoutView()
         ));$view = $this->getActionView();
 
-        if (isset($id)) {
-            $qualification = Qualification::first(array("id = ?" => $id, "student_id = ?" => $this->student->id));
-            $organization = Organization::first(array("id = ?" => $qualification->organization_id), array("id", "name"));
-        } else {
-            $qualification = new Qualification();
-        }
-
-        if (RequestMethods::post('action') == 'saveQual') {
-            $institute = RequestMethods::post('institute');
-            $organization = Organization::first(array("name = ?" => $institute), array("id","name"));
-            if (!$organization) {
-                $organization = new Organization(array("photo_id" => "", "name" => $institute, "address" => "", "phone" => "", "country" => "", "website" => "", "sector" => "", "number_employee" => "", "type" => "institute", "about" => "", "fbpage" => "", "linkedin_id" => "", "validity" => "1", "updated" => ""));
-                $organization->save();
-            }
-            
-            $qualification->organization_id = $organization->id;
-            $qualification->student_id = $this->student->id;
-            $qualification->degree = RequestMethods::post('degree', "");
-            $qualification->major = RequestMethods::post('major', "");
-            $qualification->gpa = RequestMethods::post('gpa', "");
-            $qualification->passing_year = RequestMethods::post('passing_year', "");
-
-            $qualification->save();
-            $view->set("success", true);
-        }
-        $view->set("qualification", $qualification);
-        $view->set("organization", $organization);
+        $set = $this->saveQual($id);
+        $view->set("success", $set['success']);
+        $view->set("qualification", $set['qualification']);
+        $view->set("organization", $set['organization']);
     }
     
     /**
@@ -388,18 +363,35 @@ class Students extends Users {
             "view" => $this->getLayoutView()
         ));$view = $this->getActionView();
 
+        $set = $this->saveWork($id);
+        $view->set("success", $set['success']);
+        $view->set("work", $set['work']);
+        $view->set("organization", $set['organization']);
+    }
+
+    /**
+     * If $id is set then updates the work details else saves a new work in the database
+     *
+     * @return array
+     */
+    protected function saveWork($id = NULL) {
         if (isset($id)) {
             $work = Work::first(array("id = ?" => $id, "student_id = ?" => $this->student->id));
+            // Since no qualification is found for the given $id so it is an invalid URL
+            if (empty($work)) {
+                self::redirect('/students');
+            }
             $organization = Organization::first(array("id = ?" => $work->organization_id), array("id", "name"));
         } else {
             $work = new Work();
+            $organization = new Organization();
         }
 
         if (RequestMethods::post('action') == 'saveWork') {
             $institute = RequestMethods::post('institute');
             $organization = Organization::first(array("name = ?" => $institute), array("id","name"));
             if (!$organization) {
-                $organization = new Organization(array("photo_id" => "", "name" => $institute, "address" => "", "phone" => "", "country" => "", "website" => "", "sector" => "", "number_employee" => "", "type" => "institute", "about" => "", "fbpage" => "", "linkedin_id" => "", "validity" => "1", "updated" => ""));
+                $organization = new Organization(array("photo_id" => "", "name" => $institute, "address" => "", "phone" => "", "country" => "", "website" => "", "sector" => "", "number_employee" => "", "type" => "company", "about" => "", "fbpage" => "", "linkedin_id" => "", "validity" => "1", "updated" => ""));
                 $organization->save();
             }
             
@@ -410,10 +402,48 @@ class Students extends Users {
             $work->responsibility = RequestMethods::post("responsibility", "");
 
             $work->save();
-            $view->set("success", true);
+            return ['success' => true, 'work' => $work, 'organization' => $organization];
         }
-        $view->set("work", $work);
-        $view->set("organization", $organization);
+        return ['success' => NULL, 'work' => $work, 'organization' => $organization];
+    }
+
+    /**
+     * If $id is set then updates the Qualification details else saves a new qualification in the database
+     *
+     * @return array
+     */
+    protected function saveQual($id = NULL) {
+        if (isset($id)) {
+            $qualification = Qualification::first(array("id = ?" => $id, "student_id = ?" => $this->student->id));
+            // Since no qualification is found for the given $id so it is an invalid URL
+            if (empty($qualification)) {
+                self::redirect('/students');
+            }
+            $organization = Organization::first(array("id = ?" => $qualification->organization_id), array("id", "name"));
+        } else {
+            $qualification = new Qualification();
+            $organization = new Organization();
+        }
+
+        if (RequestMethods::post('action') == 'saveQual') {
+            $institute = RequestMethods::post('institute');
+            $organization = Organization::first(array("name = ?" => $institute), array("id","name"));
+            if (!$organization) {
+                $organization = new Organization(array("photo_id" => "", "name" => $institute, "address" => "", "phone" => "", "country" => "", "website" => "", "sector" => "education", "number_employee" => "", "type" => "institute", "about" => "", "fbpage" => "", "linkedin_id" => "", "validity" => "1", "updated" => ""));
+                $organization->save();
+            }
+            
+            $qualification->organization_id = $organization->id;
+            $qualification->student_id = $this->student->id;
+            $qualification->degree = RequestMethods::post('degree', "");
+            $qualification->major = RequestMethods::post('major', "");
+            $qualification->gpa = RequestMethods::post('gpa', "");
+            $qualification->passing_year = RequestMethods::post('passing_year', "");
+
+            $qualification->save();
+            return ['success' => true, 'qualification' => $qualification, 'organization' => $organization];
+        }
+        return ['success' => NULL, 'qualification' => $qualification, 'organization' => $organization];
     }
 
 }
