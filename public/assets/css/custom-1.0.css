@@ -97,12 +97,12 @@ h1.text-center
   position: relative;
   width: 99%;
 }
-section.container
+section#categories
 {
   position: relative;
   margin-bottom: 0.5em;
 }
-section.container:before, section.container:after {
+section#categories:before, section#categories:after {
   content: "";
   position: absolute;
   width: 100%;
@@ -112,10 +112,10 @@ section.container:before, section.container:after {
   background-image: -o-linear-gradient(left, transparent, #878787, transparent);
   background-image: linear-gradient(left, transparent, #878787, transparent);
 }
-section.container:before {
+section#categories:before {
   left: -3px;top: -3px;
 }
-section.container:after {
+section#categories:after {
   right: -3px;bottom: -3px;
 }
 
