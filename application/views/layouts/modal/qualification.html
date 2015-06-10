@@ -11,13 +11,19 @@
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group">
                                 <label><i class="fa fa-bank"></i> College/University/School</label>
-                                <input type="text" name="institute" class="form-control" required="" placeholder="start typing full name..." autocomplete="off">
+                                <input type="text" list="college" name="institute" class="form-control" required="" placeholder="start typing full name..." autocomplete="on">
+                                <datalist id="college">
+                                {include resumes/list/colleges.html}
+                                </datalist>
                             </div>
                         </div>
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group">
                                 <label><i class="fa fa-graduation-cap"></i> Qualification/Degree</label>
-                                <input type="text" name="degree" class="form-control" required="" placeholder="eg. B.Tech, Intermediate, 10th" autocomplete="off" value="{echo $qualification->degree}">
+                                <input type="text" list="degree" name="degree" class="form-control" required="" placeholder="eg. B.Tech, Intermediate, 10th" autocomplete="on">
+                                <datalist id="degree">
+                                {include resumes/list/degrees.html}
+                                </datalist>
                             </div>
                         </div>
                     </div>
@@ -25,17 +31,20 @@
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group">
                                 <label><i class="fa fa-bookmark"></i> Major</label>
-                                <input type="text" name="major" class="form-control" required="" placeholder="eg. Economics, Civil Engineering etc" autocomplete="off" value="{echo $qualification->major}">
+                                <input type="text" list="major" name="major" class="form-control" required="" placeholder="eg. Economics, Civil Engineering etc" autocomplete="on">
+                                <datalist id="major">
+                                {include resumes/list/majors.html}
+                                </datalist>
                             </div>
                             <div class="form-group">
                                 <label><i class="fa fa-certificate"></i> Percentage or GPA<small>(till now for current)</small></label>
-                                <input type="tel" name="gpa" class="form-control" placeholder="eg. 8.2, 73%, etc" value="{echo $qualification->gpa}">
+                                <input type="tel" name="gpa" class="form-control" placeholder="eg. 8.2, 73%, etc">
                             </div>
                         </div>
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group">
                                 <label><i class="fa fa-calendar"></i> Passing Year</label>
-                                <input type="tel" name="passing_year" class="form-control" required="" placeholder="eg. 2016" value="{echo $qualification->passing_year}">
+                                <input type="tel" name="passing_year" class="form-control" required="" placeholder="eg. 2016">
                             </div>
                         </div>
                     </div>
