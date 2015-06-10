@@ -18,7 +18,7 @@
                         <div class="media">
                             <div class="col-md-6">
                                 <p><i class="fa fa-map-marker"></i> <span itemprop="jobLocation">{echo $opportunity->location}</span></p>
-                                <p><i class="fa fa-institution"></i> <a href="/organization/{echo $organization->name}/{echo $organization->id}" itemprop="hiringOrganization">{echo $organization->name}</a></p>
+                                <p><i class="fa fa-institution"></i> <a href="/organization/{echo Framework\StringMethods::url($organization->name)}/{echo $organization->id}" target="_blank" itemprop="hiringOrganization">{echo $organization->name}</a></p>
                                 <p><i class="fa fa-clock-o"></i> Apply before {echo $opportunity->last_date}</p>
                             </div>
                             <div class="col-md-6">

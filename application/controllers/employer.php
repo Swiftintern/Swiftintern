@@ -61,6 +61,11 @@ class Employer extends Users {
                     "updated" => ""
                 ));
                 $user->save();
+                $this->notify(array(
+                    "template" => "employerRegister",
+                    "subject" => "Getting Started on Swiftintern.com",
+                    "user" => $user
+                ));
             }
             if (!$social) {
                 $social = new Social(array(
@@ -71,11 +76,7 @@ class Employer extends Users {
                 $social->save();
             }
 
-            $this->notify(array(
-                "template" => "employerRegister",
-                "subject" => "Getting Started on Swiftintern.com",
-                "user" => $user
-            ));
+
 
             $members = $this->member($social);
             if (!$members) {
