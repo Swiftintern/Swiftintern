@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Poiret+One|Quicksand|Muli|Nunito:400,700|Play|Orbitron);
+@import url(http://fonts.googleapis.com/css?family=Quicksand|Muli|Nunito:400,700);
 html, body{font-family:"Quicksand",Helvetica,Arial,sans-serif;color:#878787;}
 .sb-page-header {
     background-color: #b84d45;
@@ -80,6 +80,16 @@ footer .pull-left, footer .pull-right{float:none !important;display:block;}
 
 /*Improvements, by sakshamsaxena*/
 
+footer a:hover, footer a:focus
+{
+  color: #87D6F1;
+  border-bottom: 1px dashed white;
+  text-decoration: none;
+}
+p
+{
+  font-family: 'Quicksand';
+}
 h1.text-center
 {
   margin: 0 auto 1em;
