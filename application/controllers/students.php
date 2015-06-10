@@ -67,8 +67,7 @@ class Students extends Users {
             "keywords" => "get internship, student register",
             "description" => "Register with us to get internship from top companies in india and various startups in Delhi, Mumbai, Bangalore, Chennai, hyderabad etc",
             "view" => $this->getLayoutView()
-        ));
-        $view = $this->getActionView();
+        ));$view = $this->getActionView();
 
         $li = $this->LinkedIn("http://swiftintern.com/students/register");
         if (isset($_REQUEST['code'])) {
@@ -306,6 +305,9 @@ class Students extends Users {
             "view" => $this->getLayoutView()
         ));$view = $this->getActionView();
         $view->set("student", $this->student);
+        
+        $resumes = Resume::all(array("student_id = ?" => $this->student->id));
+        $view->set("resumes", $resumes);
         
         if (RequestMethods::post('action') == 'saveUser') {
             $user = User::first(array("id = ?" => $this->user->id));

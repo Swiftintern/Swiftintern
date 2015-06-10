@@ -37,6 +37,33 @@
                 <input type="hidden" name="action" value="saveUser">
                 <button type="submit" class="btn btn-success pull-right">Save <i class="fa fa-check-circle fa-fw"></i></button>
             </form><br>
+            
+            <legend id="basic">Resume</legend>
+            <form class="form-horizontal panel panel-default panel-body" method="post" action="/students/settings">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Your Resumes</label>
+                    <div class="col-sm-9">
+                    {if(!empty($resumes))}
+                        {foreach $resume in $resumes}
+                            <a href="/resumes/view/{echo $resume->id}">Resume_{echo $resume->id}</a>
+                        {/foreach}
+                    {/if}
+                    {else}
+                    <span class="text-warning">You have not Uploaded or Created any Resume with us.</span>
+                    {/else}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Upload Resume</label>
+                    <div class="col-sm-9">
+                        <input type="file" name="file" class="form-control">
+                        <small class="help-block">PDF/Word only</small>
+                    </div>
+                </div>
+                <input type="hidden" name="action" value="saveResume">
+                <a href="/resumes" class="btn btn-info"><i class="fa fa-file-text-o fa-fw"></i> Create new Resume</a>
+                <button type="submit" class="btn btn-success pull-right"><i class="fa fa-upload fa-fw"></i> Upload</button>
+            </form><br>
 
             <legend id="student">Student Details</legend>
             <form class="form-horizontal panel panel-default panel-body" method="post" action="/students/settings">
@@ -70,11 +97,11 @@
                     <label class="col-sm-3 control-label">Profile</label>
                     <div class="col-sm-9">
                         <select class="form-control" name="social_platform">
-                            <option>Google Plus</option>
-                            <option>Facebook</option>
-                            <option>Github</option>
-                            <option>Codechef</option>
-                            <option>Spoj</option>
+                            <option value="google_plus">Google Plus</option>
+                            <option value="facebook">Facebook</option>
+                            <option value="github">Github</option>
+                            <option value="codechef">Codechef</option>
+                            <option value="spoj">Spoj</option>
                         </select>
                     </div>
                 </div>
