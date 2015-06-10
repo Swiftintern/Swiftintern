@@ -4,8 +4,8 @@
         <ol class="breadcrumb">
             <li><a href="/home">Home</a></li>
             <li><a href="/companies">Companies</a></li>
-            <li><a href="/organization/{echo urlencode($organization->name)}/{echo $organization->id}">{echo $organization->name}</a></li>
-            <li><a href="/organization/{echo urlencode($organization->name)}/{echo $organization->id}#experience">Papers</a></li>
+            <li><a href="/organization/{echo Framework\StringMethods::url($organization->name)}/{echo $organization->id}">{echo $organization->name}</a></li>
+            <li><a href="/organization/{echo Framework\StringMethods::url($organization->name)}/{echo $organization->id}#experience">Papers</a></li>
             <li class="active">{echo $experience->title}</li>
         </ol>
         
@@ -18,10 +18,10 @@
         <nav>
             <ul class="pager">
                 {if($previous)}
-                <li class="previous"><a href="experience/{echo urlencode($experience->title)}/{echo $previous}"><span aria-hidden="true">&larr;</span> Previous</a></li>
+                <li class="previous"><a href="/experience/{echo Framework\StringMethods::url($experience->title)}/{echo $previous}"><span aria-hidden="true">&larr;</span> Previous</a></li>
                 {/if}
                 {if($next)}
-                <li class="next"><a href="experience/{echo urlencode($experience->title)}/{echo $next}">Next <span aria-hidden="true">&rarr;</span></a></li>
+                <li class="next"><a href="/experience/{echo Framework\StringMethods::url($experience->title)}/{echo $next}">Next <span aria-hidden="true">&rarr;</span></a></li>
                 {/if}
             </ul>
         </nav>

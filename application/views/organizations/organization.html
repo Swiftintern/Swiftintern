@@ -38,7 +38,7 @@
                                 {foreach $opportunity in $opportunities}
                                 <tr>
                                     <td>
-                                        <a href="{echo urlencode($opportunity->title)}/{echo $opportunity->id}">{echo $opportunity->title}</a>
+                                        <a href="{echo Framework\StringMethods::url($opportunity->title)}/{echo $opportunity->id}">{echo $opportunity->title}</a>
                                     </td>
                                     <td class="job-location">
                                         <p><i class="fa fa-calendar fa-fw"></i>{echo $opportunity->last_date}</p>
@@ -59,8 +59,8 @@
                                     <td>
                                         <div class="media">
                                             <div class="media-body">
-                                                <h4 class="media-heading"><a href="experience/{echo urlencode($experience->title)}/{echo $experience->id}">{echo $experience->title}</a></h4>
-                                                {echo substr(strip_tags($experience->details), 0, 350)}......<a href="experience/{echo urlencode($experience->title)}/{echo $experience->id}">Read More</a>
+                                                <h4 class="media-heading"><a href="/experience/{echo Framework\StringMethods::url($experience->title)}/{echo $experience->id}">{echo $experience->title}</a></h4>
+                                                {echo substr(strip_tags($experience->details), 0, 350)}......<a href="/experience/{echo Framework\StringMethods::url($experience->title)}/{echo $experience->id}">Read More</a>
                                             </div>
                                         </div>
                                     </td>
