@@ -307,6 +307,16 @@ class Students extends Users {
         ));$view = $this->getActionView();
         $view->set("student", $this->student);
         
+        if (RequestMethods::post('action') == 'uploadResume') {
+            $resume = new Resume(array(
+                "student_id" => $this->student->id,
+                "type" => "file",
+                "resume" => $this->_upload("file"),
+                "updated" => ""
+            ));$resume->save();
+            $view->set("success", true);
+        }
+        
         if (RequestMethods::post('action') == 'saveUser') {
             $user = User::first(array("id = ?" => $this->user->id));
             $user->phone = RequestMethods::post('phone');

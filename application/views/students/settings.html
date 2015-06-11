@@ -13,7 +13,7 @@
         </div>
         {/if}
         <div class="col-md-offset-2 col-lg-8">
-            <legend id="basic">Basic Details</legend>
+            <h3 id="basic">Basic Details</h3>
             <form class="form-horizontal panel panel-default panel-body" method="post" action="/students/settings">
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Full Name</label>
@@ -38,8 +38,8 @@
                 <button type="submit" class="btn btn-success pull-right">Save <i class="fa fa-check-circle fa-fw"></i></button>
             </form><br>
             
-            <legend id="basic">Resume</legend>
-            <form class="form-horizontal panel panel-default panel-body" method="post" action="/students/settings">
+            <h3 id="resume">Resume</h3>
+            <form class="form-horizontal panel panel-default panel-body" method="post" action="/students/settings" enctype="multipart/form-data">
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Your Resumes</label>
                     <div class="col-sm-9">
@@ -60,12 +60,12 @@
                         <small class="help-block">PDF/Word only</small>
                     </div>
                 </div>
-                <input type="hidden" name="action" value="saveResume">
+                <input type="hidden" name="action" value="uploadResume">
                 <a href="/resumes" class="btn btn-info"><i class="fa fa-file-text-o fa-fw"></i> Create new Resume</a>
                 <button type="submit" class="btn btn-success pull-right"><i class="fa fa-upload fa-fw"></i> Upload</button>
             </form><br>
 
-            <legend id="student">Student Details</legend>
+            <h3 id="student">Student Details</h3>
             <form class="form-horizontal panel panel-default panel-body" method="post" action="/students/settings">
                 <div class="form-group">
                     <label class="col-sm-3 control-label">City</label>
@@ -91,7 +91,7 @@
                 <button type="submit" class="btn btn-success pull-right">Save <i class="fa fa-check-circle fa-fw"></i></button>
             </form><br>
 
-            <legend id="profile">Profile Links</legend>
+            <h3 id="profile">Profile Links</h3>
             <form class="form-horizontal panel panel-default panel-body" method="post" action="/students/settings">
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Profile</label>
