@@ -149,4 +149,21 @@ class Resumes extends Students {
         $view->set("work", (empty($work) ? "required" : false));
         $view->set("qual", (empty($qual) ? "required" : false));
     }
+    
+    public function view($resume_id) {
+        $this->noview();
+        $resume = Resume::first(array("id = ?" => $resume_id));
+        if($resume){
+            switch ($resume->type) {
+                case "file":
+                    header("Location: https://docs.google.com/gview?url=http://assets.swiftintern.com/uploads/files/{$resume->resume}");
+                    break;
+                case "text":
+                    echo $resume->resume;
+                    break;
+            }
+        } else {
+            echo 'Resume does not exist';
+        }
+    }
 }
