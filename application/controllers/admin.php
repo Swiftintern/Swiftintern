@@ -114,6 +114,33 @@ class Admin extends Users {
         $view->set("model", $model);
         $view->set("id", $id);
     }
+    
+    /**
+     * @before _secure
+     */
+    public function stats() {
+        $this->changeLayout();
+        $this->seo(array("title" => "Stats", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+    }
+    
+    /**
+     * @before _secure
+     */
+    public function data() {
+        $this->changeLayout();
+        $this->seo(array("title" => "Data Analysis", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+    }
+    
+    /**
+     * @before _secure
+     */
+    public function support() {
+        $this->changeLayout();
+        $this->seo(array("title" => "Support Tickets", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+    }
 
     /**
      * @before _secure
