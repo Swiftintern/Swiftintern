@@ -13,6 +13,13 @@
                 </div>
                 {/if}
 
+                {if isset($success)}
+                <div class="alert alert-success alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    Applied <strong>Successfully!</strong> click <a href="/students/applications">here</a> for status
+                </div>
+                {/if}
+
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="media">
@@ -29,15 +36,23 @@
                         </div>
                         <hr>
                         {if(isset($user))}
-                            {if(isset($application))}
-                                <a href="/students/applications" class="btn btn-primary pull-right"><i class="fa fa-check-circle fa-lg"></i> See Application Status</a>
-                            {/if}
-                            {else}
-                                <button id="apply_internship" class="btn btn-primary pull-right"><i class="fa fa-check-circle fa-lg"></i> Apply</button>
-                            {/else}
+                        {if(isset($application))}
+                        <a href="/students/applications" class="btn btn-primary pull-right"><i class="fa fa-check-circle fa-lg"></i> See Application Status</a>
                         {/if}
                         {else}
-                            <button onclick="login()" class="btn btn-primary pull-right"><i class="fa fa-linkedin fa-lg"></i>  | Apply with Linkedin</button>
+                        {if(isset($resume))}
+                        <form method="post" action="">
+                            <input type="hidden" name="action" value="application">
+                            <button class="btn btn-primary pull-right"><i class="fa fa-check-circle fa-lg"></i> Apply</button>
+                        </form>
+                        {/if}
+                        {else}
+                        <a href="/students/settings#resume" class="btn btn-success pull-right"><i class="fa fa-upload fa-lg"></i> Upload Resume</a>
+                        {/else}
+                        {/else}
+                        {/if}
+                        {else}
+                        <button onclick="login()" class="btn btn-primary pull-right"><i class="fa fa-linkedin fa-lg"></i>  | Apply with Linkedin</button>
                         {/else}
                     </div>
                 </div>
