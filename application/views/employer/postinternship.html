@@ -113,19 +113,19 @@
                     <div class="form-group">
                         <label>Skills *</label>
                         <input type="text" class="form-control" name="eligibility" required="">
-                        <span class="help-block">{echo Shared\Markup::errors($errors, "eligibility")}</span>
+                        <span class="help-block">Enter Separated by comma. {echo Shared\Markup::errors($errors, "eligibility")}</span>
                     </div>
                     <div class="form-group">
                         <label>Details *</label>
                         <textarea class="form-control editor" name="details" rows="5"></textarea>
-                        <span class="help-block">{echo Shared\Markup::errors($errors, "details")}</span>
+                        <span class="help-block">Enter Responsibility, category of selection etc..{echo Shared\Markup::errors($errors, "details")}</span>
                     </div>
 
                     <hr>
                     <div class="form-group">
                         <label>Internship Location *</label>
                         <input type="text" class="form-control" name="location" required="">
-                        <span class="help-block">{echo Shared\Markup::errors($errors, "location")}</span>
+                        <span class="help-block">Enter separated by comma {echo Shared\Markup::errors($errors, "location")}</span>
                     </div>
 
                     <div class="form-group">
@@ -137,13 +137,13 @@
                     <div class="form-group">
                         <label>Last Date </label>
                         <input type="date" class="form-control" name="last_date" placeholder="YYYY-MM-DD">
-                        <span class="help-block">{echo Shared\Markup::errors($errors, "last_date")}</span>
+                        <span class="help-block">Date before students should apply to internship.{echo Shared\Markup::errors($errors, "last_date")}</span>
                     </div>
 
                     <div class="form-group">
                         <label>Duration </label>
                         <input type="text" class="form-control" name="duration" placeholder="2 months">
-                        <span class="help-block">{echo Shared\Markup::errors($errors, "duration")}</span>
+                        <span class="help-block">The period students will work with you{echo Shared\Markup::errors($errors, "duration")}</span>
                     </div>
                     <input type="hidden" name="action" value="internship">
                     <div class="checkbox">
