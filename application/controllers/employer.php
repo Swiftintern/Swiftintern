@@ -276,10 +276,16 @@ class Employer extends Users {
             "keywords" => "edit",
             "description" => "Edit your profile",
             "view" => $this->getLayoutView()
-        ));
-
-        $view = $this->getActionView();
-        $user = $this->getUser();
+        ));$view = $this->getActionView();
+        
+        if (RequestMethods::post('action') == 'saveUser') {
+            $user = User::first(array("id = ?" => $this->user->id));
+            $user->phone = RequestMethods::post('phone');
+            $user->name = RequestMethods::post('name');
+            $user->save();
+            $view->set("success", true);
+        }
+        
         $view->set("errors", array());
     }
 
