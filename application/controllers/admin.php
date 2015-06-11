@@ -121,6 +121,20 @@ class Admin extends Users {
         $this->changeLayout();
         $this->seo(array("title" => "Stats", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
+        if (RequestMethods::get("action") == "getStats") {
+            $startdate = RequestMethods::get("startdate");
+            $enddate = RequestMethods::get("enddate");
+            $property = ucfirst(RequestMethods::get("property"));
+            $property_id = ucfirst(RequestMethods::get("property_id"));
+
+            $diff = date_diff(date_create($startdate), date_create($enddate));
+            for ($i = 0; $i < $diff->format("%a"); $i++) {
+                $date = date('Y-m-d', strtotime($startdate . " +{$i} day"));
+                $count = Stat::count(array("created = ?" => $date, "property = ?" => $property, "property_id = ?" => $property_id));
+                $obj[] = array('y' => $date,'a' => $count);
+            }
+            $view->set("data", \Framework\ArrayMethods::toObject($obj));
+        }
     }
 
     /**
