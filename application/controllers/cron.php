@@ -17,8 +17,12 @@ class CRON extends Users {
 
     public function index() {
         $this->_secure();
-        $this->log("cron");
         $this->newsletters();
+        $this->log("Newsletters Sent");
+        $this->leads();
+        $this->log("Leasd Sent");
+        $this->notifications();
+        $this->log("Notification Sent");
     }
 
     protected function leads() {
@@ -91,7 +95,7 @@ class CRON extends Users {
 
     protected function notifications() {
         $yesterday = strftime("%Y-%m-%d", strtotime('-1 day'));
-        $applications = Application::all(array("updated = ?" => $yesterday), array("id", "student_id", "opportunity_id", "status"));
+        $applications = Application::all(array("updated LIKE ?" => "%{$yesterday}%"), array("id", "student_id", "opportunity_id", "status"));
         foreach ($applications as $application) {
             $opportunity = Opportunity::first(array("id = ?" => $application->opportunity_id), array("title", "id", "organization_id"));
             switch ($application->status) {
