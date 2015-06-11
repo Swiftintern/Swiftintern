@@ -158,28 +158,16 @@ class Users extends Controller {
      * @param type $name
      * @param type $user
      */
-    protected function _upload($name, $user) {
+    protected function _upload($name) {
         if (isset($_FILES[$name])) {
             $file = $_FILES[$name];
-            $path = APP_PATH . "/public/uploads/";
-            $time = time();
+            $path = APP_PATH . "/public/assets/uploads/files/";
             $extension = pathinfo($file["name"], PATHINFO_EXTENSION);
-            $filename = "{$user}-{$time}.{$extension}";
+            echo $filename = uniqid().".{$extension}";
             if (move_uploaded_file($file["tmp_name"], $path . $filename)) {
-                $meta = getimagesize($path . $filename);
-                if ($meta) {
-                    $width = $meta[0];
-                    $height = $meta[1];
-                    $file = new File(array(
-                        "name" => $filename,
-                        "mime" => $file["type"],
-                        "size" => $file["size"],
-                        "width" => $width,
-                        "height" => $height,
-                        "user" => $user
-                    ));
-                    $file->save();
-                }
+                return $filename;
+            } else {
+                return FALSE;
             }
         }
     }
