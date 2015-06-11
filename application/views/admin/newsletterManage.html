@@ -21,7 +21,7 @@
                     <td><small>{echo $newsletter->scheduled}</small></td>
                     <td><small>{echo $newsletter->created}</small></td>
                     <td>
-
+                        <a href="/admin/update/newsletter/{echo $newsletter->id}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
                     </td>
                 </tr>
                 {/foreach}
