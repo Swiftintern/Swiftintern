@@ -28,12 +28,12 @@
                                 {foreach $exam in $exams}
                                 <div class="col-sm-4 col-md-3">
                                     <div class="thumbnail">
-                                        <a href="test/{echo urlencode($exam->title)}/{echo $exam->id}"><img src="/onlinetest/photo/{echo $exam->id}" alt="{echo $exam->title}" width="100"></a>
+                                        <a href="/onlinetest/test/{echo urlencode($exam->title)}/{echo $exam->id}"><img src="/onlinetest/photo/{echo $exam->id}" alt="{echo $exam->title}" width="100"></a>
                                         <div class="caption">
                                             <p><b>{echo substr($exam->title, 0, 21)}</b></p>
                                             <p>
-                                                <a href="onlinetest/details/{echo urlencode($exam->title)}/{echo $exam->id}" class="btn btn-primary">Details</a> 
-                                                <a href="test/{echo urlencode($exam->title)}/{echo $exam->id}" class="btn btn-success" id="taketest">Start Test</a>
+                                                <a href="/onlinetest/details/{echo \Framework\StringMethods::url($exam->title)}/{echo $exam->id}" class="btn btn-primary">Details</a> 
+                                                <a href="/onlinetest/test/{echo \Framework\StringMethods::url($exam->title)}/{echo $exam->id}" class="btn btn-success" id="taketest">Start Test</a>
                                             </p>
                                         </div>
                                     </div>
@@ -45,7 +45,7 @@
                             </div>
                         </div>
                         <aside class="col-xs-12 col-md-3">
-                            <a href="employer/register" class="btn btn-warning btn-lg btn-block"><i class="fa fa-briefcase fa-lg"></i> Register Company</a><br>
+                            <a href="/employer/register" class="btn btn-warning btn-lg btn-block"><i class="fa fa-briefcase fa-lg"></i> Register Company</a><br>
 
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -105,7 +105,7 @@
                             <div class="col-md-9">
                                 <h3 class="sub-heading">Online Certification Program</h3>
                                 <p>Thank you for visiting our web site. Swiftintern.com is an online platform dedicated to providing quality computer certification and training products to everyone from beginners to dedicated IT professionals. By visiting our site you have taken the all important first step towards improving your job/internship skills and marketability. A SWIFTINTERN certification proves you have the skills required to succeed in today's increasingly tight internship/job market and earns you instant respect for your computer skills from quality employers nationwide.</p>
-                                <p>Ready to take an exam? Sign up for your free online SN certification exam by clicking <a href="student/register">here</a> and setting up your profile. Once you set up your profile you will be able to come back, log in, and take additional exams at any time.</p>
+                                <p>Ready to take an exam? Sign up for your free online SN certification exam by clicking <a href="/students/register">here</a> and setting up your profile. Once you set up your profile you will be able to come back, log in, and take additional exams at any time.</p>
                                 <p>You can now add certification to your profile after you successfully pass the test</p>
                             </div>
                             <div class="col-md-3">
