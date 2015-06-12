@@ -172,31 +172,26 @@ article.row ul.list-group li.list-group-item
   width: 75%;
 }
 /*Arrows Experimental*/
-article.row ul.list-group li.list-group-item:nth-of-type(odd)::after
+article.row ul.list-group li.list-group-item::after
 {
   content: "";
   position: absolute;
   width: 40px;
   height: 80px;
   top: 75%;
-  left: 100%;
   background: url(../images/resume/rA.svg);
   background-position: center;
   background-size: cover;
   z-index: 10000;
 }
+article.row ul.list-group li.list-group-item:nth-of-type(odd)::after
+{
+  left: 100%;
+}
 article.row ul.list-group li.list-group-item:nth-of-type(even)::after
 {
-  content: "";
-  position: absolute;
-  width: 40px;
-  height: 80px;
-  top: 75%;
   right: 100%;
-  background: url(../images/resume/lA.svg);
-  background-position: center;
-  background-size: cover;
-  z-index: 10000;
+  transform: rotateY(180deg);
 }
 article.row ul.list-group li.list-group-item:nth-of-type(9)::after
 {
