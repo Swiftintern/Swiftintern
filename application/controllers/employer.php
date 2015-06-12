@@ -456,9 +456,9 @@ class Employer extends Users {
         }
 
         $view->set("internship", $internship);
-        $view->set("shortlisted", $shortlisted);
-        $view->set("selected", $selected);
-        $view->set("applicants", $applicants);
+        $view->set("shortlisted", Framework\ArrayMethods::toObject($shortlisted));
+        $view->set("selected", Framework\ArrayMethods::toObject($selected));
+        $view->set("applicants", Framework\ArrayMethods::toObject($applicants));
     }
 
     /**
