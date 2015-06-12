@@ -1,99 +1,139 @@
 <div id="page-wrapper">
     <div class="row col-lg-12">
-        <h2 class="page-header text-center">{echo $internship->title}</h2>
+        <h1 class="page-header text-center">{echo $internship->title}</h1>
+        <p>Total Applications Received : {echo $count}</p>
+        <p class="text-center text-warning" id="result_status"></p>
         <ul class="nav nav-tabs nav-justified" role="tablist" id="myTab">
-            <li class="active"><a href="#applications" role="tab" data-toggle="tab">Applications <span class="badge">{echo count((array)$applicants)}</span></a></li>
+            <li class="active"><a href="#applied" role="tab" data-toggle="tab">Applied <span class="badge">{echo count((array)$applied)}</span></a></li>
             <li><a href="#shortlisted" role="tab" data-toggle="tab">Shortlisted <span class="badge">{echo count((array)$shortlisted)}</span></a></li>
             <li><a href="#selected" role="tab" data-toggle="tab">Selected <span class="badge">{echo count((array)$selected)}</span></a></li>
+            <li><a href="#rejected" role="tab" data-toggle="tab">Rejected <span class="badge">{echo count((array)$rejected)}</span></a></li>
         </ul>
 
         <div class="tab-content">
-            <div class="tab-pane active" id="applications">
+            <div class="tab-pane active" id="applied">
                 <div class="panel panel-default">
-                    <table class="table">
+                    <table class="table text-center">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Major</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                                <td><b>Student</b></td>
+                                <td><b>Created</b></td>
+                                <td><b>Action</b></td>
                             </tr>
                         </thead>
                         <tbody>
-                            {foreach $applicant in $applicants}
+                            {foreach $applicant in $applied}
                             <tr>
                                 <td><a href="/students/profile/{echo $applicant->student_id}" target="_blank" >{echo $applicant->name}</a></td>
-                                <td>{echo $applicant->qualification->major}</td>
-                                <td>{echo $applicant->status}</td>
+                                <td><small>{$applicant->created}</small></td>
                                 <td>
-                                    <a href="/students/profile/{echo $applicant->student_id}" class="btn btn-info btn-xs"><i class="fa fa-eye"></i> View</a>&nbsp;
-                                    <button data-application="{echo $applicant->id}" data-status="shortlist" class="btn btn-success btn-xs status"><i class="fa fa-check"></i> Shortlist</button>&nbsp;
-                                    <a href="" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Notes </a>&nbsp;
-
+                                    <a href="/students/resume/{$applicant->student_id}" target="_blank" class="btn btn-info btn-xs"><i class="fa fa-file-text-o"></i> Resume</a>&nbsp;
+                                    <button data-application="{$applicant->id}" data-status="shortlisted" class="btn btn-success btn-xs status"><i class="fa fa-check"></i> Shortlist</button>
                                 </td>
                             </tr>
                             {/foreach}
                         </tbody>
                     </table>
                 </div>
+                {if(count((array)$applied) >= 10)}
+                <div class="text-center">
+                    <button class="btn btn-primary">Load More</button>
+                </div>
+                {/if}
             </div>
 
             <div class="tab-pane" id="shortlisted">
                 <div class="panel panel-default">
-                    <table class="table">
+                    <table class="table text-center">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Major</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                                <td><b>Student</b></td>
+                                <td><b>Created</b></td>
+                                <td><b>Action</b></td>
                             </tr>
                         </thead>
                         <tbody>
                             {foreach $applicant in $shortlisted}
                             <tr>
                                 <td><a href="/students/profile/{echo $applicant->student_id}" target="_blank" >{echo $applicant->name}</a></td>
-                                <td>{echo $applicant->qualification->major}</td>
-                                <td>{echo $applicant->status}</td>
+                                <td><small>{$applicant->created}</small></td>
                                 <td>
-                                    <a href="/students/profile/{echo $applicant->student_id}" class="btn btn-info btn-xs"><i class="fa fa-eye"></i> View</a>&nbsp;
-                                    <button data-application="{echo $applicant->id}" data-status="shortlist" class="btn btn-success btn-xs status"><i class="fa fa-check"></i> Shortlist</button>&nbsp;
-                                    <a href="" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Notes </a>&nbsp;
-
+                                    <a href="/students/resume/{$applicant->student_id}" target="_blank" class="btn btn-info btn-xs"><i class="fa fa-file-text-o"></i> Resume</a>&nbsp;
+                                    <button data-application="{$applicant->id}" data-status="selected" class="btn btn-success btn-xs status"><i class="fa fa-check-circle"></i> Select</button>
                                 </td>
                             </tr>
                             {/foreach}
                         </tbody>
                     </table>
                 </div>
+                {if(count((array)$shortlisted) >= 10)}
+                <div class="text-center">
+                    <button class="btn btn-primary">Load More</button>
+                </div>
+                {/if}
             </div>
 
             <div class="tab-pane" id="selected">
                 <div class="panel panel-default">
-                    <table class="table">
+                    <table class="table text-center">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Major</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                                <td><b>Student</b></td>
+                                <td><b>Created</b></td>
+                                <td><b>Action</b></td>
                             </tr>
                         </thead>
                         <tbody>
                             {foreach $applicant in $selected}
                             <tr>
                                 <td><a href="/students/profile/{echo $applicant->student_id}" target="_blank" >{echo $applicant->name}</a></td>
-                                <td>{echo $applicant->qualification->major}</td>
-                                <td>{echo $applicant->status}</td>
+                                <td><small>{$applicant->created}</small></td>
                                 <td>
-                                    <a href="/students/profile/{echo $applicant->student_id}" class="btn btn-info btn-xs"><i class="fa fa-file-text-o"></i> Resume</a>&nbsp;
-                                    <a href="" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Notes </a>&nbsp;
+                                    <a href="/students/resume/{$applicant->student_id}" target="_blank" class="btn btn-info btn-xs"><i class="fa fa-file-text-o"></i> Resume</a>&nbsp;
+                                    <button data-application="{$applicant->id}" data-status="rejected" class="btn btn-danger btn-xs status"><i class="fa fa-times"></i> Reject</button>
+                                    <button data-application="{$applicant->id}" data-status="shortlisted" class="btn btn-success btn-xs status"><i class="fa fa-check"></i> Shortlist</button>
                                 </td>
                             </tr>
                             {/foreach}
                         </tbody>
                     </table>
                 </div>
+                {if(count((array)$selected) >= 10)}
+                <div class="text-center">
+                    <button class="btn btn-primary">Load More</button>
+                </div>
+                {/if}
+            </div>
+            
+            <div class="tab-pane" id="rejected">
+                <div class="panel panel-default">
+                    <table class="table text-center">
+                        <thead>
+                            <tr>
+                                <td><b>Student</b></td>
+                                <td><b>Created</b></td>
+                                <td><b>Action</b></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {foreach $applicant in $rejected}
+                            <tr>
+                                <td><a href="/students/profile/{echo $applicant->student_id}" target="_blank" >{echo $applicant->name}</a></td>
+                                <td><small>{$applicant->created}</small></td>
+                                <td>
+                                    <a href="/students/resume/{$applicant->student_id}" target="_blank" class="btn btn-info btn-xs"><i class="fa fa-file-text-o"></i> Resume</a>&nbsp;
+                                    <button data-application="{$applicant->id}" data-status="shortlisted" class="btn btn-success btn-xs status"><i class="fa fa-check"></i> Shortlist</button>
+                                </td>
+                            </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+                {if(count((array)$rejected) >= 10)}
+                <div class="text-center">
+                    <button class="btn btn-primary">Load More</button>
+                </div>
+                {/if}
             </div>
 
         </div>

@@ -410,35 +410,26 @@ class Employer extends Users {
         if ($id == NULL) {
             self::redirect("/employer/internships");
         }
-
         $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id), array("id", "title"));
-        $this->seo(array(
-            "title" => "Applications",
-            "keywords" => "Applications",
-            "description" => "Applications received on internship posted",
-            "view" => $this->getLayoutView()
-        ));
+        $this->seo(array("title" => "Applications","keywords" => "Applications","description" => "Applications received on internship posted","view" => $this->getLayoutView()));
         $view = $this->getActionView();
 
-        $shortlisted = [];
-        $selected = [];
-        $applicants = [];
+        $shortlisted = [];$selected = [];$applied = [];$applicants = [];$rejected = [];
 
         $order = RequestMethods::get("order", "created");
         $direction = RequestMethods::get("direction", "desc");
-        $applications = Application::all(array("opportunity_id = ?" => $internship->id), array("id", "student_id", "property_id", "status", "created"), $order, $direction);
+        $page = RequestMethods::get("page", 1);
+        $limit = RequestMethods::get("limit", 15);
+        $count = Application::count(array("opportunity_id = ?" => $internship->id));
+        $applications = Application::all(array("opportunity_id = ?" => $internship->id), array("id", "student_id", "property_id", "status", "created"), $order, $direction, $limit, $page);
 
         foreach ($applications as $application) {
             $student = Student::first(array("id = ?" => $application->student_id), array("user_id", "about"));
             $user = User::first(array("id = ?" => $student->user_id), array("name"));
-            $qualification = Qualification::first(array("student_id = ?" => $application->student_id), array("organization_id", "degree", "major", "passing_year"), "passing_year", "desc");
-            $organization = Organization::first(array("id = ?" => $qualification->organization_id), array("name"));
 
             $applicant = \Framework\ArrayMethods::toObject(array(
                         "id" => $application->id,
                         "name" => $user->name,
-                        "qualification" => $qualification,
-                        "organization" => $organization,
                         "student_id" => $application->student_id,
                         "property_id" => $application->property_id,
                         "status" => $application->status,
@@ -446,18 +437,27 @@ class Employer extends Users {
             ));
             $applicants[] = $applicant;
             switch ($application->status) {
-                case "shortlist":
+                case "shortlisted":
                     $shortlisted[] = $applicant;
                     break;
                 case "selected":
                     $selected[] = $applicant;
                     break;
+                case "applied":
+                    $applied[] = $applicant;
+                    break;
+                case "rejected":
+                    $rejected[] = $applicant;
+                    break;
             }
         }
 
         $view->set("internship", $internship);
+        $view->set("count", $count);
         $view->set("shortlisted", Framework\ArrayMethods::toObject($shortlisted));
         $view->set("selected", Framework\ArrayMethods::toObject($selected));
+        $view->set("applied", Framework\ArrayMethods::toObject($applied));
+        $view->set("rejected", Framework\ArrayMethods::toObject($rejected));
         $view->set("applicants", Framework\ArrayMethods::toObject($applicants));
     }
 

@@ -1,3 +1,8 @@
+(function (window, Model) {
+    window.request = Model.initialize();
+    window.opts = {};
+}(window, window.Model));
+
 $(function () {
     $('#side-menu').metisMenu();
 });
@@ -69,5 +74,21 @@ $(document).ready(function () {
         var updatekey = $('select[name="meta_value"]').val();
         $('#output').attr("src", "/employer/reachstats/" + updatekey + "/" + startdate + "/" + enddate + "");
     });
-        
+
+    $(".status").click(function(e) {
+        e.preventDefault();
+        var btn = $(this),
+            application = btn.data('application'),
+            status = btn.data('status');
+
+        request.create({
+            action: 'students/applications',
+            data: {status: status, application: application, action: 'updateStatus'},
+            callback: function (data) {
+                btn.closest('tr').hide();
+                $("#result_status").html("Applicant "+ status + "Successfully");
+            }
+        });
+
+    });
 });

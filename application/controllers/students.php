@@ -287,12 +287,17 @@ class Students extends Users {
             "keywords" => "student opportunity applications",
             "description" => "Your Application and its status",
             "view" => $this->getLayoutView()
-        ));
-        $view = $this->getActionView();
-
-        $applications = Application::all(array("student_id = ?" => $this->student->id), array("id", "opportunity_id", "status", "created", "updated"));
-
-        $view->set("applications", $applications);
+        ));$view = $this->getActionView();
+        
+        if(RequestMethods::post("action") == "updateStatus"){
+            $appli = Application::first(array("id = ?" => RequestMethods::post("application")));
+            $appli->status = RequestMethods::post("status");
+            $appli->updated = strftime("%Y-%m-%d", strtotime('now'));
+            $appli->save();
+        } else {
+            $applications = Application::all(array("student_id = ?" => $this->student->id), array("id", "opportunity_id", "status", "created", "updated"));
+            $view->set("applications", $applications);
+        }
     }
 
     /**
