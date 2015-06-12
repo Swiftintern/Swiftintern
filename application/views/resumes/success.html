@@ -26,11 +26,13 @@
                     <p>
                         {echo $qualification->degree}, {echo $qualification->major} with <span>{echo $qualification->gpa}</span>
                         <span class="pull-right">{echo $qualification->passing_year}</span><br>
-                        {echo $organization->name}
+                        {script $org = Organization::first(array("id = ?" => $qualification->organization_id), array("name"))}
+                        {echo $org->name}
                     </p>
                 {/foreach}
 
                 <h4 style="padding-top: 30px;">Work Experience</h4><hr style="margin-top: 0px;">
+                {if (isset($info['positions']))}
                 {foreach $work in $info["positions"]["values"]}
                     <p>
                         {echo $work["title"]}, {echo $work["company"]["name"]} 
@@ -38,6 +40,16 @@
                         <br><span>{echo $work["summary"]}</span>
                     </p>
                 {/foreach}
+                {/if}
+                {else}
+                {foreach $work in $works}
+                {script $org = Organization::first(array("id = ?" => $work->organization_id), array("name"))}
+                    <p>
+                        {echo $work->designation}, {echo $org->name} 
+                        From <span class="pull-right">{echo $work->duration}</span>
+                        <br><span>{echo $work->responsibility}</span>
+                    </p>
+                {/else}
                 
                 <h4 style="padding-top: 30px;">Skills</h4><hr style="margin-top: 0px;">
                 <p>{echo !empty($info["skills"]) ? $info["skills"] : $skills}</p><br>
@@ -55,7 +67,7 @@
                     <a href="student/resumes" id="editresume" class="btn btn-primary"><i class="fa fa-edit fa-fw"></i> Edit/Save Resume</a>
                     <a href="resume/save" id="download" class="btn btn-success"><i class="fa fa-download fa-fw"></i> Download Resume</a>
                     <button name="print" value="#resume" class="btn btn-info"><i class="fa fa-print fa-fw"></i> Print Resume</button>
-                    <button name="message" value="{echo $admin_id}" class="btn btn-warning"><i class="fa fa-comment fa-fw"></i> Feedback</button>
+                    <button name="message" value="{echo @$admin_id}" class="btn btn-warning"><i class="fa fa-comment fa-fw"></i> Feedback</button>
                 </p>
             </div>
         </div>

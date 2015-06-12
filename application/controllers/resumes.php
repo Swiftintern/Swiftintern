@@ -72,6 +72,7 @@ class Resumes extends Students {
 
         $view->set('info', $info);
         $view->set('edu', $qual);
+        $view->set('works', $work);
         $view->set('skills', $skills);
         //echo '<pre>', print_r($info), '</pre>';
     }
