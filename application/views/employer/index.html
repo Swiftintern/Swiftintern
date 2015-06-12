@@ -1,41 +1,45 @@
 <div id="page-wrapper">
-    <div class="row col-lg-12"><br>
-
-        <div class="row">
-
-            <div class="col-lg-4">
-                <div class="list-group">
-                    <a class="list-group-item active text-center">
-                        <i class="fa fa-line-chart"></i> Stats
-                    </a>
-                    <a href="employer/internships" class="list-group-item"><i class="fa fa-graduation-cap fa-2x"></i>Opportunity Posted <span class="badge">{echo $opportunities}</span></a>
-                    <a href="employer/applicants" class="list-group-item"><i class="fa fa-fax fa-2x"></i>  Student Applicantions <span class="badge">{echo $applicants}</span></a>
-                    <a href="employer/messages" class="list-group-item"><i class="fa fa-envelope fa-2x"></i>  Student Messages <span class="badge">{echo $messages}</span></a>
-                </div>
-            </div>
-
-            <div class="col-lg-4">
-                <div class="list-group">
-                    <a class="list-group-item active text-center">
-                        <i class="fa fa-link"></i> Quick Links
-                    </a>
-                    <a href="employer/postinternship" class="list-group-item"><i class="fa fa-edit fa-2x"></i> Post Internship</a>
-                    <a href="employer/features" class="list-group-item disabled"><i class="fa fa-plug fa-2x"></i> Add Features(Coming Soon)</a>
-                </div>
-            </div>
-            
-            <div class="col-lg-4">
-                <div class="list-group">
-                    <a class="list-group-item active text-center">
-                        <i class="fa fa-support"></i> Support
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=eFb62jX3WF4" target="_blank" class="list-group-item"><i class="fa fa-youtube-square fa-2x"></i>  How to Post Internship?</a>
-                    <a href="/employer/resources" class="list-group-item"><i class="fa fa-question-circle fa-2x"></i>  FAQs</a>
-                    <a href="/contact" class="list-group-item"><i class="fa fa-exclamation-circle fa-2x"></i>  Report a Problem</a>
-                </div>
-            </div>
-
+    <div class="row col-lg-12">
+        <h1 class="page-header text-center">Dashboard</h1>
+        {if($opportunities == "0")}
+        <div class="alert alert-success alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            Hi, {echo $user->name} you have not created any <strong>Opportunity!</strong>. <a href="/employer/postinternship">Click here</a> to Post Internship
         </div>
+        {/if}
+        
+        <div class="col-lg-4">
+            <div class="list-group">
+                <a class="list-group-item active text-center">
+                    <i class="fa fa-line-chart"></i> Stats
+                </a>
+                <a href="employer/internships" class="list-group-item"><i class="fa fa-graduation-cap fa-2x"></i>Opportunity Posted <span class="badge">{echo $opportunities}</span></a>
+                <a href="employer/applicants" class="list-group-item"><i class="fa fa-fax fa-2x"></i>  Student Applicantions <span class="badge">{echo $applicants}</span></a>
+                <a href="employer/messages" class="list-group-item"><i class="fa fa-envelope fa-2x"></i>  Student Messages <span class="badge">{echo $messages}</span></a>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="list-group">
+                <a class="list-group-item active text-center">
+                    <i class="fa fa-link"></i> Quick Links
+                </a>
+                <a href="employer/postinternship" class="list-group-item"><i class="fa fa-edit fa-2x"></i> Post Internship</a>
+                <a class="list-group-item disabled"><i class="fa fa-plug fa-2x"></i> Add Features(Coming Soon)</a>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="list-group">
+                <a class="list-group-item active text-center">
+                    <i class="fa fa-support"></i> Support
+                </a>
+                <a href="https://www.youtube.com/watch?v=eFb62jX3WF4" target="_blank" class="list-group-item"><i class="fa fa-youtube-square fa-2x"></i>  How to Post Internship?</a>
+                <a href="/employer/resources" class="list-group-item"><i class="fa fa-question-circle fa-2x"></i>  FAQs</a>
+                <a href="/contact" class="list-group-item"><i class="fa fa-exclamation-circle fa-2x"></i>  Report a Problem</a>
+            </div>
+        </div>
+
 
     </div>
 </div>

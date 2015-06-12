@@ -5,7 +5,6 @@
  *
  * @author Faizan Ayubi
  */
-use Shared\Controller as Controller;
 use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
@@ -433,7 +432,8 @@ class Employer extends Users {
                 }
                 self::redirect('/employer/internships');
             }
-
+            
+            $view->set("opportunity", $opportunity);
             $view->set("errors", $opportunity->getErrors());
         }
     }
@@ -457,29 +457,19 @@ class Employer extends Users {
     }
 
     /**
-     * @before _secure
+     * @before _secure, changeLayout
      */
-    public function internship($id = 0) {
-        $this->changeLayout();
-        if ($id == 0) {
-            $internship = Opportunity::first(array("organization_id = ? " => $this->employer->organization->id), array("id", "title", "eligibility", "last_date", "details", "payment"));
-        } else {
-            $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id), array("id", "title", "eligibility", "last_date", "details", "payment"));
+    public function internship($id = NULL) {
+        if ($id == NULL) {
+            self::redirect("/employer/internships");
         }
-        $opportunities = Opportunity::all(array("organization_id = ?" => $this->employer->organization->id), array("id", "title"));
+        $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id), array("id", "title", "eligibility", "last_date", "details", "payment"));
         $this->seo(array(
             "title" => "Edit Internship",
             "keywords" => "followers",
             "description" => "Your company followers on linkedin",
             "view" => $this->getLayoutView()
-        ));
-        $view = $this->getActionView();
-
-        if (RequestMethods::post("action") == "edit") {
-            $id = RequestMethods::post("id");
-            header("Location: /employer/internship/{$id}");
-            exit();
-        }
+        ));$view = $this->getActionView();
 
         if (RequestMethods::post("action") == "update") {
             $internship->title = RequestMethods::post("title");
@@ -489,15 +479,11 @@ class Employer extends Users {
             $internship->payment = RequestMethods::post("payment");
             $internship->updated = date("Y-m-d H:i:s");
 
-            if ($internship->validate()) {
-                $internship->save();
-                $view->set("success", true);
-            }
+            $internship->save();
+            $view->set("success", true);
             $view->set("errors", $internship->getErrors());
         }
         $view->set("internship", $internship);
-        $view->set("id", $id);
-        $view->set("opportunities", $opportunities);
     }
 
     /**
