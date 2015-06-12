@@ -230,7 +230,7 @@ class Students extends Users {
         $view = $this->getActionView();
 
         $student = Student::first(array("id = ?" => $id));
-        $user = User::first(array("id = ?" => $student->user_id), array("id", "name", "email", "type"));
+        $user = User::first(array("id = ?" => $student->user_id), array("id", "name", "email", "type", "phone"));
 
         $this->seo(array("title" => $user->name, "keywords" => "user profile", "description" => "Your Profile Page", "view" => $this->getLayoutView()));
 

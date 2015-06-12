@@ -1,28 +1,40 @@
 <section class="container">
     <div class="row">
-
-        <div class="col-xs-12 col-md-9 col-md-offset-1">
-
-            <div class="panel panel-success">
-                <div class="panel-body">
-                    <h2 class="text-center">{echo $user->name}</h2>
-                </div>
-
-                <div class="panel-heading">
-                    Objective
-                </div>
-                <div class="panel-body">
-                    Completing this is very important to making a good impression with employers. 
-                </div>
-
-                <div class="panel-heading">
-                    Education Details
-                </div>
+        <h1 class="page-header text-center">{$user->name}</h1>
+        <div class="col-md-offset-2 col-lg-8">
+            <h3 id="basic">Basic Details</h3>
+            <div class="panel panel-default">
                 <table class="table">
-                    {if (count($qualifications) == '0')}
-                    <p class="text-center">Please add all your Qualification and current education to be able to select in any internship. college training also counts.</p>
-                    {/if}
-                    {else}
+                    <tbody>
+                        <tr>
+                            <td>Email</td>
+                            <td>{$user->email}</td>
+                        </tr>
+                        <tr>
+                            <td>Phone</td>
+                            <td>{$user->phone}</td>
+                        </tr>
+                        <tr>
+                            <td>City</td>
+                            <td>{$student->skills}</td>
+                        </tr>
+                        <tr>
+                            <td>About</td>
+                            <td>{$student->about}</td>
+                        </tr>
+                        {foreach $social in $socials}
+                        <tr>
+                            <td>{$social->social_platform}</td>
+                            <td><a href="{$social->link}" target="_blank">{$social->link}</a></td>
+                        </tr>
+                        {/foreach}
+                    </tbody>
+                </table>
+            </div><br>
+            
+            <h3 id="basic">Educational Qualification</h3>
+            <div class="panel panel-default">
+                <table class="table">
                     <thead>
                         <tr>
                             <th>Qualification</th>
@@ -32,8 +44,7 @@
                             <th>Year of Passing</th>
                         </tr>
                     </thead>
-                    <tbody id="qualification">
-
+                    <tbody>
                         {foreach $qualification in $qualifications}
                         {script $organization  = Organization::first(array("id = ?" => $qualification->organization_id), array("id", "name"))}
                         <tr>
@@ -44,18 +55,13 @@
                             <td>{echo $qualification->passing_year}</td>
                         </tr>
                         {/foreach}
-                        {/else}
                     </tbody>
                 </table>
-
-                <div class="panel-heading">
-                    Experience
-                </div>
+            </div><br>
+            
+            <h3 id="basic">Work Experience</h3>
+            <div class="panel panel-default">
                 <table class="table">
-                    {if (count($works) == '0')}
-                    <p class="text-center">Nnot added any work Experience till now.</p>
-                    {/if}
-                    {else}
                     <thead>
                         <tr>
                             <th>Organization</th>
@@ -65,7 +71,6 @@
                         </tr>
                     </thead>
                     <tbody>
-
                         {foreach $work in $works}
                         {script $organization  = Organization::first(array("id = ?" => $work->organization_id), array("id", "name"))}
                         <tr>
@@ -75,50 +80,9 @@
                             <td>{echo $work->duration}</td>
                         </tr>
                         {/foreach}
-                        {/else}
                     </tbody>
                 </table>
-
-                <div class="panel-heading">
-                    Skills
-                </div>
-                <div class="panel-body">
-                    {if(!empty($student->skills))}
-                    Skills matter as it will help employer to chose if you are better for an internship
-                    {/if}
-                    {else}
-                    <p>{echo $student->skills}</p>
-                    {/else}
-                </div>
-
-                <div class="panel-heading">
-                    Links
-                </div>
-                <table class="table">
-                    {if (count($socials) == '0')}
-                    <p class="text-center">No Profile or work sample added.</p>
-                    {/if}
-                    {else}
-                    <thead>
-                        <tr>
-                            <th>Platform</th>
-                            <th>Link</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {foreach $social in $socials}
-                        <tr>
-                            <td>{echo $social->social_platform}</td>
-                            <td>{echo $social->link}</td>
-                        </tr>
-                        {/foreach}
-                        {/else}
-                    </tbody>
-                </table>
-
-            </div>
-
+            </div><br>
         </div>
-
     </div>
 </section>
