@@ -163,7 +163,7 @@ class Users extends Controller {
             $file = $_FILES[$name];
             $path = APP_PATH . "/public/assets/uploads/files/";
             $extension = pathinfo($file["name"], PATHINFO_EXTENSION);
-            echo $filename = uniqid().".{$extension}";
+            $filename = uniqid().".{$extension}";
             if (move_uploaded_file($file["tmp_name"], $path . $filename)) {
                 return $filename;
             } else {
