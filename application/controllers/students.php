@@ -316,6 +316,8 @@ class Students extends Users {
             ));$resume->save();
             $view->set("success", true);
         }
+        $resumes = Resume::all(array("student_id = ?" => $this->student->id));
+        $view->set("resumes", $resumes);
         
         if (RequestMethods::post('action') == 'saveUser') {
             $user = User::first(array("id = ?" => $this->user->id));
@@ -454,6 +456,23 @@ class Students extends Users {
             return ['success' => true, 'qualification' => $qualification, 'organization' => $organization];
         }
         return ['success' => NULL, 'qualification' => $qualification, 'organization' => $organization];
+    }
+    
+    public function resume($student_id) {
+        $this->noview();
+        $resume = Resume::first(array("student_id = ?" => $student_id));
+        if($resume){
+            switch ($resume->type) {
+                case "file":
+                    header("Location: https://docs.google.com/gview?url=http://assets.swiftintern.com/uploads/files/{$resume->resume}");
+                    break;
+                case "text":
+                    //echo $resume->resume;
+                    break;
+            }
+        } else {
+            echo 'Resume does not exist';
+        }
     }
 
 }
