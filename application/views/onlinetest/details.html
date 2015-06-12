@@ -2,8 +2,8 @@
 <section class="container">
     <div class="row">
         <nav><ol class="breadcrumb">
-                <li><a href="home">Home</a></li>
-                <li><a href="test">Test</a></li>
+                <li><a href="/home">Home</a></li>
+                <li><a href="/onlinetest">Test</a></li>
                 <li class="active">{echo $test->title}</li>
             </ol></nav>
         <article class="content-inner-detail" id="search_results">
@@ -13,7 +13,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="media">
-                        <a class="pull-left hidden-xs" href="test/{echo Framework\StringMethods::url($test->title)}/{echo $test->id}">
+                        <a class="pull-left hidden-xs" href="/onlinetest/test/{echo Framework\StringMethods::url($test->title)}/{echo $test->id}">
                             <img class="media-object" src="/onlinetest/photo/{echo $test->id}" alt="{echo $test->title}" width="300px">
                         </a>
                         <div class="media-body">
@@ -30,7 +30,7 @@
                                 {/else}
                             </p>
                             <p><b>Instructions :</b> Once the Test Start do not press back button or refresh. The result will be shown after you complete the test. If you obtain Good Marks above 70% a certificate will be generated which we will deliver to your home, and the test marks will be added to your profile.</p>
-                            <p class="pull-right"><a href="/test/{echo Framework\StringMethods::url($test->title)}/{echo $test->id}" class="btn btn-primary" id="taketest">Proceed to Exam</a></p>
+                            <p class="pull-right"><a href="/onlinetest/test/{echo Framework\StringMethods::url($test->title)}/{echo $test->id}" class="btn btn-primary" id="taketest">Proceed to Exam</a></p>
                         </div>
                     </div>
                 </div>

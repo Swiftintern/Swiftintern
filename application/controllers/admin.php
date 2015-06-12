@@ -24,14 +24,14 @@ class Admin extends Users {
         $this->changeLayout();
         $this->seo(array("title" => "Admin Panel", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
-        
+
         $users = User::count();
         $organizations = Organization::count();
         $opportunities = Opportunity::count();
         $applications = Application::count();
         $leads = Lead::count();
         $resumes = Resume::count();
-        
+
         $view->set("users", $users);
         $view->set("organizations", $organizations);
         $view->set("opportunities", $opportunities);
@@ -65,7 +65,7 @@ class Admin extends Users {
             $view->set("results", $results);
         }
     }
-    
+
     /**
      * Shows any data info
      * 
@@ -79,7 +79,6 @@ class Admin extends Users {
         echo '<pre>', print_r($object), '</pre>';
     }
 
-    
     /**
      * Updates any data provide with model and id
      * 
@@ -113,6 +112,60 @@ class Admin extends Users {
         $view->set("array", $array);
         $view->set("model", $model);
         $view->set("id", $id);
+    }
+
+    /**
+     * @before _secure
+     */
+    public function stats() {
+        $this->changeLayout();
+        $this->seo(array("title" => "Stats", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+        if (RequestMethods::get("action") == "getStats") {
+            $startdate = RequestMethods::get("startdate");
+            $enddate = RequestMethods::get("enddate");
+            $property = ucfirst(RequestMethods::get("property"));
+            $property_id = ucfirst(RequestMethods::get("property_id"));
+
+            $diff = date_diff(date_create($startdate), date_create($enddate));
+            for ($i = 0; $i < $diff->format("%a"); $i++) {
+                $date = date('Y-m-d', strtotime($startdate . " +{$i} day"));
+                $count = Stat::count(array("created = ?" => $date, "property = ?" => $property, "property_id = ?" => $property_id));
+                $obj[] = array('y' => $date,'a' => $count);
+            }
+            $view->set("data", \Framework\ArrayMethods::toObject($obj));
+        }
+    }
+
+    /**
+     * @before _secure
+     */
+    public function data() {
+        $this->changeLayout();
+        $this->seo(array("title" => "Data Analysis", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+        if (RequestMethods::get("action") == "dataAnalysis") {
+            $startdate = RequestMethods::get("startdate");
+            $enddate = RequestMethods::get("enddate");
+            $model = ucfirst(RequestMethods::get("model"));
+
+            $diff = date_diff(date_create($startdate), date_create($enddate));
+            for ($i = 0; $i < $diff->format("%a"); $i++) {
+                $date = date('Y-m-d', strtotime($startdate . " +{$i} day"));
+                $count = $model::count(array("created LIKE ?" => "%{$date}%"));
+                $obj[] = array('y' => $date,'a' => $count);
+            }
+            $view->set("data", \Framework\ArrayMethods::toObject($obj));
+        }
+    }
+
+    /**
+     * @before _secure
+     */
+    public function support() {
+        $this->changeLayout();
+        $this->seo(array("title" => "Support Tickets", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
     }
 
     /**
@@ -174,7 +227,7 @@ class Admin extends Users {
                 ));
                 $lead->save();
             }
-            $crm = CRM::first(array("id = ?" => $lead->crm_id),array("first_message_id"));
+            $crm = CRM::first(array("id = ?" => $lead->crm_id), array("first_message_id"));
             $message = Message::first(array("id = ?" => $crm->first_message_id));
             $this->notify(array(
                 "template" => "leadGeneration",
@@ -207,7 +260,7 @@ class Admin extends Users {
         $view->set("page", $page);
         $view->set("leads", $leads);
     }
-    
+
     /**
      * @before _secure
      */
@@ -215,23 +268,25 @@ class Admin extends Users {
         $this->changeLayout();
         $this->seo(array("title" => "Create Newsletter", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
-        
+
         if (RequestMethods::post("action") == "createNewsletter") {
             $message = new Message(array(
                 "subject" => RequestMethods::post("subject"),
                 "body" => RequestMethods::post("body")
-            ));$message->save();
-            
+            ));
+            $message->save();
+
             $newsletter = new Newsletter(array(
                 "message_id" => $message->id,
                 "user_group" => RequestMethods::post("user_group"),
                 "scheduled" => RequestMethods::post("scheduled")
-            ));$newsletter->save();
-            
+            ));
+            $newsletter->save();
+
             $view->set("success", TRUE);
         }
     }
-    
+
     /**
      * @before _secure
      */
@@ -239,7 +294,7 @@ class Admin extends Users {
         $this->changeLayout();
         $this->seo(array("title" => "Manage Newsletter", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
-        
+
         $page = RequestMethods::get("page", 1);
         $limit = RequestMethods::get("limit", 10);
         $newsletters = Newsletter::all(array(), array("*"), "created", "desc", $limit, $page);

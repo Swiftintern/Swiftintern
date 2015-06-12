@@ -221,32 +221,33 @@ class Home extends Users {
     public function internship($title, $id) {
         global $datetime;
         $view = $this->getActionView();
-        $session = Registry::get("session");
-        $student = $session->get("student");
+        $session = Registry::get("session");$student = $session->get("student");
 
         $opportunity = Opportunity::first(array("id = ?" => $id));
         $organization = Organization::first(array("id = ?" => $opportunity->organization_id), array("id", "name", "photo_id"));
         if ($student) {
+            $resume = Resume::first(array("student_id = ?"=> $student->id),array("id"));
+            $view->set("resume", $resume);
             $application = Application::first(array("student_id = ?" => $student->id, "opportunity_id = ?" => $id));
             $view->set("application", $application);
         }
 
         if (RequestMethods::post("action") == "application") {
             $application = new Application(array(
-                "student_id" => RequestMethods::post("student_id", $student->id),
-                "opportunity_id" => RequestMethods::post("opportunity_id"),
-                "property_id" => RequestMethods::post("resume_id", ""),
-                "status" => RequestMethods::post("status", "applied"),
-                "updated" => RequestMethods::post("updated", "")
-            ));
-
-            $application->save();
+                "student_id" => $student->id,
+                "opportunity_id" => $opportunity->id,
+                "property_id" => $resume->id,
+                "status" => "applied",
+                "updated" => ""
+            ));$application->save();
+            
             $this->notify(array(
                 "template" => "applicationInternship",
                 "subject" => "Internship Application",
                 "opportunity" => $opportunity,
                 "user" => $this->getUser()
             ));
+            $view->set("success", TRUE);
             $view->set("application", $application);
         }
 
