@@ -5,7 +5,6 @@
  * 
  * @author Faizan Ayubi
  */
-use Framework\RequestMethods as RequestMethods;
 
 class CRON extends Users {
 
@@ -45,7 +44,7 @@ class CRON extends Users {
                         "message" => $message,
                         "user" => $user,
                         "from" => $user->name,
-                        "emails" => $ld->email
+                        "emails" => array($ld->email)
                     ));
                 } else {
                     $lead->status = "REGISTERED";
@@ -87,10 +86,6 @@ class CRON extends Users {
                 ));
             }
         }
-    }
-    
-    protected function status() {
-        
     }
 
     protected function notifications() {
