@@ -100,14 +100,14 @@ class Home extends Users {
             $conversations = new Conversation(array(
                 "user_id" => "1",
                 "property" => "email",
-                "property_id" => array(RequestMethods::post("email")),
+                "property_id" => RequestMethods::post("email"),
                 "message_id" => $message->id
             ));$conversations->save();
             
             $this->notify(array(
                 "template" => "support",
                 "subject" => "Swiftintern Customer Support",
-                "emails" => $conversations->property_id,
+                "emails" => array($conversations->property_id),
                 "message" => $message
             ));
             $view->set("success", true);
