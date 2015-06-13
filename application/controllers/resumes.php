@@ -50,30 +50,24 @@ class Resumes extends Students {
             "view" => $this->getLayoutView()
         ));$view = $this->getActionView();
         
-        $li = Registry::get('linkedin');
-        if ($li->hasAccessToken()) {
-            $info = $li->get('/people/~:(phone-numbers,summary,first-name,last-name,positions,email-address,public-profile-url,location,picture-url,educations,skills)');
-        }
-        
         // Get Details for the student - education, skills
         $student = Registry::get('session')->get("student");
-        $qual = Qualification::all(array(
+        $qual = Qualification::all(array( 
             "student_id = ?" => $student->id
         ));
         $work = Work::all(array(
             "student_id = ?" => $student->id
         ));
         $skills = $student->skills;
-
         // If details not found redirect the user to resume builder for saving the details
         if (empty($qual) || empty($work) || empty($skills)) {
             self::redirect("/resumes/create");
         }
 
-        $view->set('info', $info);
+        $view->set('user', $this->user);
+        $view->set('student', $student);
         $view->set('edu', $qual);
         $view->set('works', $work);
-        $view->set('skills', $skills);
         //echo '<pre>', print_r($info), '</pre>';
     }
     

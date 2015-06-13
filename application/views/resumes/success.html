@@ -2,46 +2,28 @@
     <article class="row">
         <div class="panel panel-default col-md-9">
             <div class="panel-body" id="resume" style="padding: 60px;">
-                <span style="text-align: center;">
-                    <h1>{echo $info["firstName"]} {echo $info["lastName"]}</h1>
-                    <p>
-                        <span>{echo $info["emailAddress"]}</span> | 
-                        <span>{echo $info["contact"]}</span> | 
-                        <span>{echo $info["location"]["name"]}</span>
+                    <h1 class="text-center">{echo $user->name}</h1>
+                    <p class="text-center">
+                        {echo $user->email} | 
+                        {echo $user->phone} | 
+                        {echo $student->city}
                     </p>
-                </span>
                 <h4 style="padding-top: 60px;">Objective</h4><hr style="margin-top: 0px;">
                 <p>
-                    {if(empty($info["summary"]))}
-                        Seeking a position as an accountant where extensive experience will be further developed and utilised. Extensive experience to the credit.
-                    {/if}
-                    {else}
-                        {echo $info["summary"]}
-                    {/else}
+                    {$student->about} 
                 </p>
 
                 <h4 style="padding-top: 30px;">Education</h4><hr style="margin-top: 0px;">
-                {script $education = !empty($info["education"]) ? $info["education"] : $edu}
-                {foreach $qualification in $education}
+                {foreach $qualification in $edu}
+                {script $org = Organization::first(array("id = ?" => $qualification->organization_id), array("name"))}
                     <p>
                         {echo $qualification->degree}, {echo $qualification->major} with <span>{echo $qualification->gpa}</span>
                         <span class="pull-right">{echo $qualification->passing_year}</span><br>
-                        {script $org = Organization::first(array("id = ?" => $qualification->organization_id), array("name"))}
                         {echo $org->name}
                     </p>
                 {/foreach}
 
                 <h4 style="padding-top: 30px;">Work Experience</h4><hr style="margin-top: 0px;">
-                {if (isset($info['positions']))}
-                {foreach $work in $info["positions"]["values"]}
-                    <p>
-                        {echo $work["title"]}, {echo $work["company"]["name"]} 
-                        From <span class="pull-right">{echo $work["startDate"]["year"]}</span>
-                        <br><span>{echo $work["summary"]}</span>
-                    </p>
-                {/foreach}
-                {/if}
-                {else}
                 {foreach $work in $works}
                 {script $org = Organization::first(array("id = ?" => $work->organization_id), array("name"))}
                     <p>
@@ -49,10 +31,10 @@
                         From <span class="pull-right">{echo $work->duration}</span>
                         <br><span>{echo $work->responsibility}</span>
                     </p>
-                {/else}
+                {/foreach}
                 
                 <h4 style="padding-top: 30px;">Skills</h4><hr style="margin-top: 0px;">
-                <p>{echo !empty($info["skills"]) ? $info["skills"] : $skills}</p><br>
+                <p>{echo $student->skills}</p><br>
 
             </div>
         </div>
@@ -60,14 +42,12 @@
         <div class="panel panel-default hidden-print col-md-3">
             <div class="panel-body text-center">
                 <label>Thanks for Creating Resume with us.</label>
-                <p class="text-center"><a href="{echo $info["publicProfileUrl"]}" target="_blank"><img src="{echo $info["pictureUrl"]}" class="thumbnail" width="100"></a></p>
-                <p>You can use this resume to apply to varoius opportunities such as internship, competitions, freelance etc on our <a href="home" target="_blank">site</a>.</p>
+                <p>You can use this resume to apply to various opportunities such as internship, competitions, freelance etc on our <a href="home" target="_blank">site</a>.</p>
                 <p>We have registered your account with us and emailed you the details. Check your Email.</p>
                 <p>
-                    <a href="student/resumes" id="editresume" class="btn btn-primary"><i class="fa fa-edit fa-fw"></i> Edit/Save Resume</a>
-                    <a href="resume/save" id="download" class="btn btn-success"><i class="fa fa-download fa-fw"></i> Download Resume</a>
-                    <button name="print" value="#resume" class="btn btn-info"><i class="fa fa-print fa-fw"></i> Print Resume</button>
-                    <button name="message" value="{echo @$admin_id}" class="btn btn-warning"><i class="fa fa-comment fa-fw"></i> Feedback</button>
+                    <a href="/students" id="editresume" class="btn btn-primary"><i class="fa fa-edit fa-fw"></i> Edit/Save Resume</a>
+                    <a href="/resumes/save" id="download" class="btn btn-success"><i class="fa fa-download fa-fw"></i> Download Resume</a>
+                    <a href="/contact" class="btn btn-warning"><i class="fa fa-comment fa-fw"></i> Feedback</a>
                 </p>
             </div>
         </div>
