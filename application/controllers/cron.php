@@ -40,7 +40,7 @@ class CRON extends Users {
             $lds = Lead::all(array("created = ?" => $date, "crm_id = ?" => $lead->crm_id));
             foreach ($lds as $ld) {
                 $exist = User::first(array("email = ?" => $ld->email), array("id"));
-                $user = User::first(array("id = ?" => $ld->user_id), array("id","name","email"));
+                $user = User::first(array("id = ?" => $ld->user_id), array("id","name","email","phone"));
                 if (!$exist) {
                     $ld->status = "SECOND_MESSAGE_SENT";
                     $this->notify(array(
