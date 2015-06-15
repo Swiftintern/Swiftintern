@@ -98,9 +98,7 @@ class OnlineTest extends Users {
 
         if (RequestMethods::post("action") == "test_result") {
             $total_questions = Question::count(array("test_id = ?" => $test->id));
-            $per_ques = 100 / $total_questions;
-            $marks = 0;
-            $count = 0;
+            $per_ques = 100 / $total_questions;$marks = 0;$count = 0;
             $questions = RequestMethods::post("question");
 
             foreach ($questions as $question => $answer) {
@@ -122,11 +120,22 @@ class OnlineTest extends Users {
                     "validity" => "1"
                 ));
                 $certificate->save();
+                $link = "https://www.linkedin.com/profile/add?_ed=0_ZcIwGCXmSQ8TciBtRYgI1j4OsllETrtl_xajtrVc5LaaImXEsXtVW49ekKQ2HJFTaSgvthvZk7wTBMS3S-m0L6A6mLjErM6PJiwMkk6nYZylU7__75hCVwJdOTZCAkdv&pfCertificationName={urlencode($test->title)}&pfCertificationUrl={urlencode(URL)}&pfLicenseNo={$certificate->uniqid}&pfCertStartDate={$certificate->created}&trk=onsite_longurl";
+                
+                $this->notify(array(
+                    "template" => "studentTestCertification",
+                    "subject" => "Add your certification to your LinkedIn Profile",
+                    "test" => $test,
+                    "link" => $link,
+                    "certificate" => $certificate,
+                    "marks" => $marks,
+                    "user" => $this->user
+                ));
             }
         }
         
         if(!$certificate){
-            $certificate = Certificate::first(array("property_id = ?" => $participant->id),array("uniqid"));
+            $certificate = Certificate::first(array("property_id = ?" => $participant->id),array("uniqid","created"));
         }
         
         $view->set("created", strftime("%Y%m", strtotime($participant->created)));
