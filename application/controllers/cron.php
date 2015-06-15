@@ -20,10 +20,12 @@ class CRON extends Users {
         $this->log("Leads Sent");
         $this->newsletters();
         $this->log("Newsletters Sent");
-        $this->notifications();
-        $this->log("Notification Sent");
+        $this->applicationStatus();
+        $this->log("Application Status Sent");
         $this->newApplications();
         $this->log("newApplications Sent");
+        $this->opportunityEnd();
+        $this->log("Rejected All Applicants after last_date");
     }
 
     /**
@@ -91,11 +93,27 @@ class CRON extends Users {
             }
         }
     }
+    
+    /**
+     * Rejects all applicants of an opportunity after 15 Days
+     */
+    protected function opportunityEnd() {
+        $day15 = strftime("%Y-%m-%d", strtotime('-16 day'));
+        $opportunities = Opportunity::all(array("last_date = ?" => $day15), array("id", "title"));
+        foreach ($opportunities as $opportunity) {
+            $applications = Application::all(array("opportunity_id = ?" => $opportunity->id, "status = ?" => "applied"));
+            foreach ($applications as $application) {
+                $application->status = "rejected";
+                $application->save();
+            }
+        }
+        
+    }
 
     /**
      * Send Notifications to students for their application status
      */
-    protected function notifications() {
+    protected function applicationStatus() {
         $yesterday = strftime("%Y-%m-%d", strtotime('-1 day'));
         $applications = Application::all(array("updated LIKE ?" => "%{$yesterday}%"), array("id", "student_id", "opportunity_id", "status"));
         foreach ($applications as $application) {
@@ -140,6 +158,7 @@ class CRON extends Users {
             }
             $this->notify(array(
                 "template" => "employerApplicants",
+                "subject" => "Internship Applications",
                 "opportunity" => $opportunity,
                 "applicants" => $applicants,
                 "emails" => $emails
