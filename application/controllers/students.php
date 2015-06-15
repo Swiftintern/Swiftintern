@@ -292,7 +292,7 @@ class Students extends Users {
         if(RequestMethods::post("action") == "updateStatus"){
             $appli = Application::first(array("id = ?" => RequestMethods::post("application")));
             $appli->status = RequestMethods::post("status");
-            $appli->updated = strftime("%Y-%m-%d", strtotime('now'));
+            $appli->updated = strftime("%Y-%m-%d %H:%M:%S", strtotime('now'));
             $appli->save();
         } else {
             $applications = Application::all(array("student_id = ?" => $this->student->id), array("id", "opportunity_id", "status", "created", "updated"));

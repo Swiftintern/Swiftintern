@@ -83,6 +83,7 @@ class Users extends Controller {
                     'subject' => $options["subject"],
                     'html' => $body
                 ));
+                $this->log(implode(",", $options["emails"]));
                 break;
             default:
                 $sendgrid = $this->sendgrid();
@@ -93,6 +94,7 @@ class Users extends Controller {
                         ->setSubject($options["subject"])
                         ->setHtml($body);
                 $sendgrid->send($email);
+                $this->log(implode(",", $emails));
                 break;
         }
     }
