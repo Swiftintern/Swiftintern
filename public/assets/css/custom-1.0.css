@@ -91,7 +91,10 @@ footer a:hover, footer a:focus
 p
 {
   font-family: 'Quicksand';
-  text-align: justify
+}
+section p /*Body paragraphs (mostly)*/
+{
+  text-align: justify;
 }
 div.panel h3
 {
