@@ -34,18 +34,20 @@ $(document).ready(function () {
 
     $('button[name=message]').click(function (e) {
         var self = this;
-        opts.contact.property = $(this).data("property");
-        opts.contact.property_id = $(this).data("propertyid");
+        window.opts.property = $(this).data("property");
+        window.opts.property_id = $(this).data("propertyid");
+        $('#message_modal').modal('show');
     });
 
     $('#messageform').submit(function(e) {
         e.preventDefault();
-        var body = $('#body').html()
+        var body = $('#body').val();
         request.create({
             action: "home/contact",
-            data: {action: "contact", property: opts.contact.property_id, property_id: opts.contact.property_id, body: body},
+            data: {action: "contact", property: window.opts.property, property_id: window.opts.property_id, body: body},
             callback: function (data) {
                 $('#status').html('Message Sent Successfully!!!');
+                $('#message_modal').modal('hide');
             }
         });
     });

@@ -94,6 +94,7 @@ class Home extends Users {
 
         if (RequestMethods::post("action") == "contact") {
             $name = RequestMethods::post("name", $this->user->name);$emails = array();
+            $propertyId = RequestMethods::post("property_id");
             $message = new Message(array(
                 "subject" => "{$name} sent you a message",
                 "body" => RequestMethods::post("body")
@@ -102,7 +103,7 @@ class Home extends Users {
             $conversations = new Conversation(array(
                 "user_id" => "1",
                 "property" => RequestMethods::post("property"),
-                "property_id" => RequestMethods::post("propertyid"),
+                "property_id" => $propertyId,
                 "message_id" => $message->id
             ));$conversations->save();
 
@@ -117,7 +118,8 @@ class Home extends Users {
                     ));
                     break;
                 default:
-                    array_push($emails, $this->user->email);
+                    $user = User::first(array("id = ?" => $propertyId),array("email"));
+                    array_push($emails, $user->email);
                     $this->notify(array(
                         "template" => "message",
                         "subject" => $message->subject,
