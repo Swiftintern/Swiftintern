@@ -87,6 +87,7 @@ class CRON extends Users {
                     "delivery" => "mailgun",
                     "subject" => $message->subject,
                     "message" => $message,
+                    "track" => true,
                     "newsletter" => $newsletter,
                     "emails" => implode(",", $emails[$i])
                 ));

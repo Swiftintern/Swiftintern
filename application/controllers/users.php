@@ -140,7 +140,7 @@ class Users extends Controller {
         $pixel = 'http://assets.swiftintern.com/images/others/track.png';
         
         //Get the filesize of the image for headers
-        $filesize = filesize(APP_PATH . '/assets/images/others/track.png');
+        $filesize = filesize(APP_PATH . '/public/assets/images/others/track.png');
     
         //Now actually output the image requested, while disregarding if the database was affected
         header('Pragma: public');
