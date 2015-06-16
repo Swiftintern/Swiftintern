@@ -8,7 +8,7 @@
         </ol>
         <div class="panel panel-default">
             <div class="panel-body">
-                <p>The Message Sent to you or send by you is shown here.</p>
+                <p id="status">The Messages Sent to you.</p>
             </div>
             <table class="table">
                 <thead>
@@ -16,16 +16,20 @@
                         <th>From</th>
                         <th>At</th>
                         <th>Message</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {foreach $conversation in $conversations}
                     {script $user = User::first(array("id = ?"=>$conversation->user_id),array("name"))}
-                    {script $message = Message::first(array("id = ?"=>$conversation->message_id),array("body"))}
+                    {script $message = Message::first(array("id = ?"=>$conversation->message_id),array("body","created"))}
                     <tr>
-                        <td>{echo $user->name}</td>
-                        <td><small>{echo $conversation->created}</small></td>
-                        <td>{echo $message->body}</td>
+                        <td>{$user->name}</td>
+                        <td><small>{$message->created}</small></td>
+                        <td>{$message->body}</td>
+                        <td>
+                            <button name="message" data-property="user" data-propertyid="{$conversation->user_id}" class="btn btn-warning btn-xs"><i class="fa fa-envelope fa-fw"></i> Reply</button>
+                        </td>
                     </tr>
                     {/foreach}
                 </tbody>
