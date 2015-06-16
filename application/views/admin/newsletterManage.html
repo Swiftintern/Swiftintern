@@ -15,11 +15,11 @@
             <tbody id="results">
                 {foreach $newsletter in $newsletters}
                 <tr>
-                    <td>{echo $newsletter->id}</td>
-                    <td>{echo $newsletter->message_id}</td>
-                    <td>{echo $newsletter->user_group}</td>
-                    <td><small>{echo $newsletter->scheduled}</small></td>
-                    <td><small>{echo $newsletter->created}</small></td>
+                    <td><a href="/admin/info/newsletter/{$newsletter->id}" target="_blank">{$newsletter->id}</a></td>
+                    <td><a href="/admin/info/message/{$newsletter->message_id}" target="_blank">{$newsletter->message_id}</a></td>
+                    <td>{$newsletter->user_group}</td>
+                    <td><small>{$newsletter->scheduled}</small></td>
+                    <td><small>{$newsletter->created}</small></td>
                     <td>
                         <a href="/admin/update/newsletter/{echo $newsletter->id}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
                     </td>

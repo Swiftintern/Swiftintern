@@ -41,28 +41,48 @@ class Admin extends Users {
     }
 
     /**
-     * Seacrhs for data and returns result from db
-     * 
-     * @before _secure
-     * @param type $model the model name
-     * @param type $id model id
+     * Searchs for data and returns result from db
+     * @param type $model the data model
+     * @param type $property the property of modal
+     * @param type $val the value of property
+     * @before _secure, changeLayout
      */
-    public function search($model = NULL, $id = NULL) {
-        $this->changeLayout();
+    public function search($model = NULL, $property = NULL, $val = 0, $page=1) {
         $this->seo(array("title" => "Search", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
-        $view->set("results", array());
+        $model = RequestMethods::get("model", $model);
+        $property = RequestMethods::get("key", $property);
+        $val = RequestMethods::get("value", $val);
+        $page = RequestMethods::get("page", $page);
 
-        if (RequestMethods::get("action") == "search") {
-            $model = RequestMethods::get("model");
-            $key = RequestMethods::get("key");
-            $value = RequestMethods::get("value");
-            $r = new ReflectionClass(ucfirst($model));
+        $view->set("items", array());
+        $view->set("values", array());
+        $view->set("model", $model);
+        $view->set("page", $page);
+        $view->set("property", $property);
+        $view->set("val", $val);
 
-            $object = $r->newInstanceWithoutConstructor()->all(array("{$key} = ?" => $value));
-            $results = $object;
-            //echo '<pre>', print_r($results), '</pre>';
-            $view->set("results", $results);
+        if ($model) {
+            $objects = $model::all(array("{$property} = ?" => $val),array("*"),"created", "desc", 10, $page);
+            $count = $model::count(array("{$property} = ?" => $val));$i = 0;
+            if ($objects) {
+                foreach ($objects as $object) {
+                    $properties = $object->getJsonData();
+                    foreach ($properties as $key => $property) {
+                        $key = substr($key, 1);
+                        $items[$i][$key] = $property;
+                        $values[$i][] = $key;
+                    }
+                    $i++;
+                }
+                $view->set("items", $items);
+                $view->set("values", $values[0]);
+                $view->set("count", $count);
+                //echo '<pre>', print_r($values[0]), '</pre>';
+                $view->set("success", "Total Results : {$count}");
+            } else {
+                $view->set("success", "No Results Found");
+            }
         }
     }
 
@@ -74,14 +94,16 @@ class Admin extends Users {
      * @param type $id the id of object model
      */
     public function info($model = NULL, $id = NULL) {
-        $this->seo(array("title" => "Search", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
-        $view = $this->getActionView();$items = array();$values = array();
-        
+        $this->seo(array("title" => "{$model} info", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+        $items = array();
+        $values = array();
+
         $object = $model::first(array("id = ?" => $id));
         $properties = $object->getJsonData();
-        foreach ($properties as $key => $property ) {
+        foreach ($properties as $key => $property) {
             $key = substr($key, 1);
-            if(strpos($key, "_id")){
+            if (strpos($key, "_id")) {
                 $child = ucfirst(substr($key, 0, -3));
                 $childobj = $child::first(array("id = ?" => $object->$key));
                 $childproperties = $childobj->getJsonData();
@@ -90,11 +112,10 @@ class Admin extends Users {
                     $items[$k] = $prop;
                     $values[] = $k;
                 }
-            } else{
+            } else {
                 $items[$key] = $property;
                 $values[] = $key;
             }
-            
         }
         $view->set("items", $items);
         $view->set("values", $values);
@@ -153,7 +174,7 @@ class Admin extends Users {
             for ($i = 0; $i < $diff->format("%a"); $i++) {
                 $date = date('Y-m-d', strtotime($startdate . " +{$i} day"));
                 $count = Stat::count(array("created = ?" => $date, "property = ?" => $property, "property_id = ?" => $property_id));
-                $obj[] = array('y' => $date,'a' => $count);
+                $obj[] = array('y' => $date, 'a' => $count);
             }
             $view->set("data", \Framework\ArrayMethods::toObject($obj));
         }
@@ -175,7 +196,7 @@ class Admin extends Users {
             for ($i = 0; $i < $diff->format("%a"); $i++) {
                 $date = date('Y-m-d', strtotime($startdate . " +{$i} day"));
                 $count = $model::count(array("created LIKE ?" => "%{$date}%"));
-                $obj[] = array('y' => $date,'a' => $count);
+                $obj[] = array('y' => $date, 'a' => $count);
             }
             $view->set("data", \Framework\ArrayMethods::toObject($obj));
         }

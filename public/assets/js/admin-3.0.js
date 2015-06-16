@@ -44,34 +44,6 @@ $(document).ready(function () {
     $("input[type=date]").datepicker();
     $("input[type=date]").datepicker("option", "dateFormat", "yy-mm-dd");
 
-    //Search form
-    $('#search').submit(function (e) {
-        e.preventDefault();
-        var action = $('input[name="action"]').val(),
-                model = $('select[name="model"]').val(),
-                key = $('input[name="key"]').val(),
-                value = $('input[name="value"]').val();
-        $('#results').html('');
-        $('#result_status').html('');
-        request.read({
-            action: "admin/search",
-            data: {action: action, model: model, key: key, value: value},
-            callback: function (data) {
-                if (data.results) {
-                    $('#result_status').html('Total Results : ' + data.results.length);
-                    $.each(data.results, function (i, result) {
-                        $('#results').append('<tr><td><b>Action</b></td><td><a href="/admin/update/' + model + '/' + result._id + '" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a></td></tr>');
-                        $.each(result, function (field, value) {
-                            $('#results').append('<tr><td>' + field + '</td><td>' + value + '</td></tr>');
-                        });
-                    });
-                } else {
-                    $('#result_status').html('Not Found.');
-                }
-            }
-        });
-    });
-
     $('#created_stats').submit(function (e) {
         $('#stats').html('<p class="text-center"><i class="fa fa-spinner fa-spin fa-5x"></i></p>');
         e.preventDefault();
