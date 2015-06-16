@@ -25,13 +25,31 @@ ga('create', 'UA-49272936-3', 'swiftintern.com');
 ga('require', 'linkid', 'linkid.js');
 ga('send', 'pageview');
 
-$('button[name=more]').click(function (e) {
-    var refid = this.value;
-    var element = $('#' + refid).html();
-    $('#' + refid).after(element);
-});
-
 $(document).ready(function () {
+    $('button[name=more]').click(function (e) {
+        var refid = this.value;
+        var element = $('#' + refid).html();
+        $('#' + refid).after(element);
+    });
+
+    $('button[name=message]').click(function (e) {
+        var self = this;
+        opts.contact.property = $(this).data("property");
+        opts.contact.property_id = $(this).data("propertyid");
+    });
+
+    $('#messageform').submit(function(e) {
+        e.preventDefault();
+        var body = $('#body').html()
+        request.create({
+            action: "home/contact",
+            data: {action: "contact", property: opts.contact.property_id, property_id: opts.contact.property_id, body: body},
+            callback: function (data) {
+                $('#status').html('Message Sent Successfully!!!');
+            }
+        });
+    });
+
     setInterval(loadSponsored({
         limit: 3
     }), 5000);

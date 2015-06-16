@@ -89,27 +89,44 @@ class Home extends Users {
             "keywords" => "contact, report problem, swiftintern",
             "description" => "We would love to hear from you. contact us to know more.",
             "view" => $this->getLayoutView()
-        ));$view = $this->getActionView();
+        ));
+        $view = $this->getActionView();
 
         if (RequestMethods::post("action") == "contact") {
+            $name = RequestMethods::post("name", $this->user->name);$emails = array();
             $message = new Message(array(
-                "subject" => "Contact US Page",
+                "subject" => "{$name} sent you a message",
                 "body" => RequestMethods::post("body")
             ));$message->save();
-            
+
             $conversations = new Conversation(array(
                 "user_id" => "1",
-                "property" => "email",
-                "property_id" => RequestMethods::post("email"),
+                "property" => RequestMethods::post("property"),
+                "property_id" => RequestMethods::post("propertyid"),
                 "message_id" => $message->id
             ));$conversations->save();
-            
-            $this->notify(array(
-                "template" => "support",
-                "subject" => "Swiftintern Customer Support",
-                "emails" => array($conversations->property_id),
-                "message" => $message
-            ));
+
+            switch (RequestMethods::post("property")) {
+                case "email":
+                    array_push($emails, $conversations->property_id);
+                    $this->notify(array(
+                        "template" => "support",
+                        "subject" => "Swiftintern Customer Support",
+                        "emails" => $emails,
+                        "message" => $message
+                    ));
+                    break;
+                default:
+                    array_push($emails, $this->user->email);
+                    $this->notify(array(
+                        "template" => "message",
+                        "subject" => $message->subject,
+                        "emails" => $emails,
+                        "message" => $message,
+                        "name" => $name
+                    ));
+                    break;
+            }
             $view->set("success", true);
         }
     }
@@ -221,12 +238,13 @@ class Home extends Users {
     public function internship($title, $id) {
         global $datetime;
         $view = $this->getActionView();
-        $session = Registry::get("session");$student = $session->get("student");
+        $session = Registry::get("session");
+        $student = $session->get("student");
 
         $opportunity = Opportunity::first(array("id = ?" => $id));
         $organization = Organization::first(array("id = ?" => $opportunity->organization_id), array("id", "name", "photo_id"));
         if ($student) {
-            $resume = Resume::first(array("student_id = ?"=> $student->id),array("id"));
+            $resume = Resume::first(array("student_id = ?" => $student->id), array("id"));
             $view->set("resume", $resume);
             $application = Application::first(array("student_id = ?" => $student->id, "opportunity_id = ?" => $id));
             $view->set("application", $application);
@@ -239,8 +257,9 @@ class Home extends Users {
                 "property_id" => $resume->id,
                 "status" => "applied",
                 "updated" => ""
-            ));$application->save();
-            
+            ));
+            $application->save();
+
             $this->notify(array(
                 "template" => "applicationInternship",
                 "subject" => "Internship Application",
