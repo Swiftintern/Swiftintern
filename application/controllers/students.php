@@ -15,13 +15,6 @@ class Students extends Users {
      */
     protected $_student;
 
-    public function changeLayout() {
-        $this->defaultLayout = "layouts/student";
-        $this->setLayout();
-        $session = Registry::get("session");
-        $this->student = $session->get("student");
-    }
-
     /**
      * @before _secure, changeLayout
      */
@@ -279,6 +272,7 @@ class Students extends Users {
     }
 
     /**
+     * Students application to various internships
      * @before _secure, changeLayout
      */
     public function applications() {
@@ -288,19 +282,20 @@ class Students extends Users {
             "description" => "Your Application and its status",
             "view" => $this->getLayoutView()
         ));$view = $this->getActionView();
-        
+
         if(RequestMethods::post("action") == "updateStatus"){
             $appli = Application::first(array("id = ?" => RequestMethods::post("application")));
             $appli->status = RequestMethods::post("status");
             $appli->updated = strftime("%Y-%m-%d %H:%M:%S", strtotime('now'));
             $appli->save();
         } else {
-            $applications = Application::all(array("student_id = ?" => $this->student->id), array("id", "opportunity_id", "status", "created", "updated"));
+            $applications = Application::all(array("student_id = ?" => $this->student->id), array("id", "opportunity_id", "student_id", "status", "created", "updated"));
             $view->set("applications", $applications);
         }
     }
 
     /**
+     * Edit Student Basic Details, Resumes, Social Links
      * @before _secure, changeLayout
      */
     public function settings() {
@@ -353,7 +348,9 @@ class Students extends Users {
     }
 
     /**
+     * Edits and creates Qualification of Student
      * @before _secure, changeLayout
+     * @param type $id qualification id of student
      */
     public function qualification($id = NULL) {
         $this->seo(array(
@@ -370,7 +367,9 @@ class Students extends Users {
     }
     
     /**
+     * Edit and created work details of Student
      * @before _secure, changeLayout
+     * @param type $id the work id
      */
     public function work($id = NULL) {
         $this->seo(array(
@@ -463,6 +462,10 @@ class Students extends Users {
         return ['success' => NULL, 'qualification' => $qualification, 'organization' => $organization];
     }
     
+    /**
+     * Finds Resume for the Student and redirect to the location to view resume
+     * @param type $student_id the student id
+     */
     public function resume($student_id) {
         $this->noview();
         $resume = Resume::first(array("student_id = ?" => $student_id));
@@ -478,6 +481,16 @@ class Students extends Users {
         } else {
             echo 'Resume does not exist';
         }
+    }
+    
+    /**
+     * Changes the Standard Layout to Student Layout
+     */
+    public function changeLayout() {
+        $this->defaultLayout = "layouts/student";
+        $this->setLayout();
+        $session = Registry::get("session");
+        $this->student = $session->get("student");
     }
 
 }

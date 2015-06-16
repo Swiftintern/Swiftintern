@@ -6,12 +6,13 @@
             <li><a href="/students">Profile</a></li>
             <li class="active">Applications</li>
         </ol>
+
         <div class="panel panel-default">
             <div class="panel-heading">
                 <i class="fa fa-check-square fa-fw"></i> Applications
                 <div class="pull-right">
                     <div class="btn-group">
-                        <button name="message" value="1" class="btn btn-danger btn-xs"><i class="fa fa-exclamation-circle fa-fw"></i> Report</button>
+                        <button name="message" data-property="user" data-propertyid="1" class="btn btn-danger btn-xs"><i class="fa fa-exclamation-circle fa-fw"></i> Report</button>
                     </div>
                 </div>
             </div>
@@ -20,6 +21,7 @@
                     <tr>
                         <th>Opportunity</th>
                         <th>Status</th>
+                        <th>Company</th>
                         <th>Applied</th>
                         <th>Action</th>
                     </tr>
@@ -27,14 +29,16 @@
                 <tbody>
                 {if ($applications)}
                     {foreach $application in $applications}
-                        {script $opportunity 	= Opportunity::first(array("id = ?" => $application->opportunity_id), array("id", "title", "user_id"))}
+                        {script $opportunity = Opportunity::first(array("id = ?" => $application->opportunity_id), array("id", "title", "user_id", "organization_id"))}
+                        {script $organization = Organization::first(array("id = ?" => $opportunity->organization_id), array("id", "name", "linkedin_id"))}
                         <tr>
-                            <td><a href="{echo urlencode($opportunity->title)}/{echo $opportunity->id}" target="_blank">{echo $opportunity->title}</a></td>
-                            <td>{echo $application->status}</td>
-                            <td>{echo $application->created}</td>
+                            <td><a href="/{echo \Framework\StringMethods::url($opportunity->title)}/{$opportunity->id}" target="_blank">{echo $opportunity->title}</a></td>
+                            <td>{$application->status}</td>
+                            <td><a href="/organization/{echo \Framework\StringMethods::url($organization->name)}/{$organization->id}" target="_blank">{$organization->name}</a></td>
+                            <td>{$application->created}</td>
                             <td>
-                                <button name="application" value="{echo $application->id}" class="btn btn-info btn-xs">View</button>
-                                <button name="message" value="{echo $opportunity->user_id}" class="btn btn-warning btn-xs"><i class="fa fa-envelope fa-fw"></i> Message Company</button> 
+                                <a href="/students/resume/{$application->student_id}" class="btn btn-info btn-xs"><i class="fa fa-file-text-o fa-fw"></i> Resume</a>
+                                <button name="message" data-property="user" data-propertyid="{$opportunity->user_id}" class="btn btn-warning btn-xs"><i class="fa fa-envelope fa-fw"></i> Message Company</button> 
                             </td>
                         </tr>
                     {/foreach}
@@ -45,5 +49,9 @@
                 </tbody>
             </table>
         </div>
+        
+        <label>Note :</label>
+        <p>If the Status of the application "applied" is not changed within 10 days after the last date, you can <a href="/contact" target="_blank">contact us</a>.</p>
+        <p>For any help you can you can <a href="/contact" target="_blank">contact us</a> anytime 24X7, we would be happy to help.</p>
     </div>
 </section>
