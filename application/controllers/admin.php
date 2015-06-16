@@ -69,14 +69,36 @@ class Admin extends Users {
     /**
      * Shows any data info
      * 
-     * @before _secure
+     * @before _secure, changeLayout
      * @param type $model the model to which shhow info
      * @param type $id the id of object model
      */
     public function info($model = NULL, $id = NULL) {
-        $this->noview();
+        $this->seo(array("title" => "Search", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();$items = array();$values = array();
+        
         $object = $model::first(array("id = ?" => $id));
-        echo '<pre>', print_r($object), '</pre>';
+        $properties = $object->getJsonData();
+        foreach ($properties as $key => $property ) {
+            $key = substr($key, 1);
+            if(strpos($key, "_id")){
+                $child = ucfirst(substr($key, 0, -3));
+                $childobj = $child::first(array("id = ?" => $object->$key));
+                $childproperties = $childobj->getJsonData();
+                foreach ($childproperties as $k => $prop) {
+                    $k = substr($k, 1);
+                    $items[$k] = $prop;
+                    $values[] = $k;
+                }
+            } else{
+                $items[$key] = $property;
+                $values[] = $key;
+            }
+            
+        }
+        $view->set("items", $items);
+        $view->set("values", $values);
+        $view->set("model", $model);
     }
 
     /**
