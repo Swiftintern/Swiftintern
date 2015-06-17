@@ -154,7 +154,7 @@ class CRON extends Users {
             $applicants = Application::count(array("created LIKE ?" => "%{$created}%", "opportunity_id = ?" => $application->opportunity_id));
             $members = Member::all(array("organization_id = ?" => $opportunity->organization_id),array("user_id"));
             foreach ($members as $member) {
-                $mem = User::first(array("user_id = ?" => $member->user_id),array("email"));
+                $mem = User::first(array("id = ?" => $member->user_id),array("email"));
                 array_push($emails, $mem->email);
             }
             $this->notify(array(
