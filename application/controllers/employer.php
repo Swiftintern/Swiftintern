@@ -191,9 +191,10 @@ class Employer extends Users {
     public function members() {
         $view = $this->getActionView();
         $allmembers = array();
+        $session = Registry::get("session");
         $this->seo(array("title" => "Members", "keywords" => "dashboard", "description" => "Contains all realtime stats", "view" => $this->getLayoutView()));
 
-        $employees = Member::all(array("organization_id = ?" => $this->employer->organization, "validity = ?" => true), array("user_id", "designation", "authority", "created"));
+        $employees = Member::all(array("organization_id = ?" => $this->employer->organization->id, "validity = ?" => true), array("user_id", "designation", "authority", "created"));
         foreach ($employees as $emp) {
             $user = User::first(array("id = ?" => $emp->user_id), array("name"));
             $allmembers[] = [
@@ -222,7 +223,7 @@ class Employer extends Users {
         ));
         $view = $this->getActionView();
 
-        $conversations = Conversation::all(array("", "user_id = ?" => $this->user->id), array("DISTINCT property_id"));
+        $conversations = Conversation::all(array("user_id = ?" => $this->user->id), array("DISTINCT property_id"));
 
         $view->set("conversations", $conversations);
     }
@@ -384,7 +385,7 @@ class Employer extends Users {
         if ($id == NULL) {
             self::redirect("/employer/internships");
         }
-        $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id), array("id", "title", "eligibility", "last_date", "details", "payment"));
+        $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id));
         $this->seo(array("title" => "Edit Internship", "keywords" => "edit", "description" => "edit", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
 

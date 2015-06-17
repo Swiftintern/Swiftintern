@@ -15,7 +15,7 @@
                         <div class="caption">
                             <p><small>{echo substr($organization->name, 0, 20)}</small></p>
                             <p>
-                                <a href="organization/{echo urlencode($organization->name)}/{echo $organization->id}" class="btn btn-primary btn-sm" role="button">Profile</a> 
+                                <a href="organization/{echo \Framework\StringMethods::url($organization->name)}/{echo $organization->id}" class="btn btn-primary btn-sm" role="button">Profile</a> 
                                 <button name="follow" value="organization" id="{echo $organization->id}" class="btn btn-success brn-sm">Follow</button>
                             </p>
                         </div>
