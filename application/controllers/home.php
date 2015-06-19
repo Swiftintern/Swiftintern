@@ -22,7 +22,6 @@ class Home extends Users {
 
         $where = array(
             "title LIKE ?" => "%{$query}%",
-            "category LIKE ?" => "%{$query}%",
             "location LIKE ?" => "%{$location}%",
             "validity = ?" => true
         );
