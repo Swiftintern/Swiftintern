@@ -243,7 +243,7 @@ class Admin extends Users {
     public function crmLead() {
         $this->changeLayout();
         $this->seo(array("title" => "Lead Generation", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
-        $view = $this->getActionView();
+        $view = $this->getActionView();$exists = array();
 
         if (RequestMethods::post("action") == "leadGeneration") {
             if (RequestMethods::post("emails")) {
@@ -255,7 +255,13 @@ class Admin extends Users {
                 $tmpName = $_FILES['file']['tmp_name'];
                 $csvAsArray = array_map('str_getcsv', file($tmpName));
                 foreach ($csvAsArray as $key => $value) {
-                    array_push($emails, $value[0]);
+                    $user = User::first(array("email = ?" => $value[0]),array("email"));
+                    $exist = Lead::first(array("email = ?" => $value[0]),array("email"));
+                    if(!$user && !$exist){
+                        array_push($emails, $value[0]);
+                    } else {
+                        array_push($exists, $value[0]);
+                    }
                 }
             }
 
@@ -281,6 +287,9 @@ class Admin extends Users {
                 "emails" => $emails
             ));
             $view->set("success", TRUE);
+            if(!empty($exists)){
+                $view->set("success", implode("", $exists)." Already Exists");
+            }
         }
 
         $crms = CRM::all(array(), array("id", "title"));
