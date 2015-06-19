@@ -151,4 +151,25 @@ class Organizations extends Controller {
         $view->set("experience", $experience);
         $view->set("organization", $organization);
     }
+    
+    public function saveExperience() {
+        $this->seo(array(
+            "title"         => "Share interview experiences, work experience anything and you will be noted",
+            "keywords"      => "add placement papers",
+            "description"   => "experience",
+            "view"          => $this->getLayoutView()
+        ));$view = $this->getActionView();
+        
+        if(RequestMethods::post("saveExp")){
+            $experience = new Experience(array(
+                "organization_id" => RequestMethods::post("organization_id"),
+                "user_id" => $this->user->id,
+                "title" => RequestMethods::post("title"),
+                "details" => RequestMethods::post("details"),
+                "type" => RequestMethods::post("type"),
+                "validity" => "0"
+            ));
+            $experience->save();
+        }
+    }
 }
