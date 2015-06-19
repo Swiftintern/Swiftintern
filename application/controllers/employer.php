@@ -221,11 +221,19 @@ class Employer extends Users {
             "description" => "Contains all Conversations",
             "view" => $this->getLayoutView()
         ));
-        $view = $this->getActionView();
-
-        $conversations = Conversation::all(array("user_id = ?" => $this->user->id), array("DISTINCT property_id"));
-
-        $view->set("conversations", $conversations);
+        $view = $this->getActionView();$conversations = array();
+        
+        $froms = Conversation::all(array("user_id = ?" => $this->user->id), array("DISTINCT property_id", "id"));
+        foreach ($froms as $from) {
+            $to = Conversation::first(array("property_id = ?" => $this->user->id, "property = ?" => "user", "user_id = ?" => $from->property_id), array("id"));
+            if($to){
+                $conversations[] = $to->id;
+            } else{
+                $conversations[] = $from->id;
+            }
+        }
+        
+        $view->set("conversations", \Framework\ArrayMethods::toObject($conversations));
     }
 
     /**
