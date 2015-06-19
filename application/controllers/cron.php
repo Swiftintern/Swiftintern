@@ -34,6 +34,7 @@ class CRON extends Users {
     protected function leads() {
         $date = strftime("%Y-%m-%d", strtotime('-4 days'));
         $now = strftime("%Y-%m-%d", strtotime('now'));
+        
         //using distinct so as to reduce db query for message and crm
         $leads = Lead::all(array("created = ?" => $date), array("DISTINCT crm_id"));
         foreach ($leads as $lead) {
@@ -42,8 +43,8 @@ class CRON extends Users {
             $lds = Lead::all(array("created = ?" => $date, "crm_id = ?" => $lead->crm_id));
             foreach ($lds as $ld) {
                 $exist = User::first(array("email = ?" => $ld->email), array("id"));
-                $user = User::first(array("id = ?" => $ld->user_id), array("id","name","email","phone"));
                 if (!$exist) {
+                    $user = User::first(array("id = ?" => $ld->user_id), array("id","name","email","phone"));
                     $ld->status = "SECOND_MESSAGE_SENT";
                     $this->notify(array(
                         "template" => "leadGeneration",
@@ -60,6 +61,18 @@ class CRON extends Users {
                 $ld->updated = $now;
                 $ld->save();
             }
+        }
+        
+        $second_leads = Lead::all(array("updated = ?" => $date));
+        foreach ($second_leads as $second_lead) {
+            $exist = User::first(array("email = ?" => $second_lead->email), array("id"));
+            if ($exist) {
+                $second_lead->status = "REGISTERED";
+            } else {
+                $second_lead->status = "NOT_REGISTERED";
+            }
+            $second_lead->updated = $now;
+            $second_lead->save();
         }
     }
 
