@@ -73,10 +73,10 @@ class Organizations extends Controller {
             "view"          => $this->getLayoutView()
         ));$view = $this->getActionView();
         
-        $order = RequestMethods::post("order", "created");
-        $direction = RequestMethods::post("direction", "desc");
-        $page = RequestMethods::post("page", 1);
-        $limit = RequestMethods::post("limit", 12);
+        $order = RequestMethods::get("order", "created");
+        $direction = RequestMethods::get("direction", "desc");
+        $page = RequestMethods::get("page", 1);
+        $limit = RequestMethods::get("limit", 12);
         
         $where = array("validity = ?" => true);
         $fields = array("DISTINCT organization_id");
