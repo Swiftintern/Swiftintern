@@ -24,6 +24,7 @@ class Admin extends Users {
         $this->changeLayout();
         $this->seo(array("title" => "Admin Panel", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
+        $now = strftime("%Y-%m-%d", strtotime('now'));
 
         $users = User::count();
         $organizations = Organization::count();
@@ -32,6 +33,7 @@ class Admin extends Users {
         $leads = Lead::count();
         $resumes = Resume::count();
 
+        $view->set("now", $now);
         $view->set("users", $users);
         $view->set("organizations", $organizations);
         $view->set("opportunities", $opportunities);
@@ -54,6 +56,7 @@ class Admin extends Users {
         $property = RequestMethods::get("key", $property);
         $val = RequestMethods::get("value", $val);
         $page = RequestMethods::get("page", $page);
+        $sign = RequestMethods::get("sign", "equal");
 
         $view->set("items", array());
         $view->set("values", array());
@@ -61,10 +64,17 @@ class Admin extends Users {
         $view->set("page", $page);
         $view->set("property", $property);
         $view->set("val", $val);
+        $view->set("sign", $sign);
 
         if ($model) {
-            $objects = $model::all(array("{$property} = ?" => $val),array("*"),"created", "desc", 10, $page);
-            $count = $model::count(array("{$property} = ?" => $val));$i = 0;
+            if($sign == "like"){
+                $where = array("{$property} LIKE ?" => "%{$val}%");
+            } else {
+                $where = array("{$property} = ?" => $val);
+            }
+            
+            $objects = $model::all($where,array("*"),"created", "desc", 10, $page);
+            $count = $model::count($where);$i = 0;
             if ($objects) {
                 foreach ($objects as $object) {
                     $properties = $object->getJsonData();
