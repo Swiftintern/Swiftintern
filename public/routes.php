@@ -54,6 +54,11 @@ $routes = array(
         "action" => "index"
     ),
     array(
+        "pattern" => "resume",
+        "controller" => "resumes",
+        "action" => "index"
+    ),
+    array(
         "pattern" => "placement-papers",
         "controller" => "organizations",
         "action" => "placementpapers"
