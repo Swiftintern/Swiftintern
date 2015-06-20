@@ -25,21 +25,6 @@ class Organization extends Shared\Model {
      * @column
      * @readwrite
      * @type text
-     */
-    protected $_address;
-
-    /**
-     * @column
-     * @readwrite
-     * @type text
-     * @length 25
-     */
-    protected $_phone;
-
-    /**
-     * @column
-     * @readwrite
-     * @type text
      * @length 45
      */
     protected $_country;
@@ -59,14 +44,6 @@ class Organization extends Shared\Model {
      * @length 45
      */
     protected $_sector;
-
-    /**
-     * @column
-     * @readwrite
-     * @type text
-     * @length 45
-     */
-    protected $_number_employee;
 
     /**
      * @column

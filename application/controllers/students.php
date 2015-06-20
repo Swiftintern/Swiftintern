@@ -153,12 +153,9 @@ class Students extends Users {
                     $organization = new Organization(array(
                         "photo_id" => "",
                         "name" => $value["schoolName"],
-                        "address" => "",
-                        "phone" => "",
                         "country" => "",
                         "website" => "",
                         "sector" => "",
-                        "number_employee" => "",
                         "type" => "institute",
                         "about" => "",
                         "fbpage" => "",
@@ -188,12 +185,9 @@ class Students extends Users {
                     $organization = new Organization(array(
                         "photo_id" => "",
                         "name" => $value["company"]["name"],
-                        "address" => "",
-                        "phone" => "",
                         "country" => "",
                         "website" => "",
                         "sector" => "",
-                        "number_employee" => "",
                         "type" => "company",
                         "about" => "",
                         "fbpage" => "",
@@ -407,7 +401,7 @@ class Students extends Users {
             $institute = RequestMethods::post('institute');
             $organization = Organization::first(array("name = ?" => $institute), array("id","name"));
             if (!$organization) {
-                $organization = new Organization(array("photo_id" => "", "name" => $institute, "address" => "", "phone" => "", "country" => "", "website" => "", "sector" => "", "number_employee" => "", "type" => "company", "about" => "", "fbpage" => "", "linkedin_id" => "", "validity" => "1", "updated" => ""));
+                $organization = new Organization(array("photo_id" => "", "name" => $institute, "country" => "", "website" => "", "sector" => "", "type" => "company", "about" => "", "fbpage" => "", "linkedin_id" => "", "validity" => "1", "updated" => ""));
                 $organization->save();
             }
             
@@ -445,7 +439,7 @@ class Students extends Users {
             $institute = RequestMethods::post('institute');
             $organization = Organization::first(array("name = ?" => $institute), array("id","name"));
             if (!$organization) {
-                $organization = new Organization(array("photo_id" => "", "name" => $institute, "address" => "", "phone" => "", "country" => "", "website" => "", "sector" => "education", "number_employee" => "", "type" => "institute", "about" => "", "fbpage" => "", "linkedin_id" => "", "validity" => "1", "updated" => ""));
+                $organization = new Organization(array("photo_id" => "", "name" => $institute, "country" => "", "website" => "", "sector" => "education", "type" => "institute", "about" => "", "fbpage" => "", "linkedin_id" => "", "validity" => "1", "updated" => ""));
                 $organization->save();
             }
             

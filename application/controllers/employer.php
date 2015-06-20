@@ -116,12 +116,9 @@ class Employer extends Users {
                 $organization = new Organization(array(
                     "photo_id" => $photoId,
                     "name" => $company["name"],
-                    "address" => $this->checkData($company["locations"]["values"]["0"]["address"]["city"]),
-                    "phone" => "",
                     "country" => "",
                     "website" => $this->checkData($company["websiteUrl"]),
                     "sector" => $this->checkData($company["industries"]["values"]["0"]["name"]),
-                    "number_employee" => $this->checkData($company["employeeCountRange"]["name"]),
                     "type" => "company",
                     "about" => $this->checkData($company["description"]),
                     "fbpage" => "",

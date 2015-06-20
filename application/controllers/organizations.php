@@ -56,7 +56,7 @@ class Organizations extends Controller {
             "view"          => $this->getLayoutView()
         ));$view = $this->getActionView();
         
-        $organization = Organization::first(array("id = ?" => $id),array("id", "name", "address", "phone", "website", "type", "linkedin_id", "photo_id"));
+        $organization = Organization::first(array("id = ?" => $id),array("id", "name", "website", "type", "linkedin_id", "photo_id"));
         $opportunities = Opportunity::all(array("organization_id = ?" => $organization->id),array("id", "title", "last_date", "location"));
         $experiences = Experience::all(array("organization_id = ?" => $organization->id),array("id", "title", "details"));
         
@@ -159,7 +159,6 @@ class Organizations extends Controller {
                 "user_id" => $this->user->id,
                 "title" => RequestMethods::post("title"),
                 "details" => RequestMethods::post("details"),
-                "type" => RequestMethods::post("type"),
                 "validity" => "0"
             ));
             $experience->save();
