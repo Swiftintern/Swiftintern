@@ -70,7 +70,11 @@ class OnlineTest extends Users {
         $questions = Question::all(array("test_id = ?" => $test->id), array("id", "question", "type"));
 
         $participant = Participant::first(array("test_id = ?" => $test->id, "user_id = ?" => $this->user->id));
-        if (!$participant) {
+        if ($participant) {
+            if(!empty($participant->score)){
+                self::redirect("/onlinetest/result/" . $participant->id);
+            }
+        } else {
             $participant = new Participant(array(
                 "test_id" => $test->id,
                 "user_id" => $this->user->id,
@@ -86,7 +90,7 @@ class OnlineTest extends Users {
 
     public function result($participant_id) {
         $participant = Participant::first(array("id = ?" => $participant_id));
-        $test = Test::first(array("id = ?" => $participant->test_id), array("id","title","syllabus"));
+        $test = Test::first(array("id = ?" => $participant->test_id), array("id", "title", "syllabus"));
         $user = User::first(array("id = ?" => $participant->user_id), array("name"));
         $this->seo(array(
             "title" => "Result " . $test->title,
@@ -98,7 +102,9 @@ class OnlineTest extends Users {
 
         if (RequestMethods::post("action") == "test_result") {
             $total_questions = Question::count(array("test_id = ?" => $test->id));
-            $per_ques = 100 / $total_questions;$marks = 0;$count = 0;
+            $per_ques = 100 / $total_questions;
+            $marks = 0;
+            $count = 0;
             $questions = RequestMethods::post("question");
 
             foreach ($questions as $question => $answer) {
@@ -111,8 +117,8 @@ class OnlineTest extends Users {
             $participant->attempted = $count;
 
             $participant->save();
-            
-            if($marks >= 60){
+
+            if ($marks >= 60) {
                 $certificate = new Certificate(array(
                     "property" => "participant",
                     "property_id" => $participant->id,
@@ -121,7 +127,7 @@ class OnlineTest extends Users {
                 ));
                 $certificate->save();
                 $link = "https://www.linkedin.com/profile/add?_ed=0_ZcIwGCXmSQ8TciBtRYgI1j4OsllETrtl_xajtrVc5LaaImXEsXtVW49ekKQ2HJFTaSgvthvZk7wTBMS3S-m0L6A6mLjErM6PJiwMkk6nYZylU7__75hCVwJdOTZCAkdv&pfCertificationName={urlencode($test->title)}&pfCertificationUrl={urlencode(URL)}&pfLicenseNo={$certificate->uniqid}&pfCertStartDate={$certificate->created}&trk=onsite_longurl";
-                
+
                 $this->notify(array(
                     "template" => "studentTestCertification",
                     "subject" => "Add your certification to your LinkedIn Profile",
@@ -133,11 +139,11 @@ class OnlineTest extends Users {
                 ));
             }
         }
-        
-        if(!$certificate){
-            $certificate = Certificate::first(array("property_id = ?" => $participant->id),array("uniqid","created"));
+
+        if (!$certificate) {
+            $certificate = Certificate::first(array("property_id = ?" => $participant->id), array("uniqid", "created"));
         }
-        
+
         $view->set("created", strftime("%Y%m", strtotime($participant->created)));
         $view->set("participant", $participant);
         $view->set("test", $test);
@@ -163,9 +169,20 @@ class OnlineTest extends Users {
 
         // Output image to the browser
         header('Content-Type: image/png');
-        
+
         imagepng($im);
         imagedestroy($im);
+    }
+
+    /**
+     * @protected
+     */
+    public function _secure() {
+        $user = $this->getUser();
+        if (!$user) {
+            header("Location: /students/register");
+            exit();
+        }
     }
 
 }

@@ -218,7 +218,7 @@ function loadTests(opts) {
             console.log(data);
             if (data.count >= 1) {
                 $.each(data.exams, function (i, exam) {
-                    $('#results').append('<div class="col-sm-4 col-md-3"><div class="thumbnail"><a href="test/' + encodeURI(exam._title) + '/' + exam._id + '"><img src="/onlinetest/photo/' + exam._id + '" alt="' + exam._title + '" width="100"></a><div class="caption"><p><b>' + exam._title + '</b></p><p><a href="test-details/' + encodeURI(exam._title) + '/' + exam._id + '" class="btn btn-primary">Details</a><a href="test/' + encodeURI(exam._title) + '/' + exam._id + '" class="btn btn-success" id="taketest">Start Test</a></p></div></div></div>');
+                    $('#results').append('<div class="col-sm-4 col-md-3"><div class="thumbnail"><a href="test/' + encodeURI(exam._title) + '/' + exam._id + '"><img src="/onlinetest/photo/' + exam._id + '" alt="' + exam._title + '" width="100"></a><div class="caption"><p><b>' + exam._title + '</b></p><p><a href="/onlinetest/details/' + encodeURI(exam._title) + '/' + exam._id + '" class="btn btn-primary btn-xs">Details</a><a href="/test/' + encodeURI(exam._title) + '/' + exam._id + '" class="btn btn-success btn-xs" id="taketest">Start Test</a></p></div></div></div>');
                 });
             } else {
                 $('#results').append("No Results Found, Check later");
