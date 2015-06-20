@@ -84,21 +84,13 @@ class CRON extends Users {
      * Sends Newsletters to User Group
      */
     protected function newsletters() {
-        $now = strftime("%Y-%m-%d", strtotime('now'));
-        $emails = array();$limit = 0;$count = 0;
+        $now = strftime("%Y-%m-%d", strtotime('now'));$count = 0;
 
         $newsletters = Newsletter::all(array("scheduled = ?" => $now));
         foreach ($newsletters as $newsletter) {
             $message = Message::first(array("id = ?" => $newsletter->message_id));
             $users = User::all(array("type = ?" => $newsletter->user_group), array("email"));
             foreach ($users as $user) {
-                $emails[$limit][] = $user->email;$count++;
-                if ($count == '999') {
-                    $count = 0;$limit++;
-                }
-            }
-
-            for ($i = 0; $i <= $limit; $i++) {
                 $this->notify(array(
                     "template" => "newsletter",
                     "delivery" => "mailgun",
@@ -106,8 +98,11 @@ class CRON extends Users {
                     "message" => $message,
                     "track" => true,
                     "newsletter" => $newsletter,
-                    "emails" => implode(",", $emails[$i])
-                ));
+                    "emails" => $user->email
+                ));$count++;
+                if ($count == '999') {
+                    sleep(60);$count = 0;
+                }
             }
         }
     }
