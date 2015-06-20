@@ -274,29 +274,32 @@ class Admin extends Users {
                     }
                 }
             }
-
-            foreach ($emails as $email) {
-                $lead = new Lead(array(
-                    "user_id" => $this->user->id,
-                    "email" => $email,
-                    "crm_id" => RequestMethods::post("crm_id"),
-                    "status" => "FIRST_MESSAGE_SENT",
-                    "validity" => "1",
-                    "updated" => ""
+            
+            if(!empty($emails)){
+                foreach ($emails as $email) {
+                    $lead = new Lead(array(
+                        "user_id" => $this->user->id,
+                        "email" => $email,
+                        "crm_id" => RequestMethods::post("crm_id"),
+                        "status" => "FIRST_MESSAGE_SENT",
+                        "validity" => "1",
+                        "updated" => ""
+                    ));
+                    $lead->save();
+                }
+                $crm = CRM::first(array("id = ?" => $lead->crm_id), array("first_message_id"));
+                $message = Message::first(array("id = ?" => $crm->first_message_id));
+                $this->notify(array(
+                    "template" => "leadGeneration",
+                    "subject" => $message->subject,
+                    "message" => $message,
+                    "user" => $this->user,
+                    "from" => $this->user->name,
+                    "emails" => $emails
                 ));
-                $lead->save();
+                $view->set("success", TRUE);
             }
-            $crm = CRM::first(array("id = ?" => $lead->crm_id), array("first_message_id"));
-            $message = Message::first(array("id = ?" => $crm->first_message_id));
-            $this->notify(array(
-                "template" => "leadGeneration",
-                "subject" => $message->subject,
-                "message" => $message,
-                "user" => $this->user,
-                "from" => $this->user->name,
-                "emails" => $emails
-            ));
-            $view->set("success", TRUE);
+
             if(!empty($exists)){
                 $view->set("success", implode("", $exists)." Already Exists");
             }
