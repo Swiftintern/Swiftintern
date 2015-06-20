@@ -38,14 +38,6 @@ class Experience extends Shared\Model {
     /**
      * @column
      * @readwrite
-     * @type text
-     * @length 32
-     */
-    protected $_type;
-    
-    /**
-     * @column
-     * @readwrite
      * @type integer
      */
     protected $_validity;

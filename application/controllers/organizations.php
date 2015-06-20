@@ -107,15 +107,11 @@ class Organizations extends Controller {
         $seo = Framework\Registry::get("seo");
         
         $experience = Experience::first(
-            array(
-                "id = ?" => $id
-            ),
+            array("id = ?" => $id),
             array("id", "organization_id", "title", "details")
         );
         $organization   = Organization::first(
-            array(
-                "id = ?" => $experience->organization_id
-            ),
+            array("id = ?" => $experience->organization_id),
             array("id", "name")
         );
         
@@ -129,10 +125,7 @@ class Organizations extends Controller {
         $next = 0;
         $previous = 0;
         $experiences = Experience::all(
-            array(
-                "organization_id = ?" => $experience->organization_id,
-                "validity = ?" => true
-            ),
+            array("organization_id = ?" => $experience->organization_id,"validity = ?" => true),
             array("id", "organization_id", "title", "details")
         );
 
