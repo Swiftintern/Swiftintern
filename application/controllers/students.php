@@ -25,8 +25,8 @@ class Students extends Users {
         $view = $this->getActionView();
 
         $session = Registry::get("session");
-        $user = $this->user;
-        $student = $session->get("student");
+        $user = $session->get("user");
+        $student = $this->student;
 
         $qualifications = Qualification::all(array("student_id = ?" => $student->id), array("id", "degree", "major", "organization_id", "gpa", "passing_year"));
         $works = Work::all(array("student_id = ?" => $student->id), array("id", "designation", "responsibility", "organization_id", "duration"));
@@ -312,21 +312,28 @@ class Students extends Users {
         }
         $resumes = Resume::all(array("student_id = ?" => $this->student->id));
         $view->set("resumes", $resumes);
-        
+        $session = Registry::get("session");
+
         if (RequestMethods::post('action') == 'saveUser') {
             $user = User::first(array("id = ?" => $this->user->id));
             $user->phone = RequestMethods::post('phone');
             $user->name = RequestMethods::post('name');
+            $user->updated = date('Y-m-d H:i:s');
             $user->save();
+            $this->setUser($user); 
+
             $view->set("success", true);
+            $view->set("user", $user);
         }
         if (RequestMethods::post('action') == 'saveStudent') {
             $student = Student::first(array("id = ?" => $this->student->id));
             $student->city = RequestMethods::post("city");
             $student->about = RequestMethods::post("about");
             $student->skills = RequestMethods::post("skills");
+            $student->updated = date('Y-m-d H:i:s');
             $student->save();
-
+            $session->set("student", $student);
+            
             $view->set("success", true);
             $view->set("student", $student);
         }
@@ -485,6 +492,7 @@ class Students extends Users {
         $this->setLayout();
         $session = Registry::get("session");
         $this->student = $session->get("student");
+        $this->user = $session->get('user');
     }
 
 }
