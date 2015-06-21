@@ -59,7 +59,7 @@ namespace Shared {
             header("Location: {$url}");
             exit();
         }
-
+        
         public function setUser($user) {
             $session = Registry::get("session");
             if ($user) {
@@ -73,7 +73,8 @@ namespace Shared {
 
         public function __construct($options = array()) {
             parent::__construct($options);
-
+            
+            //$this->setRedirect();
             // connect to database
             $database = Registry::get("database");
             $database->connect();

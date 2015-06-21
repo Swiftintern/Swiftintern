@@ -233,6 +233,9 @@ function login() {
         action: "students/register",
         callback: function (data) {
             if (data.url) {
+                //set session redirect
+
+                //redirect
                 window.location.href = data.url;
             }
         }

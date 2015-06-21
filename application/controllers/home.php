@@ -241,7 +241,7 @@ class Home extends Users {
         $view = $this->getActionView();
         $session = Registry::get("session");
         $student = $session->get("student");
-
+        //echo $_SERVER[REQUEST_URI];
         $opportunity = Opportunity::first(array("id = ?" => $id));
         $organization = Organization::first(array("id = ?" => $opportunity->organization_id), array("id", "name", "photo_id"));
         if ($student) {

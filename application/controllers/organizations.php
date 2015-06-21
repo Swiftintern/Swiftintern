@@ -5,10 +5,9 @@
  *
  * @author Faizan Ayubi
  */
-use Shared\Controller as Controller;
 use Framework\RequestMethods as RequestMethods;
 
-class Organizations extends Controller {
+class Organizations extends Users {
 
     public function index() {
         $this->seo(array(

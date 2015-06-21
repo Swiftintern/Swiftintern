@@ -9,6 +9,26 @@ use Shared\Controller as Controller;
 use Framework\Registry as Registry;
 
 class Users extends Controller {
+    /**
+     * Checks for set URL and redirects them
+     * @param string $url the url to redirect to
+     */
+    public function setRedirect($url = NULL) {
+        $session = Registry::get("session");
+        $storedUrl = $session->get('url');
+        // If url is given then set the url in session
+        if ($url) {
+            $session->set("url", $url);
+        } elseif ($storedUrl) {  // url not given but set in session
+            // Then check if we reached the destination
+            if ($_SERVER[REQUEST_URI] == urldecode($storedUrl)) {
+                $session->erase("url");
+            } else {
+                // We need to redirect them to stored location
+                self::redirect($storedUrl);
+            }
+        }
+    }
 
     /**
      * The Main Method to return SendGrid Instance
@@ -59,16 +79,17 @@ class Users extends Controller {
             $view->set($key, $value);
             $$key = $value;
         }
-        $body = $view->render();$emails = array();
-        if(isset($options["emails"])){
+        $body = $view->render();
+        $emails = array();
+        if (isset($options["emails"])) {
             $emails = $options["emails"];
-        } else{
+        } else {
             array_push($emails, $user->email);
         }
-        
-        if(isset($options["from"])){
+
+        if (isset($options["from"])) {
             $from = $options["from"];
-        } else{
+        } else {
             $from = "Saud Akhtar";
         }
 
@@ -117,7 +138,7 @@ class Users extends Controller {
         $this->willRenderActionView = false;
     }
 
-    public function log($message = "") {
+    protected function log($message = "") {
         $logfile = APP_PATH . "/logs/" . date("Y-m-d") . ".txt";
         $new = file_exists($logfile) ? false : true;
         if ($handle = fopen($logfile, 'a')) {
@@ -132,26 +153,26 @@ class Users extends Controller {
             echo "Could not open log file for writing";
         }
     }
-    
+
     public function track($property, $property_id) {
-        header( 'Content-Type: image/png' );
-        
+        header('Content-Type: image/png');
+
         Stat::log($property, $property_id);
         $pixel = 'http://assets.swiftintern.com/images/others/track.png';
-        
+
         //Get the filesize of the image for headers
         $filesize = filesize(APP_PATH . '/public/assets/images/others/track.png');
-    
+
         //Now actually output the image requested, while disregarding if the database was affected
         header('Pragma: public');
         header('Expires: 0');
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Cache-Control: private',false);
+        header('Cache-Control: private', false);
         header('Content-Disposition: attachment; filename="pixel.png"');
-        header('Content-Transfer-Encoding: binary' );
-        header('Content-Length: '.$filesize);
+        header('Content-Transfer-Encoding: binary');
+        header('Content-Length: ' . $filesize);
         readfile($pixel);
-        
+
         exit;
     }
 
@@ -165,7 +186,7 @@ class Users extends Controller {
             $file = $_FILES[$name];
             $path = APP_PATH . "/public/assets/uploads/files/";
             $extension = pathinfo($file["name"], PATHINFO_EXTENSION);
-            $filename = uniqid().".{$extension}";
+            $filename = uniqid() . ".{$extension}";
             if (move_uploaded_file($file["tmp_name"], $path . $filename)) {
                 return $filename;
             } else {
