@@ -219,6 +219,31 @@ class Admin extends Users {
         $this->changeLayout();
         $this->seo(array("title" => "Support Tickets", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
+        
+        if (RequestMethods::post('action') == 'support') {
+            $email = [RequestMethods::post('email')];
+            $this->notify(array(
+                "template" => "message",
+                "subject" => RequestMethods::post('subject'),
+                "emails" => $email,
+                "message" => RequestMethods::post("body")
+            ));
+        }
+        
+        $inbox = Conversation::all(array("property = ?" => "email"), array("created", "property_id", "message_id"), "id", "desc");
+        $allinbox = [];
+        foreach ($inbox as $message) {
+            $body = Message::first(array("id = ?" => $message->message_id), array("body", "subject"));
+            $allinbox[] = [
+                "id" => $message->message_id,
+                "from" => $message->property_id,
+                "subject" => $body->subject,
+                "message" => $body->body,
+                "received" => \Framework\StringMethods::datetime_to_text($message->created)
+            ];
+        }
+        
+        $view->set("allinbox", \Framework\ArrayMethods::toObject($allinbox));
     }
 
     /**

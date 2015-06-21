@@ -1,6 +1,39 @@
 <div id="page-wrapper">
     <div class="row col-lg-12">
         <h1 class="page-header text-center">Support Tickets</h1>
-        
+        <p id="status"></p>
     </div>
-</div>
+    
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="tab-content">
+                <div class="tab-pane active" id="inbox">
+                    <div class="panel panel-default">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>From</th>
+                                    <th>Subject</th>
+                                    <th>Message</th>
+                                    <th>Received at</th>
+                                </tr>
+                            </thead>
+                            <tbody id="to_user_id">
+                                {foreach $inbox in $allinbox}
+                                <tr>
+                                    <td>{echo $inbox->from}</td>
+                                    <td>{echo $inbox->subject}</td>
+                                    <td>{echo $inbox->message}</td>
+                                    <td><small>{echo $inbox->received}</small></td>
+                                    <td>
+                                        <button name="message" data-subject="{echo $inbox->subject}" data-from="{echo $inbox->from}" class="btn btn-warning btn-xs"><i class="fa fa-envelope fa-fw"></i> Message</button> 
+                                    </td>
+                                </tr>
+                                {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

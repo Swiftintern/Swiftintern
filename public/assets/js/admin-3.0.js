@@ -87,6 +87,26 @@ $(document).ready(function () {
             }
         });
     });
+    
+    $('button[name=message]').click(function (e) {
+        var self = this;
+        window.opts.subject = $(this).data("subject");
+        window.opts.email = $(this).data("from");
+        $('#message_modal').modal('show');
+    });
+
+    $('#messageform').submit(function(e) {
+        e.preventDefault();
+        var body = $('#body').val();
+        request.create({
+            action: "employer/messages",
+            data: {action: 'support', subject: window.opts.subject, email: window.opts.email, body: body},
+            callback: function (data) {
+                $('#status').html('Message Sent Successfully!!!');
+                $('#message_modal').modal('hide');
+            }
+        });
+    });
 
 });
 
