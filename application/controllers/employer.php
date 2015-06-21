@@ -218,19 +218,56 @@ class Employer extends Users {
             "description" => "Contains all Conversations",
             "view" => $this->getLayoutView()
         ));
-        $view = $this->getActionView();$conversations = array();
+        $view = $this->getActionView();$conversations = array();        
+        $user = $this->getUser();
         
-        $froms = Conversation::all(array("user_id = ?" => $this->user->id), array("DISTINCT property_id", "id"));
-        foreach ($froms as $from) {
-            $to = Conversation::first(array("property_id = ?" => $this->user->id, "property = ?" => "user", "user_id = ?" => $from->property_id), array("id"));
-            if($to){
-                $conversations[] = $to->id;
-            } else{
-                $conversations[] = $from->id;
-            }
+        if (RequestMethods::post('action') == 'message') {
+            $message = new Message(array(
+                "subject" => $user->name. " sent you a message",
+                "body" => RequestMethods::post('body')
+            ));
+            $message->save();
+            
+            $conversation = new Conversation(array(
+                "user_id" => RequestMethods::post('user_id'),
+                "property" => "user",
+                "property_id" => $user->id,
+                "message_id" => $message->id
+            ));
+            $conversation->save();
         }
         
-        $view->set("conversations", \Framework\ArrayMethods::toObject($conversations));
+        $outbox = Conversation::all(array("property = ?" => "user", "property_id = ?" => $user->id),
+                            array("user_id", "message_id", "created"), "id", "desc");
+        $alloutbox = [];        
+        foreach ($outbox as $message) {
+            $body = Message::first(array("id = ?" => $message->message_id), array("body"));
+            $to = User::first(array("id = ?" => $message->user_id), array("name"));
+            $alloutbox[] = [
+                "receiver_id" => $message->user_id,
+                "id" => $message->message_id,
+                "to" => $to->name,
+                "message" => $body->body,
+                "sent" => \Framework\StringMethods::datetime_to_text($message->created)
+            ];
+        }
+
+        $inbox = Conversation::all(array("user_id = ?" => $user->id, "property = ?" => "user"), array("created", "property_id", "message_id"), "id", "desc");
+        $allinbox = [];
+        foreach ($inbox as $message) {
+            $body = Message::first(array("id = ?" => $message->message_id), array("body"));
+            $from = User::first(array("id = ?" => $message->property_id), array("name"));
+            $allinbox[] = [
+                "sender_id" => $message->property_id,
+                "id" => $message->message_id,
+                "from" => $from->name,
+                "message" => $body->body,
+                "received" => \Framework\StringMethods::datetime_to_text($message->created)
+            ];
+        }
+        $view->set("user", $user);
+        $view->set("alloutbox", \Framework\ArrayMethods::toObject($alloutbox));
+        $view->set("allinbox", \Framework\ArrayMethods::toObject($allinbox));
     }
 
     /**

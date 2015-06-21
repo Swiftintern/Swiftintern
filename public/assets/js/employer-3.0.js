@@ -91,4 +91,23 @@ $(document).ready(function () {
         });
 
     });
+    
+    $('button[name=message]').click(function (e) {
+        var self = this;
+        window.opts.user_id = $(this).data("user_id");
+        $('#message_modal').modal('show');
+    });
+
+    $('#messageform').submit(function(e) {
+        e.preventDefault();
+        var body = $('#body').val();
+        request.create({
+            action: "employer/messages",
+            data: {action: 'message', user_id: window.opts.user_id, body: body},
+            callback: function (data) {
+                $('#status').html('Message Sent Successfully!!!');
+                $('#message_modal').modal('hide');
+            }
+        });
+    });
 });
