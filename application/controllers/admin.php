@@ -301,6 +301,7 @@ class Admin extends Users {
             }
             
             if(!empty($emails)){
+                $emails = array_unique($emails);
                 foreach ($emails as $email) {
                     $lead = new Lead(array(
                         "user_id" => $this->user->id,

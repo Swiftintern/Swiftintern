@@ -84,7 +84,7 @@ class CRON extends Users {
      * Sends Newsletters to User Group
      */
     protected function newsletters() {
-        $now = strftime("%Y-%m-%d", strtotime('now'));$count = 0;
+        $now = strftime("%Y-%m-%d", strtotime('now'));
 
         $newsletters = Newsletter::all(array("scheduled = ?" => $now));
         foreach ($newsletters as $newsletter) {
@@ -99,10 +99,7 @@ class CRON extends Users {
                     "track" => true,
                     "newsletter" => $newsletter,
                     "emails" => $user->email
-                ));$count++;
-                if ($count == '999') {
-                    sleep(60);$count = 0;
-                }
+                ));
             }
         }
     }
