@@ -13,7 +13,7 @@
                 {script $i=1}
                 {foreach $question in $questions}
                 <div class="{if($i!=1)} hide {/if}" id="question_{echo $i}">
-                    <label>&nbsp;Q{echo $i}&nbsp;{echo $question->question}</label>
+                    <label>Q{echo $i} of {echo count($questions)}. {echo $question->question}</label>
                     {script $options = Option::all(array('ques_id = ?' => $question->id))}
                     <ul class="list-group">
                         {foreach $option in $options}
@@ -33,8 +33,8 @@
                 <input type="hidden" name="action" value="test_result">
                 <nav>
                     <ul class="pager">
-                        <li><a href="#" id="prevQues">Previous</a></li>
-                        <li><a href="#" id="nextQues">Next</a></li>
+                        <li><a href="#" class="prevQues">Previous</a></li>
+                        <li><a href="#" class="nextQues">Next</a></li>
                     </ul>
                 </nav>
                 <button type="submit" class="btn btn-primary btn-lg pull-right">Submit</button>
@@ -48,10 +48,10 @@ $(document).ready(function () {
     var warn = 0;
     $(window).blur(function () {
         if (warn > 1) {
-            alert("Your Test is now cancelled");
-            window.location.href = "/home";
+            //alert("Your Test is now cancelled");
+            //window.location.href = "/home";
         }
-        alert("You are not allowed to open any new tab. or minimize the window");
+        //alert("You are not allowed to open any new tab. or minimize the window");
         warn++;
     });
 });

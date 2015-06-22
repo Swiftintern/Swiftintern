@@ -124,7 +124,7 @@ $(document).ready(function () {
     });
 
     //test
-    $('#prevQues').click(function (e) {
+    $('.prevQues').click(function (e) {
         e.preventDefault();
         var ques = window.opts.ques,
                 prev = "#question_" + (+ques + -1),
@@ -141,7 +141,7 @@ $(document).ready(function () {
         console.log(window.opts.ques);
     });
 
-    $('#nextQues').click(function (e) {
+    $('.nextQues').click(function (e) {
         e.preventDefault();
         var ques = window.opts.ques,
                 next = "#question_" + (+ques + +1),
