@@ -1,6 +1,6 @@
 <img src="http://assets.swiftintern.com/images/headerlogo.png" style="width:100%;"><br>
 Dear {$user->name},<br><br>
-Your Application for <a href="http://swiftintern.com/{echo urlencode($opportunity->title)}/{echo $opportunity->id}">{$opportunity->title}</a> has not been selected for the current year. 
+Your Application for <a href="http://swiftintern.com/{echo Framework\StringMethods::url($opportunity->title)}/{echo $opportunity->id}">{$opportunity->title}</a> has not been selected for the current year. 
 Apply next  time or you can apply to many other <a href="http://swiftintern.com/?utm_campaign=notify&utm_medium=email&utm_source=students">Internship</a> availabe on our sites. <br>
 <br>
 For more details about Opportunity please contact <a href="https://www.linkedin.com/company/{echo $organization->linkedin_id}">{$organization->name}</a> on linkedin<br>
