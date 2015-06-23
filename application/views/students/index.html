@@ -154,6 +154,7 @@
                         <tr>
                             <th>Platform</th>
                             <th>Link</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -161,6 +162,9 @@
                         <tr>
                             <td>{echo $social->social_platform}</td>
                             <td>{echo $social->link}</td>
+                            <td>
+                                <button name="delete" value="social" class="btn btn-primary btn-xs" data-id="{echo $social->id}"><i class="fa fa-trash fa-fw"></i> Delete</button>
+                            </td>
                         </tr>
                         {/foreach}
                         {/else}

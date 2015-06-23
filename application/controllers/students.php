@@ -346,6 +346,24 @@ class Students extends Users {
             $social->save();
             $view->set("success", true);
         }
+        
+    }
+    
+    /**
+     * Common Delete Functions
+     * @before _secure, changeLayout
+     */
+    public function delete() {
+        $this->noview();
+        if(RequestMethods::post("action") == "deletesocial"){
+            $social = Social::first(array("id = ?" => RequestMethods::post("id")));
+            if($this->user->id == $social->user_id){
+                $social->delete();
+                return TRUE;
+            }
+        }
+        
+        return FALSE;
     }
 
     /**

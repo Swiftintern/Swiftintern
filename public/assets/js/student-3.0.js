@@ -51,6 +51,20 @@ $(document).ready(function () {
             }
         });
     });
+    
+    $('button[name=delete]').click(function (e) {
+        var self = this,
+            value = this.value,
+            id = $(self).data("id");
+        console.log(id);
+        request.create({
+            action: "students/delete",
+            data: {action: 'delete'+value, id: id},
+            callback: function (data) {
+                alert('Deleted Successfully!!!');
+            }
+        });
+    });
 
     setInterval(loadSponsored({
         limit: 3
