@@ -173,7 +173,6 @@ class CRON extends Users {
                 "applicants" => $applicants,
                 "emails" => $emails
             ));
-            $this->log(implode("", $emails));
         }
     }
 
