@@ -79,27 +79,22 @@ class Organizations extends Users {
         
         $where = array("validity = ?" => true);
         $fields = array("DISTINCT organization_id");
+        $count = Experience::count($where);
         $companies = Experience::all($where, $fields, $order, $direction, $limit, $page);
         
-        $orgs = array();
+        $organizations = array();
         foreach ($companies as $company){
             $organization = Organization::first(
                 array("id = ?" => $company->organization_id),
                 array("id", "name", "photo_id")
             );
-            if ($organization->photo_id) {
-                    $photo_id = $organization->photo_id;
-            }else {
-                    $photo_id = LOGO;
-            }
-            $orgs[] = array(
-                'id'        => $organization->id,
-                'name'      => $organization->name,
-                'photo_id'  => $photo_id
-            );
+            $organizations[] = $organization;
         }
 
-        $view->set("orgs", \Framework\ArrayMethods::toObject($orgs));
+        $view->set("limit", $limit);
+        $view->set("page", $page);
+        $view->set("count", $count);
+        $view->set("organizations", $organizations);
     }
     
     public function experience($title, $id) {

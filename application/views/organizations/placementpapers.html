@@ -8,15 +8,15 @@
     <div class="row">
         <article class="col-md-9 col-xs-12">
             <div class="row" id="results">
-            {foreach $org in $orgs}
+            {foreach $organization in $organizations}
                 <div class="col-sm-4 col-md-3">
                     <div class="thumbnail">
-                        <img src="/thumbnails/{echo $org->photo_id}" alt="{echo $org->name}" width="80">
+                        <img src="/thumbnails/{echo $organization->photo_id}" alt="{echo $organization->name}" width="80">
                         <div class="caption">
-                            <p><small>{echo substr($org->name, 0, 18)}</small></p>
+                            <p><small>{echo substr($organization->name, 0, 18)}</small></p>
                             <p>
-                                <a href="organization/{echo urlencode($org->name)}/{echo $org->id}#experience" class="btn btn-primary btn-sm" role="button">Papers</a> 
-                                <a href="organization/{echo urlencode($org->name)}/{echo $org->id}" class="btn btn-info btn-sm">Profile</a></p>
+                                <a href="organization/{echo \Framework\StringMethods::url($organization->name)}/{echo $organization->id}#experience" class="btn btn-primary btn-sm" role="button">Papers</a> 
+                                <a href="organization/{echo \Framework\StringMethods::url($organization->name)}/{echo $organization->id}" class="btn btn-info btn-sm">Profile</a></p>
                         </div>
                     </div>
                 </div>
