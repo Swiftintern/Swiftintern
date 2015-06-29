@@ -56,7 +56,7 @@ class CRON extends Users {
                         "message" => $message,
                         "user" => $user,
                         "from" => $user->name,
-                        "emails" => array($ld->email)
+                        "emails" => [$ld->email]
                     ));
                 } else {
                     $ld->status = "REGISTERED";
@@ -84,13 +84,19 @@ class CRON extends Users {
      * Sends Newsletters to User Group
      */
     protected function newsletters() {
-        $now = strftime("%Y-%m-%d", strtotime('now'));
+        $now = strftime("%Y-%m-%d", strtotime('now'));$emails = [];
 
         $newsletters = Newsletter::all(array("scheduled = ?" => $now));
         foreach ($newsletters as $newsletter) {
             $message = Message::first(array("id = ?" => $newsletter->message_id));
             $users = User::all(array("type = ?" => $newsletter->user_group), array("email"));
             foreach ($users as $user) {
+                array_push($emails, $user->email);
+            }
+            
+            $batches = array_chunk($emails, 1000);
+            
+            foreach ($batches as $batch) {
                 $this->notify(array(
                     "template" => "newsletter",
                     "delivery" => "mailgun",
@@ -98,7 +104,7 @@ class CRON extends Users {
                     "message" => $message,
                     "track" => true,
                     "newsletter" => $newsletter,
-                    "emails" => $user->email
+                    "emails" => $batch
                 ));
             }
         }

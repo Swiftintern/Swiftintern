@@ -225,7 +225,7 @@ class Admin extends Users {
             $this->notify(array(
                 "template" => "message",
                 "subject" => RequestMethods::post('subject'),
-                "emails" => $email,
+                "emails" => [$email],
                 "message" => RequestMethods::post("body")
             ));
         }

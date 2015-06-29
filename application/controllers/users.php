@@ -9,6 +9,7 @@ use Shared\Controller as Controller;
 use Framework\Registry as Registry;
 
 class Users extends Controller {
+
     /**
      * Checks for set URL and redirects them
      * @param string $url the url to redirect to
@@ -60,17 +61,34 @@ class Users extends Controller {
         }
     }
 
-    protected function mailtest() {
+    public function mailtest() {
         $this->noview();
         $options = array(
-            "template" => "studentRegister",
-            "subject" => "Getting Started on Swiftintern.com",
-            "user" => User::first(array("id = ?" => "31"))
+            "template" => "blank",
+            "subject" => "Testing email",
+            "emails" => array("indianayubi@gmail.com", "faizanayubi@hotmail.com"),
+            "delivery" => "mailgun"
         );
         $this->notify($options);
     }
 
-    protected function notify($options) {
+    public function unsubscribe() {
+        $this->noview();
+        echo '<h1>Unsubscribed Successfully</h1>';
+    }
+    
+    protected function recipientVariables($emails) {
+        $json = array();
+        foreach ($emails as $email) {
+            $json[$email] = array(
+                "cat" => "newsletter"
+            );
+        }
+        
+        return json_encode($json, JSON_PRETTY_PRINT);
+    }
+
+    protected function getBody($options) {
         $template = $options["template"];
         $view = new Framework\View(array(
             "file" => APP_PATH . "/application/views/users/emails/{$template}.html"
@@ -79,32 +97,26 @@ class Users extends Controller {
             $view->set($key, $value);
             $$key = $value;
         }
-        $body = $view->render();
-        $emails = array();
-        if (isset($options["emails"])) {
-            $emails = $options["emails"];
-        } else {
-            array_push($emails, $user->email);
-        }
 
-        if (isset($options["from"])) {
-            $from = $options["from"];
-        } else {
-            $from = "Saud Akhtar";
-        }
+        return $view->render();
+    }
+
+    protected function notify($options) {
+        $body = $this->getBody($options);
+        $emails = isset($options["emails"]) ? $options["emails"] : [$options["user"]->email];
+        $from = isset($options["from"]) ? $options["from"] : "Saud Akhtar";
 
         switch ($options["delivery"]) {
             case "mailgun":
                 $domain = "swiftintern.com";
                 $mgClient = $this->mailgun();
-                # Make the call to the client.
-                $result = $mgClient->sendMessage($domain, array(
+                $mgClient->sendMessage($domain, array(
                     'from' => "{$from} <info@swiftintern.com>",
-                    'to' => $options["emails"],
+                    'to' => implode(",", $emails),
                     'subject' => $options["subject"],
-                    'html' => $body
+                    'html' => $body,
+                    'recipient-variables' => $this->recipientVariables($emails)
                 ));
-                $this->log($options["emails"]);
                 break;
             default:
                 $sendgrid = $this->sendgrid();
@@ -115,9 +127,9 @@ class Users extends Controller {
                         ->setSubject($options["subject"])
                         ->setHtml($body);
                 $sendgrid->send($email);
-                $this->log(implode(",", $emails));
                 break;
         }
+        $this->log(implode(",", $emails));
     }
 
     public function logout() {
