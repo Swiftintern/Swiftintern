@@ -62,24 +62,22 @@ class Home extends Users {
     }
 
     public function about() {
-        $seo = Framework\Registry::get("seo");
-
-        $seo->setTitle("About Us");
-        $seo->setKeywords("about us, how swiftintern works, swiftintern");
-        $seo->setDescription("SwiftIntern is the india's largest student-focused internship portal, bringing students, employers and higher education institutions together in one centralized location.");
-        $seo->setPhoto("http://assets.swiftintern.com/img/newsletter/header.png");
-
-        $this->getLayoutView()->set("seo", $seo);
+        $this->seo(array(
+            "title" => "About Us",
+            "keywords" => "about us, how swiftintern works, swiftintern",
+            "description" => "SwiftIntern is the india's largest student-focused internship portal, bringing students, employers and higher education institutions together in one centralized location.",
+            "photo" => "http://assets.swiftintern.com/img/newsletter/header.png",
+            "view" => $this->getLayoutView()
+        ));
     }
 
     public function support() {
-        $seo = Framework\Registry::get("seo");
-
-        $seo->setTitle("Suppprt");
-        $seo->setKeywords("support, faq, frequently asked Questions");
-        $seo->setDescription("See the answer related to problems on internship and hiring interns");
-
-        $this->getLayoutView()->set("seo", $seo);
+        $this->seo(array(
+            "title" => "Suppprt",
+            "keywords" => "support, faq, frequently asked Questions",
+            "description" => "See the answer related to problems on internship and hiring interns",
+            "view" => $this->getLayoutView()
+        ));
     }
 
     public function contact() {
@@ -133,23 +131,21 @@ class Home extends Users {
     }
 
     public function privacy() {
-        $seo = Framework\Registry::get("seo");
-
-        $seo->setTitle("Privacy Policy");
-        $seo->setKeywords("privacy policy");
-        $seo->setDescription("We collect information from you when you register on our site, place an order, subscribe to our newsletter, respond to a survey or fill out a form. ");
-
-        $this->getLayoutView()->set("seo", $seo);
+        $this->seo(array(
+            "title" => "Privacy Policy",
+            "keywords" => "privacy policy",
+            "description" => "We collect information from you when you register on our site, place an order, subscribe to our newsletter, respond to a survey or fill out a form.",
+            "view" => $this->getLayoutView()
+        ));
     }
 
     public function blog() {
-        $seo = Framework\Registry::get("seo");
-
-        $seo->setTitle("Intern Blog");
-        $seo->setKeywords("blog, Intern Blog, internship tips, internship advice, internship discussions");
-        $seo->setDescription("Internship blogs post tips, advice to students to achieve the most from their internship and how to avail maximum benefits during an intern period.");
-
-        $this->getLayoutView()->set("seo", $seo);
+        $this->seo(array(
+            "title" => "Intern Blog",
+            "keywords" => "blog, Intern Blog, internship tips, internship advice, internship discussions",
+            "description" => "Internship blogs post tips, advice to students to achieve the most from their internship and how to avail maximum benefits during an intern period.",
+            "view" => $this->getLayoutView()
+        ));
         $view = $this->getActionView();
 
         $query = RequestMethods::get("query", "");
@@ -174,15 +170,13 @@ class Home extends Users {
     }
 
     public function post($title, $id) {
-        $seo = Framework\Registry::get("seo");
-
         $post = BlogPost::first(array("id = ?" => $id), array("id", "title", "content", "category", "created"));
-
-        $seo->setTitle($post->title);
-        $seo->setKeywords($post->category);
-        $seo->setDescription(substr(strip_tags($post->content), 0, 150));
-
-        $this->getLayoutView()->set("seo", $seo);
+        $this->seo(array(
+            "title" => $post->title,
+            "keywords" => $post->category,
+            "description" => substr(strip_tags($post->content), 0, 150),
+            "view" => $this->getLayoutView()
+        ));
         $this->getActionView()->set("post", $post);
     }
 
