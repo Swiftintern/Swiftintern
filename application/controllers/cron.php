@@ -85,7 +85,6 @@ class CRON extends Users {
      */
     protected function newsletters() {
         $now = strftime("%Y-%m-%d", strtotime('now'));$emails = [];
-
         $newsletters = Newsletter::all(array("scheduled = ?" => $now));
         foreach ($newsletters as $newsletter) {
             $message = Message::first(array("id = ?" => $newsletter->message_id));
@@ -95,7 +94,6 @@ class CRON extends Users {
             }
             
             $batches = array_chunk($emails, 1000);
-            
             foreach ($batches as $batch) {
                 $this->notify(array(
                     "template" => "newsletter",
