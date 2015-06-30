@@ -290,12 +290,14 @@ class Admin extends Users {
                 $tmpName = $_FILES['file']['tmp_name'];
                 $csvAsArray = array_map('str_getcsv', file($tmpName));
                 foreach ($csvAsArray as $key => $value) {
-                    $user = User::first(array("email = ?" => $value[0]),array("email"));
-                    $exist = Lead::first(array("email = ?" => $value[0]),array("email"));
-                    if(!$user && !$exist){
-                        array_push($emails, $value[0]);
-                    } else {
-                        array_push($exists, $value[0]);
+                    if(strpos($value[0], "@")){
+                        $user = User::first(array("email = ?" => $value[0]),array("email"));
+                        $exist = Lead::first(array("email = ?" => $value[0]),array("email"));
+                        if(!$user && !$exist){
+                            array_push($emails, $value[0]);
+                        } else {
+                            array_push($exists, $value[0]);
+                        }
                     }
                 }
             }
@@ -321,7 +323,8 @@ class Admin extends Users {
                     "message" => $message,
                     "user" => $this->user,
                     "from" => $this->user->name,
-                    "emails" => $emails
+                    "emails" => $emails,
+                    "delivery" => "mailgun"
                 ));
                 $view->set("success", TRUE);
             }

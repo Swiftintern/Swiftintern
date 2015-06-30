@@ -104,14 +104,13 @@ class Users extends Controller {
     protected function notify($options) {
         $body = $this->getBody($options);
         $emails = isset($options["emails"]) ? $options["emails"] : [$options["user"]->email];
-        $from = isset($options["from"]) ? $options["from"] : "Saud Akhtar";
 
         switch ($options["delivery"]) {
             case "mailgun":
                 $domain = "swiftintern.com";
                 $mgClient = $this->mailgun();
                 $mgClient->sendMessage($domain, array(
-                    'from' => "{$from} <info@swiftintern.com>",
+                    'from' => "Swiftintern Team <info@swiftintern.com>",
                     'to' => implode(",", $emails),
                     'subject' => $options["subject"],
                     'html' => $body,
@@ -123,7 +122,7 @@ class Users extends Controller {
                 $email = new \SendGrid\Email();
                 $email->setSmtpapiTos($emails)
                         ->setFrom('info@swiftintern.com')
-                        ->setFromName($from)
+                        ->setFromName("Swiftintern Team")
                         ->setSubject($options["subject"])
                         ->setHtml($body);
                 $sendgrid->send($email);
