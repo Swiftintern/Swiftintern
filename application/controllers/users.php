@@ -61,7 +61,7 @@ class Users extends Controller {
         }
     }
 
-    public function mailtest() {
+    protected function mailtest() {
         $this->noview();
         $options = array(
             "template" => "blank",
