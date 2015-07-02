@@ -46,17 +46,16 @@ class CRON extends Users {
             $message = Message::first(array("id = ?" => $crm->second_message_id));
             $lds = Lead::all(array("created = ?" => $date, "crm_id = ?" => $lead->crm_id));
             foreach ($lds as $ld) {
-                $exist = User::first(array("email = ?" => $ld->email), array("id"));
+                $exist = User::first(array("email = ?" => $ld->email), array("id","name","email","phone"));
                 if (!$exist) {
-                    $user = User::first(array("id = ?" => $ld->user_id), array("id","name","email","phone"));
                     $ld->status = "SECOND_MESSAGE_SENT";
                     $this->notify(array(
                         "template" => "leadGeneration",
                         "subject" => $message->subject,
                         "message" => $message,
-                        "user" => $user,
-                        "from" => $user->name,
-                        "emails" => [$ld->email]
+                        "user" => $exist,
+                        "from" => $exist->name,
+                        "emails" => array($ld->email)
                     ));
                 } else {
                     $ld->status = "REGISTERED";
@@ -84,11 +83,11 @@ class CRON extends Users {
      * Sends Newsletters to User Group
      */
     protected function newsletters() {
-        $now = strftime("%Y-%m-%d", strtotime('now'));$emails = [];
+        $now = strftime("%Y-%m-%d", strtotime('now'));$emails = array();
         $newsletters = Newsletter::all(array("scheduled = ?" => $now));
         foreach ($newsletters as $newsletter) {
             $message = Message::first(array("id = ?" => $newsletter->message_id));
-            $users = User::all(array("type = ?" => $newsletter->user_group), array("email"));
+            $users = User::all(array("type = ?" => $newsletter->user_group, "validity = ?" => 1), array("email"));
             foreach ($users as $user) {
                 array_push($emails, $user->email);
             }
@@ -134,19 +133,23 @@ class CRON extends Users {
             $opportunity = Opportunity::first(array("id = ?" => $application->opportunity_id), array("title", "id", "organization_id"));
             switch ($application->status) {
                 case 'rejected':
+                    $student = Student::first(array("id = ?" => $application->student_id), array("user_id"));
+                    $user = User::first(array("id = ?" => $student->user_id), array("name"));
                     $this->notify(array(
                         "template" => "applicationRejected",
                         "subject" => $opportunity->title,
-                        "user" => User::first(array("id = ?" => "31"), array("name")),
+                        "user" => $user,
                         "opportunity" => $opportunity,
                         "organization" => Organization::first(array("id = ?" => $opportunity->organization_id), array("id", "linkedin_id", "name"))
                     ));
                     break;
                 case 'selected':
+                    $student = Student::first(array("id = ?" => $application->student_id), array("user_id"));
+                    $user = User::first(array("id = ?" => $student->user_id), array("name"));
                     $this->notify(array(
                         "template" => "applicationSelected",
                         "subject" => $opportunity->title,
-                        "user" => User::first(array("id = ?" => "31"), array("name")),
+                        "user" => $user,
                         "opportunity" => $opportunity,
                         "application" => $application,
                         "organization" => Organization::first(array("id = ?" => $opportunity->organization_id), array("id", "linkedin_id", "name"))
