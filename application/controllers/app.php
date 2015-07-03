@@ -11,11 +11,13 @@ use Framework\RequestMethods as RequestMethods;
 class App extends Users {
 
     public function index() {
-        $this->noview();
-        echo 'HW';
+        $this->JSONview();
+        $view = $this->getActionView();
+        $view->set("success", true);
     }
 
     public function student() {
+        $this->noview();
         $view = $this->getActionView();
         if (RequestMethods::post("email")) {
             $user = $this->read(array(

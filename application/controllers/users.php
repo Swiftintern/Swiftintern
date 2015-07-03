@@ -149,6 +149,11 @@ class Users extends Controller {
         $this->willRenderLayoutView = false;
         $this->willRenderActionView = false;
     }
+    
+    public function JSONview() {
+        $this->willRenderLayoutView = false;
+        $this->defaultExtension = "json";
+    }
 
     protected function log($message = "") {
         $logfile = APP_PATH . "/logs/" . date("Y-m-d") . ".txt";
