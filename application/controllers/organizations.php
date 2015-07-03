@@ -146,16 +146,18 @@ class Organizations extends Users {
             "description"   => "experience",
             "view"          => $this->getLayoutView()
         ));$view = $this->getActionView();
+        $view->set("success", false);
         
-        if(RequestMethods::post("saveExp")){
+        if(RequestMethods::post("title")){
             $experience = new Experience(array(
                 "organization_id" => RequestMethods::post("organization_id"),
-                "user_id" => $this->user->id,
+                "user_id" => RequestMethods::post("user_id", $this->user->id),
                 "title" => RequestMethods::post("title"),
                 "details" => RequestMethods::post("details"),
                 "validity" => "0"
             ));
             $experience->save();
+            $view->set("success", true);
         }
     }
 }

@@ -55,6 +55,23 @@ class App extends Users {
                 ));
                 $student->save();
             }
+            
+            $meta = Meta::first(array(
+                "property = ?" => "user",
+                "property_id = ?" => $user->id,
+                "meta_key = ?" => "app",
+                "meta_value = ?" => "placementpaper"
+            ));
+            if(!$meta){
+                $meta = new Meta(array(
+                    "property" => "user",
+                    "property_id" => $user->id,
+                    "meta_key" => "app",
+                    "meta_value" => "placementpaper"
+                ));
+                $meta->save();
+            }
+            $view->set("user", $user);
             $view->set("success", true);
         } else {
             $view->set("success", false);
