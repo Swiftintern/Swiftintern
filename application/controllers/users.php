@@ -7,6 +7,7 @@
  */
 use Shared\Controller as Controller;
 use Framework\Registry as Registry;
+use Framework\RequestMethods as RequestMethods;
 
 class Users extends Controller {
 
@@ -103,7 +104,7 @@ class Users extends Controller {
 
     protected function notify($options) {
         $body = $this->getBody($options);
-        $emails = isset($options["emails"]) ? $options["emails"] : [$options["user"]->email];
+        $emails = isset($options["emails"]) ? $options["emails"] : array($options["user"]->email);
 
         switch ($options["delivery"]) {
             case "mailgun":
