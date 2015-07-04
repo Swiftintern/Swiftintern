@@ -157,6 +157,7 @@ class Students extends Users {
                         "website" => "",
                         "sector" => "",
                         "type" => "institute",
+                        "account" => "basic",
                         "about" => "",
                         "fbpage" => "",
                         "linkedin_id" => "",
@@ -189,6 +190,7 @@ class Students extends Users {
                         "website" => "",
                         "sector" => "",
                         "type" => "company",
+                        "account" => "basic",
                         "about" => "",
                         "fbpage" => "",
                         "linkedin_id" => $this->checkData($value["company"]["id"]),
@@ -426,7 +428,7 @@ class Students extends Users {
             $institute = RequestMethods::post('institute');
             $organization = Organization::first(array("name = ?" => $institute), array("id","name"));
             if (!$organization) {
-                $organization = new Organization(array("photo_id" => "", "name" => $institute, "country" => "", "website" => "", "sector" => "", "type" => "company", "about" => "", "fbpage" => "", "linkedin_id" => "", "validity" => "1", "updated" => ""));
+                $organization = new Organization(array("photo_id" => "", "name" => $institute, "country" => "", "website" => "", "sector" => "", "type" => "company", "account" => "basic", "about" => "", "fbpage" => "", "linkedin_id" => "", "validity" => "1", "updated" => ""));
                 $organization->save();
             }
             
@@ -464,7 +466,7 @@ class Students extends Users {
             $institute = RequestMethods::post('institute');
             $organization = Organization::first(array("name = ?" => $institute), array("id","name"));
             if (!$organization) {
-                $organization = new Organization(array("photo_id" => "", "name" => $institute, "country" => "", "website" => "", "sector" => "education", "type" => "institute", "about" => "", "fbpage" => "", "linkedin_id" => "", "validity" => "1", "updated" => ""));
+                $organization = new Organization(array("photo_id" => "", "name" => $institute, "country" => "", "website" => "", "sector" => "education", "type" => "institute", "account" => "basic", "about" => "", "fbpage" => "", "linkedin_id" => "", "validity" => "1", "updated" => ""));
                 $organization->save();
             }
             

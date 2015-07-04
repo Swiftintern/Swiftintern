@@ -52,6 +52,14 @@ class Organization extends Shared\Model {
      * @length 45
      */
     protected $_type;
+    
+    /**
+     * @column
+     * @readwrite
+     * @type text
+     * @length 45
+     */
+    protected $_account = "basic";
 
     /**
      * @column

@@ -120,6 +120,7 @@ class Employer extends Users {
                     "website" => $this->checkData($company["websiteUrl"]),
                     "sector" => $this->checkData($company["industries"]["values"]["0"]["name"]),
                     "type" => "company",
+                    "account" => "basic",
                     "about" => $this->checkData($company["description"]),
                     "fbpage" => "",
                     "linkedin_id" => $this->checkData($company["id"]),
