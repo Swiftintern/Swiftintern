@@ -7,17 +7,13 @@
 <section class="container">
     <div class="row">
         <div class="col-xs-12 col-md-9">
-            <div class="row" id="search_results">
+            <div class="row masonry-container" id="search_results">
                 {foreach $organization in $organizations}
-                <div class="col-sm-4 col-md-3">
+                <div class="col-sm-4 col-md-3 item">
                     <div class="thumbnail">
                         <img src="/thumbnails/{echo $organization->photo_id}" alt="{echo $organization->name}" width="80">
                         <div class="caption">
-                            <p><small>{echo substr($organization->name, 0, 20)}</small></p>
-                            <p>
-                                <a href="organization/{echo \Framework\StringMethods::url($organization->name)}/{echo $organization->id}" class="btn btn-primary btn-sm" role="button">Profile</a> 
-                                <button name="follow" value="organization" id="{echo $organization->id}" class="btn btn-success brn-sm">Follow</button>
-                            </p>
+                            <p><a href="organization/{echo \Framework\StringMethods::url($organization->name)}/{echo $organization->id}"><small>{echo substr($organization->name, 0, 20)}</small></a></p>
                         </div>
                     </div>
                 </div>
@@ -48,9 +44,15 @@
         </aside>
     </div>
 </section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.1/masonry.pkgd.min.js"></script>
 <script type="text/javascript">
     var page = 2;
     $(document).ready(function () {
         $(".navbar").css("margin-bottom", "0px");
+        var container = $(".masonry-container");
+        container.masonry({
+            columnWidth: ".item",
+            itemSelector: ".item"
+        });
     });
 </script>

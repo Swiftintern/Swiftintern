@@ -6,12 +6,11 @@
 </header>
 <div class="container">
     <div class="row">
-        <article class="col-md-9 col-xs-12">
-            <div class="row" id="results">
+        <article class="row masonry-container" id="results">
             {foreach $organization in $organizations}
-                <div class="col-sm-4 col-md-3">
+                <div class="col-sm-4 col-md-3 item">
                     <div class="thumbnail">
-                        <img src="/thumbnails/{echo $organization->photo_id}" alt="{echo $organization->name}" width="80">
+                        <img src="/thumbnails/{echo $organization->photo_id}" alt="{echo $organization->name}" width="100">
                         <div class="caption">
                             <p><small>{echo substr($organization->name, 0, 18)}</small></p>
                             <p>
@@ -21,47 +20,21 @@
                     </div>
                 </div>
             {/foreach}
-            </div>
-            <div class="text-center">
-                <button id="loadmorebtn" onclick="loadmoreExpComp(++page, '12');" class="btn btn-primary">Load More</button><hr>
-            </div>
         </article>
-
-        <aside class="col-md-3 col-xs-12">
-            <!--<a href="#" class="btn btn-success btn-lg btn-block"><i class="fa fa-plus-square-o fa-lg"></i> Add Your Experience</a><br>-->
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <i class="fa fa-search"></i> Search Company
-                </div>
-                <div class="panel-body">
-                    <form id="ExpCompSearch">
-                        <div class="form-group">
-                            <label>Select Company</label>
-                            <select data-placeholder="Search Company" class="form-control chosen" name="company" required="">
-                                <option>Search Company</option>
-                            </select>
-                            <small class="help-block"></small>
-                        </div>
-                        <input type="submit" class="btn btn-primary btn-block" value="Go!">
-                    </form>
-                </div>
-            </div>
-
-            <!--<div class="panel panel-default">
-                <div class="panel-heading">
-                    <i class="fa fa-mobile"></i> Placement Updates App
-                </div>
-                <div class="panel-body text-center">
-                    <a href="https://play.google.com/store/apps/details?id=com.swiftintern.placement" target="_blank"><img src="{echo CDN}images/others/google_play.png" title="Placement Updates"></a>
-                </div>
-            </div>-->
-
-        </aside>
+        <div class="text-center">
+            <button id="loadmorebtn" onclick="loadmoreExpComp(++page, '12');" class="btn btn-primary">Load More</button><hr>
+        </div>
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.1/masonry.pkgd.min.js"></script>
 <script type="text/javascript">
     var page = 2;
     $(document).ready(function () {
         $(".navbar").css("margin-bottom", "0px");
+        var container = $(".masonry-container");
+        container.masonry({
+            columnWidth: ".item",
+            itemSelector: ".item"
+        });
     });
 </script>
