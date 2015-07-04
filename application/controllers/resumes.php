@@ -8,6 +8,9 @@
 use Shared\Controller as Controller;
 use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
+use Framework\ArrayMethods as ArrayMethods;
+use PHPExport\Exporter\Xml as Xml;
+use PHPExport\Exporter\MsWord as MsWord;
 
 class Resumes extends Students {
 
@@ -63,6 +66,28 @@ class Resumes extends Students {
         if (empty($qual) || empty($work) || empty($skills)) {
             self::redirect("/resumes/create");
         }
+
+        $about = $student->about;
+        /* Create an array containing all details of resume */
+        $resume = array(
+            "name" => $this->user->name,
+            "email" => $this->user->email,
+            "phone" => (empty($this->user->phone) ? "(Phone)" : $this->user->phone),
+            "city" => $student->city,
+            "about" => (empty($about) ? "(Your Objective)" : $about),
+            "education" => $this->getEducation($qual),
+            "work" => $this->getWork($work),
+            "skills" => $student->skills
+        );
+
+        /* Convert the resume to an object of 'stdClass' */
+        $resume = ArrayMethods::toObject($resume);
+        /* Create the xml from the object */
+        $resume_xml = new Xml(array($resume), null);
+        
+        /* Store the resume XML template in session so that it can be accessed in save() method */
+        $session = Registry::get('session');
+        $session->set('resume', $resume_xml);
 
         $view->set('user', $this->user);
         $view->set('student', $student);
@@ -160,5 +185,58 @@ class Resumes extends Students {
         } else {
             echo 'Resume does not exist';
         }
+    }
+
+    protected function getEducation($quals) {
+        $arr = array();
+        foreach ($quals as $edu) {
+            $org = Organization::first(array("id = ?" => $edu->organization_id), array("name"));
+            $arr[] = array(
+                "institute" => $org->name,
+                "major" => $edu->major,
+                "degree" => $edu->degree,
+                "year" => $edu->passing_year,
+                "gpa" => $edu->gpa
+            );
+        }
+        return $arr;
+    }
+
+    protected function getWork($works) {
+        $arr = array();
+        foreach ($works as $work) {
+            $org = Organization::first(array("id = ?" => $work->organization_id), array("name"));
+            $arr[] = array(
+                "position" => $work->designation,
+                "company" => $org->name,
+                "duration" => $work->duration,
+                "responsibility" => $work->responsibility
+            );
+        }
+        return $arr;
+    }
+
+    /**
+     * @before _secure, changeLayout
+     */
+    public function save() {
+        $session = Registry::get('session');
+        $resume = $session->get('resume');
+
+        if(!$resume) {
+            self::redirect('/resumes/success');
+        }
+
+        $download = new MsWord($resume);
+        $dir = APP_PATH.'/public/resume/';
+        
+        /* The template created in word processor */
+        $download->setDocTemplate($dir . 'resume.docx');
+        
+        /* The XSLT stylesheet extracted from word */
+        $download->setXsltSource($dir . 'resume.xslt');
+        
+        /* Merge XML and XSLT stylesheet to generate a new docx file (ZIP Archive) */
+        $download->create('resume22.docx');
     }
 }
