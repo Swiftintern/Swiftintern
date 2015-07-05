@@ -30,6 +30,19 @@ class CRON extends Users {
         $this->log("newApplications Sent");
         $this->opportunityEnd();
         $this->log("Rejected All Applicants after last_date");
+
+        /**
+         * Placement Papers bot
+         *
+         * @dependencies
+         * use Shared\PlacementPaper as PapersBot;
+         * use Shared\Company as Company;
+         *
+         * @plugins
+         * bot
+         *
+         * function: $this->placementPapers();
+         */
     }
 
     /**
@@ -182,6 +195,17 @@ class CRON extends Users {
             ));
         }
     }
+
+    /*
+    protected function placementPapers() {
+        $bot = new PapersBot();
+        $companies = $bot->getCompaniesList();
+        
+        foreach ($companies as $id => $url) {
+            $company = new Company(array($id => $url));
+            $company->savePapers();
+        }
+    }*/
 
     /**
      * @protected
