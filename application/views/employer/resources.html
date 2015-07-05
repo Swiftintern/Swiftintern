@@ -1,35 +1,62 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Frequently Asked Questions</h1>
+            <h1 class="page-header text-center">Resources</h1>
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <h2></h2>
-                <h3></h3>
 
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <h4>I have problem? How can i talk to some representative?</h4>
-                        <p>For any Query email us at swiftintern@gmail.com or info@swiftintern.com, To Talk to our Tech expert call +91-9891048495</p>
-                    </li>
-                    <li class="list-group-item">
-                        <h4>I'm a new user. Why should I start free?</h4>
-                        <div class=""><p>We firmly believe that we should not charge a single penny for hiring interns.</p></div>
-                    </li>
-                    <li class="list-group-item">
-                        <h4>How many live internships can I have at one point?</h4>
-                        <div class=""><p>You can have unlimited live internships at one point which students can apply to. You can still access all your past internships from your dashboard. </p></div>
-                    </li>
-                    <li class="list-group-item">
-                        <h4>What happens after my first internship post?</h4>
-                        <div class=""><p>Your post will automatically become live so that students can start applying for that. </p></div>
-                    </li>
-                    <li class="list-group-item">
-                        <h4>What happens if I face any problem while posting internship?</h4>
-                        <div class=""><p>Swiftintern support team is always there to help you. We will solve your problem as soon as possible.</p></div>
-                    </li>
+                <ul class="nav nav-tabs nav-justified" role="tablist">
+                    <li role="presentation" class="active"><a href="#widget" aria-controls="widget" role="tab" data-toggle="tab">Widget</a></li>
+                    <li role="presentation"><a href="#faq" aria-controls="faq" role="tab" data-toggle="tab">FAQs</a></li>
                 </ul>
+
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane row active" id="widget">
+                        <div class="col-lg-6">
+                            <textarea class="form-control" rows="5">
+                                
+                            </textarea>
+                        </div>
+                        
+                        <div class="col-lg-6">
+                            <div id="swiftintern" data-org="{$employer->organization->id}"></div>
+                            <script type="text/javascript">
+                            (function(d, s) {
+                                var useSSL = "https:" == document.location.protocol;
+                                var js, where = d.getElementsByTagName(s)[0],
+                                js = d.createElement(s);
+                                js.src = (useSSL ? "https:" : "http:") +  "//assets.swiftintern.com/js/siwidget.js?organization_id={$employer->organization->id}";
+                                try { where.parentNode.insertBefore(js, where); } catch (e) { if (typeof console !== "undefined" && console.log && e.stack) { console.log(e.stack); } }
+                            }(document, "script"));
+                            </script>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="faq">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <h4>I have problem? How can i talk to some representative?</h4>
+                                <p>For any Query email us at info@swiftintern.com, To Talk to our Tech expert call +91-9891048495</p>
+                            </li>
+                            <li class="list-group-item">
+                                <h4>I am a new user. Why should I start free?</h4>
+                                <div class=""><p>We firmly believe that we should not charge a single penny for hiring interns.</p></div>
+                            </li>
+                            <li class="list-group-item">
+                                <h4>How many live internships can I have at one point?</h4>
+                                <div class=""><p>You can have unlimited live internships at one point which students can apply to. You can still access all your past internships from your dashboard. </p></div>
+                            </li>
+                            <li class="list-group-item">
+                                <h4>What happens after my first internship post?</h4>
+                                <div class=""><p>Your post will automatically become live so that students can start applying for that. </p></div>
+                            </li>
+                            <li class="list-group-item">
+                                <h4>What happens if I face any problem while posting internship?</h4>
+                                <div class=""><p>Swiftintern support team is always there to help you. We will solve your problem as soon as possible.</p></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
 
             </div>
         </div>

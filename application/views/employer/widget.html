@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{$organization->name}</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <meta name="viewport" content="width=device-width, user-scalable=yes" />
+    </head>
+    <body>
+        <div class="container row">
+            <div class="media">
+                <span class="pull-left hidden-xs">
+                    <img src="/thumbnails/{echo $organization->photo_id}" class="media-object medium_image" align="right" alt="{echo $organization->name}">
+                </span>
+                <div class="media-body">
+                    <h3 class="media-heading">{echo $organization->name}</h3>
+                </div>
+            </div>
+            <p>Apply to the following Internships</p>
+            <table class="table table-striped">
+                <tbody id="opportunity">
+                    {foreach $opportunity in $opportunities}
+                    <tr>
+                        <td>
+                            <a href="/{echo Framework\StringMethods::url($opportunity->title)}/{echo $opportunity->id}">{echo $opportunity->title}</a>
+                        </td>
+                    </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

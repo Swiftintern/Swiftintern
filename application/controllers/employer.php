@@ -512,6 +512,17 @@ class Employer extends Users {
         $this->seo(array("title" => "Employer Resources", "keywords" => "faq", "description" => "Frequently asked Questions", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
     }
+    
+    public function widget($organization_id = NULL) {
+        $this->willRenderLayoutView = false;
+        $view = $this->getActionView();
+        if($organization_id != NULL){
+            $organization = Organization::first(array("id = ?" => $organization_id),array("id", "name", "website", "type", "linkedin_id", "photo_id"));
+            $opportunities = Opportunity::all(array("organization_id = ?" => $organization->id),array("id", "title"));
+            $view->set("organization", $organization);
+            $view->set("opportunities", $opportunities);
+        }
+    }
 
     public function about() {
         $this->seo(array(
