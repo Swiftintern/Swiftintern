@@ -67,14 +67,13 @@ class Resumes extends Students {
             self::redirect("/resumes/create");
         }
 
-        $about = $student->about;
         /* Create an array containing all details of resume */
         $resume = array(
             "name" => $this->user->name,
             "email" => $this->user->email,
-            "phone" => (empty($this->user->phone) ? "(Phone)" : $this->user->phone),
+            "phone" => (($this->user->phone == NULL) ? "(Phone)" : $this->user->phone),
             "city" => $student->city,
-            "about" => (empty($about) ? "(Your Objective)" : $about),
+            "about" => (($student->about == NULL) ? "(Your Objective)" : $student->about),
             "education" => $this->getEducation($qual),
             "work" => $this->getWork($work),
             "skills" => $student->skills
