@@ -22,10 +22,9 @@ class Resumes extends Students {
             "view" => $this->getLayoutView()
         ));$view = $this->getActionView();
         
-        $li = $this->LinkedIn("http://swiftintern.com/resumes");
+        $li = $this->LinkedIn("http://swiftintern.com/students/register");
         if (isset($_REQUEST['code'])) {
             $li->getAccessToken($_REQUEST['code']);
-            //self::redirect('/resumes/success');
         } else {
             $url = $li->getLoginUrl(array(LinkedIn::SCOPE_BASIC_PROFILE, LinkedIn::SCOPE_EMAIL_ADDRESS));
             $view->set("url", $url);
@@ -84,7 +83,7 @@ class Resumes extends Students {
         /* Create the xml from the object */
         $resume_xml = new Xml(array($resume), null);
         
-        /* Store the resume XML template in session so that it can be accessed in save() method */
+        /* Store the resume XML template in session so that it can be accessed in download() method */
         $session = Registry::get('session');
         $session->set('resume', $resume_xml);
 
@@ -218,7 +217,7 @@ class Resumes extends Students {
     /**
      * @before _secure, changeLayout
      */
-    public function save() {
+    public function download() {
         $session = Registry::get('session');
         $resume = $session->get('resume');
 
@@ -227,7 +226,7 @@ class Resumes extends Students {
         }
 
         $download = new MsWord($resume);
-        $dir = APP_PATH.'/public/resume/';
+        $dir = APP_PATH.'/public/assets/files/resume/';
         
         /* The template created in word processor */
         $download->setDocTemplate($dir . 'resume.docx');
