@@ -1,0 +1,33 @@
+<section class="container">
+    <div class="row">
+        <h1 class="page-header text-center">Blog Post</h1>
+        <ol class="breadcrumb">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/blog">Blog</a></li>
+            <li class="active">Post</li>
+        </ol>
+        {if($success == TRUE)}
+        <div class="alert alert-success alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            Saved <strong>Successfully!</strong>
+        </div>
+        <p>The Content will be active within few hours.</p>
+        {/if}
+        {else}
+        <div class="col-md-offset-2 col-lg-8">
+            <form class="form-horizontal" method="post" action="">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" class="form-control" name="title" required="" value="{$post->title}">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Content</label>
+                    <textarea name="content" class="form-control editor" rows="7">{$post->content}</textarea>
+                </div>
+                <input type="hidden" name="action" value="post">
+                <button type="submit" class="btn btn-success pull-right">Save <i class="fa fa-check-circle fa-fw"></i></button>
+            </form>
+        </div>
+        {/else}
+    </div><br>
+</section>

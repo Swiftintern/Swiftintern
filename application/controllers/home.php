@@ -194,6 +194,37 @@ class Home extends Users {
         ));
         $this->getActionView()->set("post", $post);
     }
+    
+    /**
+     * @before _secure
+     */
+    public function saveBlogPost($id = NULL) {
+        if($id != NULL){
+            $post = BlogPost::first(array("id = ?" => $id), array("id", "title", "content", "category", "created"));
+        } else {
+            $post = new BlogPost();
+            $post->user_id = $this->user->id;
+            $post->validity = "0";
+        }
+        
+        if (RequestMethods::post("action") == "post") {
+            $post->title = RequestMethods::post("title");
+            $post->content = RequestMethods::post("content");
+            $post->category = RequestMethods::post("category", "education");
+            $post->updated = "";
+            
+            $post->save();
+            $this->getActionView()->set("success", true);
+        }
+        
+        $this->seo(array(
+            "title" => "Intern Blog Post",
+            "keywords" => "intern blog",
+            "description" => "Get Your work published as an intern",
+            "view" => $this->getLayoutView()
+        ));
+        $this->getActionView()->set("post", $post);
+    }
 
     public function termsofservice() {
         $seo = Framework\Registry::get("seo");
