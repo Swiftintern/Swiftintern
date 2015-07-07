@@ -138,6 +138,15 @@ class Home extends Users {
             "view" => $this->getLayoutView()
         ));
     }
+    
+    public function partners() {
+        $this->seo(array(
+            "title" => "Testimonials Swiftintern",
+            "keywords" => "testimonials",
+            "description" => "See why we are best, and how happy people are with us",
+            "view" => $this->getLayoutView()
+        ));
+    }
 
     public function blog() {
         $this->seo(array(

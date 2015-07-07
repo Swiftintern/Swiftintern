@@ -44,6 +44,11 @@ $routes = array(
         "action" => "privacy"
     ),
     array(
+        "pattern" => "partners",
+        "controller" => "home",
+        "action" => "partners"
+    ),
+    array(
         "pattern" => "termsofservice",
         "controller" => "home",
         "action" => "termsofservice"
