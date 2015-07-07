@@ -287,51 +287,6 @@ class Home extends Users {
         $view->set("organization", $organization);
     }
 
-    public function spoj() {
-        $view = $this->getActionView();
-
-        $seo = Framework\Registry::get("seo");
-        $seo->setTitle("Spoj User");
-        $seo->setKeywords("swiftintern");
-        $seo->setDescription("find details of any spoj user.");
-
-        $user = "viplov";
-        $spoj = new Spoj(array('username' => $user));
-
-        if ($spoj->isValid) {
-
-            $view->set("user", $user);
-            $view->set("joined", $spoj->getJoined());
-            $view->set("institution", $spoj->getSchool());
-            $view->set("rank", $spoj->getRank());
-            $view->set("problem", $spoj->getProbSolved());
-        } else {
-            $view->set("error", "Could find the details for given user");
-        }
-    }
-
-    public function codechef() {
-        $view = $this->getActionView();
-
-        $seo = Framework\Registry::get("seo");
-        $seo->setTitle("Codechef User");
-        $seo->setKeywords("swiftintern");
-        $seo->setDescription("find details of any codechef user.");
-
-        $user = "ashish1610";
-        $codechef = new CodeChef(array('username' => $user));
-
-        if ($codechef->isValid) {
-
-            $view->set("user", $user);
-            $view->set("name", $codechef->getName());
-            $view->set("details", $codechef->getDetails());
-            $view->set("rank", $codechef->getRank());
-        } else {
-            $view->set("error", "Could find the details for given user");
-        }
-    }
-
     public function thumbnails($id) {
         $path = APP_PATH . "/public/assets/uploads/images";
         $cdn = CDN;
