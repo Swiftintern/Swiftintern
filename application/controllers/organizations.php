@@ -139,10 +139,10 @@ class Organizations extends Users {
         $view->set("organization", $organization);
     }
     
-    public function saveExperience() {
+    public function saveExperience($organization_id = NULL) {
         $this->seo(array(
-            "title"         => "Share interview experiences, work experience anything and you will be noted",
-            "keywords"      => "add placement papers",
+            "title"         => "Your experience",
+            "keywords"      => "add placement papers, experience",
             "description"   => "experience",
             "view"          => $this->getLayoutView()
         ));$view = $this->getActionView();
@@ -159,5 +159,7 @@ class Organizations extends Users {
             $experience->save();
             $view->set("success", true);
         }
+        
+        $view->set("organization_id", $organization_id);
     }
 }

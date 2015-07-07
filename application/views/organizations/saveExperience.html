@@ -6,29 +6,29 @@
             <li><a href="/placement-papers">Companies</a></li>
             <li class="active">Add Experience</li>
         </ol>
-        {if isset($success)}
+        {if($success == TRUE)}
         <div class="alert alert-success alert-dismissible fade in" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
             Saved <strong>Successfully!</strong>
         </div>
+        <p>The Content will be active within few hours.</p>
         {/if}
+        {else}
         <div class="col-md-offset-2 col-lg-8">
             <form class="form-horizontal" method="post" action="">
                 <div class="form-group">
-                    <label class="control-label">Company Name</label>
-                    <input type="text" name="organization" class="form-control" required="" placeholder="start typing full name...">
+                    <label>Title</label>
+                    <input type="text" class="form-control" name="title" placeholder="eg. Interview Paper DU, 2014" required="">
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Title</label>
-                    <input type="text" name="title" class="form-control" placeholder="eg. Intern, Sales Executive, etc" value="{echo $work->designation}">
+                    <label class="control-label">Experience</label>
+                    <p class="help-text">Include all details which may be useful to other students.</p>
+                    <textarea name="details" class="form-control editor" rows="7"></textarea>
                 </div>
-                <div class="form-group">
-                    <label class="control-label">Details</label>
-                    <textarea name="details" class="form-control editor" required="" placeholder="explain your experience " rows="3"></textarea>
-                </div>
-                <input type="hidden" name="action" value="saveWork">
+                <input type="hidden" name="organization_id" value="{echo $organization_id}">
                 <button type="submit" class="btn btn-success pull-right">Save <i class="fa fa-check-circle fa-fw"></i></button>
             </form>
         </div>
+        {/else}
     </div><br>
 </section>
