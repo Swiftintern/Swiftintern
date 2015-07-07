@@ -14,7 +14,7 @@
                 <li><i class="fa fa-globe fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Ambassador</span></li>
 
                 <li><i class="fa fa-facebook fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Social</span></li>
-                
+
                 <li><i class="fa fa-picture-o fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Design</span></li>
 
                 <li><i class="fa fa-users fa-5x" aria-hidden="true"></i><span class="glyphicon-class">Training</span></li>
@@ -25,7 +25,7 @@
 <section id="featured">
     <div class="container">
         <div class="row">
-            
+
             <div class="col-md-9">
                 <table class="table table-striped">
                     <tbody id="results">
@@ -51,13 +51,13 @@
                         {/foreach}
                     </tbody>
                 </table>
-                
+
                 <div class="text-center">
                     <button id="load_opportunities" onclick="window.opts.page = ++page;" class="btn btn-primary">Load More</button>
                 </div>
                 <br>
             </div>
-            
+
             <aside class="col-md-3">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -78,23 +78,29 @@
                         <input type="submit" class="btn btn-primary btn-block" value="Search">
                     </form>
                 </div>
-                
+
                 <div class="list-group">
                     <a href="employer/register" class="list-group-item"><i class="fa fa-user-plus fa-2x"></i> Hire Interns</a>
                     <a href="students/register" class="list-group-item"><i class="fa fa-briefcase fa-2x"></i> Get Internhsip</a>
                 </div>
-                
-                <!--<div class="panel panel-default">
+
+                <div class="panel panel-default">
                     <div class="panel-heading">
                         <i class="fa fa-comments"></i> Testimonials
                     </div>
                     <div class="panel-body">
-                        
+                        <div class="media">
+                            <div class="media-body">
+                                <h4 class="media-heading">{$tuser->name}</h4>
+                                {$testimonial->details}
+                                <a href="/organizations/saveExperience/1574" class="pull-right">Help Us! Share Your Feedback</a>
+                            </div>
+                        </div>
                     </div>
-                </div>-->
-                
+                </div>
+
             </aside>
-            
+
         </div>
     </div>
 </section>

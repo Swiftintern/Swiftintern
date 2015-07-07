@@ -30,10 +30,16 @@ class Home extends Users {
 
         $count = Opportunity::count($where);
         $opportunities = Opportunity::all($where, $fields, $order, $direction, $limit, $page);
+        
+        $testimonial = Experience::first(array("organization_id = ?" => "1574"), array("details", "user_id"));
+        $tuser = User::first(array("id = ?" => $testimonial->user_id), array("name"));
 
         $view->set("limit", $limit);
         $view->set("count", $count);
         $view->set("opportunities", $opportunities);
+        
+        $view->set("tuser", $tuser);
+        $view->set("testimonial", $testimonial);
 
         $this->getLayoutView()->set("seo", Framework\Registry::get("seo"));
     }
