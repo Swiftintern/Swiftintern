@@ -1,6 +1,6 @@
 <?php
 namespace Shared {
-	use WebBot\WebBot as WebBot;
+	use WebBot\lib\WebBot\Bot as Bot;
 	use Framework\Base as Base;
 
 	class PlacementPaper extends Base {
@@ -60,7 +60,7 @@ namespace Shared {
 		protected function requestDocuments($urls = [], $single = true) {
 			if (empty($urls)) { return []; }
 			
-			$webbot = new WebBot($urls);
+			$webbot = new Bot($urls);
 			$webbot->execute();
 			$documents = $webbot->getDocuments();
 			
