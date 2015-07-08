@@ -17,7 +17,7 @@ class App extends Users {
     }
 
     public function student() {
-        $this->noview();
+        $this->JSONview();
         $view = $this->getActionView();
         if (RequestMethods::post("email")) {
             $user = $this->read(array(
@@ -26,6 +26,7 @@ class App extends Users {
             ));
             if ($user) {
                 $student = Student::first(array("user_id = ?" => $user->id));
+                $this->trackUser($user);
             } else {
                 $user = new User(array(
                     "name" => RequestMethods::post("name"),
@@ -33,6 +34,7 @@ class App extends Users {
                     "phone" => RequestMethods::post("phone", ""),
                     "password" => rand(100000, 99999999),
                     "access_token" => rand(100000, 99999999),
+                    "login_number" => "1",
                     "type" => "student",
                     "validity" => "1",
                     "last_ip" => $_SERVER['REMOTE_ADDR'],
@@ -71,11 +73,16 @@ class App extends Users {
                 ));
                 $meta->save();
             }
+            
+            $info["user"] = $user;
+            $this->login($info, $student);
+            
             $view->set("user", $user);
+            $view->set("meta", $meta);
             $view->set("success", true);
         } else {
             $view->set("success", false);
         }
     }
-
+    
 }

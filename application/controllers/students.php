@@ -84,6 +84,7 @@ class Students extends Users {
                     "where" => array("user_id = ?" => $user->id, "social_platform = ?" => "linkedin")
                 ));
                 $student = Student::first(array("user_id = ?" => $user->id));
+                $this->trackUser($user);
             } else {
                 $user = new User(array(
                     "name" => $info["firstName"] . " " . $info["lastName"],
@@ -142,6 +143,27 @@ class Students extends Users {
         $this->user = $info["user"];
         $session = Registry::get("session");
         $session->set("student", $student);
+    }
+    
+    public function testLogin() {
+        $this->JSONview();
+        $view = $this->getActionView();
+        
+        $this->user = User::first(array("id = ?" => 31));
+        $student = Student::first(array("user_id = ?" => "31"));
+        
+        $session = Registry::get("session");
+        $session->set("student", $student);
+        
+        $view->set("user", $this->user);
+        $view->set("student", $student);
+    }
+    
+    public function testProfile() {
+        $this->JSONview();
+        $view = $this->getActionView();
+        
+        $view->set("user", $this->user);
     }
 
     protected function linkedinDetails($info, $student) {

@@ -45,6 +45,7 @@ class Employer extends Users {
                     "model" => "social",
                     "where" => array("user_id = ?" => $user->id, "social_platform = ?" => "linkedin")
                 ));
+                $this->trackUser($user);
             } else {
                 $user = new User(array(
                     "name" => $info["firstName"] . " " . $info["lastName"],
