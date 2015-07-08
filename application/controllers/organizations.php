@@ -149,9 +149,10 @@ class Organizations extends Users {
         $view->set("success", false);
         
         if(RequestMethods::post("title")){
+            $userid = !empty($this->user->id) ? $this->user->id : "0";
             $experience = new Experience(array(
                 "organization_id" => RequestMethods::post("organization_id"),
-                "user_id" => RequestMethods::post("user_id", $this->user->id),
+                "user_id" => RequestMethods::post("user_id", $userid),
                 "title" => RequestMethods::post("title"),
                 "details" => RequestMethods::post("details"),
                 "validity" => "0"
