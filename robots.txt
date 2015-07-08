@@ -1,4 +1,3 @@
 User-agent: *
 Disallow: /admin/
-Disallow: /assets/others/
 Sitemap: http://swiftintern.com/sitemap.xml
