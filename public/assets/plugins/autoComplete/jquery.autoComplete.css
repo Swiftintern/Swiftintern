@@ -1,0 +1,39 @@
+/*Contains styles for : 
+*div
+*ul
+*li
+*a
+*/
+@charset "utf-8";
+
+.awwListCont {
+	position: fixed;
+	background: transparent;
+	overflow: hidden;
+	border: 1px solid black;
+	padding: 0;
+}
+
+.awwList {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+.awwList a {
+	text-decoration: none;
+}
+
+.awwItem {
+	list-style: none;
+	display: block;
+	font-family: monospace;
+	background: white;
+	color: black;
+	width: 100%;
+	margin: 0;
+	padding: 4px;
+	height: 1em;
+	border-top: 1px solid black;
+	overflow: hidden
+}
