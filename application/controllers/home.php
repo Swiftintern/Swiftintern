@@ -185,14 +185,21 @@ class Home extends Users {
     }
 
     public function post($title, $id) {
+        $view = $this->getActionView();
+        
         $post = BlogPost::first(array("id = ?" => $id), array("id", "title", "content", "category", "created"));
+        $image = Image::first(array("property = ?" => "post", "property_id = ?" => $post->id), array("photo_id"));
+        if ($image) {
+            $view->set("image", $image);
+        }
+        
         $this->seo(array(
             "title" => $post->title,
             "keywords" => $post->category,
             "description" => substr(strip_tags($post->content), 0, 150),
             "view" => $this->getLayoutView()
         ));
-        $this->getActionView()->set("post", $post);
+        $view->set("post", $post);
     }
     
     /**
@@ -212,8 +219,23 @@ class Home extends Users {
             $post->content = RequestMethods::post("content");
             $post->category = RequestMethods::post("category", "education");
             $post->updated = "";
-            
             $post->save();
+            
+            $photo = new Photograph(array(
+                "filename" => $this->_upload("photo", "images"),
+                "type" => $_FILES['photo']['type'],
+                "size" => $_FILES['photo']['size']
+            ));
+            $photo->save();
+            
+            $image = new Image(array(
+                "photo_id" => $photo->id,
+                "user_id" => $this->user->id,
+                "property" => "post",
+                "property_id" => $post->id
+            ));
+            $image->save();
+            
             $this->getActionView()->set("success", true);
         }
         
@@ -324,13 +346,11 @@ class Home extends Users {
         $view->set("organization", $organization);
     }
 
-    public function thumbnails($id) {
+    public function thumbnails($id, $width = 64, $height = 64) {
         $path = APP_PATH . "/public/assets/uploads/images";
         $cdn = CDN;
         $file = Photograph::first(array("id = ?" => $id));
         if ($file) {
-            $width = 64;
-            $height = 64;
             $name = $file->filename;
             $filename = pathinfo($name, PATHINFO_FILENAME);
             $extension = pathinfo($name, PATHINFO_EXTENSION);

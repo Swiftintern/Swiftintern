@@ -204,13 +204,13 @@ class Users extends Controller {
 
     /**
      * The method checks whether a file has been uploaded. If it has, the method attempts to move the file to a permanent location.
-     * @param type $name
-     * @param type $user
+     * @param string $name
+     * @param string $type files or images
      */
-    protected function _upload($name) {
+    protected function _upload($name, $type="files") {
         if (isset($_FILES[$name])) {
             $file = $_FILES[$name];
-            $path = APP_PATH . "/public/assets/uploads/files/";
+            $path = APP_PATH . "/public/assets/uploads/{$type}/";
             $extension = pathinfo($file["name"], PATHINFO_EXTENSION);
             $filename = uniqid() . ".{$extension}";
             if (move_uploaded_file($file["tmp_name"], $path . $filename)) {
