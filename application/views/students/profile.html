@@ -25,7 +25,7 @@
                         {foreach $social in $socials}
                         <tr>
                             <td>{$social->social_platform}</td>
-                            <td><a href="{$social->link}" target="_blank">{$social->link}</a></td>
+                            <td><a href="/users/link/{echo base64_encode($social->link)}" target="_top">{$social->link}</a></td>
                         </tr>
                         {/foreach}
                     </tbody>
