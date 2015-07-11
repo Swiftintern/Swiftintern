@@ -1,0 +1,20 @@
+Swiftintern is updated continuously, and built with more tools and technologies. If you'd like to help us out, see https://github.com/Swiftintern.
+
+/* MAIN */
+  Lead Developer & Main Design: Faizan Ayubi
+  Site: indianayubi@gmail.com
+  Twitter: @faizanayubi
+  Location: New Delhi, India.
+  
+  Developer: Hemant Mann
+  Location: New Delhi, India.
+
+/* SITE */
+  Software: Notepad++, NetBeans, Canva.com, Pixlr.com
+  Github: Swiftintern
+  Components: SwiftMVC, jQuery, Bootstrap
+
+/* SPECIAL THANKS */
+  App Developer: Chhavi Gupta
+
+  Designer: Saksham Saxena
