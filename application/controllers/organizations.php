@@ -158,6 +158,8 @@ class Organizations extends Users {
                 "validity" => "0"
             ));
             $experience->save();
+            
+            $view->set("experience", $experience);
             $view->set("success", true);
         }
         

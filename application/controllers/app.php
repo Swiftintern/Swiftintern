@@ -74,10 +74,10 @@ class App extends Users {
                 $meta->save();
             }
             
-            $info["user"] = $user;
-            $this->login($info, $student);
+            $this->user = $user;
+            $session = Registry::get("session");
+            $session->set("student", $student);
             
-            $view->set("user", $user);
             $view->set("meta", $meta);
             $view->set("success", true);
         } else {
