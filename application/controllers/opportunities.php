@@ -75,6 +75,26 @@ class Opportunities extends Users{
         $view->set("organization", $organization);
     }
     
+    public function competition($title, $id) {
+        global $datetime;
+        $view = $this->getActionView();
+        
+        $opportunity = Opportunity::first(array("id = ?" => $id));
+        $organization = Organization::first(array("id = ?" => $opportunity->organization_id), array("id", "name", "photo_id"));
+
+        $this->seo(array(
+            "title" => $opportunity->title,
+            "keywords" => $opportunity->category . ', ' . $opportunity->location,
+            "description" => substr(strip_tags($opportunity->details), 0, 150),
+            "photo" => APP . "thumbnails/" . $organization->photo_id,
+            "view" => $this->getLayoutView()
+        ));
+
+        $view->set("enddate", $datetime->format("Y-m-d"));
+        $view->set("opportunity", $opportunity);
+        $view->set("organization", $organization);
+    }
+    
     public function sponsored() {
         $this->JSONview();
         global $datetime;
