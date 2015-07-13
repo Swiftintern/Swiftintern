@@ -8,7 +8,7 @@
 use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
-class Opportunities extends Students {
+class Opportunities extends Users {
 
     public function index($title, $id) {
         $this->JSONview();
