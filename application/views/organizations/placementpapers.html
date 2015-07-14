@@ -6,24 +6,40 @@
 </header>
 <div class="container">
     <div class="row">
+
+        <form class="form-inline text-center" action="/organizations">
+            <div class="form-group">
+                <label class="sr-only">Company Name</label>
+                <input type="text" name="name" class="form-control" placeholder="eg. Amazon">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+        <hr>
         <article class="row masonry-container" id="results">
             {foreach $organization in $organizations}
-                <div class="col-sm-4 col-md-3 item">
-                    <div class="thumbnail">
-                        <img src="/thumbnails/{echo $organization->photo_id}" alt="{echo $organization->name}" width="100">
-                        <div class="caption">
-                            <p><small>{echo substr($organization->name, 0, 18)}</small></p>
-                            <p>
-                                <a href="organization/{echo \Framework\StringMethods::url($organization->name)}/{echo $organization->id}#experience" class="btn btn-primary btn-sm" role="button">Papers</a> 
-                                <a href="organization/{echo \Framework\StringMethods::url($organization->name)}/{echo $organization->id}" class="btn btn-info btn-sm">Profile</a></p>
-                        </div>
+            <div class="col-sm-4 col-md-3 item">
+                <div class="thumbnail">
+                    <img src="/thumbnails/{echo $organization->photo_id}" alt="{echo $organization->name}" width="100">
+                    <div class="caption">
+                        <p><a href="organization/{echo \Framework\StringMethods::url($organization->name)}/{echo $organization->id}"><small>{echo substr($organization->name, 0, 18)}</small></a></p>
+                        <p>
+                            <a href="organization/{echo \Framework\StringMethods::url($organization->name)}/{echo $organization->id}#experience" class="btn btn-primary btn-sm" role="button">Papers</a> 
+                            <a href="organization/{echo \Framework\StringMethods::url($organization->name)}/{echo $organization->id}" class="btn btn-info btn-sm">Profile</a></p>
                     </div>
                 </div>
+            </div>
             {/foreach}
         </article>
-        <div class="text-center">
-            <button id="loadmorebtn" onclick="loadmoreExpComp(++page, '12');" class="btn btn-primary">Load More</button><hr>
-        </div>
+        <nav class="text-center">
+            <ul class="pager">
+                {if($page != 1)}
+                <li><a href="?page={echo $page - 1}">Previous</a></li>
+                {/if}
+                {if($page < $count/$limit)}
+                <li><a href="?page={echo $page + 1}">Next</a></li>
+                {/if}
+            </ul>
+        </nav>
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.1/masonry.pkgd.min.js"></script>
