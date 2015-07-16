@@ -75,23 +75,18 @@ class Opportunities extends Users {
         $view->set("organization", $organization);
     }
 
-    public function quickApply() {
+    public function saveStudent($options) {
         $user = $this->read(array(
             "model" => "user",
-            "where" => array("email = ?" => RequestMethods::post("email"))
+            "where" => array("email = ?" => $options["email"])
         ));
         if ($user) {
-            $social = $this->read(array(
-                "model" => "social",
-                "where" => array("user_id = ?" => $user->id, "social_platform = ?" => "linkedin")
-            ));
             $student = Student::first(array("user_id = ?" => $user->id));
-            $this->trackUser($user);
         } else {
             $user = new User(array(
-                "name" => $info["firstName"] . " " . $info["lastName"],
-                "email" => $info["emailAddress"],
-                "phone" => $this->checkData($info["phoneNumbers"]["values"][0]["phoneNumber"]),
+                "name" => $options["name"],
+                "email" => $options["email"],
+                "phone" => $this->checkData($options["phone"]),
                 "password" => rand(100000, 99999999),
                 "access_token" => rand(100000, 99999999),
                 "type" => "student",
@@ -106,37 +101,19 @@ class Opportunities extends Users {
                 "subject" => "Getting Started on Swiftintern.com",
                 "user" => $user
             ));
-
-            //add student
-            $skills = "";
-            if ($info["skills"]["_total"] > 0) {
-                foreach ($info["skills"]["values"] as $key => $value) {
-                    $skills .= $value["skill"]["name"];
-                    $skills .= ",";
-                }
-            }
             $student = new Student(array(
                 "user_id" => $user->id,
-                "about" => $this->checkData($info["summary"]),
-                "city" => $this->checkData($info["location"]["name"]),
-                "skills" => $skills,
+                "about" => $this->checkData($options["summary"]),
+                "city" => $this->checkData($options["city"]),
+                "skills" => $this->checkData($options["skills"]),
                 "updated" => ""
             ));
             $student->save();
         }
-
-        if (!$social) {
-            $social = new Social(array(
-                "user_id" => $user->id,
-                "social_platform" => "linkedin",
-                "link" => $this->checkData($info["publicProfileUrl"])
-            ));
-            $social->save();
-            $this->linkedinDetails($info, $student);
-        }
-
-        $info["user"] = $user;
-        $this->login($info, $student);
+        
+        $this->user = $user;
+        $session = Registry::get("session");
+        $session->set("student", $student);
     }
 
     public function competition($title, $id) {
