@@ -41,6 +41,25 @@ class Opportunities extends Users {
             $application = Application::first(array("student_id = ?" => $student->id, "opportunity_id = ?" => $id));
             $view->set("application", $application);
         }
+        
+        if (RequestMethods::post("quickApply") == "quickApply") {
+            $options = array(
+                "email" => RequestMethods::post("email"),
+                "name" => RequestMethods::post("name"),
+                "phone" => RequestMethods::post("phone", "")
+            );
+            $student = $this->saveStudent($options);
+            if ($student) {
+                $resume = new Resume(array(
+                    "student_id" => $student->id,
+                    "type" => "file",
+                    "resume" => $this->_upload("file"),
+                    "updated" => ""
+                ));
+                $resume->save();
+                $view->set("success", true);
+            }
+        }
 
         if (RequestMethods::post("action") == "application") {
             $application = new Application(array(
@@ -75,7 +94,7 @@ class Opportunities extends Users {
         $view->set("organization", $organization);
     }
 
-    public function saveStudent($options) {
+    protected function saveStudent($options) {
         $user = $this->read(array(
             "model" => "user",
             "where" => array("email = ?" => $options["email"])
@@ -110,10 +129,11 @@ class Opportunities extends Users {
             ));
             $student->save();
         }
-        
+
         $this->user = $user;
         $session = Registry::get("session");
         $session->set("student", $student);
+        return $student;
     }
 
     public function competition($title, $id) {

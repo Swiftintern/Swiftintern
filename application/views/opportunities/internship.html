@@ -36,23 +36,24 @@
                         </div>
                         <hr>
                         {if(isset($user))}
-                        {if(isset($application))}
-                        <a href="/students/applications" class="btn btn-primary pull-right"><i class="fa fa-check-circle fa-lg"></i> See Application Status</a>
+                            {if(isset($application))}
+                            <a href="/students/applications" class="btn btn-primary pull-right"><i class="fa fa-check-circle fa-lg"></i> See Application Status</a>
+                            {/if}
+                            {else}
+                                {if(isset($resume))}
+                                <form method="post" action="">
+                                    <input type="hidden" name="action" value="application">
+                                    <button class="btn btn-primary pull-right"><i class="fa fa-check-circle fa-lg"></i> Apply</button>
+                                </form>
+                                {/if}
+                                {else}
+                                    <a href="/students/settings#resume" class="btn btn-success pull-right"><i class="fa fa-upload fa-lg"></i> Upload Resume</a>
+                                {/else}
+                            {/else}
                         {/if}
                         {else}
-                        {if(isset($resume))}
-                        <form method="post" action="">
-                            <input type="hidden" name="action" value="application">
-                            <button class="btn btn-primary pull-right"><i class="fa fa-check-circle fa-lg"></i> Apply</button>
-                        </form>
-                        {/if}
-                        {else}
-                        <a href="/students/settings#resume" class="btn btn-success pull-right"><i class="fa fa-upload fa-lg"></i> Upload Resume</a>
-                        {/else}
-                        {/else}
-                        {/if}
-                        {else}
-                        <button onclick="login()" class="btn btn-primary pull-right"><i class="fa fa-linkedin fa-lg"></i>  | Apply with Linkedin</button>
+                            <button onclick="login()" class="btn btn-primary pull-right"><i class="fa fa-linkedin fa-lg"></i>  | Apply with Linkedin</button> &nbsp;
+                            <button data-toggle="modal" data-target="#resume_uploader" class="btn btn-info pull-right"><i class="fa fa-check-circle fa-lg"></i>  | Quick Apply</button>
                         {/else}
                     </div>
                 </div>
