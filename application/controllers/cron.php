@@ -30,6 +30,8 @@ class CRON extends Users {
         $this->log("newApplications Sent");
         $this->opportunityEnd();
         $this->log("Rejected All Applicants after last_date");
+        $this->studentProfile();
+        $this->log("Sent Mail to new Students to complete profile");
 
         /**
          * Placement Papers bot
@@ -211,7 +213,21 @@ class CRON extends Users {
      * Mail Students to apply to internships those who have not applied after register after 7 days
      */
     protected function studentProfile() {
-        $date = strftime("%Y-%m-%d", strtotime('-7 day'));
+        $date = strftime("%Y-%m-%d", strtotime('-7 day'));$emails = array();
+        $students = Student::all(array("created LIKE ?" => "%{$date}%"), array("id", "user_id"));
+        foreach ($students as $student) {
+            $application = Application::first(array("student_id = ?" => $student->id));
+            if($application) {
+                $user = User::first(array("id = ?" => $student->user_id), array("email"));
+                array_push($emails, $user->email);
+            }
+        }
+        
+        $this->notify(array(
+            "template" => "studentProfileComplete",
+            "subject" => "Keep Your Internship Search Going",
+            "emails" => $emails
+        ));
     }
 
     /**
