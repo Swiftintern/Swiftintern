@@ -44,7 +44,7 @@ class Opportunities extends Users {
         
         if (RequestMethods::post("quickApply") == "quickApply") {
             $options = array(
-                "email" => RequestMethods::post("email"),
+                "email" => RequestMethods::post("email", $this->user->email),
                 "name" => RequestMethods::post("name"),
                 "phone" => RequestMethods::post("phone", "")
             );

@@ -196,7 +196,7 @@ class CRON extends Users {
         }
     }
 
-    /*
+    
     protected function placementPapers() {
         $bot = new PapersBot();
         $companies = $bot->getCompaniesList();
@@ -205,7 +205,14 @@ class CRON extends Users {
             $company = new Company(array($id => $url));
             $company->savePapers();
         }
-    }*/
+    }
+    
+    /**
+     * Mail Students to apply to internships those who have not applied after register after 7 days
+     */
+    protected function studentProfile() {
+        $date = strftime("%Y-%m-%d", strtotime('-7 day'));
+    }
 
     /**
      * @protected
