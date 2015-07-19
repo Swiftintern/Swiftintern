@@ -217,7 +217,7 @@ class CRON extends Users {
         $students = Student::all(array("created LIKE ?" => "%{$date}%"), array("id", "user_id"));
         foreach ($students as $student) {
             $application = Application::first(array("student_id = ?" => $student->id));
-            if($application) {
+            if(!$application) {
                 $user = User::first(array("id = ?" => $student->user_id), array("email"));
                 array_push($emails, $user->email);
             }
