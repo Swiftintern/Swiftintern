@@ -10,6 +10,9 @@
  * @author Faizan Ayubi
  */
 
+use Shared\PlacementPaper as PapersBot;
+use Shared\Company as Company;
+
 class CRON extends Users {
 
     public function __construct($options = array()) {
@@ -32,19 +35,8 @@ class CRON extends Users {
         $this->log("Rejected All Applicants after last_date");
         $this->studentProfile();
         $this->log("Sent Mail to new Students to complete profile");
-
-        /**
-         * Placement Papers bot
-         *
-         * @dependencies
-         * use Shared\PlacementPaper as PapersBot;
-         * use Shared\Company as Company;
-         *
-         * @plugins
-         * bot
-         *
-         * function: $this->placementPapers();
-         */
+        $this->placementPapers();
+        $this->log("Placement Papers bot");
     }
 
     /**
