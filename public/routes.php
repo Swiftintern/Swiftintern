@@ -105,13 +105,8 @@ $routes = array(
     ),
     array(
         "pattern" => "internship/:title/:id",
-        "controller" => "opportunities",
-        "action" => "internship"
-    ),
-    array(
-        "pattern" => ":title/:id",
-        "controller" => "opportunities",
-        "action" => "type"
+        "controller" => "internship",
+        "action" => "details"
     )
 );
 

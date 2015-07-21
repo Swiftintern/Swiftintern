@@ -92,41 +92,39 @@ namespace Framework {
          * @return type
          */
         public function dispatch() {
-            $url = $this->url;
+            $url= $this->url;
             $parameters = array();
             $controller = "index";
             $action = "index";
-
+        
             Events::fire("framework.router.dispatch.before", array($url));
-
+                    
+            foreach ($this->_routes as $route) {
+                $matches = $route->matches($url);
+                if ($matches)
+                {
+                    $controller = $route->controller;
+                    $action = $route->action;
+                    $parameters = $route->parameters;
+                    
+                    Events::fire("framework.router.dispatch.after", array($url, $controller, $action, $parameters));
+                    $this->_pass($controller, $action, $parameters);
+                    return;
+                }
+            }
+                    
             $parts = explode("/", trim($url, "/"));
-
             if (sizeof($parts) > 0) {
                 $controller = $parts[0];
-
+                
                 if (sizeof($parts) >= 2) {
                     $action = $parts[1];
                     $parameters = array_slice($parts, 2);
                 }
-                
-                if (!$this->controllerExists($controller)) {
-                    foreach ($this->_routes as $route) {
-                        $matches = $route->matches($url);
-                        if ($matches) {
-                            $controller = $route->controller;
-                            $action = $route->action;
-                            $parameters = $route->parameters;
-                            Events::fire("framework.router.dispatch.after", array($url, $controller, $action, $parameters));
-                            $this->_pass($controller, $action, $parameters);
-                            return;
-                        }
-                    }
-                }
             }
-
-            $this->_pass($controller, $action, $parameters);
-
+            
             Events::fire("framework.router.dispatch.after", array($url, $controller, $action, $parameters));
+            $this->_pass($controller, $action, $parameters);
         }
 
         protected function _pass($controller, $action, $parameters = array()) {

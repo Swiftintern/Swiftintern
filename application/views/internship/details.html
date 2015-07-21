@@ -1,0 +1,81 @@
+{include internship/resume_uploader.html}
+<section class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-9 col-md-offset-1">
+            <h1 class="page-header text-center" itemprop="title">
+                {echo $opportunity->title}
+            </h1>
+            <article itemscope itemtype="http://schema.org/JobPosting">
+                {if($opportunity->last_date < $enddate)}
+                <div class="alert alert-warning alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    The <strong>Last Date</strong> to apply is over.
+                </div>
+                {/if}
+
+                {if isset($success)}
+                <div class="alert alert-success alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    Applied <strong>Successfully!</strong> click <a href="/students/applications">here</a> for status
+                </div>
+                {/if}
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="media">
+                            <div class="col-md-6">
+                                <p><i class="fa fa-map-marker"></i> <span itemprop="jobLocation">{echo $opportunity->location}</span></p>
+                                <p><i class="fa fa-institution"></i> <a href="/organization/{echo Framework\StringMethods::url($organization->name)}/{echo $organization->id}" target="_blank" itemprop="hiringOrganization">{echo $organization->name}</a></p>
+                                <p><i class="fa fa-clock-o"></i> Apply before {echo $opportunity->last_date}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><i class="fa fa-money"></i> Stipend : <span itemprop="baseSalary">{echo $opportunity->payment}</span></p>
+                                <p><i class="fa fa-calendar"></i> Duration : {echo $opportunity->duration}</p>
+                            </div>
+                            <meta itemprop="industry" content="{echo $opportunity->category}">
+                        </div>
+                        <hr>
+                        {if(isset($user))}
+                            {if(isset($application))}
+                            <a href="/students/applications" class="btn btn-primary pull-right"><i class="fa fa-check-circle fa-lg"></i> See Application Status</a>
+                            {/if}
+                            {else}
+                                {if(isset($resume))}
+                                <form method="post" action="">
+                                    <input type="hidden" name="action" value="application">
+                                    <button class="btn btn-primary pull-right"><i class="fa fa-check-circle fa-lg"></i> Apply</button>
+                                </form>
+                                {/if}
+                                {else}
+                                    <button data-toggle="modal" data-target="#resume_uploader" class="btn btn-success pull-right"><i class="fa fa-upload fa-lg"></i> Upload Resume</button>
+                                {/else}
+                            {/else}
+                        {/if}
+                        {else}
+                            <button onclick="login()" class="btn btn-primary pull-right"><i class="fa fa-linkedin fa-lg"></i>  | Apply with Linkedin</button> &nbsp;
+                            <button data-toggle="modal" data-target="#resume_uploader" class="btn btn-info pull-right"><i class="fa fa-check-circle fa-lg"></i>  | Quick Apply</button>
+                        {/else}
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Eligibility
+                    </div>
+                    <div class="panel-body">
+                        <p itemprop="educationRequirements">{echo $opportunity->eligibility}</p>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Description
+                    </div>
+                    <div class="panel-body">
+                        <p itemprop="responsibilities">{echo $opportunity->details}</p>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>

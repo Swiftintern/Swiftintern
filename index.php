@@ -2,6 +2,10 @@
 ob_start();
 define("DEBUG", TRUE);
 
+if($_SERVER["REMOTE_ADDR"] != '180.151.237.85'){
+    die('Updating Visit tommorow, Sorry for Inconvinience');
+}
+
 // 1. define the default path for includes
 define("APP_PATH", str_replace(DIRECTORY_SEPARATOR, "/", dirname(__FILE__)));
 define("APP", "http://swiftintern.com/");

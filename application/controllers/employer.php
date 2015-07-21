@@ -439,7 +439,6 @@ class Employer extends Users {
     }
 
     protected function switchorg($organization_id) {
-        $this->noview();
         $session = Registry::get("session");
         $member = $session->get("member");
 

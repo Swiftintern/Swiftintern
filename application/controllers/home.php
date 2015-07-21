@@ -26,7 +26,7 @@ class Home extends Users {
             "validity = ?" => true
         );
 
-        $fields = array("id", "title", "eligibility", "location", "last_date", "organization_id");
+        $fields = array("id", "title", "eligibility", "location", "last_date", "organization_id", "type");
 
         $count = Opportunity::count($where);
         $opportunities = Opportunity::all($where, $fields, $order, $direction, $limit, $page);
