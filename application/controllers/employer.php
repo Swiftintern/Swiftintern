@@ -292,6 +292,13 @@ class Employer extends Users {
             $view->set("success", true);
             $view->set("user", $user);
         }
+        
+        if (RequestMethods::post("action") == "saveAccount") {
+            $organization = Organization::first(array("id = ?" => $this->employer->organization->id));
+            $organization->account = RequestMethods::post("account", "basic");
+            $organization->save();
+            $view->set("success", true);
+        }
     }
 
     /**
@@ -420,32 +427,6 @@ class Employer extends Users {
         $view = $this->getActionView();
 
         $view->set("internships", $internships);
-    }
-
-    /**
-     * @before _secure, changeLayout
-     */
-    public function internship($id = NULL) {
-        if ($id == NULL) {
-            self::redirect("/employer/internships");
-        }
-        $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id));
-        $this->seo(array("title" => "Edit Internship", "keywords" => "edit", "description" => "edit", "view" => $this->getLayoutView()));
-        $view = $this->getActionView();
-
-        if (RequestMethods::post("action") == "update") {
-            $internship->title = RequestMethods::post("title");
-            $internship->eligibility = RequestMethods::post("eligibility");
-            $internship->last_date = RequestMethods::post("last_date");
-            $internship->details = RequestMethods::post("details");
-            $internship->payment = RequestMethods::post("payment");
-            $internship->updated = date("Y-m-d H:i:s");
-
-            $internship->save();
-            $view->set("success", true);
-            $view->set("errors", $internship->getErrors());
-        }
-        $view->set("internship", $internship);
     }
 
     /**

@@ -111,7 +111,7 @@ $routes = array(
     array(
         "pattern" => ":title/:id",
         "controller" => "opportunities",
-        "action" => "index"
+        "action" => "type"
     )
 );
 

@@ -8,23 +8,14 @@
 use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
-class Opportunities extends Users {
+class Opportunities extends Employer {
 
-    public function index($title, $id) {
+    public function type($title, $id) {
         $this->JSONview();
         $view = $this->getActionView();
         $opportunity = Opportunity::first(array("id = ?" => $id));
 
         self::redirect('/' . $opportunity->type . '/' . urlencode($title) . '/' . $id);
-
-        $this->seo(array(
-            "title" => $opportunity->title,
-            "keywords" => $opportunity->category . ', ' . $opportunity->location,
-            "description" => substr(strip_tags($opportunity->details), 0, 150),
-            "view" => $this->getLayoutView()
-        ));
-
-        $view->set("opportunity", $opportunity);
     }
 
     public function internship($title, $id) {
@@ -179,6 +170,32 @@ class Opportunities extends Users {
             $sponsoreds = Opportunity::all(array("id = ?" => $sd->opportunity_id), array("id", "title", "location", "last_date", "eligibility"));
         }
         $this->getActionView()->set("sponsoreds", $sponsoreds);
+    }
+    
+    /**
+     * @before _secure, changeLayout
+     */
+    public function editinternship($id = NULL) {
+        if ($id == NULL) {
+            self::redirect("/employer/internships");
+        }
+        $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id));
+        $this->seo(array("title" => "Edit Internship", "keywords" => "edit", "description" => "edit", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+
+        if (RequestMethods::post("action") == "update") {
+            $internship->title = RequestMethods::post("title");
+            $internship->eligibility = RequestMethods::post("eligibility");
+            $internship->last_date = RequestMethods::post("last_date");
+            $internship->details = RequestMethods::post("details");
+            $internship->payment = RequestMethods::post("payment");
+            $internship->updated = date("Y-m-d H:i:s");
+
+            $internship->save();
+            $view->set("success", true);
+            $view->set("errors", $internship->getErrors());
+        }
+        $view->set("internship", $internship);
     }
 
 }
