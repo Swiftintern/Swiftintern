@@ -26,7 +26,7 @@
                 <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
                 <li class="divider"></li>
                 {foreach $mem in $member}
-                <li><a href="/employer/switchorg/{echo $mem->organization->id}"><i class="fa fa-briefcase fa-fw"></i> {echo $mem->organization->name}</a></li>
+                <li><a href="/employer/index/{echo Framework\StringMethods::url($mem->organization->name)}/{echo $mem->organization->id}"><i class="fa fa-briefcase fa-fw"></i> {echo $mem->organization->name}</a></li>
                 {/foreach}
             </ul>
         </li>

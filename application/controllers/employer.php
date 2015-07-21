@@ -15,6 +15,34 @@ class Employer extends Users {
      */
     protected $_employer;
 
+    /**
+     * @before _secure, changeLayout
+     */
+    public function index($title = NULL, $id = NULL) {
+        $this->seo(array(
+            "title" => "Dashboard",
+            "keywords" => "dashboard",
+            "description" => "Contains all realtime stats",
+            "view" => $this->getLayoutView()
+        ));
+        $view = $this->getActionView();
+
+        if (isset($id)) {
+            $this->switchorg($id);
+        }
+
+        $opportunities = Opportunity::all(array("organization_id = ?" => $this->employer->organization->id), array("id"));
+        $messages = "";
+        $applicants = "0";
+        foreach ($opportunities as $opportunity) {
+            $applicants += Application::count(array("opportunity_id = ?" => $opportunity->id));
+        }
+
+        $view->set("opportunities", count($opportunities));
+        $view->set("applicants", $applicants);
+        $view->set("messages", $messages);
+    }
+
     public function register() {
         $this->seo(array(
             "title" => "Hire Interns | Register Company",
@@ -163,30 +191,6 @@ class Employer extends Users {
     /**
      * @before _secure, changeLayout
      */
-    public function index() {
-        $this->seo(array(
-            "title" => "Dashboard",
-            "keywords" => "dashboard",
-            "description" => "Contains all realtime stats",
-            "view" => $this->getLayoutView()
-        ));
-        $view = $this->getActionView();
-
-        $opportunities = Opportunity::all(array("organization_id = ?" => $this->employer->organization->id), array("id"));
-        $messages = "";
-        $applicants = "0";
-        foreach ($opportunities as $opportunity) {
-            $applicants += Application::count(array("opportunity_id = ?" => $opportunity->id));
-        }
-
-        $view->set("opportunities", count($opportunities));
-        $view->set("applicants", $applicants);
-        $view->set("messages", $messages);
-    }
-
-    /**
-     * @before _secure, changeLayout
-     */
     public function members() {
         $view = $this->getActionView();
         $allmembers = array();
@@ -220,16 +224,17 @@ class Employer extends Users {
             "description" => "Contains all Conversations",
             "view" => $this->getLayoutView()
         ));
-        $view = $this->getActionView();$conversations = array();        
+        $view = $this->getActionView();
+        $conversations = array();
         $user = $this->getUser();
-        
+
         if (RequestMethods::post('action') == 'message') {
             $message = new Message(array(
-                "subject" => $user->name. " sent you a message",
+                "subject" => $user->name . " sent you a message",
                 "body" => RequestMethods::post('body')
             ));
             $message->save();
-            
+
             $conversation = new Conversation(array(
                 "user_id" => RequestMethods::post('user_id'),
                 "property" => "user",
@@ -238,10 +243,9 @@ class Employer extends Users {
             ));
             $conversation->save();
         }
-        
-        $outbox = Conversation::all(array("property = ?" => "user", "property_id = ?" => $user->id),
-                            array("user_id", "message_id", "created"), "id", "desc");
-        $alloutbox = [];        
+
+        $outbox = Conversation::all(array("property = ?" => "user", "property_id = ?" => $user->id), array("user_id", "message_id", "created"), "id", "desc");
+        $alloutbox = [];
         foreach ($outbox as $message) {
             $body = Message::first(array("id = ?" => $message->message_id), array("body"));
             $to = User::first(array("id = ?" => $message->user_id), array("name"));
@@ -292,7 +296,7 @@ class Employer extends Users {
             $view->set("success", true);
             $view->set("user", $user);
         }
-        
+
         if (RequestMethods::post("action") == "saveAccount") {
             $organization = Organization::first(array("id = ?" => $this->employer->organization->id));
             $organization->account = RequestMethods::post("account", "basic");
@@ -379,13 +383,13 @@ class Employer extends Users {
         $this->seo(array("title" => "Employer Resources", "keywords" => "faq", "description" => "Frequently asked Questions", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
     }
-    
+
     public function widget($organization_id = NULL) {
         $this->willRenderLayoutView = false;
         $view = $this->getActionView();
-        if($organization_id != NULL){
-            $organization = Organization::first(array("id = ?" => $organization_id),array("id", "name", "website", "type", "linkedin_id", "photo_id"));
-            $opportunities = Opportunity::all(array("organization_id = ?" => $organization->id),array("id", "title"));
+        if ($organization_id != NULL) {
+            $organization = Organization::first(array("id = ?" => $organization_id), array("id", "name", "website", "type", "linkedin_id", "photo_id"));
+            $opportunities = Opportunity::all(array("organization_id = ?" => $organization->id), array("id", "title"));
             $view->set("organization", $organization);
             $view->set("opportunities", $opportunities);
         }
@@ -434,7 +438,7 @@ class Employer extends Users {
         $this->getLayoutView()->set("member", $member);
     }
 
-    public function switchorg($organization_id) {
+    protected function switchorg($organization_id) {
         $this->noview();
         $session = Registry::get("session");
         $member = $session->get("member");
