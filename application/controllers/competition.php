@@ -9,16 +9,8 @@ use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
 class Competition extends Employer {
-
-    public function type($title, $id) {
-        $this->JSONview();
-        $view = $this->getActionView();
-        $opportunity = Opportunity::first(array("id = ?" => $id));
-
-        self::redirect('/' . $opportunity->type . '/' . urlencode($title) . '/' . $id);
-    }
     
-    public function competition($title, $id) {
+    public function details($title, $id) {
         global $datetime;
         $view = $this->getActionView();
 
@@ -38,15 +30,11 @@ class Competition extends Employer {
         $view->set("organization", $organization);
     }
     
-    public function editCompetition($id) {
+    public function edit($id) {
         
     }
     
-    public function competitions() {
-        
-    }
-    
-    public function postCompetition() {
+    public function post() {
         
     }
     
