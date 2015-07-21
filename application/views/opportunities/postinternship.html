@@ -15,10 +15,10 @@
             <p>You can always suggest us any improvement or bug, we will fix it for you. <a href="/contact" class="btn btn-danger btn-xs">Report</a></p>
             <p class="text-center">
                 <a href="/{echo urlencode($opportunity->title)}/{echo $opportunity->id}" class="btn btn-success" target="_blank">View Internship</a>
-                <a href="/employer/internship/{echo $opportunity->id}" class="btn btn-primary" target="_blank">Edit</a>
+                <a href="/opportunities/editinternship/{echo $opportunity->id}" class="btn btn-primary" target="_blank">Edit</a>
             </p>
             {/if}
-            <form method="post" action="/employer/postinternship">
+            <form method="post" action="">
                 <div class="panel panel-default panel-body">
                     <div class="form-group">
                         <label>Internship Title *</label>

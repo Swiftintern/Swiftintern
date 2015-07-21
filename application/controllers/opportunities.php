@@ -197,5 +197,120 @@ class Opportunities extends Employer {
         }
         $view->set("internship", $internship);
     }
+    
+    /**
+     * @before _secure, changeLayout
+     */
+    public function postinternship() {
+        $this->seo(array("title" => "Post Internship", "keywords" => "internshhip", "description" => "Your company internships on linkedin", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+
+        if (RequestMethods::post("action") == "internship") {
+            $opportunity = new Opportunity(array(
+                "user_id" => $this->user->id, "organization_id" => $this->employer->organization->id,
+                "title" => RequestMethods::post("title"),
+                "details" => RequestMethods::post("details"),
+                "eligibility" => RequestMethods::post("eligibility"),
+                "category" => RequestMethods::post("category"),
+                "duration" => RequestMethods::post("duration"),
+                "location" => RequestMethods::post("location"),
+                "type" => "internship",
+                "last_date" => RequestMethods::post("last_date"),
+                "payment" => RequestMethods::post("payment"),
+                "payment_mode" => "offline", "application_type" => "resume", "type_id" => "", "is_active" => "1", "validity" => "0", "updated" => ""
+            ));
+
+            if ($opportunity->validate()) {
+                $opportunity->save();
+                if (RequestMethods::post("linkedin") == "1") {
+                    $this->shareupdate(array(
+                        "content" => array(
+                            "title" => $opportunity->title,
+                            "description" => substr(strip_tags($opportunity->details), 0, 150),
+                            "submitted-url" => "http://swiftintern.com/internship/" . urlencode($opportunity->title) . "/" . $opportunity->id
+                        ), "visibility" => array("code" => "anyone")
+                            ), $opportunity);
+                }
+                self::redirect('/employer/internships');
+            }
+
+            $view->set("opportunity", $opportunity);
+            $view->set("errors", $opportunity->getErrors());
+        }
+    }
+
+    /**
+     * @before _secure, changeLayout
+     */
+    public function internships() {
+        $internships = Opportunity::all(array("organization_id = ?" => $this->employer->organization->id, "type = ?" => "internship"), array("id", "title", "created"));
+        $this->seo(array(
+            "title" => "Manage Internships",
+            "keywords" => "followers",
+            "description" => "Your company followers on linkedin",
+            "view" => $this->getLayoutView()
+        ));
+        $view = $this->getActionView();
+
+        $view->set("internships", $internships);
+    }
+
+    /**
+     * @before _secure, changeLayout
+     */
+    public function applicants($id = NULL) {
+        if ($id == NULL) {
+            self::redirect("/employer/internships");
+        }
+        $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id), array("id", "title"));
+        $this->seo(array("title" => "Applications","keywords" => "Applications","description" => "Applications received on internship posted","view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+
+        $shortlisted = [];$selected = [];$applied = [];$applicants = [];$rejected = [];
+
+        $order = RequestMethods::get("order", "created");
+        $direction = RequestMethods::get("direction", "desc");
+        $page = RequestMethods::get("page", 1);
+        $limit = RequestMethods::get("limit", 15);
+        $count = Application::count(array("opportunity_id = ?" => $internship->id));
+        $applications = Application::all(array("opportunity_id = ?" => $internship->id), array("id", "student_id", "property_id", "status", "created"), $order, $direction, $limit, $page);
+
+        foreach ($applications as $application) {
+            $student = Student::first(array("id = ?" => $application->student_id), array("user_id", "about"));
+            $user = User::first(array("id = ?" => $student->user_id), array("name"));
+
+            $applicant = \Framework\ArrayMethods::toObject(array(
+                        "id" => $application->id,
+                        "name" => $user->name,
+                        "student_id" => $application->student_id,
+                        "property_id" => $application->property_id,
+                        "status" => $application->status,
+                        "created" => $application->created
+            ));
+            $applicants[] = $applicant;
+            switch ($application->status) {
+                case "shortlisted":
+                    $shortlisted[] = $applicant;
+                    break;
+                case "selected":
+                    $selected[] = $applicant;
+                    break;
+                case "applied":
+                    $applied[] = $applicant;
+                    break;
+                case "rejected":
+                    $rejected[] = $applicant;
+                    break;
+            }
+        }
+
+        $view->set("internship", $internship);
+        $view->set("count", $count);
+        $view->set("shortlisted", Framework\ArrayMethods::toObject($shortlisted));
+        $view->set("selected", Framework\ArrayMethods::toObject($selected));
+        $view->set("applied", Framework\ArrayMethods::toObject($applied));
+        $view->set("rejected", Framework\ArrayMethods::toObject($rejected));
+        $view->set("applicants", Framework\ArrayMethods::toObject($applicants));
+    }
 
 }
