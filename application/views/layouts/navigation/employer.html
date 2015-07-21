@@ -59,6 +59,25 @@
                     <li><a href="/employer/applicants">Applicants</a></li>
                 </ul>
             </li>
+            {if(($employer->organization->account == "training") || ($employer->organization->account == "competition"))}
+            <li>
+                <a href="#"><i class="fa fa-users fa-fw"></i> My Trainings<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li><a href="/oppotunities/posttraining">Create</a></li>
+                    <li><a href="/oppotunities/trainings">Manage</a></li>
+                    <li><a href="/oppotunities/registerations">Applicants</a></li>
+                </ul>
+            </li>
+            {/if}
+            {if($employer->organization->account == "competition")}
+            <li>
+                <a href="#"><i class="fa fa-trophy fa-fw"></i> My Competitions<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li><a href="/employer/followers">Create Test</a></li>
+                    <li><a href="/employer/reach">Reach</a></li>
+                </ul>
+            </li>
+            {/if}
             <li>
                 <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Analytics<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
