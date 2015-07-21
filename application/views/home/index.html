@@ -34,11 +34,11 @@
                         <tr>
                             <td>
                                 <div class="media">
-                                    <a class="pull-left hidden-xs" href="/{$opportunity->type}/{echo Framework\StringMethods::url($opportunity->title)}/{echo $opportunity->id}">
+                                    <a class="pull-left hidden-xs" href="/{$opportunity->type}/details/{echo Framework\StringMethods::url($opportunity->title)}/{echo $opportunity->id}">
                                         <img src="/thumbnails/{$org->photo_id}" class="media-object small_image" alt="{echo $opportunity->title}">
                                     </a>
                                     <div class="media-body">
-                                        <h4 class="media-heading"><a href="/{$opportunity->type}/{echo Framework\StringMethods::url($opportunity->title)}/{echo $opportunity->id}">{echo $opportunity->title}</a></h4>
+                                        <h4 class="media-heading"><a href="/{$opportunity->type}/details/{echo Framework\StringMethods::url($opportunity->title)}/{echo $opportunity->id}">{echo $opportunity->title}</a></h4>
                                         {echo $opportunity->eligibility}
                                     </div>
                                 </div>

@@ -4,7 +4,7 @@
         {if($opportunities == "0")}
         <div class="alert alert-success alert-dismissible fade in" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-            Hi, {echo $user->name} you have not created any <strong>Opportunity!</strong>. <a href="/employer/postinternship">Click here</a> to Post Internship
+            Hi, {echo $user->name} you have not created any <strong>Opportunity!</strong>. <a href="/internship/post">Click here</a> to Post Internship
         </div>
         {/if}
         
@@ -13,9 +13,9 @@
                 <a class="list-group-item active text-center">
                     <i class="fa fa-line-chart"></i> Stats
                 </a>
-                <a href="employer/internships" class="list-group-item"><i class="fa fa-graduation-cap fa-2x"></i>Opportunity Posted <span class="badge">{echo $opportunities}</span></a>
-                <a href="employer/applicants" class="list-group-item"><i class="fa fa-fax fa-2x"></i>  Student Applicantions <span class="badge">{echo $applicants}</span></a>
-                <a href="employer/messages" class="list-group-item"><i class="fa fa-envelope fa-2x"></i>  Student Messages <span class="badge">{echo $messages}</span></a>
+                <a href="/internship/manage" class="list-group-item"><i class="fa fa-graduation-cap fa-2x"></i>Opportunity Posted <span class="badge">{echo $opportunities}</span></a>
+                <a href="/internship/applicants" class="list-group-item"><i class="fa fa-fax fa-2x"></i>  Student Applicantions <span class="badge">{echo $applicants}</span></a>
+                <a href="/employer/messages" class="list-group-item"><i class="fa fa-envelope fa-2x"></i>  Student Messages <span class="badge">{echo $messages}</span></a>
             </div>
         </div>
 
@@ -24,7 +24,7 @@
                 <a class="list-group-item active text-center">
                     <i class="fa fa-link"></i> Quick Links
                 </a>
-                <a href="employer/postinternship" class="list-group-item"><i class="fa fa-edit fa-2x"></i> Post Internship</a>
+                <a href="/internship/post" class="list-group-item"><i class="fa fa-edit fa-2x"></i> Post Internship</a>
                 <a class="list-group-item disabled"><i class="fa fa-plug fa-2x"></i> Add Features(Coming Soon)</a>
             </div>
         </div>

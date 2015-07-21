@@ -80,7 +80,7 @@ class Internship extends Employer {
     /**
      * @before _secure, changeLayout
      */
-    public function editinternship($id = NULL) {
+    public function edit($id = NULL) {
         if ($id == NULL) {
             self::redirect("/employer/internships");
         }
@@ -106,7 +106,7 @@ class Internship extends Employer {
     /**
      * @before _secure, changeLayout
      */
-    public function postinternship() {
+    public function post() {
         $this->seo(array("title" => "Post Internship", "keywords" => "internshhip", "description" => "Your company internships on linkedin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
 
@@ -147,7 +147,7 @@ class Internship extends Employer {
     /**
      * @before _secure, changeLayout
      */
-    public function internships() {
+    public function manage() {
         $internships = Opportunity::all(array("organization_id = ?" => $this->employer->organization->id, "type = ?" => "internship"), array("id", "title", "created"));
         $this->seo(array(
             "title" => "Manage Internships",

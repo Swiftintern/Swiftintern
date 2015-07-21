@@ -11,7 +11,7 @@ use Framework\RequestMethods as RequestMethods;
 
 class Training extends Employer {
     
-    public function index($title, $id) {
+    public function details($title, $id) {
         global $datetime;
         $view = $this->getActionView();
 
@@ -71,6 +71,18 @@ class Training extends Employer {
             $view->set("opportunity", $opportunity);
             $view->set("errors", $opportunity->getErrors());
         }
+    }
+    
+    public function edit($id) {
+        
+    }
+    
+    public function manage() {
+        
+    }
+    
+    public function applicants($id) {
+        
     }
     
 }

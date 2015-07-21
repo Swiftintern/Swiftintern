@@ -101,8 +101,7 @@ namespace Framework {
                     
             foreach ($this->_routes as $route) {
                 $matches = $route->matches($url);
-                if ($matches)
-                {
+                if ($matches) {
                     $controller = $route->controller;
                     $action = $route->action;
                     $parameters = $route->parameters;
@@ -197,7 +196,6 @@ namespace Framework {
             Events::fire("framework.router.afterhooks.after", array($action, $parameters));
 
             // unset controller
-
             Registry::erase("controller");
         }
 

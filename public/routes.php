@@ -104,6 +104,16 @@ $routes = array(
         "action" => "thumbnails"
     ),
     array(
+        "pattern" => "internship/edit/:id",
+        "controller" => "internship",
+        "action" => "edit"
+    ),
+    array(
+        "pattern" => "internship/applicants/:id",
+        "controller" => "internship",
+        "action" => "applicants"
+    ),
+    array(
         "pattern" => "internship/:title/:id",
         "controller" => "internship",
         "action" => "details"

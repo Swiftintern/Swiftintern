@@ -14,8 +14,8 @@
             <p>If you find any problem while posting internship or you dont understand, you can always call at +91-9891048495 we would be happy to hear from you.</p>
             <p>You can always suggest us any improvement or bug, we will fix it for you. <a href="/contact" class="btn btn-danger btn-xs">Report</a></p>
             <p class="text-center">
-                <a href="/{echo urlencode($opportunity->title)}/{echo $opportunity->id}" class="btn btn-success" target="_blank">View Internship</a>
-                <a href="/opportunities/editinternship/{echo $opportunity->id}" class="btn btn-primary" target="_blank">Edit</a>
+                <a href="/internship/details/{echo urlencode($opportunity->title)}/{echo $opportunity->id}" class="btn btn-success" target="_blank">View Internship</a>
+                <a href="/internship/edit/{echo $opportunity->id}" class="btn btn-primary" target="_blank">Edit</a>
             </p>
             {/if}
             <form method="post" action="">
