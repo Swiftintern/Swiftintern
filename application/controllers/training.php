@@ -163,6 +163,10 @@ class Training extends Employer {
      * @before _secure, changeLayout
      */
     public function applications($id) {
+        if ($id == NULL) {
+            self::redirect("/training/manage");
+        }
+        
         $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id, "type = ?" => "training"), array("id", "title"));
         $this->seo(array("title" => "Applications","keywords" => "Applications","description" => "Applications received on internship posted","view" => $this->getLayoutView()));
         $view = $this->getActionView();$registered = [];$attended = [];
