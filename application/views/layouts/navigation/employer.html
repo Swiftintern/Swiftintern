@@ -14,7 +14,7 @@
 
     <ul class="nav navbar-top-links navbar-right">
         {if($user->type == "admin")}
-            <li><a href="/admin">Admin Panel</a></li>
+            <li><a href="/admin"><i class="fa fa-user-secret fa-fw"></i> Admin Panel</a></li>
         {/if}
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -42,6 +42,7 @@
                 <ul class="nav nav-second-level">
                     <li><a href="/employer/settings">Settings</a></li>
                     <li><a href="/employer/members">Members</a></li>
+                    <li><a href="/employer/messages">Messages</a></li>
                 </ul>
             </li>
             <li>
@@ -56,7 +57,6 @@
                 <ul class="nav nav-second-level">
                     <li><a href="/internship/post">Create</a></li>
                     <li><a href="/internship/manage">Manage</a></li>
-                    <li><a href="/internship/applicants">Applicants</a></li>
                 </ul>
             </li>
             {if(($employer->organization->account == "training") || ($employer->organization->account == "competition"))}
@@ -65,7 +65,6 @@
                 <ul class="nav nav-second-level">
                     <li><a href="/training/post">Create</a></li>
                     <li><a href="/training/manage">Manage</a></li>
-                    <li><a href="/training/applicants">Applicants</a></li>
                 </ul>
             </li>
             {/if}
@@ -85,7 +84,6 @@
                     <li><a href="/employer/reach">Reach</a></li>
                 </ul>
             </li>
-            <li><a href="/employer/messages"><i class="fa fa-envelope fa-fw"></i> Messages</a></li>
             <li><a href="/employer/resources"><i class="fa fa-wrench fa-fw"></i> Resources</a></li>
         </ul>
     </div>
