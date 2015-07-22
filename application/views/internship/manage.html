@@ -17,7 +17,7 @@
                         {script $meta = Meta::first(array("property = ?" => "company_share_opportunity", "property_id = ?" => $internship->id, "meta_key = ?" => "updateUrl"))}
                         <tr>
                             <td>{echo $internship->id}</td>
-                            <td><a href="/internship/{echo urlencode($internship->title)}/{echo $internship->id}" target="_blank" >{echo $internship->title}</a></td>
+                            <td><a href="/internship/details/{echo urlencode($internship->title)}/{echo $internship->id}" target="_blank" >{echo $internship->title}</a></td>
                             <td>{echo $internship->created}</td>
                             <td>
                                 <button class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>&nbsp;

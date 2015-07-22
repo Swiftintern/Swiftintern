@@ -9,7 +9,6 @@
  * 
  * @author Faizan Ayubi
  */
-
 use Shared\PlacementPaper as PapersBot;
 use Shared\Company as Company;
 
@@ -45,7 +44,7 @@ class CRON extends Users {
     protected function leads() {
         $date = strftime("%Y-%m-%d", strtotime('-4 days'));
         $now = strftime("%Y-%m-%d", strtotime('now'));
-        
+
         //using distinct so as to reduce db query for message and crm
         $leads = Lead::all(array("created = ?" => $date), array("DISTINCT crm_id"));
         foreach ($leads as $lead) {
@@ -53,7 +52,7 @@ class CRON extends Users {
             $message = Message::first(array("id = ?" => $crm->second_message_id));
             $lds = Lead::all(array("created = ?" => $date, "crm_id = ?" => $lead->crm_id));
             foreach ($lds as $ld) {
-                $exist = User::first(array("email = ?" => $ld->email), array("id","name","email","phone"));
+                $exist = User::first(array("email = ?" => $ld->email), array("id", "name", "email", "phone"));
                 if (!$exist) {
                     $ld->status = "SECOND_MESSAGE_SENT";
                     $this->notify(array(
@@ -67,12 +66,12 @@ class CRON extends Users {
                 } else {
                     $ld->status = "REGISTERED";
                 }
-                
+
                 $ld->updated = $now;
                 $ld->save();
             }
         }
-        
+
         $second_leads = Lead::all(array("updated = ?" => $date));
         foreach ($second_leads as $second_lead) {
             $exist = User::first(array("email = ?" => $second_lead->email), array("id"));
@@ -90,7 +89,8 @@ class CRON extends Users {
      * Sends Newsletters to User Group
      */
     protected function newsletters() {
-        $now = strftime("%Y-%m-%d", strtotime('now'));$emails = array();
+        $now = strftime("%Y-%m-%d", strtotime('now'));
+        $emails = array();
         $newsletters = Newsletter::all(array("scheduled = ?" => $now));
         foreach ($newsletters as $newsletter) {
             $message = Message::first(array("id = ?" => $newsletter->message_id));
@@ -98,7 +98,7 @@ class CRON extends Users {
             foreach ($users as $user) {
                 array_push($emails, $user->email);
             }
-            
+
             $batches = array_chunk($emails, 1000);
             foreach ($batches as $batch) {
                 $this->notify(array(
@@ -113,7 +113,7 @@ class CRON extends Users {
             }
         }
     }
-    
+
     /**
      * Rejects all applicants of an opportunity after 15 Days
      */
@@ -127,7 +127,6 @@ class CRON extends Users {
                 $application->save();
             }
         }
-        
     }
 
     /**
@@ -165,19 +164,20 @@ class CRON extends Users {
             }
         }
     }
-    
+
     /**
      * Send Notifications to employers about number of students applied
      */
     protected function newApplications() {
-        $created = strftime("%Y-%m-%d", strtotime('-1 day'));$emails = array();
+        $created = strftime("%Y-%m-%d", strtotime('-1 day'));
+        $emails = array();
         $applications = Application::all(array("created LIKE ?" => "%{$created}%"), array("DISTINCT opportunity_id"));
         foreach ($applications as $application) {
             $opportunity = Opportunity::first(array("id = ?" => $application->opportunity_id), array("title", "id", "organization_id"));
             $applicants = Application::count(array("created LIKE ?" => "%{$created}%", "opportunity_id = ?" => $application->opportunity_id));
-            $members = Member::all(array("organization_id = ?" => $opportunity->organization_id),array("user_id"));
+            $members = Member::all(array("organization_id = ?" => $opportunity->organization_id), array("user_id"));
             foreach ($members as $member) {
-                $mem = User::first(array("id = ?" => $member->user_id),array("email"));
+                $mem = User::first(array("id = ?" => $member->user_id), array("email"));
                 array_push($emails, $mem->email);
             }
             $this->notify(array(
@@ -190,36 +190,38 @@ class CRON extends Users {
         }
     }
 
-    
     protected function placementPapers() {
         $bot = new PapersBot();
         $companies = $bot->getCompaniesList();
-        
+
         foreach ($companies as $id => $url) {
             $company = new Company(array($id => $url));
             $company->savePapers();
         }
     }
-    
+
     /**
      * Mail Students to apply to internships those who have not applied after register after 7 days
      */
     protected function studentProfile() {
-        $date = strftime("%Y-%m-%d", strtotime('-7 day'));$emails = array();
+        $date = strftime("%Y-%m-%d", strtotime('-7 day'));
+        $emails = array();
         $students = Student::all(array("created LIKE ?" => "%{$date}%"), array("id", "user_id"));
         foreach ($students as $student) {
             $application = Application::first(array("student_id = ?" => $student->id));
-            if(!$application) {
+            if (!$application) {
                 $user = User::first(array("id = ?" => $student->user_id), array("email"));
                 array_push($emails, $user->email);
             }
         }
-        
-        $this->notify(array(
-            "template" => "studentProfileComplete",
-            "subject" => "Keep Your Internship Search Going",
-            "emails" => $emails
-        ));
+
+        if (!empty($emails)) {
+            $this->notify(array(
+                "template" => "studentProfileComplete",
+                "subject" => "Keep Your Internship Search Going",
+                "emails" => $emails
+            ));
+        }
     }
 
     /**
