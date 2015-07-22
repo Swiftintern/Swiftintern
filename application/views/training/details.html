@@ -1,0 +1,70 @@
+{include internship/quick_apply.html}
+<section class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-9 col-md-offset-1">
+            <h1 class="page-header text-center" itemprop="title">
+                {echo $opportunity->title}
+            </h1>
+            <article itemscope itemtype="http://schema.org/JobPosting">
+                {if($opportunity->last_date < $enddate)}
+                <div class="alert alert-warning alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    The <strong>Last Date</strong> to apply is over.
+                </div>
+                {/if}
+
+                {if isset($success)}
+                <div class="alert alert-success alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    Registered <strong>Successfully!</strong> click <a href="/students/applications">here</a> for status
+                </div>
+                {/if}
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="media">
+                            <div class="col-md-6">
+                                <p><i class="fa fa-map-marker"></i> <span itemprop="jobLocation">{echo $opportunity->location}</span></p>
+                                <p><i class="fa fa-institution"></i> <a href="/organization/{echo Framework\StringMethods::url($organization->name)}/{echo $organization->id}" target="_blank" itemprop="hiringOrganization">{echo $organization->name}</a></p>
+                                <p><i class="fa fa-clock-o"></i> Register before {echo $opportunity->last_date}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><i class="fa fa-money"></i> Fees : <span itemprop="baseSalary">{echo $opportunity->payment}</span></p>
+                                <p><i class="fa fa-calendar"></i> Duration : {echo $opportunity->duration}</p>
+                            </div>
+                            <meta itemprop="industry" content="{echo $opportunity->category}">
+                        </div>
+                        <hr>
+                        {if(isset($user))}
+                            <form method="post" action="">
+                                <input type="hidden" name="action" value="application">
+                                <button class="btn btn-primary pull-right"><i class="fa fa-check-circle fa-lg"></i> Register</button>
+                            </form>
+                        {/if}
+                        {else}
+                            <button data-toggle="modal" data-target="#quick_apply" class="btn btn-info pull-right"><i class="fa fa-check-circle fa-lg"></i> | Quick Register</button>
+                        {/else}
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Who can Apply?
+                    </div>
+                    <div class="panel-body">
+                        <p itemprop="educationRequirements">{echo $opportunity->eligibility}</p>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Details
+                    </div>
+                    <div class="panel-body">
+                        <p itemprop="responsibilities">{echo $opportunity->details}</p>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>

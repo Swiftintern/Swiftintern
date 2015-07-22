@@ -1,0 +1,31 @@
+<div class="modal fade" id="quick_apply">
+    <div class="modal-dialog">
+        <form class="modal-content" method="post" action="">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title text-center">Thanks for Register!!!</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" name="name" class="form-control" placeholder="Full Name" required="">
+                </div>
+                <div class="form-group">
+                    <label>Email address</label>
+                    <input type="email" name="email" class="form-control" placeholder="Email Address" required="">
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" name="phone" class="form-control" placeholder="Primary Phone" required="">
+                    <span class="help-text">Companies may contact you directly</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="quickApply" value="quickApply">
+                <input type="hidden" name="action" value="register">
+                <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle"></i> Apply</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </form>
+    </div>
+</div>
