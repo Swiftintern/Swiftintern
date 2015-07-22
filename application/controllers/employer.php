@@ -19,21 +19,13 @@ class Employer extends Users {
      * @before _secure, changeLayout
      */
     public function index($title = NULL, $id = NULL) {
-        $this->seo(array(
-            "title" => "Dashboard",
-            "keywords" => "dashboard",
-            "description" => "Contains all realtime stats",
-            "view" => $this->getLayoutView()
-        ));
+        $this->seo(array("title" => "Dashboard","keywords" => "dashboard","description" => "Contains all realtime stats","view" => $this->getLayoutView()));
         $view = $this->getActionView();
 
-        if (isset($id)) {
-            $this->switchorg($id);
-        }
+        if (isset($id)) { $this->switchorg($id);}
 
         $opportunities = Opportunity::all(array("organization_id = ?" => $this->employer->organization->id), array("id"));
-        $messages = "";
-        $applicants = "0";
+        $messages = "";$applicants = "0";
         foreach ($opportunities as $opportunity) {
             $applicants += Application::count(array("opportunity_id = ?" => $opportunity->id));
         }
@@ -436,6 +428,48 @@ class Employer extends Users {
         $this->getLayoutView()->set("employer", $employer);
         $this->getActionView()->set("member", $member);
         $this->getLayoutView()->set("member", $member);
+    }
+    
+    protected function saveStudent($options) {
+        $user = $this->read(array(
+            "model" => "user",
+            "where" => array("email = ?" => $options["email"])
+        ));
+        if ($user) {
+            $student = Student::first(array("user_id = ?" => $user->id));
+        } else {
+            $user = new User(array(
+                "name" => $options["name"],
+                "email" => $options["email"],
+                "phone" => $this->checkData($options["phone"]),
+                "password" => rand(100000, 99999999),
+                "access_token" => rand(100000, 99999999),
+                "type" => "student",
+                "validity" => "1",
+                "last_ip" => $_SERVER['REMOTE_ADDR'],
+                "last_login" => "1",
+                "updated" => ""
+            ));
+            $user->save();
+            $this->notify(array(
+                "template" => "studentRegister",
+                "subject" => "Getting Started on Swiftintern.com",
+                "user" => $user
+            ));
+            $student = new Student(array(
+                "user_id" => $user->id,
+                "about" => $this->checkData($options["summary"]),
+                "city" => $this->checkData($options["city"]),
+                "skills" => $this->checkData($options["skills"]),
+                "updated" => ""
+            ));
+            $student->save();
+        }
+
+        $this->user = $user;
+        $session = Registry::get("session");
+        $session->set("student", $student);
+        return $student;
     }
 
     protected function switchorg($organization_id) {

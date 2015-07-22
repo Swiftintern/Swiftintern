@@ -94,7 +94,7 @@ class Internship extends Employer {
         if ($id == NULL) {
             self::redirect("/internship/manage");
         }
-        $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id));
+        $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id, "type = ?" => "internship"));
         $this->seo(array("title" => "Edit Internship", "keywords" => "edit", "description" => "edit", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
 
@@ -175,9 +175,9 @@ class Internship extends Employer {
      */
     public function applicants($id = NULL) {
         if ($id == NULL) {
-            self::redirect("/employer/internships");
+            self::redirect("/internship/manage");
         }
-        $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id), array("id", "title"));
+        $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id, "type = ?" => "internship"), array("id", "title"));
         $this->seo(array("title" => "Applications","keywords" => "Applications","description" => "Applications received on internship posted","view" => $this->getLayoutView()));
         $view = $this->getActionView();
 
@@ -226,47 +226,5 @@ class Internship extends Employer {
         $view->set("applied", Framework\ArrayMethods::toObject($applied));
         $view->set("rejected", Framework\ArrayMethods::toObject($rejected));
         $view->set("applicants", Framework\ArrayMethods::toObject($applicants));
-    }
-
-    protected function saveStudent($options) {
-        $user = $this->read(array(
-            "model" => "user",
-            "where" => array("email = ?" => $options["email"])
-        ));
-        if ($user) {
-            $student = Student::first(array("user_id = ?" => $user->id));
-        } else {
-            $user = new User(array(
-                "name" => $options["name"],
-                "email" => $options["email"],
-                "phone" => $this->checkData($options["phone"]),
-                "password" => rand(100000, 99999999),
-                "access_token" => rand(100000, 99999999),
-                "type" => "student",
-                "validity" => "1",
-                "last_ip" => $_SERVER['REMOTE_ADDR'],
-                "last_login" => "1",
-                "updated" => ""
-            ));
-            $user->save();
-            $this->notify(array(
-                "template" => "studentRegister",
-                "subject" => "Getting Started on Swiftintern.com",
-                "user" => $user
-            ));
-            $student = new Student(array(
-                "user_id" => $user->id,
-                "about" => $this->checkData($options["summary"]),
-                "city" => $this->checkData($options["city"]),
-                "skills" => $this->checkData($options["skills"]),
-                "updated" => ""
-            ));
-            $student->save();
-        }
-
-        $this->user = $user;
-        $session = Registry::get("session");
-        $session->set("student", $student);
-        return $student;
     }
 }
