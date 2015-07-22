@@ -1,0 +1,48 @@
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header text-center">{echo $internship->title}</h1>
+            {if isset($success)}
+            <div class="alert alert-success alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                Updated <strong>Successfully!</strong>
+            </div>
+            {/if}
+            <form class="panel panel-default text-center" method="post" action="">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td><b>Id</b></td>
+                            <td>{echo $internship->id}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Title</b></td>
+                            <td><input type="text" class="form-control" name="title" value="{echo $internship->title}"></td>
+                        </tr>
+                        <tr>
+                            <td><b>Who Can Apply?</b></td>
+                            <td><input type="text" class="form-control" name="eligibility" value="{echo $internship->eligibility}"></td>
+                        </tr>
+                        <tr>
+                            <td><b>Last Date to register</b></td>
+                            <td><input type="text" class="form-control" name="last_date" value="{echo $internship->last_date}"></td>
+                        </tr>
+                        <tr>
+                            <td><b>Details</b></td>
+                            <td><textarea class="form-control editor" name="details">{echo $internship->details}</textarea></td>
+                        </tr>
+                        <tr>
+                            <td><b>Fees</b></td>
+                            <td><input type="text" class="form-control" name="payment" value="{echo $internship->payment}"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="hidden" name="action" value="update"></td>
+                            <td><button type="submit" class="btn btn-primary pull-right"><i class="fa fa-check-circle"></i> Update</button></td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
