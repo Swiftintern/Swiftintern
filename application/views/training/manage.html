@@ -1,0 +1,36 @@
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header text-center">Training</h1>
+            <div class="panel panel-default">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Title</th>
+                            <th>Posted</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {foreach $training in $trainings}
+                        {script $meta = Meta::first(array("property = ?" => "company_share_opportunity", "property_id = ?" => $training->id, "meta_key = ?" => "updateUrl"))}
+                        <tr>
+                            <td>{echo $training->id}</td>
+                            <td><a href="/training/details/{echo Framework\StringMethods::url($training->title)}/{echo $training->id}" target="_blank" >{echo $training->title}</a></td>
+                            <td>{echo $training->created}</td>
+                            <td>
+                                <button class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>&nbsp;
+                                <a href="{echo $meta->meta_value}" target="_blank" class="btn btn-primary btn-xs"><i class="fa fa-linkedin"></i></a>&nbsp;
+                                <a href="/training/applications/{$training->id}" class="btn btn-success btn-xs"><i class="fa fa-fax"></i> Applications </a>&nbsp;
+                                <a href="/training/edit/{$training->id}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit </a>&nbsp;
+                            </td>
+                        </tr>
+                        {/foreach}
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>
+    </div>
+</div>
