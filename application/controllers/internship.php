@@ -10,6 +10,16 @@ use Framework\RequestMethods as RequestMethods;
 
 class Internship extends Employer {
     
+    public function index($category=NULL, $location=NULL) {
+        $this->seo(array(
+            "title" => "Internship",
+            "keywords" => "edit",
+            "description" => "edit",
+            "view" => $this->getLayoutView()
+        ));
+        $view = $this->getActionView();
+    }
+    
     public function details($title=NULL, $id=NULL) {
         global $datetime;
         $view = $this->getActionView();
@@ -82,7 +92,7 @@ class Internship extends Employer {
      */
     public function edit($id = NULL) {
         if ($id == NULL) {
-            self::redirect("/employer/internships");
+            self::redirect("/internship/manage");
         }
         $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id));
         $this->seo(array("title" => "Edit Internship", "keywords" => "edit", "description" => "edit", "view" => $this->getLayoutView()));
@@ -136,7 +146,7 @@ class Internship extends Employer {
                         ), "visibility" => array("code" => "anyone")
                             ), $opportunity);
                 }
-                self::redirect('/opportunities/internships');
+                self::redirect('/internship/manage');
             }
 
             $view->set("opportunity", $opportunity);
