@@ -7,7 +7,6 @@
  */
 use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
-
 class Students extends Users {
 
     /**
@@ -33,18 +32,10 @@ class Students extends Users {
         $socials = Social::all(array("user_id = ?" => $user->id), array("id", "social_platform", "link"));
         $resumes = Resume::all(array("student_id = ?" => $student->id), array("id", "type"));
 
-        if (count($qualifications)) {
-            ++$profile;
-        }
-        if (count($works)) {
-            ++$profile;
-        }
-        if ($student->about) {
-            ++$profile;
-        }
-        if ($student->skills) {
-            ++$profile;
-        }
+        if (count($qualifications)) ++$profile;
+        if (count($works)) ++$profile;
+        if ($student->about) ++$profile;
+        if ($student->skills) ++$profile;
 
         $view->set("student", $student);
         $view->set("qualifications", $qualifications);
@@ -55,6 +46,9 @@ class Students extends Users {
     }
 
     public function register() {
+        if ($this->user) {
+            self::redirect("/students");
+        }
         $this->seo(array(
             "title" => "Get Internship | Student Register",
             "keywords" => "get internship, student register",
@@ -63,86 +57,136 @@ class Students extends Users {
         ));
         $view = $this->getActionView();
 
+        $gClient = Registry::get("gClient");
         $li = $this->LinkedIn("http://swiftintern.com/students/register");
-        if (isset($_REQUEST['code'])) {
+        $session = Registry::get("session");
+        $loggedIn = false; $social_platform = null;
+
+        if (isset($_GET['code'])) { // Google+ login
+            $gClient->authenticate($_GET['code']);
+        } elseif(isset($_REQUEST['code'])) {    // LinkedIn login
             $li->getAccessToken($_REQUEST['code']);
-        } else {
+        } else {    // Not yet logged In
+            // Provide Login URL's
             $url = $li->getLoginUrl(array(LinkedIn::SCOPE_BASIC_PROFILE, LinkedIn::SCOPE_EMAIL_ADDRESS));
+            $authUrl = $gClient->createAuthUrl();
             $view->set("url", $url);
+            $view->set("authUrl", $authUrl);
         }
 
-        if ($li->hasAccessToken()) {
+        // Check Login token whether Google+ or LinkedIn
+        if ($gClient->getAccessToken()) {
+            $tk = $gClient->verifyIdToken()->getAttributes();
+            $obj = new Google_Service_Plus($gClient);
+            $me = $obj->people->get('me');
+
+            $loggedIn = true; $email = $tk['payload']['email'];
+            $social_platform = "google_plus"; $link = $me->url;
+        } elseif ($li->hasAccessToken()) {
             //$info = $li->get('/people/~:(phone-numbers,summary,first-name,last-name,positions,email-address,public-profile-url,location,picture-url,educations,skills)');
             $info = $li->get('/people/~:(summary,first-name,last-name,positions,email-address,public-profile-url,location,picture-url)');
+
+            $loggedIn = true; $email = $info["emailAddress"];
+            $social_platform = "linkedin"; $link = $info["publicProfileUrl"];
+        }
+
+        if ($loggedIn) {
+            // find the user
             $user = $this->read(array(
                 "model" => "user",
-                "where" => array("email = ?" => $info["emailAddress"])
+                "where" => array("email = ?" => $email)
             ));
-            if ($user) {
+            if ($user) {    // Found old user
                 $social = $this->read(array(
                     "model" => "social",
-                    "where" => array("user_id = ?" => $user->id, "social_platform = ?" => "linkedin")
+                    "where" => array("user_id = ?" => $user->id, "social_platform = ?" => $social_platform)
                 ));
                 $student = Student::first(array("user_id = ?" => $user->id));
                 $this->trackUser($user);
-            } else {
+            } else {    // New User
+                $social = false;
+                switch ($social_platform) {
+                    case 'google_plus':
+                        $name = $me->displayName;
+                        $phone = "";
+
+                        // student details
+                        $about = $me->aboutMe;
+                        $city = $me->currentLocation;
+                        $skills = $me->skills;
+
+                        $object = $me;
+                        break;
+                    
+                    case 'linkedin':
+                        $name = $info["firstName"] . " " . $info["lastName"];
+                        $phone = $info["phoneNumbers"]["values"][0]["phoneNumber"];
+
+                        // student details
+                        $about = $info["summary"];
+                        $city = $info["location"]["name"];
+                        $skills = "";
+                        if ($info["skills"]["_total"] > 0) {
+                            foreach ($info["skills"]["values"] as $key => $value) {
+                                $skills .= $value["skill"]["name"];
+                                $skills .= ",";
+                            }
+                        }
+
+                        $object = $info;
+                        break;
+                }
+
+                // save new user in db
                 $user = new User(array(
-                    "name" => $info["firstName"] . " " . $info["lastName"],
-                    "email" => $info["emailAddress"],
-                    "phone" => $this->checkData($info["phoneNumbers"]["values"][0]["phoneNumber"]),
+                    "name" => $name, "email" => $email,
+                    "phone" => $this->checkData($phone),
                     "password" => rand(100000, 99999999),
                     "access_token" => rand(100000, 99999999),
                     "type" => "student",
                     "validity" => "1",
+                    "login_number" => "1",
                     "last_ip" => $_SERVER['REMOTE_ADDR'],
-                    "last_login" => "1",
+                    "last_login" => date('Y-m-d H:i:s'),
                     "updated" => ""
                 ));
                 $user->save();
+
+                /*
                 $this->notify(array(
                     "template" => "studentRegister",
                     "subject" => "Getting Started on Swiftintern.com",
                     "user" => $user
                 ));
-
+                */
                 //add student
-                $skills = "";
-                if ($info["skills"]["_total"] > 0) {
-                    foreach ($info["skills"]["values"] as $key => $value) {
-                        $skills .= $value["skill"]["name"];
-                        $skills .= ",";
-                    }
-                }
                 $student = new Student(array(
                     "user_id" => $user->id,
-                    "about" => $this->checkData($info["summary"]),
-                    "city" => $this->checkData($info["location"]["name"]),
-                    "skills" => $skills,
+                    "about" => $this->checkData($about),
+                    "city" => $this->checkData($city),
+                    "skills" => $this->checkData($skills),
                     "updated" => ""
                 ));
                 $student->save();
+                $this->saveOptDetails($object, $student, $social_platform);
             }
 
             if (!$social) {
                 $social = new Social(array(
                     "user_id" => $user->id,
-                    "social_platform" => "linkedin",
-                    "link" => $this->checkData($info["publicProfileUrl"])
+                    "social_platform" => $social_platform,
+                    "link" => $this->checkData($link)
                 ));
                 $social->save();
-                $this->linkedinDetails($info, $student);
             }
-
-            $info["user"] = $user;
-            $this->login($info, $student);
+            $this->login($user, $student);
             self::redirect("/students");
         }
     }
 
-    protected function login($info, $student) {
-        $this->user = $info["user"];
-        $session = Registry::get("session");
-        $session->set("student", $student);
+    protected function login($user, $student) {
+        $this->setUser($user);
+        Registry::get("session")->set("student", $student);
     }
     
     public function testLogin() {
@@ -166,71 +210,93 @@ class Students extends Users {
         $view->set("user", $this->user);
     }
 
-    protected function linkedinDetails($info, $student) {
+    protected function saveOptDetails($object, $student, $platform) {
+        $isEdu = $isWork = false;
+        if ($platform == 'google_plus') {
+            $organizations = $object->getOrganizations();
+            if (count($organizations) > 0) {
+                foreach ($organizations as $org) {
+                    $education = array(); $work = array();
+                    switch ($org->type) {
+                        case 'school':
+                            $isEdu = true;
+                            $education[] = array(
+                                "school" => $org->name, "degree" => $org->title, "major" => "", "gpa" => "0.00", "passing_year" => $org->endDate
+                            );
+                            break;
+                        
+                        case 'work':
+                            $isWork = true;
+                            $work[] = array(
+                                "company_name" => $org->name, "linkedin_id" => "", "duration" => $org->startDate . " - " . $org->endDate, "designation" => $org->title, "responsibility" => ""
+                            );
+                            break;
+                    }
+                }
+            }
+        } elseif($platform == 'linkedin') {
+            if ($object["educations"]["_total"] > 0) {  // check for education/qual details
+                $isEdu = true; $education = array();
+                foreach ($object["educations"]["values"] as $key => $value) {
+                    $education[] = array(
+                        "school" => $value["schoolName"], "degree" => $value["degree"], "major" => $value["fieldOfStudy"], "gpa" => "0.00", "passing_year" => $value["endDate"]["year"]
+                    );
+                }
+            }
+
+            if ($object["positions"]["_total"] > 0) {   // check for work details
+                $isWork = true; $work = array();
+                foreach ($object["positions"]["_total"] as $key => $value) {
+                    $work[] = array(
+                        "company_name" => $value["company"]["name"], "linkedin_id" => $value["company"]["id"], "duration" => $value["startDate"]["year"], "designation" => $value["title"], "responsibility" => $value["summary"]
+                    );
+                }
+            }
+        }        
+
         // Saving Education Info
-        if ($info["educations"]["_total"] > 0) {
-            foreach ($info["educations"]["values"] as $key => $value) {
-                $organization = Organization::first(array("name = ?" => $value["schoolName"]), array("id"));
+        if ($isEdu) {
+            foreach ($education as $q) {
+                $organization = Organization::first(array("name = ?" => $q["school"]), array("id"));
                 if (!$organization) {
                     $organization = new Organization(array(
-                        "photo_id" => "",
-                        "name" => $value["schoolName"],
-                        "country" => "",
-                        "website" => "",
-                        "sector" => "",
-                        "type" => "institute",
-                        "account" => "basic",
-                        "about" => "",
-                        "fbpage" => "",
-                        "linkedin_id" => "",
-                        "validity" => "1",
-                        "updated" => ""
+                        "photo_id" => "", "name" => $q["school"], "country" => "", "website" => "", "sector" => "", "type" => "institute", "account" => "basic", "about" => "", "fbpage" => "", "linkedin_id" => "", "validity" => "1", "updated" => ""
                     ));
                     $organization->save();
                 }
-                $qualification = new Qualification(array(
+                $newQual = new Qualification(array(
                     "student_id" => $student->id,
                     "organization_id" => $organization->id,
-                    "degree" => $this->checkData($value["degree"]),
-                    "major" => $this->checkData($value["fieldOfStudy"]),
-                    "gpa" => "",
-                    "passing_year" => $this->checkData($value["endDate"]["year"])
+                    "degree" => $this->checkData($q["degree"]),
+                    "major" => $this->checkData($q["major"]),
+                    "gpa" => $this->checkData($q["gpa"]),
+                    "passing_year" => $this->checkData($qual["passing_year"])
                 ));
-                $qualification->save();
+                $newQual->save();
             }
         }
 
         //Adding work experience
-        if ($info["positions"]["_total"] > 0) {
-            foreach ($info["positions"]["values"] as $key => $value) {
-                $organization = Organization::first(array("name = ?" => $value["company"]["name"]), array("id"));
+        if ($isWork) {
+            foreach ($work as $w) {
+                $organization = Organization::first(array("name = ?" => $w["company_name"]), array("id"));
                 if (!$organization) {
                     $organization = new Organization(array(
-                        "photo_id" => "",
-                        "name" => $value["company"]["name"],
-                        "country" => "",
-                        "website" => "",
-                        "sector" => "",
-                        "type" => "company",
-                        "account" => "basic",
-                        "about" => "",
-                        "fbpage" => "",
-                        "linkedin_id" => $this->checkData($value["company"]["id"]),
-                        "validity" => "1",
-                        "updated" => ""
+                        "photo_id" => "", "name" => $w["company_name"], "country" => "", "website" => "", "sector" => "", "type" => "company", "account" => "basic", "about" => "", "fbpage" => "", "linkedin_id" => $this->checkData($w["linkedin_id"]), "validity" => "1", "updated" => ""
                     ));
                     $organization->save();
                 }
-                $work = new Work(array(
+                $newWork = new Work(array(
                     "student_id" => $student->id,
                     "organization_id" => $organization->id,
-                    "duration" => $this->checkData($value["startDate"]["year"]),
-                    "designation" => $this->checkData($value["title"]),
-                    "responsibility" => $this->checkData($value["summary"])
+                    "duration" => $this->checkData($w["duration"]),
+                    "designation" => $this->checkData($w["designation"]),
+                    "responsibility" => $this->checkData($w["responsibility"])
                 ));
-                $work->save();
+                $newWork->save();
             }
         }
+        return;
     }
 
     /**
@@ -250,19 +316,10 @@ class Students extends Users {
         $socials = Social::all(array("user_id = ?" => $user->id), array("id", "social_platform", "link"));
         $resumes = Resume::all(array("student_id = ?" => $student->id), array("id", "type"));
 
-        if (count($qualifications)) {
-            ++$profile;
-        }
-        if (count($works)) {
-            ++$profile;
-        }
-        if ($student->about) {
-            ++$profile;
-        }
-        if ($student->skills) {
-            ++$profile;
-        }
-
+        if (count($qualifications)) ++$profile;
+        if (count($works)) ++$profile;
+        if ($student->about) ++$profile;
+        if ($student->skills) ++$profile;
 
         $view->set("student", $student);
         $view->set("user", $user);

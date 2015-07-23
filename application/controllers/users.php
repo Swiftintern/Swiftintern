@@ -114,7 +114,7 @@ class Users extends Controller {
         $now = strftime("%Y-%m-%d %H:%M:%S", strtotime('now'));
 
         $user->last_login = $now;
-        $user->login_number = $this->user->login_number + 1;
+        $user->login_number = $user->login_number + 1;
         $user->last_ip = $_SERVER['REMOTE_ADDR'];
         $user->save();
     }
