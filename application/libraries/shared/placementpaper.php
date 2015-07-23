@@ -1,7 +1,7 @@
 <?php
 
 namespace Shared {
-
+   
     use WebBot\lib\WebBot\Bot as Bot;
     use Framework\Base as Base;
 
