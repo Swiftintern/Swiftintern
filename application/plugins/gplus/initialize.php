@@ -1,7 +1,10 @@
 <?php
 $client_id = '876898912833-dquv6pith1jn0rre7gahrgdol26u3qbt.apps.googleusercontent.com';
 $client_secret = 'jG59-0YXVKnGZAaYwE_LYFU1';
+// Development Uri
 $redirect_uri = 'http://localhost/swiftintern/students/register';
+// Production Uri
+// $redirect_uri = 'http://swiftintern.com/students/register';
 
 $client = new Google_Client();
 $client->setClientId($client_id);
