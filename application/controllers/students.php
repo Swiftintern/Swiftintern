@@ -62,20 +62,27 @@ class Students extends Users {
         $session = Registry::get("session");
         $loggedIn = false; $social_platform = null;
 
-        if (isset($_GET['code'])) { // Google+ login
-            $gClient->authenticate($_GET['code']);
-        } elseif(isset($_REQUEST['code'])) {    // LinkedIn login
-            $li->getAccessToken($_REQUEST['code']);
-        } else {    // Not yet logged In
-            // Provide Login URL's
-            $url = $li->getLoginUrl(array(LinkedIn::SCOPE_BASIC_PROFILE, LinkedIn::SCOPE_EMAIL_ADDRESS));
-            $authUrl = $gClient->createAuthUrl();
-            $view->set("url", $url);
-            $view->set("authUrl", $authUrl);
+        if ($action = RequestMethods::get("action")) {
+            if ($action == 'google') {
+                $url = $gClient->createAuthUrl();
+                $view->set("url", $url);
+            } elseif ($action == 'linkedin') {
+                $url = $li->getLoginUrl(array(LinkedIn::SCOPE_BASIC_PROFILE, LinkedIn::SCOPE_EMAIL_ADDRESS));
+                $view->set("url", $url);
+            }
+            $session->set("action", $action);
+        }
+
+        if (isset($_GET['code'])) { // Google+ login 
+            if ($session->get('action') == 'google') {
+                $gClient->authenticate($_GET['code']);    
+            } elseif ($session->get('action') == 'linkedin') {
+                $li->getAccessToken($_REQUEST['code']);
+            }
         }
 
         // Check Login token whether Google+ or LinkedIn
-        if ($gClient->getAccessToken()) {
+        if ($session->get('action') == 'google' && $gClient->getAccessToken()) {
             $tk = $gClient->verifyIdToken()->getAttributes();
             $obj = new Google_Service_Plus($gClient);
             $me = $obj->people->get('me');
@@ -91,6 +98,7 @@ class Students extends Users {
         }
 
         if ($loggedIn) {
+            $session->erase('action');
             // find the user
             $user = $this->read(array(
                 "model" => "user",

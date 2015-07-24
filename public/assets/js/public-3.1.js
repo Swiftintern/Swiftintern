@@ -281,3 +281,16 @@ function toObject(data) {
     });
     return obj;
 }
+
+function studentLogin(action) {
+    request.read({ 
+        action: "/students/register",
+        data: 'action=' + action,
+        callback: function (data) {
+           if (data.url) {
+                //redirect
+                window.location.href = data.url;
+            }
+        }
+    });
+}
