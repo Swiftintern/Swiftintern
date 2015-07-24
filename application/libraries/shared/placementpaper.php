@@ -174,7 +174,7 @@ namespace Shared {
          * @param string $link
          * @return string
          */
-        private function filterLink($link) {
+        protected function filterLink($link) {
             // Relative link
             if (preg_match("/^\/[^\/].*/", $link)) {
                 return $this->domain . $link;
