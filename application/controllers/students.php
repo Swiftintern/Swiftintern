@@ -73,10 +73,10 @@ class Students extends Users {
             $session->set("action", $action);
         }
 
-        if (isset($_GET['code'])) { // Google+ login 
-            if ($session->get('action') == 'google') {
+        if (isset($_GET['code'])) { // Authorization successful
+            if ($session->get('action') == 'google') {  // Google+ Login
                 $gClient->authenticate($_GET['code']);    
-            } elseif ($session->get('action') == 'linkedin') {
+            } elseif ($session->get('action') == 'linkedin') {  // or LinkedIn Login
                 $li->getAccessToken($_REQUEST['code']);
             }
         }
@@ -98,7 +98,7 @@ class Students extends Users {
         }
 
         if ($loggedIn) {
-            $session->erase('action');
+            $session->erase('action');  // Unset the action to remove any error
             // find the user
             $user = $this->read(array(
                 "model" => "user",
@@ -160,13 +160,13 @@ class Students extends Users {
                 ));
                 $user->save();
 
-                /*
+                // email the new user
                 $this->notify(array(
                     "template" => "studentRegister",
                     "subject" => "Getting Started on Swiftintern.com",
                     "user" => $user
                 ));
-                */
+                
                 //add student
                 $student = new Student(array(
                     "user_id" => $user->id,
