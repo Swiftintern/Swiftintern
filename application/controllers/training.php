@@ -112,7 +112,7 @@ class Training extends Employer {
                         ), "visibility" => array("code" => "anyone")
                             ), $opportunity);
                 }
-                self::redirect('/opportunities/internships');
+                self::redirect('/training/manage');
             }
 
             $view->set("opportunity", $opportunity);

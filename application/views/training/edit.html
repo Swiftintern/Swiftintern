@@ -1,7 +1,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header text-center">{echo $internship->title}</h1>
+            <h1 class="page-header text-center">{echo $training->title}</h1>
             {if isset($success)}
             <div class="alert alert-success alert-dismissible fade in" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
@@ -13,27 +13,27 @@
                     <tbody>
                         <tr>
                             <td><b>Id</b></td>
-                            <td>{echo $internship->id}</td>
+                            <td>{echo $training->id}</td>
                         </tr>
                         <tr>
                             <td><b>Title</b></td>
-                            <td><input type="text" class="form-control" name="title" value="{echo $internship->title}"></td>
+                            <td><input type="text" class="form-control" name="title" value="{echo $training->title}"></td>
                         </tr>
                         <tr>
                             <td><b>Who Can Apply?</b></td>
-                            <td><input type="text" class="form-control" name="eligibility" value="{echo $internship->eligibility}"></td>
+                            <td><textarea class="form-control" name="eligibility" rows="3" required="">{echo $training->eligibility}</textarea></td>
                         </tr>
                         <tr>
                             <td><b>Last Date to register</b></td>
-                            <td><input type="text" class="form-control" name="last_date" value="{echo $internship->last_date}"></td>
+                            <td><input type="text" class="form-control" name="last_date" value="{echo $training->last_date}"></td>
                         </tr>
                         <tr>
                             <td><b>Details</b></td>
-                            <td><textarea class="form-control editor" name="details">{echo $internship->details}</textarea></td>
+                            <td><textarea class="form-control editor" name="details">{echo $training->details}</textarea></td>
                         </tr>
                         <tr>
                             <td><b>Fees</b></td>
-                            <td><input type="text" class="form-control" name="payment" value="{echo $internship->payment}"></td>
+                            <td><input type="text" class="form-control" name="payment" value="{echo $training->payment}"></td>
                         </tr>
                         <tr>
                             <td><input type="hidden" name="action" value="update"></td>

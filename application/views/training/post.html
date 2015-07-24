@@ -40,8 +40,8 @@
                     <hr>
                     <div class="form-group">
                         <label>Who can Apply? *</label>
-                        <input type="text" class="form-control" name="eligibility" required="">
-                        <span class="help-block">Enter Separated by comma. {echo Shared\Markup::errors($errors, "eligibility")}</span>
+                        <textarea class="form-control" name="eligibility" rows="3" required=""></textarea>
+                        <span class="help-block">{echo Shared\Markup::errors($errors, "eligibility")}</span>
                     </div>
                     <div class="form-group">
                         <label>Details *</label>
@@ -73,7 +73,7 @@
                         <input type="text" class="form-control" name="duration" placeholder="2 months">
                         <span class="help-block">The period students will work with you{echo Shared\Markup::errors($errors, "duration")}</span>
                     </div>
-                    <input type="hidden" name="action" value="internship">
+                    <input type="hidden" name="action" value="training">
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" name="linkedin" value="1" checked=""> Post on Linkedin
