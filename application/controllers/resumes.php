@@ -115,7 +115,8 @@ class Resumes extends Students {
         ));
         $view = $this->getActionView();
         
-        $student = Registry::get('session')->get('student');
+        $session = Registry::get('session');
+        $student = $session->get('student');
 
         $qual = Qualification::all(array(
             "student_id = ?" => $student->id
@@ -139,18 +140,22 @@ class Resumes extends Students {
                     $work = $set['work'];
 
                     if (RequestMethods::post("skills", "")) {
+                       $student = Student::first(array("id = ?" => $this->student->id));
                        $student->skills = $skills = RequestMethods::post("skills");
                        $student->updated = date('Y-m-d H:i:s');
                        $student->save();
+                       $session->set("student", $student);
                     }
                     break;
 
                 case 'saveSkills':
                     $skills = RequestMethods::post("skills");
                     if (!empty($skills)) {
+                        $student = Student::first(array("id = ?" => $this->student->id));
                         $student->skills = $skills;
                         $student->updated = date('Y-m-d H:i:s');
                         $student->save();
+                        $session->set("student", $student);
                     }
                     break;
             }
