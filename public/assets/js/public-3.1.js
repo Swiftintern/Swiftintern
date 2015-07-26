@@ -283,9 +283,17 @@ function toObject(data) {
 }
 
 function studentLogin(action) {
-    request.read({ 
+    var redirectUri = window.location.pathname;
+    var data;
+    if (redirectUri === '/students/register') {
+        data = 'action=' + action;
+    } else {
+        data = 'action=' + action + '&redirectUrl=' + redirectUri;
+    }
+
+    request.read({
         action: "/students/register",
-        data: 'action=' + action,
+        data: data,
         callback: function (data) {
            if (data.url) {
                 //redirect

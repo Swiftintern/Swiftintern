@@ -73,6 +73,10 @@ class Students extends Users {
             $session->set("action", $action);
         }
 
+        if (RequestMethods::get("redirectUrl")) {
+            $session->set("redirectUrl", RequestMethods::get("redirectUrl"));
+        }
+
         if (isset($_GET['code'])) { // Authorization successful
             if ($session->get('action') == 'google') {  // Google+ Login
                 $gClient->authenticate($_GET['code']);    

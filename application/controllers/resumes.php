@@ -25,11 +25,9 @@ class Resumes extends Students {
         $li = $this->LinkedIn("http://swiftintern.com/students/register");
         if (isset($_REQUEST['code'])) {
             $li->getAccessToken($_REQUEST['code']);
-        } else {
-            $url = $li->getLoginUrl(array(LinkedIn::SCOPE_BASIC_PROFILE, LinkedIn::SCOPE_EMAIL_ADDRESS));
-            $view->set("url", $url);
         }
-        $this->getActionView()->set("li", $li);
+        $view->set("li", $li);
+        $view->set("user", Registry::get("session")->get("user"));
     }
     
     public function guidelines() {

@@ -55,6 +55,18 @@ namespace Shared {
             }
         }
 
+        // To redirect the user on their page after login
+        protected function setRedirect() {
+            $session = Registry::get("session");
+            $user = $session->get("user");
+            $redirectUrl = $session->get("redirectUrl");
+
+            if ($redirectUrl && $user) {
+                $session->erase("redirectUrl");
+                self::redirect($redirectUrl);
+            }
+        }
+
         public static function redirect($url) {
             header("Location: {$url}");
             exit();
@@ -74,7 +86,7 @@ namespace Shared {
         public function __construct($options = array()) {
             parent::__construct($options);
             
-            //$this->setRedirect();
+            $this->setRedirect();
             // connect to database
             $database = Registry::get("database");
             $database->connect();
