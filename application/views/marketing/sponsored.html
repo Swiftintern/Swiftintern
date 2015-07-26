@@ -1,0 +1,61 @@
+<div id="page-wrapper">
+    <div class="row col-lg-12">
+        <h1 class="page-header text-center">Sponsor Opportunity</h1>
+        {if(isset($success))}
+            Saved Successfully
+        {/if}
+        <form class="form-inline text-center" role="form" method="post" action="">
+            <div class="form-group">
+                <div class="input-group">
+                    <label class="sr-only">Opportunity Id</label>
+                    <input type="text" style="width: 100px" name="opportunity_id" class="form-control" placeholder="Id" required="" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <label class="sr-only">From</label>
+                    <span class="add-on input-group-addon"><i class="fa fa-calendar fa-fw"></i> From</span>
+                    <input type="date" style="width: 200px" name="start" class="form-control" required="" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <label class="sr-only">To</label>
+                    <span class="add-on input-group-addon"><i class="fa fa-calendar fa-fw"></i> To</span>
+                    <input type="date" style="width: 200px" name="end" class="form-control" required="" />
+                </div>
+            </div>
+            <input type="hidden" name="action" value="sponsoreds">
+            <button type="submit" class="btn btn-primary">Sponsor</button>
+        </form>
+        <hr>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-list fa-fw"></i> Leads
+            </div>
+            <table class="table table-hover table-striped">
+                <thead>
+                    <th>Opportunity Id</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Active/Validity</th>
+                    <th>Action</th>
+                </thead>
+                <tbody id="results">
+                    {foreach $sponsored in $sponsoreds}
+                    <tr>
+                        <td>{$sponsored->opportunity_id}</td>
+                        <td>{$sponsored->start}</td>
+                        <td>{$sponsored->end}</td>
+                        <td>{$sponsored->is_active}/{$sponsored->validity}</td>
+                        <td>
+                            <a href="/admin/update/sponsored/{echo $sponsored->id}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
+                        </td>
+                    </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+            <div id="after_results" class="text-center"></div>
+        </div>
+    </div>
+</div>

@@ -18,10 +18,9 @@ class Admin extends Users {
     /**
      * Method which sets data stats for admin dashboard
      * 
-     * @before _secure
+     * @before _secure, changeLayout
      */
     public function index() {
-        $this->changeLayout();
         $this->seo(array("title" => "Admin Panel", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
         $now = strftime("%Y-%m-%d", strtotime('now'));
@@ -135,12 +134,11 @@ class Admin extends Users {
     /**
      * Updates any data provide with model and id
      * 
-     * @before _secure
+     * @before _secure, changeLayout
      * @param type $model the model object to be updated
      * @param type $id the id of object
      */
     public function update($model = NULL, $id = NULL) {
-        $this->changeLayout();
         $this->seo(array("title" => "Update", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
 
@@ -168,10 +166,9 @@ class Admin extends Users {
     }
 
     /**
-     * @before _secure
+     * @before _secure, changeLayout
      */
     public function stats() {
-        $this->changeLayout();
         $this->seo(array("title" => "Stats", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
         if (RequestMethods::get("action") == "getStats") {
@@ -191,10 +188,9 @@ class Admin extends Users {
     }
 
     /**
-     * @before _secure
+     * @before _secure, changeLayout
      */
     public function data() {
-        $this->changeLayout();
         $this->seo(array("title" => "Data Analysis", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
         if (RequestMethods::get("action") == "dataAnalysis") {
@@ -213,10 +209,9 @@ class Admin extends Users {
     }
 
     /**
-     * @before _secure
+     * @before _secure, changeLayout
      */
     public function support() {
-        $this->changeLayout();
         $this->seo(array("title" => "Support Tickets", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
         

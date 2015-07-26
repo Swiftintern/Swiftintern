@@ -11,10 +11,9 @@ use Framework\RequestMethods as RequestMethods;
 class Marketing extends Admin {
 
     /**
-     * @before _secure
+     * @before _secure, changeLayout
      */
     public function crmTemplate() {
-        $this->changeLayout();
         $this->seo(array("title" => "CRM", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
         if (RequestMethods::post("action") == "createCrmTemplate") {
@@ -37,10 +36,9 @@ class Marketing extends Admin {
     }
 
     /**
-     * @before _secure
+     * @before _secure, changeLayout
      */
     public function crmLead() {
-        $this->changeLayout();
         $this->seo(array("title" => "Lead Generation", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
         $exists = array();
@@ -104,10 +102,9 @@ class Marketing extends Admin {
     }
 
     /**
-     * @before _secure
+     * @before _secure, changeLayout
      */
     public function crmManage() {
-        $this->changeLayout();
         $this->seo(array("title" => "Manage CRM", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
 
@@ -121,10 +118,9 @@ class Marketing extends Admin {
     }
 
     /**
-     * @before _secure
+     * @before _secure, changeLayout
      */
     public function newsletterCreate() {
-        $this->changeLayout();
         $this->seo(array("title" => "Create Newsletter", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
 
@@ -147,10 +143,9 @@ class Marketing extends Admin {
     }
 
     /**
-     * @before _secure
+     * @before _secure, changeLayout
      */
     public function newsletterManage() {
-        $this->changeLayout();
         $this->seo(array("title" => "Manage Newsletter", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
 
@@ -161,6 +156,34 @@ class Marketing extends Admin {
         $view->set("limit", $limit);
         $view->set("page", $page);
         $view->set("newsletters", $newsletters);
+    }
+    
+    /**
+     * @before _secure, changeLayout
+     */
+    public function sponsored() {
+        $this->seo(array("title" => "Sponsored Opportunity", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+        
+        if(RequestMethods::post("action") == "sponsoreds") {
+            $sponsor = new Sponsored(array(
+                "opportunity_id" => RequestMethods::post("opportunity_id"),
+                "user_id" => $this->user->id,
+                "start" => RequestMethods::post("start"),
+                "end" => RequestMethods::post("end"),
+                "is_active" =>  "1",
+                "validity" => "1",
+                "updated" => ""
+            ));
+            $sponsor->save();
+            $view->set("success", TRUE);
+        }
+        
+        $page = RequestMethods::get("page", 1);
+        $limit = RequestMethods::get("limit", 10);
+        $sponsoreds = Sponsored::all(array(), array("*"), "created", "desc", $limit, $page);
+        
+        $view->set("sponsoreds", $sponsoreds);
     }
 
 }
