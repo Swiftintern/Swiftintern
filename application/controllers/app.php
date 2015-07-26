@@ -57,14 +57,14 @@ class App extends Users {
                 ));
                 $student->save();
             }
-            
+
             $meta = Meta::first(array(
-                "property = ?" => "user",
-                "property_id = ?" => $user->id,
-                "meta_key = ?" => "app",
-                "meta_value = ?" => "placementpaper"
+                        "property = ?" => "user",
+                        "property_id = ?" => $user->id,
+                        "meta_key = ?" => "app",
+                        "meta_value = ?" => "placementpaper"
             ));
-            if(!$meta){
+            if (!$meta) {
                 $meta = new Meta(array(
                     "property" => "user",
                     "property_id" => $user->id,
@@ -73,16 +73,41 @@ class App extends Users {
                 ));
                 $meta->save();
             }
-            
+
             $this->user = $user;
             $session = Registry::get("session");
             $session->set("student", $student);
-            
+
             $view->set("meta", $meta);
             $view->set("success", true);
         } else {
             $view->set("success", false);
         }
     }
-    
+
+    public function sponsored() {
+        $this->JSONview();
+        global $datetime;
+        $sponsoreds = array();
+
+        $order = RequestMethods::get("order", "id");
+        $direction = RequestMethods::get("direction", "desc");
+        $page = RequestMethods::get("page", 1);
+        $limit = RequestMethods::get("limit", 1);
+
+        $where = array(
+            "start <= ?" => $datetime->format("Y-m-d"),
+            "end >= ?" => $datetime->format("Y-m-d"),
+            "validity = ?" => true,
+            "is_active = ?" => true
+        );
+        $fields = array("opportunity_id");
+
+        $sponsored = Sponsored::all($where, $fields, $order, $direction, $limit, $page);
+        foreach ($sponsored as $sd) {
+            $sponsoreds = Opportunity::all(array("id = ?" => $sd->opportunity_id), array("id", "title", "location", "last_date", "organization_id", "type"));
+        }
+        $this->getActionView()->set("sponsoreds", $sponsoreds);
+    }
+
 }

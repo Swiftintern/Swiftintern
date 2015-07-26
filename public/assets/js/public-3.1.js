@@ -244,12 +244,12 @@ function login() {
 
 function loadSponsored(opts) {
     request.read({
-        action: "home/sponsored",
+        action: "app/sponsored",
         data: opts,
         callback: function (data) {
             if (data.sponsoreds) {
-                $.each(data.sponsoreds, function (i, opportunity) {
-                    $('#results').prepend('<tr class="featured"><td><div class="media"><a class="pull-left hidden-xs" href="' + encodeURI(opportunity._title) + '/' + opportunity._id + '"><img src="http://assets.swiftintern.com/uploads/images/sml_7921790.jpg" class="media-object small_image" alt="' + opportunity._title + '"></a><div class="media-body"><h4 class="media-heading"><a href="' + encodeURI(opportunity._title) + '/' + opportunity._id + '">' + opportunity._title + '</a></h4>' + opportunity._eligibility + '</div></div></td><td class="job-location"><p><i class="fa fa-calendar fa-fw"></i>' + opportunity._last_date + '</p><p><i class="fa fa-map-marker"></i>' + opportunity._location + '</p></td></tr>');
+                $.each(data.sponsoreds, function (i, item) {
+                    $('#sponsored').html('<div class="media"><a class="media-left" href="'+ item._type +'/details/' + encodeURI(item._title) + '/' + item._id + '"><img src="/organizations/photo/'+ item._organization_id +'" width=60 alt="' + item.title + '"></a><div class="media-body"><p class="media-heading"><a href="' + encodeURI(item._title) + '/' + item._id + '" target="_blank">' + item._title + '</a></p></div></div>');
                 });
             }
         }
