@@ -57,11 +57,9 @@ class Organizations extends Users {
         
         $organization = Organization::first(array("id = ?" => $id),array("id", "name", "website", "type", "linkedin_id", "photo_id"));
         $opportunities = Opportunity::all(array("organization_id = ?" => $organization->id),array("id", "title", "last_date", "location"));
-        $experiences = Experience::all(array("organization_id = ?" => $organization->id),array("id", "title", "details"));
         
         $view->set("organization", $organization);
         $view->set("opportunities", $opportunities);
-        $view->set("experiences", $experiences);
     }
     
     public function placementpapers() {

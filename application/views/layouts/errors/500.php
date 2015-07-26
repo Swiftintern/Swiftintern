@@ -42,7 +42,6 @@
                         <li><a href=""></a></li>
                         <li><a href="/resume-for-internship" class="whitetext"><i class="fa fa-file-text-o fa-lg"></i> Create Resume</a></li>
                         <li><a href="/onlinetest" class="whitetext hidden-sm"><i class="fa fa-clock-o fa-lg"></i> Certification Test</a></li>
-                        <li><a href="/placement-papers" class="whitetext"><i class="fa fa-files-o fa-lg"></i> Placement Papers</a></li>
                     </ul>
                     <!-- the menu -->
                     <div class="navbar-right">
@@ -96,7 +95,6 @@
                                 <li><a href="/student/register" class="whitetext">Register</a></li>
                                 <li><a href="/resume-for-internship" class="whitetext">Resume for Internship</a></li>
                                 <li><a href="/onlinetest" class="whitetext">Online Test</a></li>
-                                <li><a href="/placement-papers" class="whitetext">See Placement Papers</a></li>
                             </ul>
                         </nav>
                     </div>
