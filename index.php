@@ -22,6 +22,7 @@ try {
         }
     });
 
+    // Google+ Library Autoloader
     spl_autoload_register(function($className) {
         $classPath = explode('_', $className);
         if ($classPath[0] != 'Google') {
