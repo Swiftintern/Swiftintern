@@ -5,6 +5,9 @@
  *
  * @author Faizan Ayubi
  */
+use Framework\Registry as Registry;
+use Framework\RequestMethods as RequestMethods;
+
 class Marketing extends Admin {
 
     /**
