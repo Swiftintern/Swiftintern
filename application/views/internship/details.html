@@ -52,8 +52,11 @@
                             {/else}
                         {/if}
                         {else}
-                            <button onclick="login()" class="btn btn-primary pull-right"><i class="fa fa-linkedin fa-lg"></i>  | Apply with Linkedin</button> &nbsp;
-                            <button data-toggle="modal" data-target="#resume_uploader" class="btn btn-info pull-right"><i class="fa fa-check-circle fa-lg"></i>  | Quick Apply</button>
+                            <div class="col-md-10 text-center">
+                                <button data-toggle="modal" data-target="#resume_uploader" class="btn btn-info"><i class="fa fa-check-circle fa-lg"></i>  | Quick Apply</button>
+                                <button onclick=studentLogin("linkedin") class="btn btn-primary"><i class="fa fa-linkedin fa-lg"></i>  | Apply with Linkedin</button>
+                                <button onclick=studentLogin("google") class="btn btn-danger"><i class="fa fa-google fa-lg"></i>  | Apply with Google+</button>
+                            </div>
                         {/else}
                     </div>
                 </div>
