@@ -30,7 +30,7 @@
                         {foreach $opportunity in $opportunities}
                         <tr>
                             <td>
-                                <a href="/{echo Framework\StringMethods::url($opportunity->title)}/{echo $opportunity->id}">{echo $opportunity->title}</a>
+                                <a href="/{$opportunity->type}/details/{echo Framework\StringMethods::url($opportunity->title)}/{echo $opportunity->id}">{echo $opportunity->title}</a>
                             </td>
                             <td class="job-location">
                                 <p><i class="fa fa-calendar fa-fw"></i>{echo $opportunity->last_date}</p>
