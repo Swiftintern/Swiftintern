@@ -282,7 +282,7 @@ class Students extends Users {
                     "degree" => $this->checkData($q["degree"]),
                     "major" => $this->checkData($q["major"]),
                     "gpa" => $this->checkData($q["gpa"]),
-                    "passing_year" => $this->checkData($qual["passing_year"])
+                    "passing_year" => $this->checkData($q["passing_year"])
                 ));
                 $newQual->save();
             }
