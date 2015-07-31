@@ -17,7 +17,7 @@ class Bot {
      *
      * @var object Document class
      */ 
-	private $documents = [];
+	private $documents = array();
 
 	/**
      * Fetch URLs
@@ -31,7 +31,7 @@ class Bot {
      *
      * @var array
      */ 
-	private $log = [];
+	private $log = array();
 
 	private $start;
 
@@ -97,10 +97,10 @@ class Bot {
 	 *
 	 * @param array $urls
 	 */ 
-	function __construct($urls = []) {
+	function __construct($urls = array()) {
 		if(empty($urls)) {
 			$this->error = "Invalid number of URLs (zero)";
-			$this->urls = [];
+			$this->urls = array();
 			$this->start = true;
 			$this->log($this->error, __METHOD__);
 		} else {
