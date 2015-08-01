@@ -66,16 +66,16 @@ class Request {
 	*/
 	public static function get($url, $timeout = 0) {
 		$context = stream_context_create();
-		stream_context_set_option($context, [
-			'http' => [
-				'timeout' => self::__formatTimeout($timeout),
-				'header' => "User-Agent: ". self::$user_agent. "\r\n"
-			], 
-			'ssl' => [
-				'verify_peer' => false,
-				'verify_peer_name' => false 
-			]
-		]);
+		stream_context_set_option($context, array(
+                    'http' => array(
+                        'timeout' => self::__formatTimeout($timeout),
+                        'header' => "User-Agent: ". self::$user_agent. "\r\n"
+                    ), 
+                    'ssl' => array(
+                        'verify_peer' => false,
+                        'verify_peer_name' => false 
+                    )
+                ));
 
 		$http_response_header = NULL; // allow updating
 
@@ -93,17 +93,17 @@ class Request {
 	*/
 	public static function head($url, $timeout = 0) {
 		$context = stream_context_create();
-		$array = [
-			'http' => [
-				'method' => 'HEAD',
-				'timeout' => self::__formatTimeout($timeout),
-				'header' => "User-Agent: ". self::$user_agent
-			], 
-			'ssl' => [
-				'verify_peer' => false,
-				'verify_peer_name' => false 
-			]
-		];
+		$array = array(
+                    'http' => array(
+                        'method' => 'HEAD',
+                        'timeout' => self::__formatTimeout($timeout),
+                        'header' => "User-Agent: ". self::$user_agent
+                    ), 
+                    'ssl' => array(
+                        'verify_peer' => false,
+                        'verify_peer_name' => false 
+                    )
+                );
 
 		stream_context_set_option($context, $array);
 
