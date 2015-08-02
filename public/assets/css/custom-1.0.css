@@ -10,6 +10,16 @@ html, body{font-family:"Quicksand",Helvetica,Arial,sans-serif;color:#878787;}
     position: relative;
     text-align: center;
 }
+
+.footerAds {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 50px;
+  background-color: #f5f5f5;
+}
+
 .whitetext{color:white;}
 .small_image{max-height:60px;float:left;}
 .medium_image{max-height:160px;max-width:350px;float:left;}
