@@ -180,6 +180,20 @@ $(document).ready(function () {
             setTimeout(countdown, 1000);
         }
     });
+
+    //footer ads onclick close and save for session
+    $('.close').click(function () {
+        $('#footerAds').hide();
+        console.log('footer hide');
+        setCookie('footerAds', '413', '1');
+    });
+
+    var footerAds = getCookie("footerAds");
+    if (footerAds) {
+        $('#footerAds').hide();
+        console.log('footer hide');
+    }
+
 });
 
 function findResume(resumes) {
@@ -200,7 +214,7 @@ function loadOpportunities(opts) {
             $('#loader').html('');
             if (data.count > 1) {
                 $.each(data.opportunities, function (i, opportunity) {
-                    $('#results').append('<tr><td><div class="media"><a class="pull-left hidden-xs" href="' + encodeURI(opportunity._title) + '/' + opportunity._id + '"><img src="/organizations/photo/' + opportunity._organization_id + '" class="media-object small_image" alt="' + opportunity._title + '"></a><div class="media-body"><h4 class="media-heading"><a href="'+ opportunity._type +'/details/' + encodeURI(opportunity._title) + '/' + opportunity._id + '">' + opportunity._title + '</a></h4>' + opportunity._eligibility + '</div></div></td><td class="job-location"><p><i class="fa fa-calendar fa-fw"></i>' + opportunity._last_date + '</p><p><i class="fa fa-map-marker"></i>' + opportunity._location + '</p></td></tr>');
+                    $('#results').append('<tr><td><div class="media"><a class="pull-left hidden-xs" href="' + encodeURI(opportunity._title) + '/' + opportunity._id + '"><img src="/organizations/photo/' + opportunity._organization_id + '" class="media-object small_image" alt="' + opportunity._title + '"></a><div class="media-body"><h4 class="media-heading"><a href="' + opportunity._type + '/details/' + encodeURI(opportunity._title) + '/' + opportunity._id + '">' + opportunity._title + '</a></h4>' + opportunity._eligibility + '</div></div></td><td class="job-location"><p><i class="fa fa-calendar fa-fw"></i>' + opportunity._last_date + '</p><p><i class="fa fa-map-marker"></i>' + opportunity._location + '</p></td></tr>');
                 });
             } else {
                 $('#results').append("No Results Found, Check later");
@@ -249,7 +263,7 @@ function loadSponsored(opts) {
         callback: function (data) {
             if (data.sponsoreds) {
                 $.each(data.sponsoreds, function (i, item) {
-                    $('#sponsored').html('<div class="media"><a class="media-left" href="'+ item._type +'/details/' + encodeURI(item._title) + '/' + item._id + '"><img src="/organizations/photo/'+ item._organization_id +'" width=60 alt="' + item.title + '"></a><div class="media-body"><p class="media-heading"><a href="' + encodeURI(item._title) + '/' + item._id + '" target="_blank">' + item._title + '</a></p></div></div>');
+                    $('#sponsored').html('<div class="media"><a class="media-left" href="' + item._type + '/details/' + encodeURI(item._title) + '/' + item._id + '"><img src="/organizations/photo/' + item._organization_id + '" width=60 alt="' + item.title + '"></a><div class="media-body"><p class="media-heading"><a href="' + encodeURI(item._title) + '/' + item._id + '" target="_blank">' + item._title + '</a></p></div></div>');
                 });
             }
         }
@@ -295,10 +309,45 @@ function studentLogin(action) {
         action: "/students/register",
         data: data,
         callback: function (data) {
-           if (data.url) {
+            if (data.url) {
                 //redirect
                 window.location.href = data.url;
             }
         }
     });
+}
+
+function getCookie(name) {
+    var dc = document.cookie;
+    var prefix = name + "=";
+    var begin = dc.indexOf("; " + prefix);
+    if (begin == -1) {
+        begin = dc.indexOf(prefix);
+        if (begin != 0)
+            return null;
+    }
+    else {
+        begin += 2;
+        var end = document.cookie.indexOf(";", begin);
+        if (end == -1) {
+            end = dc.length;
+        }
+    }
+    return unescape(dc.substring(begin + prefix.length, end));
+}
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+function listCookies() {
+    var theCookies = document.cookie.split(';');
+    var aString = '';
+    for (var i = 1; i <= theCookies.length; i++) {
+        aString += i + ' ' + theCookies[i - 1] + "\n";
+    }
+    return aString;
 }
