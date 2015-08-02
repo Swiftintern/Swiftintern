@@ -8,7 +8,7 @@
                     <a class="list-group-item active text-center">
                         <i class="fa fa-line-chart"></i> Stats
                     </a>
-                    <a href="admin/search?model=user&key=created&sign=like&value={echo $now}" class="list-group-item"><i class="fa fa-users fa-2x"></i>  Users <span class="badge">{echo $users}</span></a>
+                    <a href="admin/search?model=user&key=created&sign=like&value={echo $now}" class="list-group-item"><i class="fa fa-users fa-2x"></i>  Users <span class="badge">{echo $users+$leads}</span></a>
                     <a href="admin/search?model=opportunity&key=validity&sign=like&value=0" class="list-group-item"><i class="fa fa-graduation-cap fa-2x"></i>Opportunity Posted <span class="badge">{echo $opportunities}</span></a>
                     <a href="admin/search?model=application&key=created&sign=like&value={echo $now}" class="list-group-item"><i class="fa fa-fax fa-2x"></i>  Student Applicantions <span class="badge">{echo $applications}</span></a>
                     <a href="admin/search?model=organization&key=created&sign=like&value={echo $now}" class="list-group-item"><i class="fa fa-bank fa-2x"></i>  Organizations <span class="badge">{echo $organizations}</span></a>
