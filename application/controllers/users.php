@@ -131,6 +131,16 @@ class Users extends Controller {
         }
         return $li;
     }
+    
+    /**
+     * Redirects to external link from html views with analytics
+     * @param string $url the url to redirect to
+     */
+    public function link($url) {
+        $this->noview();
+        header("Location: " . base64_decode($url));
+        exit();
+    }
 
     public function noview() {
         $this->willRenderLayoutView = false;
