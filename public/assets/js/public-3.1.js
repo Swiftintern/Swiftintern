@@ -3,11 +3,6 @@
     window.opts = {};
 }(window, window.Model));
 
-$(".chosen").chosen({
-    no_results_text: "Oops, nothing found!",
-    width: "95%"
-});
-
 //Google Analytics
 (function (i, s, o, g, r, a, m) {
     i['GoogleAnalyticsObject'] = r;
@@ -263,7 +258,7 @@ function loadSponsored(opts) {
         callback: function (data) {
             if (data.sponsoreds) {
                 $.each(data.sponsoreds, function (i, item) {
-                    $('#sponsored').html('<div class="media"><a class="media-left" href="' + item._type + '/details/' + encodeURI(item._title) + '/' + item._id + '"><img src="/organizations/photo/' + item._organization_id + '" width=60 alt="' + item.title + '"></a><div class="media-body"><p class="media-heading"><a href="' + encodeURI(item._title) + '/' + item._id + '" target="_blank">' + item._title + '</a></p></div></div>');
+                    $('#sponsored').html('<div class="media"><a class="media-left" href="' + item._type + '/details/' + encodeURI(item._title) + '/' + item._id + '"><img src="/organizations/photo/' + item._organization_id + '" width=60 alt="' + item.title + '"></a><div class="media-body"><p class="media-heading"><a href="' + item._type + '/details/' + encodeURI(item._title) + '/' + item._id + '" target="_blank">' + item._title + '</a></p></div></div>');
                 });
             }
         }
