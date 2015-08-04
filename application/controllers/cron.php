@@ -136,7 +136,7 @@ class CRON extends Users {
         $yesterday = strftime("%Y-%m-%d", strtotime('-1 day'));
         $applications = Application::all(array("updated LIKE ?" => "%{$yesterday}%"), array("id", "student_id", "opportunity_id", "status"));
         foreach ($applications as $application) {
-            $opportunity = Opportunity::first(array("id = ?" => $application->opportunity_id), array("title", "id", "organization_id"));
+            $opportunity = Opportunity::first(array("id = ?" => $application->opportunity_id), array("title", "id", "organization_id", "type"));
             switch ($application->status) {
                 case 'rejected':
                     $student = Student::first(array("id = ?" => $application->student_id), array("user_id"));

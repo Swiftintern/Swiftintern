@@ -1,6 +1,6 @@
 <img src="http://assets.swiftintern.com/images/headerlogo.png" style="width:100%;"><br>
 Dear {$user->name},<br><br>
-I am glad to inform you that you have been selected for <a href="http://swiftintern.com/{echo Framework\StringMethods::url($opportunity->title)}/{echo $opportunity->id}">{$opportunity->title}</a>. <b>Congratulation's</b><br>
+I am glad to inform you that you have been selected for <a href="http://swiftintern.com/{echo $opportunity->type}/details/{echo Framework\StringMethods::url($opportunity->title)}/{echo $opportunity->id}">{$opportunity->title}</a>. <b>Congratulation's</b><br>
 <br>
 <a href="https://www.linkedin.com/company/{echo $organization->linkedin_id}">{$organization->name}</a> will contact you with further details in 2-3 buisness days.<br>
 For any Other Support/Query call/watsapp us at +91-9891048495 or reply to this email.
