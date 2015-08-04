@@ -1,61 +1,112 @@
-{include opportunities/resume_uploader.html}
-<section class="container">
-    <div class="row">
-        <div class="col-xs-12 col-md-9 col-md-offset-1">
-            <h1 class="page-header text-center" itemprop="title">
-                {echo $opportunity->title}
-            </h1>
-            <article itemscope itemtype="http://schema.org/JobPosting">
-                {if($opportunity->last_date < $enddate)}
-                <div class="alert alert-warning alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    The <strong>Last Date</strong> to apply is over.
+<header class="intro-header" style="background-image: url(http://assets.swiftintern.com/images/others/training.png);">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="site-heading">
+                    <h1 class="huge">Workshops and Training</h1>
                 </div>
-                {/if}
-
-                {if isset($success)}
-                <div class="alert alert-success alert-dismissible fade in" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                    Applied <strong>Successfully!</strong> click <a href="/students/applications">here</a> for status
-                </div>
-                {/if}
-
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <div class="media">
-                            <div class="col-md-6">
-                                <p><i class="fa fa-map-marker"></i> <span itemprop="jobLocation">{echo $opportunity->location}</span></p>
-                                <p><i class="fa fa-institution"></i> <a href="/organization/{echo Framework\StringMethods::url($organization->name)}/{echo $organization->id}" target="_blank" itemprop="hiringOrganization">{echo $organization->name}</a></p>
-                                <p><i class="fa fa-clock-o"></i> Apply before {echo $opportunity->last_date}</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p><i class="fa fa-money"></i> Stipend : <span itemprop="baseSalary">{echo $opportunity->payment}</span></p>
-                                <p><i class="fa fa-calendar"></i> Duration : {echo $opportunity->duration}</p>
-                            </div>
-                            <meta itemprop="industry" content="{echo $opportunity->category}">
-                        </div>
-                        <hr>
-                    </div>
-                </div>
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Eligibility
-                    </div>
-                    <div class="panel-body">
-                        <p itemprop="educationRequirements">{echo $opportunity->eligibility}</p>
-                    </div>
-                </div>
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Description
-                    </div>
-                    <div class="panel-body">
-                        <p itemprop="responsibilities">{echo $opportunity->details}</p>
-                    </div>
-                </div>
-            </article>
+            </div>
         </div>
     </div>
-</section>
+</header>
+<div class="container">
+    <div class="row">
+        <div role="tabpanel">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+                <li role="presentation" class="active"><a href="#training" aria-controls="intro" role="tab" data-toggle="tab">Available Workshops</a></li>
+                <li role="presentation"><a href="#about" aria-controls="profile" role="tab" data-toggle="tab">Certification Program</a></li>
+            </ul>
+
+            <div class="tab-content">
+
+                <div role="tabpanel" class="tab-pane active" id="training">
+
+                    <div class="row"><br>
+                        <div class="col-xs-12 col-md-9">
+                            <div class="row" id="results">
+                                {foreach $training in $trainings}
+                                <div class="col-sm-4 col-md-3">
+                                    <div class="thumbnail">
+                                        <a href="/training/details/{echo \Framework\StringMethods::url($training->title)}/{echo $training->id}"><img src="/onlinetest/photo/{echo $training->id}" alt="{echo $training->title}" width="100"></a>
+                                        <div class="caption">
+                                            <p><b>{echo substr($training->title, 0, 21)}</b></p>
+                                            <p>
+                                                <a href="/training/details/{echo \Framework\StringMethods::url($training->title)}/{echo $training->id}" class="btn btn-primary btn-xs">Details</a> 
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/foreach}
+                            </div>
+                        </div>
+                        <aside class="col-xs-12 col-md-3">
+                            <a href="/employer/register" class="btn btn-warning btn-lg btn-block"><i class="fa fa-briefcase fa-lg"></i> Register Training Company</a><br>
+
+                            <div class="panel panel-default">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td>Training Certificates</td>
+                                            <td>100+</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Participants</td>
+                                            <td>10,000+</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Verify Certificate</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <form id="test_search">
+                                        <div class="form-group">
+                                            <label>Certificate Id</label>
+                                            <input type="search" id="test_keywords" name="keywords" class="form-control" placeholder="Search...">
+                                        </div>
+                                        <br>
+                                        <input type="submit" class="btn btn-primary input-lg btn-block" value="Verify">
+                                    </form>
+                                </div>
+                            </div>
+                            
+                        </aside>
+                    </div>
+
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="about">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="col-md-9">
+                                <h3 class="sub-heading">Workshops and Training</h3>
+                                <p>Skilled India  this is what we are talking about now a days . But think how it can be possible ? 
+                                One day sitting in our office we are discussing and debating about a topic " skillful India ".Link by link we created a  chain of education system , and decided to  contribute our part to make of skilled India by educating people about new technology apart from their academics . So we decided to start workshops and training program to everyone . Here we organize workshops and training programs on various hot topics , which is conducted through experienced organization or an individual .  After completing of respected program you will evaluated with an online test related to respective workshops or training , if you secured our passing marks then we will provide you an authorized letter of completing a training or workshops which would be a  certification of your successfully  completion of training and workshops. </p>
+                                <h3 class="sub-heading">Why we are different ?</h3>
+                                <p>We in our college times experienced lots of overcrowded workshops a training , which would reflect to no gain of appropriate knowledge and hence waste of money and time . 
+                                So , we as a team decided to start a workshops and training programs which would focus totally on QUALITY rather than making money by overcrowding . </p>
+                                <p>By attending our workshops and training you will get an extra benefits In our internships fair.</p>
+                                <p>You can now add certification to your linkedin profile after you successfully pass the test after workshops</p>
+                            </div>
+                            <div class="col-md-3">
+                                <img src="{echo CDN}images/others/certi.png" alt="Certificate" class="thumbnail" width=200>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    var page = 1;
+    $(document).ready(function () {
+        $(".navbar").css("margin-bottom", "-20px");
+    });
+</script>
