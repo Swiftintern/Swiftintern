@@ -227,4 +227,14 @@ class Internship extends Employer {
         $view->set("rejected", Framework\ArrayMethods::toObject($rejected));
         $view->set("applicants", Framework\ArrayMethods::toObject($applicants));
     }
+    
+    public function studentPartner() {
+        $this->seo(array(
+            "title" => "Swiftintern Student Partner Program",
+            "keywords" => "Swiftintern Student Partner Program, campus ambassador",
+            "description" => "Become a part indias largest training and internship portal. Apply to become our student partner and become a hero",
+            "view" => $this->getLayoutView()
+        ));
+        $view = $this->getActionView();
+    }
 }
