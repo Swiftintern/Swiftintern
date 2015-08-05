@@ -63,8 +63,7 @@ class Users extends Controller {
                 "cat" => "newsletter"
             );
         }
-
-        return json_encode($json, JSON_PRETTY_PRINT);
+        return json_encode($json);
     }
 
     protected function getBody($options) {
