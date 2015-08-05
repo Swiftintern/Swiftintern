@@ -9,8 +9,8 @@ use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
 class Internship extends Employer {
-    
-    public function index($category=NULL, $location=NULL) {
+
+    public function index($category = NULL, $location = NULL) {
         $this->seo(array(
             "title" => "Internship",
             "keywords" => "edit",
@@ -19,8 +19,8 @@ class Internship extends Employer {
         ));
         $view = $this->getActionView();
     }
-    
-    public function details($title=NULL, $id=NULL) {
+
+    public function details($title = NULL, $id = NULL) {
         global $datetime;
         $view = $this->getActionView();
         $session = Registry::get("session");
@@ -34,7 +34,7 @@ class Internship extends Employer {
             $application = Application::first(array("student_id = ?" => $student->id, "opportunity_id = ?" => $id));
             $view->set("application", $application);
         }
-        
+
         if (RequestMethods::post("quickApply") == "quickApply") {
             $options = array(
                 "email" => RequestMethods::post("email", $this->user->email),
@@ -86,7 +86,7 @@ class Internship extends Employer {
         $view->set("opportunity", $opportunity);
         $view->set("organization", $organization);
     }
-    
+
     /**
      * @before _secure, changeLayout
      */
@@ -112,7 +112,7 @@ class Internship extends Employer {
         }
         $view->set("internship", $internship);
     }
-    
+
     /**
      * @before _secure, changeLayout
      */
@@ -170,6 +170,87 @@ class Internship extends Employer {
         $view->set("internships", $internships);
     }
 
+    protected function test($internship) {
+        $test = "";
+        if($internship->application_type == "test") {
+            $test = Test::first(array("id = ?" => $internship->type_id));
+        }
+        
+        if ($internship->type_id != 0 && $internship->application_type == "resume") {
+            $test = new Test(array(
+                "type" => "internship",
+                "user_id" => $this->user->id,
+                "organization_id" => $this->employer->organization->id,
+                "title" => $internship->title,
+                "syllabus" => "",
+                "subject" => "",
+                "level" => "",
+                "time_limit" => "",
+                "is_active" => 1,
+                "validity" => 0,
+                "updated" => ""
+            ));
+            $test->save();
+
+            $internship->application_type = "test";
+            $internship->type_id = $test->id;
+            $internship->save();
+        }
+
+        return $test;
+    }
+
+    /**
+     * @before _secure, changeLayout
+     */
+    public function addQuestions($id) {
+        $this->seo(array("title" => "Add Questions", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+
+        $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id, "type = ?" => "internship"));
+        if (RequestMethods::post("action") == "createQuestion") {
+            $question = new Question(array(
+                "test_id" => $test->id,
+                "question" => RequestMethods::post("question"),
+                "type" => "text"
+            ));
+            $question->save();
+        }
+        
+        $test = $this->test($internship);
+        if($test){
+            $questions = Question::all(array("test_id = ?" => $test->id));
+        } else {
+            $questions = array();
+        }
+        
+        $view->set("questions", $questions);
+        $view->set("internship", $internship);
+    }
+
+    /**
+     * @before _secure, changeLayout
+     */
+    public function editQuestions($id) {
+        $this->seo(array("title" => "Edit Questions", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+
+        $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id, "type = ?" => "internship"));
+        if(RequestMethods::post("action") == "editQuestions"){
+            
+        }
+        
+        $test = $this->test($internship);
+        if($test){
+            $questions = Question::all(array("test_id = ?" => $test->id));
+        } else {
+            $questions = array();
+        }
+        
+        $view->set("questions", $questions);
+        $view->set("internship", $internship);
+    }
+
     /**
      * @before _secure, changeLayout
      */
@@ -178,10 +259,14 @@ class Internship extends Employer {
             self::redirect("/internship/manage");
         }
         $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id, "type = ?" => "internship"), array("id", "title"));
-        $this->seo(array("title" => "Applications","keywords" => "Applications","description" => "Applications received on internship posted","view" => $this->getLayoutView()));
+        $this->seo(array("title" => "Applications", "keywords" => "Applications", "description" => "Applications received on internship posted", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
 
-        $shortlisted = [];$selected = [];$applied = [];$applicants = [];$rejected = [];
+        $shortlisted = [];
+        $selected = [];
+        $applied = [];
+        $applicants = [];
+        $rejected = [];
 
         $order = RequestMethods::get("order", "created");
         $direction = RequestMethods::get("direction", "desc");
@@ -227,7 +312,7 @@ class Internship extends Employer {
         $view->set("rejected", Framework\ArrayMethods::toObject($rejected));
         $view->set("applicants", Framework\ArrayMethods::toObject($applicants));
     }
-    
+
     public function studentPartner() {
         $this->seo(array(
             "title" => "Swiftintern Student Partner Program",
@@ -237,4 +322,5 @@ class Internship extends Employer {
         ));
         $view = $this->getActionView();
     }
+
 }

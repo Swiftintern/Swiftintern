@@ -1,0 +1,46 @@
+<div id="page-wrapper">
+    <div class="row col-lg-12">
+        <h1 class="page-header text-center">Create Questions to ask?</h1>
+        <form class="form-inline text-center" role="form" method="post" action="">
+            <div class="form-group">
+                <div class="input-group">
+                    <label class="sr-only">Question</label>
+                    <input type="text" style="width: 400px" name="question" class="form-control" placeholder="Enter Question..." />
+                </div>
+            </div>
+            <input type="hidden" name="action" value="createQuestion">
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a href="/internship/editQuestions/{$internship->id}" class="btn btn-success pull-right">Edit Questions</a>
+        </form>
+        <hr>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-list fa-fw"></i> Questions
+            </div>
+            <div class="panel panel-body text-center" id="result_status">
+                Note : The Questions you enter will be asked from the students when they will apply for internship
+            </div>
+            <table class="table table-hover table-striped">
+                <thead>
+                    <th>Id</th>
+                    <th>Questions</th>
+                    <th>Created</th>
+                    <th>Action</th>
+                </thead>
+                <tbody id="results">
+                    {foreach $question in $questions}
+                    <tr>
+                        <td>{echo $question->id}</td>
+                        <td>{echo $question->question}</td>
+                        <td>{echo $question->created}</td>
+                        <td>
+                            <a href="/internship/editQuestions/{$internship->id}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
+                        </td>
+                    </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+            <div id="after_results" class="text-center"></div>
+        </div>
+    </div>
+</div>
