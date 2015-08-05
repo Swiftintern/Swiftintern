@@ -119,6 +119,17 @@ $routes = array(
         "action" => "applicants"
     ),
     array(
+        "pattern" => "internship/addQuestions/:id",
+        "controller" => "internship",
+        "action" => "addQuestions"
+    )
+    ,
+    array(
+        "pattern" => "internship/editQuestions/:id",
+        "controller" => "internship",
+        "action" => "editQuestions"
+    ),
+    array(
         "pattern" => "internship/:title/:id",
         "controller" => "internship",
         "action" => "details"
