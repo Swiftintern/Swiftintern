@@ -1,34 +1,30 @@
 <div id="page-wrapper">
     <div class="row col-lg-12">
-        <h1 class="page-header text-center">Create Questions to ask?</h1>
+        <h1 class="page-header text-center">Edit Questions</h1>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <i class="fa fa-list fa-fw"></i> Questions
             </div>
-            <div class="panel panel-body text-center" id="result_status">
-                You have not added any questions to be asked while applying for internship. <a href="/internship/addQuestions/{$internship->id}">click here</a> to add.
-            </div>
 
-            <form class="form-inline text-center" role="form" method="post" action="">
-                <table class="table table-hover table-striped">
+            
+                <table class="table table-hover">
                     <tbody>
                         {foreach $question in $questions}
+                        <form method="post" action="">
                         <tr>
+                            <td>#</td>
                             <td>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <input type="text" style="width: 400px" name="question" class="form-control" value="{$question->question}" />
-                                    </div>
-                                </div>
+                                <input type="text" style="width: 400px" name="question" class="form-control" value="{$question->question}" />
+                                <input type="hidden" name="ques_id" value="{$question->id}">
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-primary btn-xs"><i class="fa fa-save"></i> Save</button>
                             </td>
                         </tr>
+                        </form>
                         {/foreach}
                     </tbody>
                 </table>
-                <input type="hidden" name="action" value="createQuestion">
-                <button type="submit" class="btn btn-primary pull-right">Save</button>
-            </form>
-
         </div>
     </div>
 </div>
