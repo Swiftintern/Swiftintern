@@ -122,8 +122,12 @@ $routes = array(
         "pattern" => "internship/addQuestions/:id",
         "controller" => "internship",
         "action" => "addQuestions"
-    )
-    ,
+    ),
+    array(
+        "pattern" => "internship/apply/:id",
+        "controller" => "internship",
+        "action" => "apply"
+    ),
     array(
         "pattern" => "internship/editQuestions/:id",
         "controller" => "internship",

@@ -1,0 +1,49 @@
+<section class="container">
+    <div class="row">
+        <h1 class="page-header text-center">{$internship->title}</h1>
+        <ol class="breadcrumb">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/">Internship</a></li>
+            <li class="active">Apply</li>
+        </ol>
+        {if($success == TRUE)}
+        <div class="alert alert-success alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            Applied <strong>Successfully!</strong>
+        </div>
+        <p>We have mailed you the details of internship.</p>
+        <p>The company will contact you if you are selected or you will receive an email from company</p>
+        <p>You can also apply to other internship opportunities available on our site</p>
+        <p>For any help call us at +91-9891048495 or mail us at info@swiftintern.com</p>
+        {/if}
+        {else}
+        <div class="col-md-offset-2 col-lg-8">
+            <form class="form-horizontal" method="post" action="">
+                {if(!isset($user))}
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" name="name" class="form-control" placeholder="Full Name">
+                </div>
+                <div class="form-group">
+                    <label>Email address</label>
+                    <input type="email" name="email" class="form-control" placeholder="Email Address" required="">
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" name="phone" class="form-control" placeholder="Primary Phone">
+                    <span class="help-text">Company may contact you directly</span>
+                </div>
+                {/if}
+                {foreach $question in $questions}
+                <div class="form-group">
+                    <label class="control-label">{$question->question}</label>
+                    <textarea name="question[{$question->id}]" class="form-control" rows="7"></textarea>
+                </div>
+                {/foreach}
+                <input type="hidden" name="action" value="applic">
+                <button type="submit" class="btn btn-success pull-right">Apply <i class="fa fa-check-circle fa-fw"></i></button>
+            </form>
+        </div>
+        {/else}
+    </div><br>
+</section>

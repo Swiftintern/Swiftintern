@@ -86,6 +86,73 @@ class Internship extends Employer {
         $view->set("opportunity", $opportunity);
         $view->set("organization", $organization);
     }
+    
+    public function apply($id) {
+        $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id, "type = ?" => "internship"));
+        $this->seo(array("title" => "Apply to {$internship->title}", "keywords" => "apply to internship", "description" => "{$internship->title}", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+        
+        $test = Test::first(array("id = ?" => $internship->type_id), array("id"));
+        if($test){
+            $questions = Question::all(array("test_id = ?" => $test->id));
+        } else {
+            $questions = array();
+        }
+        
+        if (RequestMethods::post("quickApply") == "quickApply") {
+            $options = array(
+                "email" => RequestMethods::post("email", $this->user->email),
+                "name" => RequestMethods::post("name"),
+                "phone" => RequestMethods::post("phone", "")
+            );
+            $student = $this->saveStudent($options);
+            if ($student) {
+                $resume = new Resume(array(
+                    "student_id" => $student->id,
+                    "type" => "file",
+                    "resume" => $this->_upload("file"),
+                    "updated" => ""
+                ));
+                $resume->save();
+                $view->set("success", true);
+            }
+        }
+
+        if (RequestMethods::post("action") == "application") {
+            $application = new Application(array(
+                "student_id" => $student->id,
+                "opportunity_id" => $internship->id,
+                "property_id" => $resume->id,
+                "status" => "applied",
+                "updated" => ""
+            ));
+            $application->save();
+
+            $this->notify(array(
+                "template" => "applicationInternship",
+                "subject" => "Internship Application",
+                "opportunity" => $internship,
+                "user" => $this->getUser()
+            ));
+            $view->set("success", TRUE);
+            $view->set("application", $application);
+        }
+        
+        if (RequestMethods::post("question")) {
+            $questions = RequestMethods::post("question");
+            /*foreach ($questions as $question) {
+                $answer = new Answer(array(
+                    "user_id" => $this->user->id,
+                    "ques_id" => $question 
+                ));
+                $answer->save();
+            }*/
+            echo '<pre>', print_r($_POST), '</pre>';
+        }
+        
+        $view->set("internship", $internship);
+        $view->set("questions", $questions);
+    }
 
     /**
      * @before _secure, changeLayout
