@@ -24,29 +24,62 @@ class Ambassador extends Students {
     public function generateId() {
         $this->seo(array("title" => "Generate Id Campus ambassador", "keywords" => "Ambassadors", "description" => "Be a campus hero by being swiftintern student partner", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
-        $organizations = array();
+        $organizations = array();$photo = "";
 
         $qualifications = Qualification::all(array("student_id = ?" => $this->student->id), array("organization_id"));
         foreach ($qualifications as $qualification) {
             $organizations[] = Organization::first(array("id = ?" => $qualification->organization_id), array("name"));
         }
-
-        if (RequestMethods::post("file")) {
-            $filename = $this->_upload("file", "images");
+        $image = Image::first(array("property = ?" => "user", "property_id = ?" => $this->user->id));
+        if($image){
+            $photo = Photograph::first(array("id = ?" => $image->photo_id));
+        }
+        
+        if (RequestMethods::post("action") == "generateId") {
+            $photo = new Photograph(array(
+                "filename" => $this->_upload("file", "images"),
+                "type" => "",
+                "size" => ""
+            ));
+            $photo->save();
+            
+            $image = new Image(array(
+                "photo_id" => $photo->id,
+                "user_id" => $this->user->id,
+                "property" => "user",
+                "property_id" => $this->user->id
+            ));
+            $image->save();
+            
             $college = RequestMethods::post("college");
             $view->set("success", TRUE);
-            $view->set("filename", $filename);
             $view->set("college", $college);
         }
         
+        $view->set("photo", $photo);
         $view->set("organizations", $organizations);
     }
     
-    public function createId($college, $photo = "sp.png") {
+    public function createId($college, $photoId) {
         $this->noview();
-
+        $photo = Photograph::first(array("id = ?" => $photoId));
+        
         $im = imagecreatefromjpeg(APP_PATH . '/public/assets/images/others/ssp.jpg');
-        $src = imagecreatefrompng(APP_PATH . "/public/assets/uploads/images/{$photo}");
+        $ext = explode(".",$photo->filename);
+        switch (end($ext)) {
+            case "jpg":
+                $src = imagecreatefromjpeg(APP_PATH . "/public/assets/uploads/images/{$photo->filename}");
+                break;
+            
+            case "png":
+                $src = imagecreatefrompng(APP_PATH . "/public/assets/uploads/images/{$photo->filename}");
+                break;
+
+            default:
+                $src = imagecreatefromjpeg(APP_PATH . "/public/assets/uploads/images/{$photo->filename}");
+                break;
+        }
+
         $black = imagecolorallocate($im, 0x00, 0x00, 0x00);
         $times = APP_PATH . '/public/assets/fonts/times.ttf';
         
