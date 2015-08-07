@@ -30,6 +30,8 @@ class Ambassador extends Students {
         foreach ($qualifications as $qualification) {
             $organizations[] = Organization::first(array("id = ?" => $qualification->organization_id), array("name"));
         }
+        
+        $college = end($organizations)->name;
         $image = Image::first(array("property = ?" => "user", "property_id = ?" => $this->user->id));
         if($image){
             $photo = Photograph::first(array("id = ?" => $image->photo_id));
@@ -52,10 +54,9 @@ class Ambassador extends Students {
             $image->save();
             
             $college = RequestMethods::post("college");
-            $view->set("success", TRUE);
-            $view->set("college", $college);
         }
         
+        $view->set("college", $college);
         $view->set("photo", $photo);
         $view->set("organizations", $organizations);
     }

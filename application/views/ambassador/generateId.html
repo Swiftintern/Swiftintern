@@ -1,15 +1,7 @@
 <section class="container">
     <div class="row">
         <h1 class="page-header text-center">Generate Your Id</h1>
-        {if($photo != "")}
-            <div class="alert alert-success alert-dismissible fade in" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                Created <strong>Successfully!</strong>
-            </div>
-            <p>Your Id has been created. Save by right click on image</p>
-            <p><img src="/ambassador/createId/{$college}/{$photo->id}" width="200"></p>
-        {/if}
-        {else}
+
         <div class="col-md-offset-2 col-lg-8">
             <form class="form-horizontal" method="post" action="/ambassador/generateId" enctype="multipart/form-data">
                 <div class="form-group">
@@ -28,7 +20,9 @@
                 <input type="hidden" name="action" value="generateId">
                 <button type="submit" class="btn btn-success pull-right">Create Id <i class="fa fa-check-circle fa-fw"></i></button>
             </form>
+            <br><hr>
+            <p>Select Image and college after that, Save by right click on image</p>
+            <p class="text-center"><img src="/ambassador/createId/{$college}/{$photo->id}" width="500"></p>
         </div>
-        {/else}
     </div><br>
 </section>
