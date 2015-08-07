@@ -7,7 +7,7 @@
  */
 use Framework\RequestMethods as RequestMethods;
 
-class OnlineTest extends Users {
+class OnlineTest extends Admin {
 
     public function index() {
         $this->seo(array(
