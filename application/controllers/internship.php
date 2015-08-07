@@ -364,6 +364,7 @@ class Internship extends Employer {
 
         $view->set("internship", $internship);
         $view->set("count", $count);
+        $view->set("limit", $limit);
         $view->set("shortlisted", Framework\ArrayMethods::toObject($shortlisted));
         $view->set("selected", Framework\ArrayMethods::toObject($selected));
         $view->set("applied", Framework\ArrayMethods::toObject($applied));
