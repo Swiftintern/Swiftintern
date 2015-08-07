@@ -1,0 +1,69 @@
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header text-center">Create Test</h1>
+            {if isset($success)}
+            <div class="alert alert-success alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                Test Posted <strong>Successfully!</strong>
+            </div><br>
+            {/if}
+            <form method="post" action="">
+                <div class="panel panel-default panel-body">
+                    <div class="form-group">
+                        <label>Test Title *</label>
+                        <input type="text" name="title" class="form-control" maxlength="100" required="">
+                        <span class="help-block">{echo Shared\Markup::errors($errors, "title")}</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Subject *</label>
+                        <input type="text" class="form-control" name="subject" required="">
+                        <span class="help-block">Enter the subject for the test {echo Shared\Markup::errors($errors, "subject")}</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select class="form-control" name="type" required="">
+                            <option value="practice">Practice</option>
+                            <option value="certification">Certification</option>
+                            <option value="training">Training</option>
+                        </select>
+                    </div>
+
+                    <hr>
+                    <div class="form-group">
+                        <label>Level *</label>
+                        <select class="form-control" name="level" required="">
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Syllabus *</label>
+                        <textarea class="form-control editor" name="syllabus" rows="5"></textarea>
+                        <span class="help-block">Enter Syllabus for the test..{echo Shared\Markup::errors($errors, "syllabus")}</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Image *</label>
+                        <input type="file" name="image">
+                        <span class="help-block">Upload an image to show for the test.</span>
+                    </div>
+
+                    <hr>
+                    <div class="form-group">
+                        <label>Time Limit </label>
+                        <input type="text" class="form-control" name="time_limit" placeholder="HH:MM:SS">
+                        <span class="help-block">Time limit for the test..{echo Shared\Markup::errors($errors, "time_limit")}</span>
+                    </div>
+                    <input type="hidden" name="action" value="createTest">
+                    <p style="color: red; font-weight: bold;">* fields are required.</p>
+                    <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-check-circle"></i> Submit</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

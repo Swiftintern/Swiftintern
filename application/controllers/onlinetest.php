@@ -185,4 +185,142 @@ class OnlineTest extends Users {
         }
     }
 
+    /**
+     * @before _secure, changeLayout
+     */
+    public function create() {
+        $this->seo(array(
+            "title" => "Create Online Test with Certificate",
+            "keywords" => "online test, practice test, online exams, skills verification",
+            "description" => "Appear to Online Exam and verify your skills for getting internship.",
+            "view" => $this->getLayoutView()
+        ));
+
+        $view = $this->getActionView();
+        $view->set("errors", null);
+
+        if (RequestMethods::post("action") == "createTest") {
+            $test = new Test(array(
+                "user_id" => $this->user->id,
+                "organization_id" => 1,
+                "type" => RequestMethods::post("type"),
+                "title" => RequestMethods::post("title"),
+                "subject" => RequestMethods::post("subject"),
+                "level" => RequestMethods::post("level"),
+                "syllabus" => RequestMethods::post("syllabus"),
+                "time_limit" => RequestMethods::post("time_limit", "00:00:00"),
+                "is_active" => true,
+                "validity" => 0,
+                "updated" => "0000-00-00 00:00:00"
+            ));
+            //$test->save();
+
+            // save the photograph for the test
+            $filename = $this->_upload("image", "images");
+            $mime = "image/" . array_pop(explode(".", $filename));
+            $photo = new Photograph(array(
+                "filename" => $filename,
+                "type" => $mime,
+                "size" => ""
+            ));
+            // $photo->save();
+
+            // The photograph is image so save the image table
+            $image = new Image(array(
+                "photo_id" => $photo->id,
+                "user_id" => $this->user->id,
+                "property" => "test",
+                "property_id" => $test->id
+            ));
+            // $image->save();
+
+            $view->set("success", true);
+        }
+    }
+
+    /**
+     * @before _secure, changeLayout
+     */
+    public function manage() {
+        $this->seo(array(
+            "title" => "Manage Online Tests",
+            "keywords" => "online test, practice test, online exams, skills verification",
+            "description" => "Appear to Online Exam and verify your skills for getting internship.",
+            "view" => $this->getLayoutView()
+        ));
+
+        $view = $this->getActionView();
+
+        $tests = Test::all(array("user_id = ?" => $this->user->id), array("id", "title", "subject", "created"));
+        $view->set("tests", $tests);
+    }
+
+    /**
+     * @before _secure, changeLayout
+     */
+    public function edit($id) {
+        if (empty($id)) {
+            self::redirect("/admin/");
+        }
+
+        $this->seo(array(
+            "title" => "Edit Online Test",
+            "keywords" => "online test, practice test, online exams, skills verification",
+            "description" => "Appear to Online Exam and verify your skills for getting internship.",
+            "view" => $this->getLayoutView()
+        ));
+
+        $test = Test::first(array("id = ?" => $id), array("id", "title", "subject", "syllabus", "time_limit"));
+        if (!$test) {
+            self::redirect("/admin/");
+        }
+
+        if (RequestMethods::post("action") == "updateTest") {
+            $test->title = RequestMethods::post("title");
+            $test->subject = RequestMethods::post("subject");
+            $test->syllabus = RequestMethods::post("syllabus");
+            $test->time_limit = RequestMethods::post("time_limit");
+            $test->save();
+
+            $view->set("success", true);
+        }
+    }
+
+    /**
+     * @before _secure, changeLayout
+     */
+    public function addques($testId) {
+        $this->seo(array(
+            "title" => "Manage Online Tests",
+            "keywords" => "online test, practice test, online exams, skills verification",
+            "description" => "Appear to Online Exam and verify your skills for getting internship.",
+            "view" => $this->getLayoutView()
+        ));
+
+        if (RequestMethods::post("action") == "addQues") {
+            $type = RequestMethods::post("type");
+
+            $question = new Question(array(
+                "test_id" => $testId,
+                "question" => RequestMethods::post("question"),
+                "type" => $type
+            ));
+            // $question->save();
+
+            if ($type == "options") {
+                $answer = RequestMethods::post("answer");
+                $is_answer = false;
+                for ($i = 1; $i <= 4; $i++) {
+                    if ($answer == "option-".$i) $is_answer = true;
+
+                    $option = new Option(array(
+                        "ques_id" => $question->id,
+                        "ques_option" => RequestMethods::post("option". $i, ""),
+                        "is_answer" => $is_answer
+                    ));
+                }
+            }
+            $view->set("success", true);
+        }
+    }
 }
