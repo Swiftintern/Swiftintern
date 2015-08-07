@@ -37,7 +37,14 @@
                 </div>
                 {if(count((array)$applied) >= 10)}
                 <div class="text-center">
-                    <button class="btn btn-primary">Load More</button>
+                    <ul class="pager">
+                        {if($page != 1)}
+                        <li><a href="?page={echo $page - 1}">Previous</a></li>
+                        {/if}
+                        {if($page < $count/$limit)}
+                        <li><a href="?page={echo $page + 1}">Next</a></li>
+                        {/if}
+                    </ul>
                 </div>
                 {/if}
             </div>
@@ -68,7 +75,14 @@
                 </div>
                 {if(count((array)$shortlisted) >= 10)}
                 <div class="text-center">
-                    <button class="btn btn-primary">Load More</button>
+                    <ul class="pager">
+                        {if($page != 1)}
+                        <li><a href="?page={echo $page - 1}">Previous</a></li>
+                        {/if}
+                        {if($page < $count/$limit)}
+                        <li><a href="?page={echo $page + 1}">Next</a></li>
+                        {/if}
+                    </ul>
                 </div>
                 {/if}
             </div>
@@ -100,11 +114,18 @@
                 </div>
                 {if(count((array)$selected) >= 10)}
                 <div class="text-center">
-                    <button class="btn btn-primary">Load More</button>
+                    <ul class="pager">
+                        {if($page != 1)}
+                        <li><a href="?page={echo $page - 1}">Previous</a></li>
+                        {/if}
+                        {if($page < $count/$limit)}
+                        <li><a href="?page={echo $page + 1}">Next</a></li>
+                        {/if}
+                    </ul>
                 </div>
                 {/if}
             </div>
-            
+
             <div class="tab-pane" id="rejected">
                 <div class="panel panel-default">
                     <table class="table text-center">
@@ -131,7 +152,14 @@
                 </div>
                 {if(count((array)$rejected) >= 10)}
                 <div class="text-center">
-                    <button class="btn btn-primary">Load More</button>
+                    <ul class="pager">
+                        {if($page != 1)}
+                        <li><a href="?page={echo $page - 1}">Previous</a></li>
+                        {/if}
+                        {if($page < $count/$limit)}
+                        <li><a href="?page={echo $page + 1}">Next</a></li>
+                        {/if}
+                    </ul>
                 </div>
                 {/if}
             </div>
