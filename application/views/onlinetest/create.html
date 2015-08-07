@@ -8,7 +8,7 @@
                 Test Posted <strong>Successfully!</strong>
             </div><br>
             {/if}
-            <form method="post" action="">
+            <form method="post" action="" enctype="multipart/form-data">
                 <div class="panel panel-default panel-body">
                     <div class="form-group">
                         <label>Test Title *</label>
@@ -48,7 +48,7 @@
 
                     <div class="form-group">
                         <label>Image *</label>
-                        <input type="file" name="image">
+                        <input type="file" name="file">
                         <span class="help-block">Upload an image to show for the test.</span>
                     </div>
 

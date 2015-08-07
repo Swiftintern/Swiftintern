@@ -17,7 +17,6 @@ class OnlineTest extends Admin {
             "view" => $this->getLayoutView()
         ));
         $view = $this->getActionView();
-
         $query = RequestMethods::get("query", "");
         $order = RequestMethods::get("order", "created");
         $direction = RequestMethods::get("direction", "desc");
@@ -38,7 +37,7 @@ class OnlineTest extends Admin {
 
     public function photo($test_id) {
         $image = Image::first(array("property = ? " => "test", "property_id = ?" => $test_id), array("photo_id"));
-        self::redirect("/thumbnails/{$image->photo_id}");
+        self::redirect("/home/thumbnails/{$image->photo_id}/200/200");
     }
 
     public function details($title, $id) {
@@ -213,17 +212,19 @@ class OnlineTest extends Admin {
                 "validity" => 0,
                 "updated" => "0000-00-00 00:00:00"
             ));
-            //$test->save();
+            $test->save();
 
             // save the photograph for the test
-            $filename = $this->_upload("image", "images");
-            $mime = "image/" . array_pop(explode(".", $filename));
+            $filename = $this->_upload("file", "images");
+            var_dump($filename);
+            $extension = explode(".", $filename);
+            $mime = "image/" . array_pop($extension);
             $photo = new Photograph(array(
                 "filename" => $filename,
                 "type" => $mime,
                 "size" => ""
             ));
-            // $photo->save();
+            $photo->save();
 
             // The photograph is image so save the image table
             $image = new Image(array(
@@ -232,7 +233,7 @@ class OnlineTest extends Admin {
                 "property" => "test",
                 "property_id" => $test->id
             ));
-            // $image->save();
+            $image->save();
 
             $view->set("success", true);
         }
@@ -251,7 +252,7 @@ class OnlineTest extends Admin {
 
         $view = $this->getActionView();
 
-        $tests = Test::all(array("user_id = ?" => $this->user->id), array("id", "title", "subject", "created"));
+        $tests = Test::all(array("organization_id = ?" => "1"), array("id", "title", "subject", "created"));
         $view->set("tests", $tests);
     }
 
@@ -269,11 +270,13 @@ class OnlineTest extends Admin {
             "description" => "Appear to Online Exam and verify your skills for getting internship.",
             "view" => $this->getLayoutView()
         ));
+        $view = $this->getActionView();
 
         $test = Test::first(array("id = ?" => $id), array("id", "title", "subject", "syllabus", "time_limit"));
         if (!$test) {
             self::redirect("/admin/");
         }
+        $view->set("test", $test);
 
         if (RequestMethods::post("action") == "updateTest") {
             $test->title = RequestMethods::post("title");
@@ -296,7 +299,8 @@ class OnlineTest extends Admin {
             "description" => "Appear to Online Exam and verify your skills for getting internship.",
             "view" => $this->getLayoutView()
         ));
-
+        $view = $this->getActionView();
+        
         if (RequestMethods::post("action") == "addQues") {
             $type = RequestMethods::post("type");
 
@@ -305,7 +309,7 @@ class OnlineTest extends Admin {
                 "question" => RequestMethods::post("question"),
                 "type" => $type
             ));
-            // $question->save();
+             $question->save();
 
             if ($type == "options") {
                 $answer = RequestMethods::post("answer");
