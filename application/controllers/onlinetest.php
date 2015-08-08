@@ -272,7 +272,7 @@ class OnlineTest extends Admin {
         ));
         $view = $this->getActionView();
 
-        $test = Test::first(array("id = ?" => $id), array("id", "title", "subject", "syllabus", "time_limit"));
+        $test = Test::first(array("id = ?" => $id));
         if (!$test) {
             self::redirect("/admin/");
         }
@@ -294,12 +294,15 @@ class OnlineTest extends Admin {
      */
     public function addques($testId) {
         $this->seo(array(
-            "title" => "Manage Online Tests",
+            "title" => "Manage Online Tests - Adding Questions",
             "keywords" => "online test, practice test, online exams, skills verification",
             "description" => "Appear to Online Exam and verify your skills for getting internship.",
             "view" => $this->getLayoutView()
         ));
         $view = $this->getActionView();
+        
+        $findTest = Test::first(array("id = ?" => $testId), array("title"));
+        $view->set("test", $findTest);
         
         if (RequestMethods::post("action") == "addQues") {
             $type = RequestMethods::post("type");
@@ -312,18 +315,56 @@ class OnlineTest extends Admin {
              $question->save();
 
             if ($type == "options") {
-                $answer = RequestMethods::post("answer");
-                $is_answer = false;
-                for ($i = 1; $i <= 4; $i++) {
-                    if ($answer == "option-".$i) $is_answer = true;
-
-                    $option = new Option(array(
-                        "ques_id" => $question->id,
-                        "ques_option" => RequestMethods::post("option". $i, ""),
-                        "is_answer" => $is_answer
-                    ));
-                }
+                self::redirect("/onlinetest/addOptions/{$question->id}");
             }
+            $view->set("success", true);
+        }
+    }
+
+    /**
+     * @before _secure, changeLayout
+     */
+	public function addOptions($quesId) {
+        if (empty($quesId)) self::redirect("/admin");
+        $this->seo(array(
+            "title" => "Manage Online Tests - Adding Options",
+            "keywords" => "online test, practice test, online exams, skills verification",
+            "description" => "Appear to Online Exam and verify your skills for getting internship.",
+            "view" => $this->getLayoutView()
+        ));
+        $view = $this->getActionView();
+        
+		$question = Question::first(array("id = ?" => $quesId), array("question"));
+        $view->set("ques", $question);
+        
+        $findOption = Option::all(array("ques_id = ?" => $quesId));
+        
+        if (RequestMethods::post("action") == "addOptions") {
+            $answer = RequestMethods::post("answer");
+            $is_answer = false;
+            for ($i = 1; $i <= 4; $i++) {
+                // check which option is the answer
+                if ($answer == "option-" . $i)
+                    $is_answer = true;
+
+                // find the type of the options (text/image)
+                $type = RequestMethods::post("type" . $i, "text");
+
+                if ($type == "image") { // then upload the image and save image's name in db
+                    $ques_option = $this->_upload("option" . $i, "images");
+                } else {    // just enter the option in db
+                    $ques_option = RequestMethods::post("option" . $i, "");
+                }
+
+                $option = new Option(array(
+                    "ques_id" => $quesId,
+                    "ques_option" => $ques_option,
+                    "type" => $type,
+                    "is_answer" => $is_answer
+                ));
+                $option->save();
+            }
+            
             $view->set("success", true);
         }
     }

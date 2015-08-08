@@ -1,0 +1,88 @@
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header text-center">Add Options for the question</h1>
+            <h2 class="page-heading">Ques: {echo $ques->question}</h2>
+            {if isset($success)}
+            <div class="alert alert-success alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                Options Added <strong>Successfully! Go to Test/Manage to add more questions</strong>
+            </div><br>
+            {/if}
+            <form method="post" action="" id="addOptions" enctype="multipart/form-data">
+                <div class="panel panel-default panel-body">
+                    <p>Option-1</p>
+                    <div class="form-group">
+                        <label>Type *</label>
+                         <select class="form-control" name="type1" required="">
+                            <option value="text">Text</option>
+                            <option value="image">Image</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="type1">
+                        <input type="text" name="option1" class="form-control" required="">
+                        <input type="file" name="option1" class="form-control hide">
+                    </div>
+                    
+                    <p>Option-2</p>
+                    <div class="form-group">
+                        <label>Type *</label>
+                         <select class="form-control" name="type2" required="">
+                            <option value="text">Text</option>
+                            <option value="image">Image</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="type2">
+                        <input type="text" name="option2" class="form-control" required="">
+                        <input type="file" name="option2" class="form-control hide">
+                    </div>
+                    
+                    <p>Option-3</p>
+                    <div class="form-group">
+                        <label>Type *</label>
+                         <select class="form-control" name="type3" required="">
+                            <option value="text">Text</option>
+                            <option value="image">Image</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="type3">
+                        <input type="text" name="option3" class="form-control" required="">
+                        <input type="file" name="option3" class="form-control hide">
+                    </div>
+                    
+                    <p>Option-4</p>
+                    <div class="form-group">
+                        <label>Type *</label>
+                         <select class="form-control" name="type4" required="">
+                            <option value="text">Text</option>
+                            <option value="image">Image</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="type4">
+                        <input type="text" name="option4" class="form-control" required="">
+                        <input type="file" name="option4" class="form-control hide">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Answer of the question *</label>
+                        <select class="form-control" name="answer" required="">
+                            <option value="option-1">Option-1</option>
+                            <option value="option-2">Option-2</option>
+                            <option value="option-3">Option-3</option>
+                            <option value="option-4">Option-4</option>
+                        </select>
+                        <span class="help-block">Which is the answer for the question?</span>
+                    </div>
+                    <input type="hidden" name="action" value="addOptions">
+                    <p style="color: red; font-weight: bold;">* fields are required.</p>
+                    <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-check-circle"></i> Submit</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
