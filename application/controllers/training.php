@@ -100,7 +100,7 @@ class Training extends Employer {
                 "last_date" => RequestMethods::post("last_date"),
                 "payment" => RequestMethods::post("payment"),
                 "payment_mode" => "offline",
-                "application_type" => "", "type_id" => "", "is_active" => "1", "validity" => "0", "updated" => ""
+                "application_type" => "payment", "type_id" => "", "is_active" => "1", "validity" => "0", "updated" => ""
             ));
 
             if ($opportunity->validate()) {
@@ -125,7 +125,7 @@ class Training extends Employer {
                     'webhook_url' => 'http://swiftintern.com/training/payment',
                     'redirect_url' => URL
                 ));
-
+                
                 self::redirect('/training/manage');
             }
 
@@ -200,12 +200,12 @@ class Training extends Employer {
             $user = User::first(array("id = ?" => $student->user_id), array("name"));
 
             $applicant = \Framework\ArrayMethods::toObject(array(
-                        "id" => $application->id,
-                        "name" => $user->name,
-                        "student_id" => $application->student_id,
-                        "property_id" => $application->property_id,
-                        "status" => $application->status,
-                        "created" => $application->created
+                "id" => $application->id,
+                "name" => $user->name,
+                "student_id" => $application->student_id,
+                "property_id" => $application->property_id,
+                "status" => $application->status,
+                "created" => $application->created
             ));
             $applicants[] = $applicant;
             switch ($application->status) {
@@ -232,7 +232,6 @@ class Training extends Employer {
         try {
             $response = $instamojo->linksList();
             echo '<pre>', print_r($response), '</pre>';
-            //print_r($response);
         } catch (Exception $e) {
             print('Error: ' . $e->getMessage());
         }
