@@ -36,10 +36,15 @@
                         </div>
                         <hr>
                         {if(isset($user))}
+                            {if(isset($application))}
+                                <a href="" class="btn btn-primary pull-right"><i class="fa fa-money fa-lg"></i> Pay Now</a>
+                            {/if}
+                            {else}
                             <form method="post" action="">
                                 <input type="hidden" name="action" value="application">
                                 <button class="btn btn-primary pull-right"><i class="fa fa-check-circle fa-lg"></i> Register</button>
                             </form>
+                            {/else}
                         {/if}
                         {else}
                             <button data-toggle="modal" data-target="#quick_apply" class="btn btn-info pull-right"><i class="fa fa-check-circle fa-lg"></i> | Quick Register</button>
