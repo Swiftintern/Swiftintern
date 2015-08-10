@@ -4,8 +4,8 @@
 include("LinkedIn.php");
 
 $linkedin = new LinkedIn(array(
-    'api_key' => '78hui6bl8zcd0l',
-    'api_secret' => 'z8ZNHwo9XViE0t0f',
+    'api_key' => 'api-key',
+    'api_secret' => 'api-secret',
     'callback_url' => 'http://swiftintern.com/login'
 ));
 

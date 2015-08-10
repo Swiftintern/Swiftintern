@@ -5,13 +5,12 @@
  *
  * @author Faizan Ayubi
  */
-
 use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
 class Training extends Employer {
-    
-    public function index($category=NULL, $location=NULL) {
+
+    public function index($category = NULL, $location = NULL) {
         $this->seo(array(
             "title" => "Training for College Students",
             "keywords" => "college student engineering training",
@@ -19,11 +18,11 @@ class Training extends Employer {
             "view" => $this->getLayoutView()
         ));
         $view = $this->getActionView();
-        
+
         $trainings = Opportunity::all(array("type = ?" => "training", "validity = ?" => 1));
         $view->set("trainings", $trainings);
     }
-    
+
     public function details($title, $id) {
         global $datetime;
         $view = $this->getActionView();
@@ -49,8 +48,8 @@ class Training extends Employer {
         $view->set("opportunity", $opportunity);
         $view->set("organization", $organization);
     }
-    
-    protected function enroll($opportunity, $student=NULL) {
+
+    protected function enroll($opportunity, $student = NULL) {
         if (RequestMethods::post("quickApply") == "quickApply") {
             $options = array(
                 "email" => RequestMethods::post("email"),
@@ -59,7 +58,7 @@ class Training extends Employer {
             );
             $student = $this->saveStudent($options);
         }
-        
+
         if (RequestMethods::post("action") == "register") {
             $application = new Application(array(
                 "student_id" => $student->id,
@@ -80,7 +79,7 @@ class Training extends Employer {
             $view->set("application", $application);
         }
     }
-    
+
     /**
      * @before _secure, changeLayout
      */
@@ -122,7 +121,7 @@ class Training extends Employer {
             $view->set("errors", $opportunity->getErrors());
         }
     }
-    
+
     /**
      * @before _secure, changeLayout
      */
@@ -145,7 +144,7 @@ class Training extends Employer {
         }
         $view->set("training", $training);
     }
-    
+
     /**
      * @before _secure, changeLayout
      */
@@ -161,7 +160,7 @@ class Training extends Employer {
 
         $view->set("trainings", $trainings);
     }
-    
+
     /**
      * @before _secure, changeLayout
      */
@@ -169,12 +168,14 @@ class Training extends Employer {
         if ($id == NULL) {
             self::redirect("/training/manage");
         }
-        
+
         $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id, "type = ?" => "training"), array("id", "title"));
-        $this->seo(array("title" => "Applications","keywords" => "Applications","description" => "Applications received on internship posted","view" => $this->getLayoutView()));
-        $view = $this->getActionView();$registered = [];$attended = [];
+        $this->seo(array("title" => "Applications", "keywords" => "Applications", "description" => "Applications received on internship posted", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+        $registered = [];
+        $attended = [];
         $this->enroll($internship);
-        
+
         $order = RequestMethods::get("order", "created");
         $direction = RequestMethods::get("direction", "desc");
         $page = RequestMethods::get("page", 1);
@@ -211,5 +212,18 @@ class Training extends Employer {
         $view->set("attended", Framework\ArrayMethods::toObject($attended));
         $view->set("applicants", Framework\ArrayMethods::toObject($applicants));
     }
-    
+
+    public function paymentLink() {
+        $this->noview();
+        $instamojo = Registry::get("instamojo");
+        
+        try {
+            $response = $instamojo->linksList();
+            echo '<pre>', print_r($response), '</pre>';
+            //print_r($response);
+        } catch (Exception $e) {
+            print('Error: ' . $e->getMessage());
+        }
+    }
+
 }
