@@ -114,6 +114,18 @@ class Training extends Employer {
                         ), "visibility" => array("code" => "anyone")
                             ), $opportunity);
                 }
+
+                $instamojo = Registry::get("instamojo");
+                $instamojo->linkCreate(array(
+                    'title' => $opportunity->title,
+                    'description' => $opportunity->details,
+                    'base_price' => $opportunity->payment,
+                    'currency' => 'INR',
+                    'cover_image' => APP_PATH . '/public/assets/images/logo.png',
+                    'webhook_url' => 'http://swiftintern.com/training/payment',
+                    'redirect_url' => URL
+                ));
+
                 self::redirect('/training/manage');
             }
 
@@ -213,10 +225,10 @@ class Training extends Employer {
         $view->set("applicants", Framework\ArrayMethods::toObject($applicants));
     }
 
-    public function paymentLink() {
+    public function payment() {
         $this->noview();
         $instamojo = Registry::get("instamojo");
-        
+
         try {
             $response = $instamojo->linksList();
             echo '<pre>', print_r($response), '</pre>';
