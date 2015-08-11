@@ -18,6 +18,9 @@
                 <a href="/training/edit/{echo $opportunity->id}" class="btn btn-primary" target="_blank">Edit</a>
             </p>
             {/if}
+            
+            <p>Include Separate section of About, Topics, Projects, Benefits, Prerequisite, Materials in details</p>
+            <p>Include Videos and Images in details</p>
             <form method="post" action="">
                 <div class="panel panel-default panel-body">
                     <div class="form-group">
@@ -39,7 +42,7 @@
 
                     <hr>
                     <div class="form-group">
-                        <label>Who can Apply? *</label>
+                        <label>Who could attend? *</label>
                         <textarea class="form-control" name="eligibility" rows="3" required=""></textarea>
                         <span class="help-block">{echo Shared\Markup::errors($errors, "eligibility")}</span>
                     </div>

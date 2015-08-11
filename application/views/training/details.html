@@ -9,7 +9,7 @@
                 {if($opportunity->last_date < $enddate)}
                 <div class="alert alert-warning alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    The <strong>Last Date</strong> to apply is over.
+                    The <strong>Last Date</strong> to register is over.
                 </div>
                 {/if}
 
@@ -54,7 +54,7 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Who can Apply?
+                        Who could Attend?
                     </div>
                     <div class="panel-body">
                         <p itemprop="educationRequirements">{echo $opportunity->eligibility}</p>
