@@ -36,10 +36,10 @@
 | $config['img_path'] = '/images/somefolder';
 | 
 | -------------------------------------------------------------------*/
-
+        define("APP_PATH", "/home/content/32/11823432/html/swiftintern");
 	
-	$config['img_path'] = '/images'; // Relative to domain name
-	$config['upload_path'] = $_SERVER['DOCUMENT_ROOT'] . $config['img_path']; // Physical path. [Usually works fine like this]
+	$config['img_path'] = '/public/assets/uploads/images'; // Relative to domain name
+	$config['upload_path'] = APP_PATH . $config['img_path']; // Physical path. [Usually works fine like this]
 
 
 /*-------------------------------------------------------------------
