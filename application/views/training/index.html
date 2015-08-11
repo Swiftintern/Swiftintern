@@ -1,12 +1,6 @@
-<header class="intro-header" style="background-image: url(http://assets.swiftintern.com/images/others/training.png);">
+<header class="sb-page-header">
     <div class="container">
-        <div class="row text-center">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="site-heading">
-                    <h1 class="huge">Workshops and Training</h1>
-                </div>
-            </div>
-        </div>
+        <h1>Workshops and Training</h1>
     </div>
 </header>
 <div class="container">
@@ -24,38 +18,38 @@
 
                     <div class="row"><br>
                         <div class="col-xs-12 col-md-9">
-                            <div class="row" id="results">
-                                {foreach $training in $trainings}
-                                <div class="col-sm-4 col-md-3">
-                                    <div class="thumbnail">
-                                        <a href="/training/details/{echo \Framework\StringMethods::url($training->title)}/{echo $training->id}"><img src="/onlinetest/photo/{echo $training->id}" alt="{echo $training->title}" width="100"></a>
-                                        <div class="caption">
-                                            <p><small>{echo substr($training->title, 0, 21)}</small></p>
-                                            <p>
-                                                <a href="/training/details/{echo \Framework\StringMethods::url($training->title)}/{echo $training->id}" class="btn btn-primary btn-xs">Details</a> 
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/foreach}
-                            </div>
+                            <table class="table table-striped">
+                                <tbody id="results">
+                                    {foreach $training in $trainings}
+                                    {script $org = Organization::first(array("id = ?" => $training->organization_id),array("photo_id"))}
+                                    <tr>
+                                        <td>
+                                            <div class="media">
+                                                <a class="pull-left hidden-xs" href="/{$training->type}/details/{echo Framework\StringMethods::url($training->title)}/{echo $training->id}">
+                                                    <img src="/thumbnails/{$org->photo_id}" class="media-object small_image" alt="{echo $training->title}">
+                                                </a>
+                                                <div class="media-body">
+                                                    <h4 class="media-heading"><a href="/{$training->type}/details/{echo Framework\StringMethods::url($training->title)}/{echo $training->id}">{echo $training->title}</a></h4>
+                                                    <i class="fa fa-map-marker"></i>{$training->location}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="job-location">
+                                            <p><i class="fa fa-calendar fa-fw"></i>{$training->last_date}</p>
+                                            <p><i class="fa fa-inr"></i>{$training->payment}</p>
+                                        </td>
+                                    </tr>
+                                    {/foreach}
+                                </tbody>
+                            </table>
                         </div>
                         <aside class="col-xs-12 col-md-3">
 
-                            <div class="panel panel-default">
-                                <table class="table">
-                                    <tbody>
-                                        <tr>
-                                            <td>Training Certificates</td>
-                                            <td>100+</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Scholars</td>
-                                            <td>10,000+</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <ul class="list-group">
+                                <li class="list-group-item"><i class="fa fa-bank fa-2x"></i>  40+ Colleges</li>
+                                <li class="list-group-item"><i class="fa fa-user-secret fa-2x"></i>  1000+ Students Trained</li>
+                                <li class="list-group-item"><i class="fa fa-trophy fa-2x"></i> {$certificates} Certificates</li>
+                            </ul>
 
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -72,7 +66,7 @@
                                     </form>
                                 </div>
                             </div>
-                            
+
                         </aside>
                     </div>
 
@@ -84,10 +78,10 @@
                             <div class="col-md-9">
                                 <h3 class="sub-heading">Workshops and Training</h3>
                                 <p>Skilled India  this is what we are talking about now a days . But think how it can be possible ? 
-                                One day sitting in our office we are discussing and debating about a topic " skillful India ".Link by link we created a  chain of education system , and decided to  contribute our part to make of skilled India by educating people about new technology apart from their academics . So we decided to start workshops and training program to everyone . Here we organize workshops and training programs on various hot topics , which is conducted through experienced organization or an individual .  After completing of respected program you will evaluated with an online test related to respective workshops or training , if you secured our passing marks then we will provide you an authorized letter of completing a training or workshops which would be a  certification of your successfully  completion of training and workshops. </p>
+                                    One day sitting in our office we are discussing and debating about a topic " skillful India ".Link by link we created a  chain of education system , and decided to  contribute our part to make of skilled India by educating people about new technology apart from their academics . So we decided to start workshops and training program to everyone . Here we organize workshops and training programs on various hot topics , which is conducted through experienced organization or an individual .  After completing of respected program you will evaluated with an online test related to respective workshops or training , if you secured our passing marks then we will provide you an authorized letter of completing a training or workshops which would be a  certification of your successfully  completion of training and workshops. </p>
                                 <h3 class="sub-heading">Why we are different ?</h3>
                                 <p>We in our college times experienced lots of overcrowded workshops a training , which would reflect to no gain of appropriate knowledge and hence waste of money and time . 
-                                So , we as a team decided to start a workshops and training programs which would focus totally on QUALITY rather than making money by overcrowding . </p>
+                                    So , we as a team decided to start a workshops and training programs which would focus totally on QUALITY rather than making money by overcrowding . </p>
                                 <p>By attending our workshops and training you will get an extra benefits In our internships fair.</p>
                                 <p>You can now add certification to your linkedin profile after you successfully pass the test after workshops</p>
                             </div>
@@ -104,8 +98,7 @@
     </div>
 </div>
 <script type="text/javascript">
-    var page = 1;
     $(document).ready(function () {
-        $(".navbar").css("margin-bottom", "-20px");
+        $(".navbar").css("margin-bottom", "0px");
     });
 </script>

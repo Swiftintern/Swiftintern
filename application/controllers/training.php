@@ -18,9 +18,11 @@ class Training extends Employer {
             "view" => $this->getLayoutView()
         ));
         $view = $this->getActionView();
+        $certificates = Certificate::count();
 
         $trainings = Opportunity::all(array("type = ?" => "training", "validity = ?" => 1));
         $view->set("trainings", $trainings);
+        $view->set("certificates", $certificates);
     }
 
     public function details($title, $id) {
