@@ -175,6 +175,11 @@ class Training extends Employer {
 
         $view->set("trainings", $trainings);
     }
+    
+    public function organize() {
+        $this->seo(array("title" => "Organize Workshops at your college", "keywords" => "workshop and training", "description" => "Organize Workshops and trainings at your campus", "view" => $this->getLayoutView()));
+        
+    }
 
     /**
      * @before _secure, changeLayout
