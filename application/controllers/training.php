@@ -149,6 +149,7 @@ class Training extends Employer {
             $training->eligibility = RequestMethods::post("eligibility");
             $training->last_date = RequestMethods::post("last_date");
             $training->details = RequestMethods::post("details");
+            $training->duration = RequestMethods::post("duration");
             $training->payment = RequestMethods::post("payment");
             $training->updated = date("Y-m-d H:i:s");
 
