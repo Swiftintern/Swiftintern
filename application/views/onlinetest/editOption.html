@@ -1,0 +1,37 @@
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3><a href="/onlinetest/addOptions/{echo $option->ques_id}" class="text-left"><i class="fa fa-arrow-left"></i> Back</a></h3>
+            <h1 class="page-header text-center">Edit Option</h1>
+            {if isset($success)}
+            <div class="alert alert-success alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                Option Saved <strong>Successfully!</strong>
+            </div><br>
+            {/if}
+            <form method="post" action="">
+                <div class="panel panel-default panel-body">
+                    <div class="form-group">
+                        <label>Option *</label>
+                        <input type="text" name="option" class="form-control" maxlength="100" value="{echo $option->ques_option}" required="">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Is Answer of the Question?</label>
+                        <div class="radio">
+                            <label><input type="radio" name="is_answer" value="yes" {if ($option->is_answer == 1)} checked="" {/if}>Yes</label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" name="is_answer" value="no" {if ($option->is_answer == 0)} checked="" {/if}>No</label>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" name="action" value="editOption">
+                    <p style="color: red; font-weight: bold;">* fields are required.</p>
+                    <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-check-circle"></i> Submit</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

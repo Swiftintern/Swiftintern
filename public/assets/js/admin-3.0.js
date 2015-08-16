@@ -110,23 +110,19 @@ $(document).ready(function () {
     
     // find all the selectors 
     var types = $('#addOptions select');
-    types.each(function (index) {
-        // bind the change function
-        $(this).on("change", function (){
-            var value = $(this).val();
-            var number = index + 1;
-            var selector = "type"+number;
-            
-            // if text box is selected then show it and hide the file upload or vice-versa
-            if (value === "text") {
-                $("#"+selector).find("input[type='text']").toggleClass("hide");
-                $("#"+selector).find("input[type='file']").toggleClass("hide");
-            } else if (value === "image") {
-                $("#"+selector).find("input[type='file']").toggleClass("hide");
-                $("#"+selector).find("input[type='text']").toggleClass("hide");
-            }
-        });
+    types.on("change", function (){ // bind the change function
+        var value = $(this).val();
+
+        // if text box is selected then show it and hide the file upload or vice-versa
+        if (value === "text") {
+            $("#type").find("input[type='text']").toggleClass("hide").attr("required", "");
+            $("#type").find("input[type='file']").toggleClass("hide");
+        } else if (value === "image") {
+            $("#type").find("input[type='file']").toggleClass("hide");
+            $("#type").find("input[type='text']").toggleClass("hide").removeAttr("required");
+        }
     });
+    
 
 });
 
