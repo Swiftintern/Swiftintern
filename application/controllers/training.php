@@ -185,52 +185,21 @@ class Training extends Employer {
      * @before _secure, changeLayout
      */
     public function applications($id) {
-        if ($id == NULL) {
-            self::redirect("/training/manage");
-        }
-
-        $internship = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id, "type = ?" => "training"), array("id", "title"));
-        $this->seo(array("title" => "Applications", "keywords" => "Applications", "description" => "Applications received on internship posted", "view" => $this->getLayoutView()));
+        $training = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id, "type = ?" => "training"), array("id", "title"));
+        $this->seo(array("title" => "Training Applications", "keywords" => "Applications", "description" => "Applications received on internship posted", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
-        $registered = [];
-        $attended = [];
-        $this->enroll($internship);
+        $this->enroll($training);
 
         $order = RequestMethods::get("order", "created");
         $direction = RequestMethods::get("direction", "desc");
         $page = RequestMethods::get("page", 1);
         $limit = RequestMethods::get("limit", 15);
-        $count = Application::count(array("opportunity_id = ?" => $internship->id));
-        $applications = Application::all(array("opportunity_id = ?" => $internship->id), array("id", "student_id", "property_id", "status", "created"), $order, $direction, $limit, $page);
-
-        foreach ($applications as $application) {
-            $student = Student::first(array("id = ?" => $application->student_id), array("user_id", "about"));
-            $user = User::first(array("id = ?" => $student->user_id), array("name"));
-
-            $applicant = \Framework\ArrayMethods::toObject(array(
-                "id" => $application->id,
-                "name" => $user->name,
-                "student_id" => $application->student_id,
-                "property_id" => $application->property_id,
-                "status" => $application->status,
-                "created" => $application->created
-            ));
-            $applicants[] = $applicant;
-            switch ($application->status) {
-                case "registered":
-                    $registered[] = $applicant;
-                    break;
-                case "attended":
-                    $attended[] = $applicant;
-                    break;
-            }
-        }
+        $count = Application::count(array("opportunity_id = ?" => $training->id));
+        $applicants = Application::all(array("opportunity_id = ?" => $training->id), array("id", "student_id", "property_id", "status", "created"), $order, $direction, $limit, $page);
 
         $view->set("training", $training);
         $view->set("count", $count);
-        $view->set("registered", Framework\ArrayMethods::toObject($registered));
-        $view->set("attended", Framework\ArrayMethods::toObject($attended));
-        $view->set("applicants", Framework\ArrayMethods::toObject($applicants));
+        $view->set("applicants", $applicants);
     }
 
     public function payment() {
