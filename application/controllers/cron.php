@@ -173,7 +173,7 @@ class CRON extends Users {
         $emails = array();
         $applications = Application::all(array("created LIKE ?" => "%{$created}%"), array("DISTINCT opportunity_id"));
         foreach ($applications as $application) {
-            $opportunity = Opportunity::first(array("id = ?" => $application->opportunity_id), array("title", "id", "organization_id"));
+            $opportunity = Opportunity::first(array("id = ?" => $application->opportunity_id), array("title", "id", "organization_id", "type"));
             $applicants = Application::count(array("created LIKE ?" => "%{$created}%", "opportunity_id = ?" => $application->opportunity_id));
             $members = Member::all(array("organization_id = ?" => $opportunity->organization_id), array("user_id"));
             foreach ($members as $member) {
