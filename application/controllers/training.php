@@ -159,6 +159,25 @@ class Training extends Employer {
         }
         $view->set("training", $training);
     }
+    
+    /**
+     * @before _secure, changeLayout
+     */
+    public function certificates($id) {
+        $training = Opportunity::first(array("id = ? " => $id, "organization_id = ? " => $this->employer->organization->id, "type = ?" => "training"));
+        $this->seo(array("title" => "Edit Training", "keywords" => "edit", "description" => "edit", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+        $order = RequestMethods::get("order", "created");
+        $direction = RequestMethods::get("direction", "desc");
+        $page = RequestMethods::get("page", 1);
+        $limit = RequestMethods::get("limit", 10);
+        $count = Participant::count(array("test_id = ?" => $training->type_id));
+        $participants = Participant::all(array("test_id = ?" => $training->type_id), array("*"), $order, $direction, $limit, $page);
+
+        $view->set("count", $count);
+        $view->set("participants", $participants);
+        $view->set("training", $training);
+    }
 
     /**
      * @before _secure, changeLayout

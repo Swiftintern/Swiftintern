@@ -1,0 +1,41 @@
+<div id="page-wrapper">
+    <div class="row col-lg-12">
+        <h1 class="page-header text-center">{echo $training->title}</h1>
+        <p>Total Certificates Issued : {echo $count}</p>
+        {if($participants)}
+        <div class="panel panel-default">
+            <table class="table text-center">
+                <thead>
+                    <tr>
+                        <td><b>Student</b></td>
+                        <td><b>Time Taken</b></td>
+                        <td><b>Score</b></td>
+                        <td><b>Action</b></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {foreach $participant in $participants}
+                    {script $user = User::first(array("id = ?" => $participant->user_id), array("name"))}
+                    <tr>
+                        <td><a href="/students/profile/{echo $applicant->student_id}" target="_blank" >{echo $user->name}</a></td>
+                        <td>{echo ucfirst($participant->time_taken)}</td>
+                        <td><small>{$participant->score}</small></td>
+                        <td>
+                            <button class="btn btn-info btn-xs"><i class="fa fa-money"></i> Result</button>
+                        </td>
+                    </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+        </div>
+        {if(count((array)$applied) >= 10)}
+        <div class="text-center">
+            <button class="btn btn-primary">Load More</button>
+        </div>
+        {/if}
+        {/if}
+        {else}
+        <p>Please Assign a Test or Create a Test</p>
+        {/else}
+    </div>
+</div>
