@@ -6,9 +6,9 @@
 </header>
 <section class="container row">
     <div class="col-md-8 col-md-offset-1">
-        <article id="results" class="panel panel-default panel-body">
+        <article id="results">
             {foreach $post in $posts}
-            <div class="post-preview">
+            <div class="post-preview panel panel-default panel-body">
                 <a href="blog/{echo urlencode($post->title)}/{echo $post->id}">
                     <h2 class="post-title">{echo $post->title}</h2>
                     <h3 class="post-subtitle">{echo substr(strip_tags($post->content), 0, 150)}</h3>
@@ -22,37 +22,25 @@
         </div>
     </div>
     <div class="col-md-3">
-
-        <div class="panel panel-default">
-            <table class="table">
-                <tr>
-                    <td><b>Youtube Videos</b></td>
-                </tr>
-                <tr>
-                    <td><a href="https://www.youtube.com/watch?v=VHt6V2fgke0">Deolite Internship Experience</a></td>
-                </tr>
-                <tr>
-                    <td><a href="https://www.youtube.com/watch?v=1U5utGeZ9Gc">Shlumberger Internship Experience</a></td>
-                </tr>
-                <tr>
-                    <td><a href="https://www.youtube.com/watch?v=qNeogK2_eQE">Internship Experience at Tata Steel</a></td>
-                </tr>
-            </table>
-        </div>
-
+        <h3 class="page-header">Blog Articles</h3>
         <div class="panel panel-default panel-body">
             <form id="test_search" id="search_test">
                 <div class="form-group">
-                    <label>Search Articles</label>
                     <input type="search" id="test_keywords" name="keywords" class="form-control" placeholder="Search...">
                 </div>
                 <br>
                 <input type="submit" class="btn btn-primary input-lg btn-block" value="Search">
             </form>
         </div>
-        
-        <a href="/home/saveBlogPost" class="btn btn-danger btn-block"><i class="fa fa-envelope fa-lg"></i> Send Articles</a><br>
 
+        <h3 class="page-header">Experience Videos</h3>
+        <ul class="table">
+            <li><a href="https://www.youtube.com/watch?v=VHt6V2fgke0">Deolite Internship Experience</a></li>
+            <li><a href="https://www.youtube.com/watch?v=1U5utGeZ9Gc">Shlumberger Internship Experience</a></li>
+            <li><a href="https://www.youtube.com/watch?v=qNeogK2_eQE">Internship Experience at Tata Steel</a></li>
+        </ul>
+
+        <a href="/home/saveBlogPost" class="btn btn-danger btn-block"><i class="fa fa-envelope fa-lg"></i> Send Articles</a><br>
     </div>
 </section>
 <script type="text/javascript">

@@ -6,9 +6,9 @@
                 <li><a href="/blog">Blog</a></li>
                 <li class="active">{echo $post->title}</li>
             </ol></nav>
-        <article class="col-md-10 thumbnail col-md-offset-1">
+        <article class="col-md-10 col-md-offset-1">
             {if($image)}
-            <img src="/home/thumbnails/{echo $image->photo_id}/800/300" alt="{echo $post->title}">
+            <img src="/home/thumbnails/{echo $image->photo_id}/800/300" class="text-center" alt="{echo $post->title}">
             {/if}
             <div class="caption blog" id="blog">
                 {echo $post->content}
