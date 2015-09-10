@@ -110,10 +110,12 @@ class Marketing extends Admin {
 
         $page = RequestMethods::get("page", 1);
         $limit = RequestMethods::get("limit", 10);
+        $count = Lead::count(array("user_id = ?" => $this->user->id));
         $leads = Lead::all(array("user_id = ?" => $this->user->id), array("*"), "created", "desc", $limit, $page);
 
         $view->set("limit", $limit);
         $view->set("page", $page);
+        $view->set("count", $count);
         $view->set("leads", $leads);
     }
 

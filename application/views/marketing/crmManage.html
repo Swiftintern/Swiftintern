@@ -1,43 +1,9 @@
 <div id="page-wrapper">
     <div class="row col-lg-12">
-        <h1 class="page-header text-center">Leads</h1>
-        <form class="form-inline text-center" role="form" method="post" action="/admin/search" id="search">
-            <div class="form-group">
-                <div class="input-group">
-                    <label class="sr-only">Field</label>
-                    <select name="model" class="form-control">
-                        <option value="user_id">By User ID</option>
-                        <option value="status">Status</option>
-                        <option value="crm_id">CRM Template ID</option>
-                        <option value="email" selected="selected">Email</option>
-                        <option value="validity">Validity</option>
-                        <option value="created">Created</option>
-                        <option value="updated">Updated</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="input-group">
-                    <label class="sr-only">Value</label>
-                    <input type="text" style="width: 300px" name="value" class="form-control" placeholder="value..." />
-                </div>
-            </div>
-            <input type="hidden" name="action" value="search">
-            <button type="submit" class="btn btn-primary">Search</button>
-            <a href="/admin/crmLead" class="btn btn-success">Create Lead</a>
-        </form>
-        <hr>
+        <h1 class="page-header text-center">Manage Leads</h1>
         <div class="panel panel-default">
-            <div class="panel-heading">
-                <i class="fa fa-list fa-fw"></i> Leads
-            </div>
-            <div class="panel panel-body text-center" id="result_status">
-                {if(isset($success))}
-                {echo $success}
-                {/if}
-                {else}
-                You have not created any leads till now. Create <a href="/admin/crmLead">here</a>
-                {/else}
+            <div class="panel panel-body text-center">
+                <p>To Stop the CRM Process change validity to "null" in edit.</p>
             </div>
             <table class="table table-hover table-striped">
                 <thead>
@@ -63,7 +29,18 @@
                     {/foreach}
                 </tbody>
             </table>
-            <div id="after_results" class="text-center"></div>
+            <div id="after_results" class="text-center">
+                {if($count >= 10)}
+                    <ul class="pager">
+                        {if($page != 1)}
+                        <li><a href="?page={echo $page - 1}">Previous</a></li>
+                        {/if}
+                        {if($page < $count/$limit)}
+                        <li><a href="?page={echo $page + 1}">Next</a></li>
+                        {/if}
+                    </ul>
+                {/if}
+            </div>
         </div>
     </div>
 </div>

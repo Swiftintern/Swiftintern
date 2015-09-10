@@ -164,6 +164,24 @@ class Admin extends Users {
         $view->set("model", $model);
         $view->set("id", $id);
     }
+    
+    /**
+     * Updates any data provide with model and id
+     * 
+     * @before _secure, changeLayout
+     * @param type $model the model object to be updated
+     * @param type $id the id of object
+     */
+    public function delete($model = NULL, $id = NULL) {
+        $view = $this->getActionView();
+        $this->JSONview();
+        
+        $object = $model::first(array("id = ?" => $id));
+        $object->delete();
+        $view->set("deleted", true);
+        
+        self::redirect($_SERVER['HTTP_REFERER']);
+    }
 
     /**
      * @before _secure, changeLayout
