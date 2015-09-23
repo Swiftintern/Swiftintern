@@ -8,8 +8,7 @@ RewriteRule ^/?$ "http\:\/\/swiftintern\.com\/" [R=301,L]
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_URI} !=/favicon.ico
-#RewriteRule ^([a-zA-Z0-9\/\-+_']+)\.?([a-zA-Z]+)?$ ../index.php?url=$1&extension=$2 [QSA,L]
-RewriteRule ^([^.]+)\.?([a-zA-Z]+)?$ ../index.php?url=$1&extension=$2 [QSA,L]
+RewriteRule ^([^.]+)\.?([a-zA-Z]+)?$ index.php?url=$1&extension=$2 [QSA,L]
 
 ## EXPIRES CACHING ##
 <IfModule mod_expires.c>
@@ -51,10 +50,4 @@ RewriteRule ^([^.]+)\.?([a-zA-Z]+)?$ ../index.php?url=$1&extension=$2 [QSA,L]
     AddOutputFilterByType DEFLATE text/javascript
     AddOutputFilterByType DEFLATE text/plain
     AddOutputFilterByType DEFLATE text/xml
-
-    # Remove browser bugs (only needed for really old browsers)
-    BrowserMatch ^Mozilla/4 gzip-only-text/html
-    BrowserMatch ^Mozilla/4\.0[678] no-gzip
-    BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
-    Header append Vary User-Agent
 </IfModule>
