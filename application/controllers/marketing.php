@@ -159,6 +159,28 @@ class Marketing extends Admin {
         $view->set("page", $page);
         $view->set("newsletters", $newsletters);
     }
+
+    /**
+     * @before _secure, changeLayout
+     */
+    public function message() {
+        $this->seo(array("title" => "Message", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+
+        if (RequestMethods::post("message")) {
+            $emails = array();
+            array_push($emails, RequestMethods::post("email"));
+            $options = array(
+                "template" => "blank",
+                "subject" => RequestMethods::post("subject"),
+                "message" => RequestMethods::post("message"),
+                "emails" => $emails,
+                "delivery" => "mailgun"
+            );
+            $this->notify($options);
+            $view->set("success", TRUE);
+        }
+    }
     
     /**
      * @before _secure, changeLayout

@@ -40,15 +40,15 @@ class Users extends Controller {
         }
     }
 
-    protected function mailtest() {
+    public function mailtest() {
         $this->noview();
-        $options = array(
+        $this->notify(array(
             "template" => "blank",
             "subject" => "Testing email",
             "emails" => array("indianayubi@gmail.com", "faizanayubi@hotmail.com"),
+            "message" => "Hi",
             "delivery" => "mailgun"
-        );
-        $this->notify($options);
+        ));
     }
 
     public function unsubscribe() {
