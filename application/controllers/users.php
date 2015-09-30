@@ -79,6 +79,19 @@ class Users extends Controller {
         return $view->render();
     }
 
+    protected function attachProposal($options) {
+        $attachment = array();
+        if (isset($options["file"])) {
+            if ($options["file"] == "1") {
+                $attachment = array(
+                    '/home/uditverma/web/swiftintern.com/public_html/public/assets/files/proposal/Proposal.pdf',
+                    '/home/uditverma/web/swiftintern.com/public_html/public/assets/files/proposal/WEB DESIGNING amp%3B HOSTING WORKSHOP CONTENT.pdf'
+                );
+            }
+        }
+        return $attachment;
+    }
+
     protected function notify($options) {
         $body = $this->getBody($options);
         $emails = isset($options["emails"]) ? $options["emails"] : array($options["user"]->email);

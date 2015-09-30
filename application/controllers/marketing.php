@@ -170,6 +170,7 @@ class Marketing extends Admin {
         if (RequestMethods::post("message")) {
             $emails = array();
             array_push($emails, RequestMethods::post("email"));
+
             $options = array(
                 "template" => "blank",
                 "subject" => RequestMethods::post("subject"),
