@@ -49,7 +49,7 @@ class Home extends Users {
             "title" => "About Us",
             "keywords" => "about us, how swiftintern works, swiftintern",
             "description" => "SwiftIntern is the india's largest student-focused internship portal, bringing students, employers and higher education institutions together in one centralized location.",
-            "photo" => "http://assets.swiftintern.com/img/newsletter/header.png",
+            "photo" => "http://swiftintern.com/public/assets/img/newsletter/header.png",
             "view" => $this->getLayoutView()
         ));
     }

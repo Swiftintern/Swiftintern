@@ -184,7 +184,7 @@ class Users extends Controller {
         header('Content-Type: image/png');
 
         Stat::log($property, $property_id);
-        $pixel = 'http://assets.swiftintern.com/images/others/track.png';
+        $pixel = 'http://swiftintern.com/public/assets/images/others/track.png';
 
         //Get the filesize of the image for headers
         $filesize = filesize(APP_PATH . '/public/assets/images/others/track.png');

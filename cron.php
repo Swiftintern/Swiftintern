@@ -6,7 +6,7 @@ define("DEBUG", TRUE);
 define("APP_PATH", str_replace(DIRECTORY_SEPARATOR, "/", dirname(__FILE__)));
 define("APP", "http://swiftintern.com/");
 define("URL", "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
-define("CDN", "http://assets.swiftintern.com/");
+define("CDN", "http://swiftintern.com/public/assets/");
 define("LOGO", "1431");
 
 try {

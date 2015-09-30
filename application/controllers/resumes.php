@@ -177,7 +177,7 @@ class Resumes extends Students {
         if($resume){
             switch ($resume->type) {
                 case "file":
-                    header("Location: https://docs.google.com/gview?url=http://assets.swiftintern.com/uploads/files/{$resume->resume}");
+                    header("Location: https://docs.google.com/gview?url=http://swiftintern.com/public/assets/uploads/files/{$resume->resume}");
                     break;
                 case "text":
                     echo $resume->resume;
