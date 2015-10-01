@@ -1,19 +1,18 @@
 var current = new Date();
-current.setSeconds(current.getSeconds() + 1800);
+current.setSeconds(current.getSeconds() + 1805);
 
-var date = current.toLocaleDateString(), // output => "dd/mm/yy"
+var date = current.toLocaleDateString(), // output => "mm/dd/yy"
     time = current.toLocaleTimeString(); //   "hh:mm:ss AM/PM"
 
-
     var arr = date.split("/");
-    var stamp = arr[2] + "/" + arr[1] + "/" + arr[0];
+    var stamp = arr[2] + "/" + arr[0] + "/" + arr[1];
     stamp += " ";
 
     var t = time.split(" ");
     
     if (t[1] == "PM" || t[1] == "pm") {
         var ch = t[0].split(":");
-        ch[0] = Number(ch[0]) + 12;
+        ch[0] = String(Number(ch[0]) + 12);
         t[0] = ch.join(":");
     }
     stamp += t[0];
