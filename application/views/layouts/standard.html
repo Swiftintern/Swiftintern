@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html">
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -20,41 +21,40 @@
     <link rel="publisher" href="{echo $seo->getAuthor()}">
     <link rel="shortcut icon" href="{echo CDN}images/favicon.ico" type="image/x-icon">
     <link rel="icon" type="image/x-icon" href="{echo CDN}images/favicon.ico" />
-    
     <title>{echo $seo->getTitle()}</title>
     <!-- styles -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <link href="{echo CDN}css/custom-1.0.css" rel="stylesheet" />
     <link href="{echo CDN}plugins/chosen/chosen.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Important Owl stylesheet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.theme.min.css">
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
-    
     <script src="/public/assets/plugins/tinymce/tinymce.min.js"></script>
     <script type="text/javascript">
-        tinymce.init({
-            selector: ".editor",
-            plugins: [
-                "advlist autolink lists link image charmap print preview anchor",
-                "searchreplace visualblocks code fullscreen",
-                "insertdatetime media table contextmenu jbimages"
-            ],
-            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media jbimages",
-            autosave_ask_before_unload: false,
-            max_height: 200,
-            min_height: 160,
-            height: 180,
-            relative_urls: false
-        });
+    tinymce.init({
+        selector: ".editor",
+        plugins: [
+            "advlist autolink lists link image charmap print preview anchor",
+            "searchreplace visualblocks code fullscreen",
+            "insertdatetime media table contextmenu jbimages"
+        ],
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media jbimages",
+        autosave_ask_before_unload: false,
+        max_height: 200,
+        min_height: 160,
+        height: 180,
+        relative_urls: false
+    });
     </script>
-    
     <!-- facebook -->
-    <meta property="og:title" content="{echo $seo->getTitle()}"/>
-    <meta property="og:type" content="article"/>
-    <meta property="og:image" content="{echo $seo->getPhoto()}"/>
-    <meta property="og:url" content="{echo URL}"/>
-    <meta property="og:description" content="{echo strip_tags($seo->getDescription())}"/>
-    <meta property="fb:app_id" content="561287280655510"/>
-    
+    <meta property="og:title" content="{echo $seo->getTitle()}" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image" content="{echo $seo->getPhoto()}" />
+    <meta property="og:url" content="{echo URL}" />
+    <meta property="og:description" content="{echo strip_tags($seo->getDescription())}" />
+    <meta property="fb:app_id" content="561287280655510" />
     <!-- twitter -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:url" content="{echo URL}">
@@ -64,68 +64,99 @@
 </head>
 
 <body>
-    
-    {include layouts/navigation/public.html}
-    {include layouts/modal/message.html}
-
-    {ayield action}
-
+    {include layouts/navigation/public.html} {include layouts/modal/message.html} {ayield action}
     <!-- the bottom client image -->
     <div class="clients hidden-print">
         <div class="container">
-            <img src="{echo CDN}images/clients.png" alt="clients" class="img-responsive">
+            <div id="owl-demo" class="owl-carousel owl-theme">
+                <div class="thumbnail item">
+                    <img src="http://swiftintern.com/public/assets/uploads/images/AAEAAQAAAAAAAAOjAAAAJDQ4ZDQyNjdiLTUyNjgtNDIwZi04NWM1LTIzYjJiNGU0MTVmZg.png" alt="">
+                </div>
+                <div class="thumbnail item">
+                    <img src="http://swiftintern.com/public/assets/uploads/images/2785318.png" alt="">
+                </div>
+                <div class="thumbnail item">
+                    <img src="http://swiftintern.com/public/assets/uploads/images/thumbnails/94036927-64x64.jpg" alt="">
+                </div>
+                <div class="thumbnail item">
+                    <img src="http://swiftintern.com/public/assets/uploads/images/AAEAAQAAAAAAAAIcAAAAJDQyZmY5YWNmLWY4NjMtNDExNC1iNDMwLTAzNjUwMmJjMDM3ZQ.png" alt="">
+                </div>
+                <div class="thumbnail item">
+                    <img src="http://swiftintern.com/public/assets/uploads/images/1292b3a.png" alt="">
+                </div>
+                <div class="thumbnail item">
+                    <img src="http://swiftintern.com/public/assets/uploads/images/thumbnails/62125600-64x64.jpg" alt="">
+                </div>
+                <div class="thumbnail item">
+                    <img src="http://swiftintern.com/public/assets/uploads/images/thumbnails/30014888-64x64.jpg" alt="">
+                </div>
+                <div class="thumbnail item">
+                    <img src="http://swiftintern.com/public/assets/uploads/images/thumbnails/77364798-64x64.jpg" alt="">
+                </div>
+                <div class="thumbnail item">
+                    <img src="http://swiftintern.com/public/assets/uploads/images/thumbnails/14992183-64x64.jpg" alt="">
+                </div>
+                <div class="thumbnail item">
+                    <img src="http://swiftintern.com/public/assets/uploads/images/thumbnails/8576888-64x64.jpg" alt="">
+                </div>
+                <div class="thumbnail item">
+                    <img src="http://swiftintern.com/public/assets/uploads/images/thumbnails/63074657-64x64.jpg" alt="">
+                </div>
+                <div class="thumbnail item">
+                    <img src="http://swiftintern.com/public/assets/uploads/images/thumbnails/9015320-64x64.jpg" alt="">
+                </div>
+            </div>
         </div>
     </div>
-    
     <!-- the footer -->
     <footer class="hidden-print">
         <div class="container">
-        <div class="row">
-            <div class="col-xs-12 col-sm-4 col-md-3">
-                <h4><i class="fa fa-graduation-cap fa-lg"></i>SwiftIntern</h4>
-                <nav>
-                <ul class="list-unstyled list-social-icons">
-                    <li><a href="/about" class="whitetext">About</a></li>
-                    <li><a href="/blog" class="whitetext">Intern Blog</a></li>
-                    <li><a href="/privacy" class="whitetext">Privacy</a></li>
-                    <li><a href="/contact" class="whitetext">Contact Us</a></li>
-                </ul>
-                </nav>
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <h4><i class="fa fa-graduation-cap fa-lg"></i>SwiftIntern</h4>
+                    <nav>
+                        <ul class="list-unstyled list-social-icons">
+                            <li><a href="/about" class="whitetext">About</a></li>
+                            <li><a href="/blog" class="whitetext">Intern Blog</a></li>
+                            <li><a href="/privacy" class="whitetext">Privacy</a></li>
+                            <li><a href="/contact" class="whitetext">Contact Us</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <h4><i class="fa fa-user fa-lg"></i> Students</h4>
+                    <nav>
+                        <ul class="list-unstyled list-social-icons">
+                            <li><a href="/student/register" class="whitetext">Register</a></li>
+                            <li><a href="/resume-for-internship" class="whitetext">Resume for Internship</a></li>
+                            <li><a href="/onlinetest" class="whitetext">Online Test</a></li>
+                            <li><a href="/internship/details/Campus-Ambassador-of-SwiftIntern-/413" class="whitetext">Student Partner</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <h4><i class="fa fa-briefcase fa-lg"></i> Employers</h4>
+                    <nav>
+                        <ul class="list-unstyled list-social-icons">
+                            <li><a href="/employer/register" class="whitetext">Register your Company</a></li>
+                            <li><a href="/employer/about" class="whitetext">About/Benefits</a></li>
+                            <li><a href="/organizations" class="whitetext">Companies</a></li>
+                            <li><a href="/termsofservice" class="whitetext">Terms of Service</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <h4><i class="fa fa-users fa-lg"></i> Follow Us</h4>
+                    <nav>
+                        <ul class="list-unstyled list-social-icons">
+                            <li><i class="fa fa-facebook"></i><a href="https://facebook.com/swiftintern" class="whitetext" target="_blank"> Facebook</a></li>
+                            <li><i class="fa fa-twitter"></i><a href="https://twitter.com/swiftintern" class="whitetext" target="_blank"> Twitter</a></li>
+                            <li><i class="fa fa-linkedin"></i><a href="https://www.linkedin.com/company/swiftintern-com" class="whitetext" target="_blank"> LinkedIn</a></li>
+                            <li><i class="fa fa-github-square"></i><a href="https://github.com/Swiftintern/Swiftintern/" class="whitetext" target="_blank"> Github</a></li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
-            <div class="col-xs-12 col-sm-4 col-md-3">
-                <h4><i class="fa fa-user fa-lg"></i> Students</h4>
-                <nav>
-                <ul class="list-unstyled list-social-icons">
-                    <li><a href="/student/register" class="whitetext">Register</a></li>
-                    <li><a href="/resume-for-internship" class="whitetext">Resume for Internship</a></li>
-                    <li><a href="/onlinetest" class="whitetext">Online Test</a></li>
-                    <li><a href="/internship/details/Campus-Ambassador-of-SwiftIntern-/413" class="whitetext">Student Partner</a></li>
-                </ul>
-                </nav>
-            </div>
-            <div class="col-xs-12 col-sm-4 col-md-3">
-                <h4><i class="fa fa-briefcase fa-lg"></i> Employers</h4>
-                <nav>
-                <ul class="list-unstyled list-social-icons">
-                    <li><a href="/employer/register" class="whitetext">Register your Company</a></li>
-                    <li><a href="/employer/about" class="whitetext">About/Benefits</a></li>
-                    <li><a href="/organizations" class="whitetext">Companies</a></li>
-                    <li><a href="/termsofservice" class="whitetext">Terms of Service</a></li>
-                </ul>
-                </nav>
-            </div>
-            <div class="col-xs-12 col-sm-4 col-md-3">
-                <h4><i class="fa fa-users fa-lg"></i> Follow Us</h4>
-                <nav>
-                <ul class="list-unstyled list-social-icons">
-                    <li><i class="fa fa-facebook"></i><a href="https://facebook.com/swiftintern" class="whitetext" target="_blank"> Facebook</a></li>
-                    <li><i class="fa fa-twitter"></i><a href="https://twitter.com/swiftintern" class="whitetext" target="_blank"> Twitter</a></li>
-                    <li><i class="fa fa-linkedin"></i><a href="https://www.linkedin.com/company/swiftintern-com" class="whitetext" target="_blank"> LinkedIn</a></li>
-                    <li><i class="fa fa-github-square"></i><a href="https://github.com/Swiftintern/Swiftintern/" class="whitetext" target="_blank"> Github</a></li>
-                </ul>
-                </nav>
-            </div>
-        </div>
             <hr>
             <p>
                 <a href="https://github.com/SwiftMVC/SwiftMVC" target="_blank" class="whitetext btn btn-success btn-xs"><i class="fa fa-heart-o fa-fw"></i> Made with SwiftMVC</a>
@@ -139,11 +170,11 @@
             </p>
         </div>
     </footer>
-    
-    <script type="text/javascript" src="{echo CDN}plugins/chosen/chosen.jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{echo CDN}plugins/bootbox/bootbox.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>
     <script type="text/javascript" src="{echo CDN}js/model.js"></script>
     <script type="text/javascript" src="{echo CDN}js/public-3.1.js"></script>
 </body>
+
 </html>
