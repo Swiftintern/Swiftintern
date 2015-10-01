@@ -11,7 +11,7 @@ class OnlineTest extends Admin {
 
     public function index() {
         $this->seo(array(
-            "title" => "Online Test with Certificate",
+            "title" => "Online Test",
             "keywords" => "online test, practice test, online exams, skills verification",
             "description" => "Appear to Online Exam and verify your skills for getting internship.",
             "view" => $this->getLayoutView()
