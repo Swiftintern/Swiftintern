@@ -31,7 +31,7 @@
             <li class="active">Exam</li>
         </ol>
         <article class="col-md-12">
-            <form class="col-md-offset-2 col-md-8" method="post" action="/onlinetest/result/{echo $participant->id}">
+            <form class="col-md-offset-2 col-md-8" method="post" action="/onlinetest/result/{echo $participant->id}" id="testForm">
                 {script $i=1}
                 {foreach $question in $questions}
                 <div class="{if($i!=1)} hide {/if}" id="question_{echo $i}">
@@ -65,17 +65,3 @@
     </div>
 </div>
 </div>
-<script type="text/javascript">
-$(document).ready(function () {
-    window.opts.ques = 1;
-    var warn = 0;
-    $(window).blur(function () {
-        if (warn > 1) {
-            //alert("Your Test is now cancelled");
-            //window.location.href = "/home";
-        }
-        //alert("You are not allowed to open any new tab. or minimize the window");
-        warn++;
-    });
-});
-</script>

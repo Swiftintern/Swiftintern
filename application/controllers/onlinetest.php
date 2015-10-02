@@ -6,6 +6,7 @@
  * @author Faizan Ayubi
  */
 use Framework\RequestMethods as RequestMethods;
+use Framework\Registry as Registry;
 
 class OnlineTest extends Admin {
 
@@ -17,6 +18,8 @@ class OnlineTest extends Admin {
             "view" => $this->getLayoutView()
         ));
         $view = $this->getActionView();
+        $session = Registry::get("session");
+
         $query = RequestMethods::get("query", "");
         $order = RequestMethods::get("order", "created");
         $direction = RequestMethods::get("direction", "desc");
@@ -29,6 +32,11 @@ class OnlineTest extends Admin {
 
         $count = Test::count($where);
         $exams = Test::all($where, $fields, $order, $direction, $limit, $page);
+
+        if ($session->get("disbarr")) {
+            $view->set("error", $session->get("disbarr"));
+            $session->erase("disbarr");
+        }
 
         $view->set("limit", $limit);
         $view->set("count", $count);
@@ -70,9 +78,16 @@ class OnlineTest extends Admin {
 
         $participant = Participant::first(array("test_id = ?" => $test->id, "user_id = ?" => $this->user->id));
         if ($participant) {
-            if(!empty($participant->score)){
-                self::redirect("/onlinetest/result/" . $participant->id);
+            if(isset($participant->score) || $participant->score == "zero"){
+                $date_today = date('Y-m-d');
+                $date_created = explode(" ", $participant->created)[0];
+                $date_allowed = date("Y-m-d", strtotime($date_created."+15 day"));
+
+                if ($date_today != $date_allowed) {
+                    self::redirect("/onlinetest/result/" . $participant->id);    
+                }
             }
+
         } else {
             $participant = new Participant(array(
                 "test_id" => $test->id,
@@ -80,6 +95,17 @@ class OnlineTest extends Admin {
                 "score" => "", "time_taken" => "", "attempted" => ""
             ));
             $participant->save();
+        }
+
+        if (RequestMethods::post("action") == "cancelTest") {
+            $partipntId = RequestMethods::post("id");
+            if ($partipntId == $participant->id) {
+                $participant->score = "zero";
+                $participant->created = date('Y-m-d H:i:s');
+                $participant->save();
+
+                $view->set("canceled", true);
+            }
         }
 
         $view->set("participant", $participant);

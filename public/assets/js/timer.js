@@ -1,26 +1,35 @@
-var current = new Date();
-current.setSeconds(current.getSeconds() + 1805);
+var timesLeave = 0;
+var end = new Date();
+end.setSeconds(end.getSeconds() + 1800);
 
-var date = current.toLocaleDateString(), // output => "mm/dd/yy"
-    time = current.toLocaleTimeString(); //   "hh:mm:ss AM/PM"
+var stamp = end.getFullYear() + "/" + (end.getMonth() + 1) + "/" + end.getDate();
+stamp += " ";
+stamp += end.getHours() + ":" + end.getMinutes() + ":" + end.getSeconds();
 
-    var arr = date.split("/");
-    var stamp = arr[2] + "/" + arr[0] + "/" + arr[1];
-    stamp += " ";
-
-    var t = time.split(" ");
-    
-    if (t[1] == "PM" || t[1] == "pm") {
-        var ch = t[0].split(":");
-        ch[0] = String(Number(ch[0]) + 12);
-        t[0] = ch.join(":");
+var warn = 0;
+function navigateAway() {
+    if (warn > 1) {
+        cancelTest();
+        alert("Your Test is now cancelled");
+    } else {
+        alert("You are not allowed to navigate away during the test.");  
     }
-    stamp += t[0];
+    ++warn;
+}
+
+
+function submitTest() {
+    $("#testForm").submit();
+}
 
 jQuery(document).ready(function($) {
+    window.opts.ques = 1;
+    
+    $(window).blur(navigateAway);
+
   $(window).on('load', function () {
     var labels = ['', '', 'hours', 'minutes', 'seconds'],
-      nextYear = stamp,
+      nextYear = stamp, // output => yy/mm/dd HH:mm:ss (24 hrs)
       template = _.template($('#main-example-template').html()),
       currDate = '00:00:00:00:00',
       nextDate = '00:00:00:00:00',
@@ -84,6 +93,8 @@ jQuery(document).ready(function($) {
         });
       }
     });
+
+    $example.on('finish.countdown', submitTest);
   });
 
 });

@@ -363,3 +363,17 @@ function listCookies() {
     }
     return aString;
 }
+
+function cancelTest() {
+    var location = window.location.pathname;
+    var participant_id = $("#testForm").attr("action").split("/").pop();
+    request.create({
+        action: location,
+        data: {action: 'cancelTest', id: participant_id},
+        callback: function (d) {
+            if (d.canceled) {
+                window.location.href = '/onlinetest/result/' + participant_id;
+            }
+        }
+    });
+}
