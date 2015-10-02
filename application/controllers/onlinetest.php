@@ -78,7 +78,11 @@ class OnlineTest extends Admin {
 
         $participant = Participant::first(array("test_id = ?" => $test->id, "user_id = ?" => $this->user->id));
         if ($participant) {
-            if(isset($participant->score) || $participant->score == "zero"){
+            $score = $participant->score;
+            
+            if (!empty($score) && ((int) $score > 60)) {
+                self::redirect("/onlinetest/result/" . $participant->id);    
+            } else if($score == "zero" || ((int) $score < 60)) {
                 $date_today = date('Y-m-d');
                 $date_created = explode(" ", $participant->created)[0];
                 $date_allowed = date("Y-m-d", strtotime($date_created."+15 day"));
@@ -140,6 +144,7 @@ class OnlineTest extends Admin {
             }
             $participant->score = $marks;
             $participant->attempted = $count;
+            $participant->created = date('Y-m-d H:i:s');
 
             $participant->save();
 

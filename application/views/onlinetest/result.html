@@ -39,7 +39,7 @@
                     <p class="text-warning">You have been banned from giving the test. Please try after 15 days from date of appearing.</p>
                 {/if}
                 {elseif($participant->score < 60)}
-                    <p class="text-warning">You have Got {echo $participant->score}% Marks which is less than 60% so we could not certify. Please try again tomorrow to give test here.</p>
+                    <p class="text-warning">You have Got {echo $participant->score}% Marks which is less than 60% so we could not certify. Please try after 15 days from date of appearing.</p>
                 {/elseif}
                 {else}
                     <p class="text-warning">You have Got {echo $participant->score}% Marks. Good work keep it up.</p>
