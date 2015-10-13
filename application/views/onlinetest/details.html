@@ -35,6 +35,30 @@
                     </div>
                 </div>
             </div>
+            <div class="panel panel-default">
+                <div class="panel-heading text-center">
+                    Top 10 Rankers of Test
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Student</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $participant in $participants}
+                    {script $user = User::first(array("id = ?" => $participant->user_id), array("name"))}
+                        <tr>
+                            <td>{echo ++$i}</td>
+                            <td>{$user->name}</td>
+                            <td>{$participant->score}</td>
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            </div>
         </article>
     </div>
 </section>
