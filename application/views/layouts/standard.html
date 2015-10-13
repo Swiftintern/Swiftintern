@@ -22,14 +22,12 @@
     <link rel="shortcut icon" href="{echo CDN}images/favicon.ico" type="image/x-icon">
     <link rel="icon" type="image/x-icon" href="{echo CDN}images/favicon.ico" />
     <title>{echo $seo->getTitle()}</title>
+    
     <!-- styles -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <link href="{echo CDN}css/custom-1.0.css" rel="stylesheet" />
     <link href="{echo CDN}plugins/chosen/chosen.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <!-- Important Owl stylesheet -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.theme.min.css">
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="/public/assets/plugins/tinymce/tinymce.min.js"></script>
     <script type="text/javascript">
@@ -67,45 +65,43 @@
     {include layouts/navigation/public.html} {include layouts/modal/message.html} {ayield action}
     <!-- the bottom client image -->
     <div class="clients hidden-print">
-        <div class="container">
-            <div id="owl-demo" class="owl-carousel owl-theme">
-                <div class="thumbnail item">
+        <div class="container row">
+                <div class="thumbnail col-md-1">
                     <img src="http://swiftintern.com/public/assets/uploads/images/AAEAAQAAAAAAAAOjAAAAJDQ4ZDQyNjdiLTUyNjgtNDIwZi04NWM1LTIzYjJiNGU0MTVmZg.png" alt="">
                 </div>
-                <div class="thumbnail item">
+                <div class="thumbnail col-md-1">
                     <img src="http://swiftintern.com/public/assets/uploads/images/2785318.png" alt="">
                 </div>
-                <div class="thumbnail item">
+                <div class="thumbnail col-md-1">
                     <img src="http://swiftintern.com/public/assets/uploads/images/thumbnails/94036927-64x64.jpg" alt="">
                 </div>
-                <div class="thumbnail item">
+                <div class="thumbnail col-md-1">
                     <img src="http://swiftintern.com/public/assets/uploads/images/AAEAAQAAAAAAAAIcAAAAJDQyZmY5YWNmLWY4NjMtNDExNC1iNDMwLTAzNjUwMmJjMDM3ZQ.png" alt="">
                 </div>
-                <div class="thumbnail item">
+                <div class="thumbnail col-md-1">
                     <img src="http://swiftintern.com/public/assets/uploads/images/1292b3a.png" alt="">
                 </div>
-                <div class="thumbnail item">
+                <div class="thumbnail col-md-1">
                     <img src="http://swiftintern.com/public/assets/uploads/images/thumbnails/62125600-64x64.jpg" alt="">
                 </div>
-                <div class="thumbnail item">
+                <div class="thumbnail col-md-1">
                     <img src="http://swiftintern.com/public/assets/uploads/images/thumbnails/30014888-64x64.jpg" alt="">
                 </div>
-                <div class="thumbnail item">
+                <div class="thumbnail col-md-1">
                     <img src="http://swiftintern.com/public/assets/uploads/images/thumbnails/77364798-64x64.jpg" alt="">
                 </div>
-                <div class="thumbnail item">
+                <div class="thumbnail col-md-1">
                     <img src="http://swiftintern.com/public/assets/uploads/images/thumbnails/14992183-64x64.jpg" alt="">
                 </div>
-                <div class="thumbnail item">
+                <div class="thumbnail col-md-1">
                     <img src="http://swiftintern.com/public/assets/uploads/images/thumbnails/8576888-64x64.jpg" alt="">
                 </div>
-                <div class="thumbnail item">
+                <div class="thumbnail col-md-1">
                     <img src="http://swiftintern.com/public/assets/uploads/images/thumbnails/63074657-64x64.jpg" alt="">
                 </div>
-                <div class="thumbnail item">
+                <div class="thumbnail col-md-1">
                     <img src="http://swiftintern.com/public/assets/uploads/images/thumbnails/9015320-64x64.jpg" alt="">
                 </div>
-            </div>
         </div>
     </div>
     <!-- the footer -->
@@ -172,7 +168,6 @@
     </footer>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{echo CDN}plugins/bootbox/bootbox.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>
     <script type="text/javascript" src="{echo CDN}js/model.js"></script>
     <script type="text/javascript" src="{echo CDN}js/public-3.1.js"></script>
 </body>
