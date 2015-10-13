@@ -49,10 +49,10 @@
                     </thead>
                     <tbody>
                     {foreach $participant in $participants}
-                    {script $user = User::first(array("id = ?" => $participant->user_id), array("name"))}
+                    {script $user = User::first(array("id = ?" => $participant->user_id), array("name", "id"))}
                         <tr>
                             <td>{echo ++$i}</td>
-                            <td>{$user->name}</td>
+                            <td><a href="/students/toProfile/{{$user->id}}">{$user->name}</a></td>
                             <td>{$participant->score}</td>
                         </tr>
                     {/foreach}

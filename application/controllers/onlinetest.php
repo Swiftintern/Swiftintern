@@ -57,7 +57,7 @@ class OnlineTest extends Admin {
             "view" => $this->getLayoutView()
         ));
         $view = $this->getActionView();
-        $participants = Participant::all(array("test_id = ?" => $id), array("user_id", "score"), "score", "desc", 10, 1);
+        $participants = Participant::all(array("test_id = ?" => $id), array("DISTINCT user_id", "score"), "score", "desc", 10, 1);
 
         $view->set("test", $test);
         $view->set("i", 0);
