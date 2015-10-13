@@ -311,10 +311,18 @@ class Students extends Users {
         return;
     }
 
+    public function toProfile($id) {
+        $student = Student::first(array("user_id = ?" => $id), array("id"));
+        self::redirect("/students/profile/".$student->id);
+    }
+
     /**
      * @before _secure
      */
     public function profile($id) {
+        if($this->user->type == "student") {
+            die('Not Authorized');
+        }
         $profile = 0;
         $view = $this->getActionView();
 
@@ -327,6 +335,7 @@ class Students extends Users {
         $works = Work::all(array("student_id = ?" => $student->id), array("id", "designation", "responsibility", "organization_id", "duration"));
         $socials = Social::all(array("user_id = ?" => $user->id), array("id", "social_platform", "link"));
         $resumes = Resume::all(array("student_id = ?" => $student->id), array("id", "type"));
+        $participants = Participant::all(array("user_id = ?" => $user->id), array("DISTINCT test_id", "score", "created"));
 
         if (count($qualifications)) ++$profile;
         if (count($works)) ++$profile;
@@ -340,6 +349,7 @@ class Students extends Users {
         $view->set("profile", $profile * 100 / 4);
         $view->set("resumes", $resumes);
         $view->set("socials", $socials);
+        $view->set("participants", $participants);
     }
 
     /**

@@ -83,6 +83,35 @@
                     </tbody>
                 </table>
             </div><br>
+
+            <h3 id="basic">Test Participated</h3>
+            <div class="panel panel-default">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Test Title</th>
+                            <th>Given</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {foreach $participant in $participants}
+                        {script $test  = Test::first(array("id = ?" => $participant->test_id), array("title"))}
+                        <tr>
+                            <td><a href="/onlinetest/details/{echo urlencode($test->title)}/{echo $test->id}" target="_blank">{echo $test->title}</a></td>
+                            <td>{echo $participant->created}</td>
+                            {if($participant->score)}
+                            <td>{echo $participant->score}</td>
+                            {/if}
+                            {else}
+                            <td>Not Completed</td>
+                            {/else}
+                        </tr>
+                        {/foreach}
+                    </tbody>
+                </table>
+            </div><br>
+
         </div>
     </div>
 </section>

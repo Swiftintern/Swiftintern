@@ -52,7 +52,7 @@
                     {script $user = User::first(array("id = ?" => $participant->user_id), array("name", "id"))}
                         <tr>
                             <td>{echo ++$i}</td>
-                            <td><a href="/students/toProfile/{{$user->id}}">{$user->name}</a></td>
+                            <td><a href="/students/toProfile/{{$user->id}}" target="_blank">{$user->name}</a></td>
                             <td>{$participant->score}</td>
                         </tr>
                     {/foreach}
