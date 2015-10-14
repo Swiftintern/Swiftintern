@@ -40,9 +40,16 @@
                                 </div>
                                 {/foreach}
                             </div>
-                            <div class="text-center">
-                                <button id="load_test" onclick="window.opts.page = ++page;" class="btn btn-primary">Load More</button><hr>
-                            </div>
+                            <nav class="text-center">
+                                <ul class="pager">
+                                    {if($page != 1)}
+                                    <li><a href="?page={echo $page - 1}">Previous</a></li>
+                                    {/if}
+                                    {if($page < $count/$limit)}
+                                    <li><a href="?page={echo $page + 1}">Next</a></li>
+                                    {/if}
+                                </ul>
+                            </nav>
                         </div>
                         <aside class="col-xs-12 col-md-3">
                             <a href="/employer/register" class="btn btn-warning btn-lg btn-block"><i class="fa fa-briefcase fa-lg"></i> Register Company</a><br>

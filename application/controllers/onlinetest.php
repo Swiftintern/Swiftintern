@@ -40,6 +40,7 @@ class OnlineTest extends Admin {
 
         $view->set("limit", $limit);
         $view->set("count", $count);
+        $view->set("page", $page);
         $view->set("exams", $exams);
     }
 
