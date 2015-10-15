@@ -103,8 +103,11 @@
                     <div class="panel-body">
                         <div class="media">
                             <div class="media-body">
-                                <h4 class="media-heading">{$tuser->name}</h4>
-                                {$testimonial->details}
+                                <!--<h4 class="media-heading"></h4>-->
+                                <p id="testimonials">
+                                    {$testimonial->details}
+                                    <br>{$tuser->name}
+                                </p>
                                 <a href="/organizations/saveExperience/1574" class="pull-right">Help Us! Share Your Feedback</a>
                             </div>
                         </div>
