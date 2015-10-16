@@ -349,3 +349,15 @@ function cancelTest() {
         }
     });
 }
+
+function testimonials () {
+    $("#testimonials").html('<i class="fa fa-spinner fa-spin"></i>  | Processing...');
+
+    request.read({
+        action: 'home/testimonials',
+        data: {},
+        callback: function (data) {
+            
+        }
+    });
+}
