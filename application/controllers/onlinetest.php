@@ -385,7 +385,7 @@ class OnlineTest extends Admin {
             if ($type == "image") { // then upload the image and save image's name in db
                 $ques_option = $this->_upload("file", "images");
             } else {    // just enter the option in db
-                $ques_option = RequestMethods::post("option", "");
+                $ques_option = htmlentities(RequestMethods::post("option", ""));
             }
 
             $option = new Option(array(
