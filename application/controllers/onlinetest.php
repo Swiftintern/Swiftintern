@@ -91,7 +91,10 @@ class OnlineTest extends Admin {
                 $date_created = explode(" ", $participant->created)[0];
                 $date_allowed = date("Y-m-d", strtotime($date_created."+15 day"));
 
-                if ($date_today != $date_allowed) {
+                $date_today = strtotime($date_today);
+                $date_allowed = strtotime($date_allowed);
+
+                if ($date_today < $date_allowed) {
                     self::redirect("/onlinetest/result/" . $participant->id);    
                 }
             }
@@ -243,7 +246,7 @@ class OnlineTest extends Admin {
                 "level" => RequestMethods::post("level"),
                 "syllabus" => RequestMethods::post("syllabus"),
                 "time_limit" => RequestMethods::post("time_limit", "00:00:00"),
-                "is_active" => true,
+                "is_active" => 0,
                 "validity" => 0,
                 "updated" => "0000-00-00 00:00:00"
             ));

@@ -1,35 +1,44 @@
-var timesLeave = 0;
-var end = new Date();
-end.setSeconds(end.getSeconds() + 1800);
+function setEndTime(time) {
+  if (!time || time == "00:00:00") {
+    time = "00:30:00";
+  }
+  time = time.split(":");
+  var sec = Number(time[0]) * 3600 + Number(time[1]) * 60 + Number(time[2]);
 
-var stamp = end.getFullYear() + "/" + (end.getMonth() + 1) + "/" + end.getDate();
-stamp += " ";
-stamp += end.getHours() + ":" + end.getMinutes() + ":" + end.getSeconds();
+  var end = new Date();
+  end.setSeconds(end.getSeconds() + sec);
+
+  var stamp = end.getFullYear() + "/" + (end.getMonth() + 1) + "/" + end.getDate();
+  stamp += " ";
+  stamp += end.getHours() + ":" + end.getMinutes() + ":" + end.getSeconds();
+
+  return stamp;  
+}
 
 var warn = 0;
 function navigateAway() {
-    if (warn > 1) {
-        cancelTest();
-        alert("Your Test is now cancelled");
-    } else {
-        alert("You are not allowed to navigate away during the test.");  
-    }
-    ++warn;
+  if (warn > 1) {
+    cancelTest();
+    alert("Your Test is now cancelled");
+  } else {
+    alert("You are not allowed to navigate away during the test.");  
+  }
+  ++warn;
 }
 
 
 function submitTest() {
-    $("#testForm").submit();
+  $("#testForm").submit();
 }
 
 jQuery(document).ready(function($) {
-    window.opts.ques = 1;
+  window.opts.ques = 1;
     
-    $(window).blur(navigateAway);
+  $(window).blur(navigateAway);
 
   $(window).on('load', function () {
     var labels = ['', '', 'hours', 'minutes', 'seconds'],
-      nextYear = stamp, // output => yy/mm/dd HH:mm:ss (24 hrs)
+      nextYear = setEndTime($('#testTimeLimit').html()), // output => yy/mm/dd HH:mm:ss (24 hrs)
       template = _.template($('#main-example-template').html()),
       currDate = '00:00:00:00:00',
       nextDate = '00:00:00:00:00',

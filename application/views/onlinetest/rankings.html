@@ -1,0 +1,54 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header text-center">Top Rankers</h1>
+            {if !$all}<div class="thumbnail"><h2 class="page-heading"><img src="/onlinetest/photo/{echo $test->id}" alt="{echo $test->title}" width="100">{echo $test->title}</h2></div>{/if}
+            <div class="panel panel-default">
+                <table class="table">
+                    <thead>
+                    {if $all}
+                        <tr>
+                            <th>S.No</th>
+                            <th>Test</th>
+                            <th>Top Rankers</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {script $i = 1} {foreach $t in $tests}
+                        <tr>
+                            <td>{echo $i}</td>
+                            <td><p><img src="/onlinetest/photo/{echo $t->id}" alt="{echo $t->title}" width="100">{echo $t->title} <a href="/onlinetest/rankers/test/{echo $t->id}"></a></p></td>
+                            {script $rankers = Participants::all(array("test_id = ?" => $t->id), array("user_id", "score"), "score", "desc", 5)}
+                            <td>
+                                {foreach $r in $rankers}
+                                     {script $usr = User::first(array("id = ?" => $r->user_id), array("name"))}
+                                    <p>{echo $usr->name} - {echo $r->score}</p>
+                                {/foreach}
+                            </td>
+                        </tr>
+                        {script ++$i} {/foreach}
+                    </tbody>
+                    {/if}
+                    {else}
+                        <thead>
+                            <th>S. No</th>
+                            <th>Name</th>
+                            <th>Score</th>
+                            <th>Time Taken</th>
+                            <th>Attempted</th>
+                        </thead>
+                        <tbody>
+                        {foreach $r in $rankers}
+                            <tr>{echo $i}</tr>
+                            <tr>{echo $r->name}</tr>
+                            <tr>{echo $r->score}</tr>
+                            <tr>{echo $r->time_taken}</tr>
+                            <tr>{[echo $r->time_taken}</tr>
+                        {/foreach}
+                        </tbody>
+                    {/else}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
