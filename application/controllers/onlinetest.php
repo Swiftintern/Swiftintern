@@ -245,16 +245,16 @@ class OnlineTest extends Admin {
                 "subject" => RequestMethods::post("subject"),
                 "level" => RequestMethods::post("level"),
                 "syllabus" => RequestMethods::post("syllabus"),
-                "time_limit" => RequestMethods::post("time_limit", "00:00:00"),
+                "time_limit" => RequestMethods::post("time_limit", "00:30:00"),
                 "is_active" => 0,
                 "validity" => 0,
-                "updated" => "0000-00-00 00:00:00"
+                "updated" => date('Y-m-d H:i:s')
             ));
             $test->save();
 
             // save the photograph for the test
             $filename = $this->_upload("file", "images");
-            var_dump($filename);
+
             $extension = explode(".", $filename);
             $mime = "image/" . array_pop($extension);
             $photo = new Photograph(array(
