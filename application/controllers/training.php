@@ -37,7 +37,7 @@ class Training extends Employer {
             $application = Application::first(array("student_id = ?" => $student->id, "opportunity_id = ?" => $id));
             $view->set("application", $application);
         }
-        $this->enroll($opportunity, $student);
+        $response = $this->enroll($opportunity, $student);
         $this->seo(array(
             "title" => $opportunity->title,
             "keywords" => $opportunity->category . ', ' . $opportunity->location,
@@ -46,6 +46,10 @@ class Training extends Employer {
             "view" => $this->getLayoutView()
         ));
 
+        if ($response["success"]) {
+            $view->set("success", $response["success"]);
+            $view->set("application", $application);
+        }
         $view->set("enddate", $datetime->format("Y-m-d"));
         $view->set("opportunity", $opportunity);
         $view->set("organization", $organization);
@@ -62,24 +66,27 @@ class Training extends Employer {
         }
 
         if (RequestMethods::post("action") == "register") {
-            $application = new Application(array(
-                "student_id" => $student->id,
-                "opportunity_id" => $opportunity->id,
-                "property_id" => "",
-                "status" => "register",
-                "updated" => ""
-            ));
-            $application->save();
+            $application = Application::first(array("student_id = ?" => $student->id, "opportunity_id = ?" => $opportunity->id));
+            if (!$application) {
+                $application = new Application(array(
+                    "student_id" => $student->id,
+                    "opportunity_id" => $opportunity->id,
+                    "property_id" => "",
+                    "status" => "register",
+                    "updated" => ""
+                ));
+                $application->save();
 
-            $this->notify(array(
-                "template" => "applicationTraining",
-                "subject" => $opportunity->title,
-                "opportunity" => $opportunity,
-                "user" => User::first(array("id = ?" => $student->user_id), array("name", "email"))
-            ));
-            $view->set("success", TRUE);
-            $view->set("application", $application);
+                $this->notify(array(
+                    "template" => "applicationTraining",
+                    "subject" => $opportunity->title,
+                    "opportunity" => $opportunity,
+                    "user" => User::first(array("id = ?" => $student->user_id), array("name", "email"))
+                ));    
+            }
+            return array("success" => true, "application" => $application);
         }
+        return array("success" => false, "application" => null);
     }
 
     /**
