@@ -48,32 +48,35 @@ class Admin extends Users {
      * @param type $val the value of property
      * @before _secure, changeLayout
      */
-    public function search($model = NULL, $property = NULL, $val = 0, $page=1) {
+    public function search($model = NULL, $property = NULL, $val = 0, $page = 1, $limit = 10) {
         $this->seo(array("title" => "Search", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
         $model = RequestMethods::get("model", $model);
         $property = RequestMethods::get("key", $property);
         $val = RequestMethods::get("value", $val);
         $page = RequestMethods::get("page", $page);
+        $limit = RequestMethods::get("limit", $limit);
         $sign = RequestMethods::get("sign", "equal");
 
         $view->set("items", array());
         $view->set("values", array());
         $view->set("model", $model);
         $view->set("page", $page);
+        $view->set("limit", $limit);
         $view->set("property", $property);
         $view->set("val", $val);
         $view->set("sign", $sign);
 
         if ($model) {
-            if($sign == "like"){
+            if ($sign == "like") {
                 $where = array("{$property} LIKE ?" => "%{$val}%");
             } else {
                 $where = array("{$property} = ?" => $val);
             }
-            
-            $objects = $model::all($where,array("*"),"created", "desc", 10, $page);
-            $count = $model::count($where);$i = 0;
+
+            $objects = $model::all($where, array("*"), "created", "desc", $limit, $page);
+            $count = $model::count($where);
+            $i = 0;
             if ($objects) {
                 foreach ($objects as $object) {
                     $properties = $object->getJsonData();
@@ -257,6 +260,17 @@ class Admin extends Users {
         }
         
         $view->set("allinbox", \Framework\ArrayMethods::toObject($allinbox));
+    }
+
+    /**
+     * @before _secure
+     */
+    public function fields($model = "user") {
+        $this->noview();
+        $class = ucfirst($model);
+        $object = new $class;
+
+        echo json_encode($object->columns);
     }
     
     public function changeLayout() {
