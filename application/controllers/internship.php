@@ -74,11 +74,12 @@ class Internship extends Employer {
             $view->set("application", $application);
         }
 
+        $file = Photograph::first(array("id = ?" => $organization->photo_id), array("filename"));
         $this->seo(array(
             "title" => $opportunity->title,
             "keywords" => $opportunity->category . ', ' . $opportunity->location,
             "description" => substr(strip_tags($opportunity->details), 0, 150),
-            "photo" => APP . "thumbnails/" . $organization->photo_id,
+            "photo" => CDN . "uploads/images/" . $file->filename,
             "view" => $this->getLayoutView()
         ));
 
