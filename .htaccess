@@ -51,10 +51,6 @@ RewriteRule ^([^.]+)\.?([a-zA-Z]+)?$ index.php?url=$1&extension=$2 [QSA,L]
 </ifModule>
 # END Cache-Control Headers
 
-Header unset Pragma
-FileETag None
-Header unset ETag
-
 <IfModule mod_gzip.c>
     mod_gzip_on Yes
     mod_gzip_dechunk Yes

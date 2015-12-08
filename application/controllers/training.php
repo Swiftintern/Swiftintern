@@ -20,8 +20,11 @@ class Training extends Employer {
         $view = $this->getActionView();
         $certificates = Certificate::count();
 
+        $participants = Participant::all(array(), array("user_id", "score", "id"), "score", "desc", 10, 1);
         $trainings = Opportunity::all(array("type = ?" => "training", "validity = ?" => 1));
+
         $view->set("trainings", $trainings);
+        $view->set("participants", $participants);
         $view->set("certificates", $certificates);
     }
 

@@ -10,6 +10,7 @@
             <ul class="nav nav-tabs nav-justified" role="tablist">
                 <li role="presentation" class="active"><a href="#training" aria-controls="intro" role="tab" data-toggle="tab">Available Workshops</a></li>
                 <li role="presentation"><a href="#about" aria-controls="profile" role="tab" data-toggle="tab">Certification Program</a></li>
+                <li role="presentation"><a href="#rankers" aria-controls="rankers" role="tab" data-toggle="tab">Top Rankers</a></li>
             </ul>
 
             <div class="tab-content">
@@ -89,6 +90,33 @@
                                 <img src="{echo CDN}images/others/certi.png" alt="Certificate" class="thumbnail" width=200>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="rankers">
+                    <div class="panel panel-default">
+                        <div class="panel-heading text-center">
+                            Top 10 Rankers of Test
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Student</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {foreach $participant in $participants}
+                            {script $user = User::first(array("id = ?" => $participant->user_id), array("name", "id"))}
+                                <tr>
+                                    <td>{echo ++$i}</td>
+                                    <td><a href="/students/toProfile/{echo $user->id}" target="_blank">{$user->name}</a></td>
+                                    <td>{$participant->score}</td>
+                                </tr>
+                            {/foreach}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
