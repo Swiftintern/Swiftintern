@@ -221,6 +221,7 @@ class Resumes extends Students {
      * @before _secure, changeLayout
      */
     public function download() {
+        $this->noview();
         $session = Registry::get('session');
         $resume = $session->get('resume');
 
