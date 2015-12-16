@@ -221,4 +221,67 @@ class Users extends Controller {
         }
     }
 
+    protected function hash($length = 22) {
+        //Not 100% unique, not 100% random, but good enought for a salt
+        //MD5 returns 32 characters
+        $unique_random_string = md5(uniqid(mt_rand(), true));
+        
+        //valid characters for a salt are [a-z A-Z 0-9 ./]
+        $base64_string = base64_encode($unique_random_string);
+        
+        //but not '+' which is in base64 encoding
+        $modified_base64_string = str_replace('+', '.', $base64_string);
+        
+        //Truncate string to the correct length
+        $salt = substr($modified_base64_string, 0, $length);
+        
+        return $salt;
+    }
+
+    public function access($action, $mail) {
+        $this->seo(array("title" => "Get Platform Access", "view" => $this->getLayoutView()));
+        $token = $this->hash(15);
+        $email = RequestMethods::get("email", base64_decode($mail));
+
+        if(!isset($_COOKIE['token'])) {
+            setcookie('track', $item["id"]);
+            $_COOKIE['track'] = $item["id"];
+        }
+
+        $exist = Exist::first(array("email = ?" => $email));
+        if ($exist) {
+            switch ($action) {
+                case 'send':
+                    $this->notify(array(
+                        "template" => "studentRegister",
+                        "subject" => "Getting Started on Swiftintern.com",
+                        "user" => $user
+                    ));
+                    break;
+                
+                case 'login':
+                    if($exist->type == "employer") {
+                        $this->user = $exist;
+                        $session = Registry::get("session");
+                        $members = Member::all(array("user_id = ?" => $exist->id), array("id", "organization_id", "designation", "authority"));
+                        foreach ($members as $member) {
+                            $membersof[] = array(
+                                "id" => $member->id,
+                                "organization" => Organization::first(array("id = ?" => $member->organization_id)),
+                                "designation" => $member->designation,
+                                "authority" => $member->authority
+                            );
+                        }
+                        $session->set("employer", Framework\ArrayMethods::toObject($membersof["members"][0]));
+                        $session->set("member", Framework\ArrayMethods::toObject($membersof["members"]));
+
+                        self::redirect("/employer");
+                    }
+                    break;
+            }
+
+        }
+
+    }
+
 }
