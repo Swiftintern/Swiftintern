@@ -1,39 +1,24 @@
 <section class="container">
     <div class="row">
-        <h1 class="page-header text-center">Login for Updates</h1>
+        <h1 class="page-header text-center">Get account access</h1>
+        <p class="text-center"><strong>{$message}</strong></p>
         <div class="col-md-6 col-lg-offset-3">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <p class="text-center"><a href="{echo $url}" class="btn btn-primary"><i class="fa fa-linkedin fa-lg"></i>  | Signin with Linkedin</a></p>
-                    <div class="media">
-                        <div class="media-left">
-                            <i class="fa fa-check fa-5x"></i>
+                    <form class="form-horizontal" action="" method="post">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Email</label>
+                            <div class="col-sm-10">
+                                <input type="email" name="email" class="form-control" placeholder="Enter Email">
+                            </div>
                         </div>
-                        <div class="media-body">
-                            <h4 class="media-heading">Get Access</h4>
-                            <p>Browse, Post and Apply to thousands of Opportunity on Swiftintern </p>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-primary">Access</button>
+                            </div>
                         </div>
-                    </div>
-                    <br>
-                    <div class="media">
-                        <div class="media-left">
-                            <i class="fa fa-clock-o fa-5x"></i>
-                        </div>
-                        <div class="media-body">
-                            <h4 class="media-heading">Test Platform</h4>
-                            <p>Create or Give Skills test at any time you want and Get Certified.</p>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="media">
-                        <div class="media-left">
-                            <i class="fa fa-institution fa-5x"></i>
-                        </div>
-                        <div class="media-body">
-                            <h4 class="media-heading">Organizations</h4>
-                            <p>Follow, contact, create and Get Updates of various Organizations. </p>
-                        </div>
-                    </div>
+                        <input type="hidden" name="action" value="send">
+                    </form>
                 </div>
             </div>
         </div>

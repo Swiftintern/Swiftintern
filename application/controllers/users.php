@@ -238,32 +238,33 @@ class Users extends Controller {
         return $salt;
     }
 
-    public function access($action, $mail) {
+    public function access($at=NULL, $mail=NULL) {
         $this->seo(array("title" => "Get Platform Access", "view" => $this->getLayoutView()));
-        $token = $this->hash(15);
-        $email = RequestMethods::get("email", base64_decode($mail));
-
-        if(!isset($_COOKIE['token'])) {
-            setcookie('track', $item["id"]);
-            $_COOKIE['track'] = $item["id"];
-        }
-
-        $exist = Exist::first(array("email = ?" => $email));
-        if ($exist) {
+        $view = $this->getActionView();
+        
+        $action = RequestMethods::post("action", $at);
+        if (isset($action)) {
             switch ($action) {
                 case 'send':
-                    $this->notify(array(
-                        "template" => "studentRegister",
-                        "subject" => "Getting Started on Swiftintern.com",
-                        "user" => $user
-                    ));
+                    $user = User::first(array("email = ?" => RequestMethods::post("email")));
+                    $view->set("message", "User doesnot exist");
+                    if ($user) {
+                        $this->notify(array(
+                            "template" => "userAccess",
+                            "subject" => "Your account on Swiftintern.com",
+                            "user" => $user
+                        ));
+                        $view->set("message", "Mail sent check your email for instructions");
+                    }
                     break;
-                
+
                 case 'login':
-                    if($exist->type == "employer") {
-                        $this->user = $exist;
+                    $user = User::first(array("email = ?" => base64_decode($mail)));
+                    $view->set("message", "Not an employer");
+                    if($user->type == "employer") {
+                        $this->user = $user;
                         $session = Registry::get("session");
-                        $members = Member::all(array("user_id = ?" => $exist->id), array("id", "organization_id", "designation", "authority"));
+                        $members = Member::all(array("user_id = ?" => $user->id), array("id", "organization_id", "designation", "authority"));
                         foreach ($members as $member) {
                             $membersof[] = array(
                                 "id" => $member->id,
