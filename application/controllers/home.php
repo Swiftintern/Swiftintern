@@ -32,7 +32,9 @@ class Home extends Users {
         $count = Opportunity::count($where);
         $opportunities = Opportunity::all($where, $fields, $order, $direction, $limit, $page);
         
-        $testimonial = Experience::first(array("organization_id = ?" => "1574"), array("details", "user_id"));
+        $testimonials = Experience::all(array("organization_id = ?" => "1574"), array("details", "user_id"));
+        $testicount = count($testimonials);
+        $rand = rand(0, $testicount);
         $tuser = User::first(array("id = ?" => $testimonial->user_id), array("name"));
 
         $view->set("limit", $limit);
@@ -40,7 +42,7 @@ class Home extends Users {
         $view->set("opportunities", $opportunities);
         
         $view->set("tuser", $tuser);
-        $view->set("testimonial", $testimonial);
+        $view->set("testimonial", $testimonials[$rand]);
 
         $this->getLayoutView()->set("seo", Framework\Registry::get("seo"));
     }

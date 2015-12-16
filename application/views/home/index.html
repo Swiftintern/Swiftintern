@@ -105,7 +105,7 @@
                             <div class="media-body">
                                 <!--<h4 class="media-heading"></h4>-->
                                 <p id="testimonials">
-                                    {$testimonial->details}
+                                    {echo strip_tags($testimonial->details)}
                                     <br>{$tuser->name}
                                 </p>
                                 <a href="/organizations/saveExperience/1574" class="pull-right">Help Us! Share Your Feedback</a>
