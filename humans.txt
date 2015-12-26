@@ -11,7 +11,7 @@ Swiftintern is updated continuously, and built with more tools and technologies.
   Github: @Hemant-Mann
   Location: New Delhi, India.
 
-  App Developer : Adity Verma
+  App Developer : Aditya Verma
   Site: adysept@gmail.com
   Github: @verma-ady
   Location: New Delhi, India
@@ -23,6 +23,6 @@ Swiftintern is updated continuously, and built with more tools and technologies.
 
 /* SPECIAL THANKS */
   App Developer: Chhavi Gupta
-  App Developer: Adity Verma
+  App Developer: Aditya Verma
 
   Designer: Saksham Saxena
