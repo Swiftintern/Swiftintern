@@ -9,6 +9,22 @@ use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 class Students extends Users {
 
+    function __construct($options=array())      {
+        parent::__construct($options);
+
+        $headers = getallheaders();
+        if (isset($headers["acess-token"])) {
+            $meta = Meta::first(array("property = ?" => "user","meta_key = ?" => "app", "meta_value = ?" => $headers["acess-token"]), array("property_id"));
+            if ($meta) {
+                $meta->meta_value;
+                $user = User::first(array("id = ?" => $meta->property_id));
+                $student = Student::first(array("user_id = ?" => $user->id));
+
+                $this->login($user, $student);
+            }
+        }
+    }
+
     /**
      * @readwrite
      */

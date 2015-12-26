@@ -7,14 +7,22 @@ Swiftintern is updated continuously, and built with more tools and technologies.
   Location: New Delhi, India.
   
   Developer: Hemant Mann
+  Site: hemant@cloudstuffs.com
+  Github: @Hemant-Mann
   Location: New Delhi, India.
 
+  App Developer : Adity Verma
+  Site: adysept@gmail.com
+  Github: @verma-ady
+  Location: New Delhi, India
+
 /* SITE */
-  Software: Notepad++, NetBeans, Canva.com, Pixlr.com
+  Software: Notepad++, NetBeans, Canva.com, Pixlr.com, Sublime Text
   Github: Swiftintern
   Components: SwiftMVC, jQuery, Bootstrap, jModel
 
 /* SPECIAL THANKS */
   App Developer: Chhavi Gupta
+  App Developer: Adity Verma
 
   Designer: Saksham Saxena

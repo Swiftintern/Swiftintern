@@ -8,7 +8,7 @@ define("APP", "http://swiftintern.com/");
 define("URL", "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
 define("CDN", "http://swiftintern.com/public/assets/");
 define("LOGO", "1431");
-// require 'detector.php';
+
 try {
 
     // library's class autoloader

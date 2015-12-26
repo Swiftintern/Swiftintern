@@ -61,15 +61,14 @@ class App extends Users {
             $meta = Meta::first(array(
                         "property = ?" => "user",
                         "property_id = ?" => $user->id,
-                        "meta_key = ?" => "app",
-                        "meta_value = ?" => "placementpaper"
+                        "meta_key = ?" => "app"
             ));
             if (!$meta) {
                 $meta = new Meta(array(
                     "property" => "user",
                     "property_id" => $user->id,
                     "meta_key" => "app",
-                    "meta_value" => "placementpaper"
+                    "meta_value" => uniqid()
                 ));
                 $meta->save();
             }
@@ -110,4 +109,29 @@ class App extends Users {
         $this->getActionView()->set("sponsoreds", $sponsoreds);
     }
 
+    public function upload() {
+        $this->JSONview();
+        $view = $this->getActionView();
+
+        if (RequestMethods::post("title")) {
+            $image = RequestMethods::post("title");
+            $path = APP_PATH . "/public/assets/uploads/files/";
+            $filename = uniqid() . ".pdf";
+
+            if (file_put_contents($path.$filename,base64_decode($image))) {
+                $view->set("file", $filename);
+                $view->set("success", true);
+            }
+        } else {
+            $view->set("success", false);
+        }
+    }
+
+    public function test() {
+        $this->JSONview();
+        $view = $this->getActionView();
+        //echo "<pre>", print_r(getallheaders()), "</pre>";
+
+        $view->set("headers", getallheaders());
+    }
 }
