@@ -119,11 +119,31 @@ class App extends Users {
             $filename = uniqid() . ".pdf";
 
             if (file_put_contents($path.$filename,base64_decode($image))) {
-                $view->set("file", $filename);
+                $resume = new Resume(array(
+                    "student_id" => RequestMethods::post("student_id"),
+                    "type" => "file",
+                    "resume" => $filename,
+                    "updated" => ""
+                ));
+                $resume->save();
                 $view->set("success", true);
+                $view->set("resume", $resume);
             }
         } else {
             $view->set("success", false);
+        }
+    }
+
+    public function apply() {
+        if (RequestMethods::post("action") == "internship") {
+            $application = new Application(array(
+                "student_id" => RequestMethods::post("student_id"),
+                "opportunity_id" => RequestMethods::post("opportunity_id"),
+                "property_id" => RequestMethods::post("resume_id"),
+                "status" => "applied",
+                "updated" => ""
+            ));
+            $application->save();
         }
     }
 
