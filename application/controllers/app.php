@@ -8,7 +8,7 @@
 use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 
-class App extends Users {
+class App extends Students {
 
     function __construct($options=array())      {
         parent::__construct($options);
@@ -135,12 +135,19 @@ class App extends Users {
             $filename = uniqid() . ".pdf";
 
             if (file_put_contents($path.$filename,base64_decode($image))) {
-                $resume = new Resume(array(
-                    "student_id" => Registry::get("session")->get("student")->id,
-                    "type" => "file",
-                    "resume" => $filename,
-                    "updated" => ""
-                ));
+                $student = Registry::get("session")->get("student");
+                $resume = Resume::first(array("student_id = ?" => $student->id));
+                if (!$resume) {
+                    $resume = new Resume(array(
+                        "student_id" => $student->id,
+                        "type" => "file",
+                        "resume" => $filename,
+                        "updated" => ""
+                    ));
+                } else {
+                    @unlink(APP_PATH . "/public/assets/uploads/files/". $resume->resume);
+                    $resume->resume = $filename;
+                }
                 $resume->save();
                 $view->set("success", true);
                 $view->set("resume", $resume);
@@ -151,15 +158,29 @@ class App extends Users {
     }
 
     public function apply() {
+        $this->JSONview();
+        $view = $this->getActionView();
         if (RequestMethods::post("action") == "internship") {
+            $student = Registry::get("session")->get("student");
             $application = new Application(array(
-                "student_id" => Registry::get("session")->get("student")->id,
+                "student_id" => $student->id,
                 "opportunity_id" => RequestMethods::post("opportunity_id"),
                 "property_id" => RequestMethods::post("resume_id"),
                 "status" => "applied",
                 "updated" => ""
             ));
             $application->save();
+
+            $opportunity = Opportunity::first(array("id = ?" => $id));
+            $this->notify(array(
+                "template" => "applicationInternship",
+                "subject" => "Internship Application",
+                "opportunity" => $opportunity,
+                "user" => $this->getUser()
+            ));
+            $view->set("success", true);
+        } else {
+            $view->set("success", false);
         }
     }
 
