@@ -15,17 +15,19 @@
         <form class="col-md-8" method="post" action="">
             <div class="form-group">
                 <label>Full Name</label>
-                <input type="text" name="name" class="form-control" placeholder="Enter your name">
+                <input type="text" name="name" class="form-control" placeholder="Enter your name" required="">
+                {if isset($errors["name"])}<div class="help-block"><span class="text-danger"><strong>{echo $errors["name"]}</strong></span></div>{/if}
             </div>
             <div class="form-group">
                 <label>Email address</label>
-                <input name="property_id" type="email" class="form-control" placeholder="Enter email">
+                <input name="email" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" placeholder="Enter email" required="">
+                {if isset($errors["email"])}<div class="help-block"><span class="text-danger"><strong>{echo $errors["email"]}</strong></span></div>{/if}
             </div>
             <div class="form-group">
                 <label>Message</label>
-                <textarea name="body" class="form-control" placeholder="Enter Message explaining the problem" rows="3"></textarea>
+                <textarea required="" name="message" class="form-control" placeholder="Enter Message explaining the problem" rows="3"></textarea>
+                {if isset($errors["message"])}<div class="help-block"><span class="text-danger"><strong>{echo $errors["message"]}</strong></span></div>{/if}
             </div>
-            <input type="hidden" name="property" value="email">
             <input type="hidden" name="action" value="contact">
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>

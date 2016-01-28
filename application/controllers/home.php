@@ -76,43 +76,21 @@ class Home extends Users {
         $view = $this->getActionView();
 
         if (RequestMethods::post("action") == "contact") {
-            $name = RequestMethods::post("name", $this->user->name);$emails = array();
-            $propertyId = RequestMethods::post("property_id");
-            $message = new Message(array(
-                "subject" => "{$name} sent you a message",
-                "body" => RequestMethods::post("body")
-            ));$message->save();
-
-            $conversations = new Conversation(array(
-                "user_id" => "1",
-                "property" => RequestMethods::post("property"),
-                "property_id" => $propertyId,
-                "message_id" => $message->id
-            ));$conversations->save();
-
-            switch (RequestMethods::post("property")) {
-                case "email":
-                    array_push($emails, $conversations->property_id);
-                    $this->notify(array(
-                        "template" => "support",
-                        "subject" => "Swiftintern Customer Support",
-                        "emails" => $emails,
-                        "message" => $message
-                    ));
-                    break;
-                default:
-                    $user = User::first(array("id = ?" => $propertyId),array("email"));
-                    array_push($emails, $user->email);
-                    $this->notify(array(
-                        "template" => "message",
-                        "subject" => $message->subject,
-                        "emails" => $emails,
-                        "message" => $message,
-                        "name" => $name
-                    ));
-                    break;
+            $errors = array();
+            $fields = array("name", "email", "message");
+            foreach ($fields as $key => $value) {
+                $$value = RequestMethods::post($value);
+                if (empty($$value)) {
+                    $errors[$value] = "** ".ucfirst($value). " is required!!";
+                }
             }
-            $view->set("success", true);
+
+            if (empty($errors)) {
+                mail("udit@swiftintern.com", "Contact Query By: $name", "Email: $email\r\n".$message);
+                $view->set("success", true);    
+            } else {
+                $view->set("errors", $errors);
+            }
         }
     }
 
