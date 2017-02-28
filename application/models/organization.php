@@ -96,4 +96,9 @@ class Organization extends Shared\Model {
      */
     protected $_updated;
 
+    public function save() {
+        $this->updated = date('Y-m-d H:i:s');
+        parent::save();
+    }
+
 }

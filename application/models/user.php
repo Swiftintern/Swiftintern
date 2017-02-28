@@ -99,11 +99,16 @@ class User extends Shared\Model {
      * @type datetime
      */
     protected $_last_login;
-    
+
     /**
      * @column
      * @readwrite
      * @type datetime
      */
     protected $_updated;
+
+    public function save() {
+        $this->updated = date('Y-m-d H:i:s');
+        parent::save();
+    }
 }

@@ -244,4 +244,13 @@ class Home extends Users {
         }
     }
 
+    public function success() {
+        $this->seo(array(
+            "title" => "Payment Successful",
+            "keywords" => "payment blog",
+            "description" => "Payment successfully done",
+            "view" => $this->getLayoutView()
+        ));
+    }
+
 }

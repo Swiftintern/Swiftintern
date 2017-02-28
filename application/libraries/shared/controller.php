@@ -68,8 +68,14 @@ namespace Shared {
         }
 
         public static function redirect($url) {
+            Registry::get("controller")->noview();
             header("Location: {$url}");
             exit();
+        }
+
+        public function noview() {
+            $this->willRenderLayoutView = false;
+            $this->willRenderActionView = false;
         }
         
         public function setUser($user) {

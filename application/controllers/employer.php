@@ -76,7 +76,7 @@ class Employer extends Users {
                     "type" => "employer",
                     "validity" => "1",
                     "last_ip" => $_SERVER['REMOTE_ADDR'],
-                    "last_login" => "",
+                    "last_login" => date('Y-m-d H:i:s'),
                     "updated" => ""
                 ));
                 $user->save();
@@ -98,7 +98,7 @@ class Employer extends Users {
 
             $members = $this->member($social);
             if (!$members) {
-                $view->set("message", 'Please Register your company and be its admin on linkedin first....<a href="https://business.linkedin.com/marketing-solutions/company-pages/get-started">Create Company Page</a>');
+                return $view->set("message", 'Please Register your company and be its admin on linkedin first....<a href="https://business.linkedin.com/marketing-solutions/company-pages/get-started">Create Company Page</a>');
             } else {
                 $info["members"] = $members;
                 $info["user"] = $user;

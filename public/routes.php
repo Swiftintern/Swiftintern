@@ -137,6 +137,11 @@ $routes = array(
         "pattern" => "internship/:title/:id",
         "controller" => "internship",
         "action" => "details"
+    ),
+    array(
+        "pattern" => "payment/success",
+        "controller" => "home",
+        "action" => "success"
     )
 );
 
